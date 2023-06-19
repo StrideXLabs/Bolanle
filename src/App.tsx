@@ -3,18 +3,22 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  Text,
   useColorScheme,
 } from 'react-native';
+import WelcomeScreen from './screens/Welcome';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <SafeAreaView>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar
+        animated
+        showHideTransition="slide"
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+      />
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <Text className="text-xl">Hello World</Text>
+        <WelcomeScreen />
       </ScrollView>
     </SafeAreaView>
   );
