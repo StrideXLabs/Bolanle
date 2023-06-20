@@ -1,26 +1,18 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  useColorScheme,
-} from 'react-native';
-import WelcomeScreen from './screens/Welcome';
+import {StatusBar} from 'react-native';
+import RootNavigation from './navigation/RootNavigation';
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
   return (
-    <SafeAreaView>
+    <>
       <StatusBar
         animated
+        barStyle="dark-content"
         showHideTransition="slide"
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor="#F5F5F5"
       />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <WelcomeScreen />
-      </ScrollView>
-    </SafeAreaView>
+      <RootNavigation />
+    </>
   );
 }
 
