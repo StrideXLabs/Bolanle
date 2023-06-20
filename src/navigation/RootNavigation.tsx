@@ -1,7 +1,6 @@
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import AppNavigation from './AppNavigation';
-import {SafeAreaView, ScrollView} from 'react-native';
 
 const theme = Object.freeze({
   ...DefaultTheme,
