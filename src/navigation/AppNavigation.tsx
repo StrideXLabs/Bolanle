@@ -37,10 +37,22 @@ const AppNavigation = () => {
       />
       <AppStack.Screen name="AppBottomNav" component={BottomNavigation} />
       <AppStack.Screen
+        options={{
+          animation: 'simple_push',
+          // headerShown: true,
+          // statusBarStyle: 'dark',
+          // headerTransparent: true,
+          // headerBackVisible: false,
+          // header: props => <BusinessCardHeader {...props} />,
+        }}
         name="PersonalInformation"
         component={PersonalInformation}
       />
-      <AppStack.Screen name="ContactDetails" component={ContactDetails} />
+      <AppStack.Screen
+        name="ContactDetails"
+        component={ContactDetails}
+        options={{animation: 'simple_push'}}
+      />
     </AppStack.Navigator>
   );
 };

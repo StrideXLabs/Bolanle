@@ -8,11 +8,11 @@ import {
   View,
 } from 'react-native';
 
+import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
 import bgImage from '../../../assets/images/bg-2.png';
 import Button from '../../../components/Button';
-import TextField from '../../../components/TextField';
+import TextField from '../../../components/TextField/TextFieldLight';
 import {AppStackParams} from '../../../navigation/AppNavigation';
-import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
 
 export type RegisterScreenProps = NativeStackScreenProps<
   AppStackParams,
@@ -38,10 +38,10 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
       source={bgImage as ImageSourcePropType}>
       <View className="flex justify-center items-center h-full">
         <View className="h-[55%] bg-accent w-[85%] rounded-lg py-[35px] pr-[40px] pl-[35px]">
-          <Text className="text-5xl font-bold text-[#F7F6F0]">REGISTER</Text>
+          <Text className="text-5xl font-bold text-off-white">REGISTER</Text>
           <View className="mt-10">
             <View className="flex gap-2">
-              <Text className="text-base font-bold text-[#F7F6F0]">Email</Text>
+              <Text className="text-base font-bold text-off-white">Email</Text>
               <TextField
                 value={authState.email}
                 onChangeText={email =>
@@ -56,7 +56,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
           </View>
           <View className="mt-6">
             <View className="flex gap-2">
-              <Text className="text-base font-bold text-[#F7F6F0]">
+              <Text className="text-base font-bold text-off-white">
                 Password
               </Text>
               <TextField
@@ -86,7 +86,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() => navigation.push('ForgotPasswordScreen')}>
-                <Text className="text-right text-base font-bold text-[#F7F6F0]">
+                <Text className="text-right text-base font-bold text-off-white">
                   Forgot password?
                 </Text>
               </TouchableOpacity>
@@ -100,11 +100,11 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
               showBackgroundColor={false}
             />
             <View className="mt-4 flex flex-row justify-center">
-              <Text className="text-[#F7F6F0]">Already have an Account?</Text>
+              <Text className="text-off-white">Already have an Account?</Text>
               <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() => navigation.navigate('LoginScreen')}>
-                <Text className="ml-1 text-[#F7F6F0] font-extrabold">
+                <Text className="ml-1 text-off-white font-extrabold">
                   Login
                 </Text>
               </TouchableOpacity>

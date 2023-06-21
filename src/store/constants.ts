@@ -4,9 +4,9 @@ export const initialContactDetails = {
   email: '',
   mobile: '',
   websiteUrl: '',
-  companyLogo: '',
-  profileImage: '',
+  companyLogo: null,
   companyAddress: '',
+  profilePicture: null,
 } as IContactDetails;
 
 export const initialPersonalInformation = {
