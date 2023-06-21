@@ -10,7 +10,7 @@ import {
 
 import bgImage from '../../../assets/images/bg-2.png';
 import Button from '../../../components/Button';
-import TextField from '../../../components/TextField';
+import TextField from '../../../components/TextField/TextFieldLight';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 
 export type LoginScreenProps = NativeStackScreenProps<
@@ -37,15 +37,15 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       source={bgImage as ImageSourcePropType}>
       <View className="flex justify-center items-center h-full">
         <View className="h-[45%] bg-accent w-[85%] rounded-lg py-[35px] pr-[40px] pl-[35px]">
-          <Text className="text-3xl font-bold text-[#F7F6F0]">
+          <Text className="text-3xl font-bold text-off-white">
             FORGOT PASSWORD
           </Text>
-          <Text className="mt-8 text-[18px] text-[#F7F6F0]">
+          <Text className="mt-8 text-[18px] text-off-white">
             Please enter the registered email address to reset your password
           </Text>
           <View className="mt-8">
             <View className="flex gap-2">
-              <Text className="text-base font-bold text-[#F7F6F0]">Email</Text>
+              <Text className="text-base font-bold text-off-white">Email</Text>
               <TextField
                 value={authState.email}
                 autoFocus
@@ -68,11 +68,11 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               showBackgroundColor={false}
             />
             <View className="mt-4 flex flex-row justify-center">
-              <Text className="text-[#F7F6F0]">Go back to</Text>
+              <Text className="text-off-white">Go back to</Text>
               <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() => navigation.navigate('LoginScreen')}>
-                <Text className="ml-1 text-[#F7F6F0] font-extrabold">
+                <Text className="ml-1 text-off-white font-extrabold">
                   Login
                 </Text>
               </TouchableOpacity>

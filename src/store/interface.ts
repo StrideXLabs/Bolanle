@@ -1,3 +1,5 @@
+import {Asset} from 'react-native-image-picker';
+
 export interface IPersonalInformation {
   company: string;
   fullName: string;
@@ -9,9 +11,9 @@ export interface IContactDetails {
   email: string;
   mobile: string;
   websiteUrl: string;
-  companyLogo: string;
-  profileImage: string;
   companyAddress: string;
+  companyLogo: Asset | null;
+  profilePicture: Asset | null;
 }
 
 export interface ICreateBusinessCardState {
