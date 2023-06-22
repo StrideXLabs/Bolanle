@@ -1,4 +1,5 @@
 import {Asset} from 'react-native-image-picker';
+import {ISocial, SocialLinkType} from '../constants/socials';
 
 export interface IPersonalInformation {
   company: string;
@@ -16,14 +17,27 @@ export interface IContactDetails {
   profilePicture: Asset | null;
 }
 
+export interface ISocialLink {
+  url: string;
+  title: string;
+  id: SocialLinkType;
+}
+
 export interface ICreateBusinessCardState {
   step: number;
+  socialItems: ISocial[];
+  currentSocialStep: number;
+  socialLinks: ISocialLink[];
   contactDetails: IContactDetails;
   personalInformation: IPersonalInformation;
 }
 
 export interface ICreateBusinessCardActions {
   setStep: (step: number) => void;
+  setSocialItem: (item: ISocial) => void;
+  removeSocialItem: (id: string) => void;
+  setSocialLink: (data: ISocialLink) => void;
+  setCurrentSocialStep: (step: number) => void;
   setContactDetails: (contactDetails: IContactDetails) => void;
   setPersonalInformation: (personalInfo: IPersonalInformation) => void;
 }

@@ -7,18 +7,23 @@ import LoginScreen from '../screens/Auth/Login';
 import RegisterScreen from '../screens/Auth/Register';
 import ContactDetails from '../screens/BusinessCard/ContactDetails';
 import PersonalInformation from '../screens/BusinessCard/PersonalInformation';
+import SocialLinksScreen from '../screens/BusinessCard/SocialLinks';
+import OtherSocialScreen from '../screens/BusinessCard/SocialLinks/OtherSocials';
+import WhatsAppScreen from '../screens/BusinessCard/SocialLinks/WhatsApp';
 import WelcomeScreen from '../screens/Welcome';
 import BottomNavigation from './BottomNavigation';
 
 export type AppStackParams = {
   LoginScreen: undefined;
-  SocialLinks: undefined;
   AppBottomNav: undefined;
   WelcomeScreen: undefined;
+  WhatsAppScreen: undefined;
   RegisterScreen: undefined;
-  ContactDetails: undefined;
-  PersonalInformation: undefined;
+  SocialLinksScreen: undefined;
+  OtherSocialsScreen: undefined;
+  ContactDetailsScreen: undefined;
   ForgotPasswordScreen: undefined;
+  PersonalInformationScreen: undefined;
 };
 
 const AppStack = createNativeStackNavigator<AppStackParams>();
@@ -37,21 +42,29 @@ const AppNavigation = () => {
       />
       <AppStack.Screen name="AppBottomNav" component={BottomNavigation} />
       <AppStack.Screen
-        options={{
-          animation: 'simple_push',
-          // headerShown: true,
-          // statusBarStyle: 'dark',
-          // headerTransparent: true,
-          // headerBackVisible: false,
-          // header: props => <BusinessCardHeader {...props} />,
-        }}
-        name="PersonalInformation"
+        name="PersonalInformationScreen"
         component={PersonalInformation}
+        options={{animation: 'slide_from_bottom'}}
       />
       <AppStack.Screen
-        name="ContactDetails"
+        name="ContactDetailsScreen"
         component={ContactDetails}
-        options={{animation: 'simple_push'}}
+        options={{animation: 'slide_from_bottom'}}
+      />
+      <AppStack.Screen
+        component={SocialLinksScreen}
+        name={'SocialLinksScreen' as any}
+        options={{animation: 'slide_from_bottom'}}
+      />
+      <AppStack.Screen
+        component={WhatsAppScreen}
+        name={'WhatsAppScreen' as any}
+        options={{animation: 'none'}}
+      />
+      <AppStack.Screen
+        component={OtherSocialScreen}
+        name={'OtherSocialsScreen' as any}
+        options={{animation: 'slide_from_bottom'}}
       />
     </AppStack.Navigator>
   );
