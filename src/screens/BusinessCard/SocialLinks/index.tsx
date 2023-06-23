@@ -16,8 +16,9 @@ import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
 import textStyles from '../../../constants/fonts';
 import SOCIALS, {ISocial} from '../../../constants/socials';
+import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
+import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
-import {useCreateBusinessCard} from '../../../store/createBusinessCard';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams,
@@ -63,9 +64,14 @@ const SocialLinksScreen = ({navigation}: SocialLinksProps) => {
     useCreateBusinessCard();
 
   const handleNextClick = () => {
-    if (socialItems.length === 0) return;
-    const item = socialItems[0];
+    if (socialItems.length === 0)
+      return Toast.error({
+        primaryText: 'Please select at least one Social Link.',
+        secondaryText:
+          'This will be displayed on your business card information.',
+      });
 
+    const item = socialItems[0];
     if (item.id === 'whatsapp') navigation.navigate('WhatsAppScreen');
     else navigation.navigate('OtherSocialsScreen');
   };

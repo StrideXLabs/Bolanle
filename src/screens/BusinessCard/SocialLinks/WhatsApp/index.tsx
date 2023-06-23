@@ -1,13 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import React, {useEffect, useMemo, useState} from 'react';
+import {Pressable, SafeAreaView, ScrollView, Text, View} from 'react-native';
 import {CountryPicker} from 'react-native-country-codes-picker';
 import {ChevronDownIcon} from 'react-native-heroicons/outline';
 
@@ -16,8 +9,9 @@ import HeaderStepCount from '../../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../../components/Header/HeaderWithText';
 import TextField from '../../../../components/TextField/TextFieldDark';
 import textStyles from '../../../../constants/fonts';
+import {useCreateBusinessCard} from '../../../../hooks/useBusinessCard';
+import Toast from '../../../../lib/toast';
 import {AppStackParams} from '../../../../navigation/AppNavigation';
-import {useCreateBusinessCard} from '../../../../store/createBusinessCard';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams,
@@ -32,6 +26,8 @@ const WhatsAppScreen = ({navigation}: SocialLinksProps) => {
   });
 
   const {
+    step,
+    setStep,
     socialItems,
     socialLinks,
     setSocialLink,
@@ -52,23 +48,31 @@ const WhatsAppScreen = ({navigation}: SocialLinksProps) => {
   };
 
   const handleBackPress = () => {
+    setCurrentSocialStep(currentSocialStep - 1);
     if (firstItem.id === 'whatsapp') navigation.pop();
     else navigation.replace('OtherSocialsScreen');
   };
 
-  useEffect(() => {
-    return () => setCurrentSocialStep(currentSocialStep - 1);
-  }, []);
+  const handleSave = () => {
+    if (currentSocialStep === socialItems.length - 1) {
+      setStep(step + 1);
+      return navigation.navigate('RegisterScreen');
+    }
 
-  // useEffect(() => {
-  //   setSocialLink({
-  //     id: socialLink.id,
-  //     url: socialLink.url.includes('(')
-  //       ? `(${data.code}) ${socialLink.url.split(' ')[1]}`
-  //       : socialLink.url,
-  //     title: socialLink.title,
-  //   });
-  // }, []);
+    if (!socialLink.url && !socialLink.title)
+      return Toast.error({primaryText: 'Please fill up all the fields.'});
+
+    setCurrentSocialStep(currentSocialStep + 1);
+    navigation.navigate('OtherSocialsScreen');
+  };
+
+  useEffect(() => {
+    setSocialLink({
+      id: 'whatsapp',
+      url: `(${data.code}) `,
+      title: socialLink.title,
+    });
+  }, []);
 
   return (
     <ScrollView nestedScrollEnabled>
@@ -78,6 +82,7 @@ const WhatsAppScreen = ({navigation}: SocialLinksProps) => {
           show={open}
           style={{
             modal: {height: 400},
+            textInput: {color: '#334155'},
             dialCode: {color: '#334155', fontFamily: 'Roboto-Bold'},
             countryName: {color: '#334155', fontFamily: 'Roboto-Bold'},
           }}
@@ -162,7 +167,7 @@ const WhatsAppScreen = ({navigation}: SocialLinksProps) => {
           </View>
           <Button
             text="Next"
-            callback={() => {}}
+            callback={handleSave}
             className="mt-[74px] w-full"
           />
         </View>

@@ -1,11 +1,11 @@
 import React from 'react';
-import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {Image, Pressable, Text, View} from 'react-native';
 import {TrashIcon} from 'react-native-heroicons/outline';
+import {Asset, launchImageLibrary} from 'react-native-image-picker';
 
 import {PlusIcon} from 'react-native-heroicons/outline';
 import textStyles from '../../../constants/fonts';
-import {useCreateBusinessCard} from '../../../store/createBusinessCard';
+import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 
 const Upload = () => {
   const {setContactDetails, contactDetails} = useCreateBusinessCard();

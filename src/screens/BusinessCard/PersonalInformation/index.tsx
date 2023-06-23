@@ -1,13 +1,14 @@
 import React from 'react';
-import {Text, View, ScrollView} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
 import TextField from '../../../components/TextField/TextFieldDark';
 import textStyles from '../../../constants/fonts';
-import {useCreateBusinessCard} from '../../../store/createBusinessCard';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
+import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 
 export type PersonalInformationProps = NativeStackScreenProps<
@@ -18,6 +19,25 @@ export type PersonalInformationProps = NativeStackScreenProps<
 const PersonalInformation = ({navigation}: PersonalInformationProps) => {
   const {step, setStep, personalInformation, setPersonalInformation} =
     useCreateBusinessCard();
+
+  const handleNextClick = () => {
+    if (
+      !personalInformation.fullName ||
+      !personalInformation.designation ||
+      !personalInformation.department ||
+      !personalInformation.company
+    ) {
+      Toast.error({
+        position: 'bottom',
+        primaryText: 'All fields are required.',
+        secondaryText: 'Please fill up all the details to continue.',
+      });
+      return;
+    }
+
+    setStep(step + 1);
+    navigation.push('ContactDetailsScreen');
+  };
 
   return (
     <ScrollView>
@@ -119,14 +139,7 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
           </Text>
         </View>
         <View className="w-full flex-grow mt-10 ml-1">
-          <Button
-            callback={() => {
-              setStep(step + 1);
-              navigation.push('ContactDetailsScreen');
-            }}
-            text="Next"
-            className="w-full"
-          />
+          <Button text="Next" className="w-full" callback={handleNextClick} />
         </View>
       </View>
     </ScrollView>

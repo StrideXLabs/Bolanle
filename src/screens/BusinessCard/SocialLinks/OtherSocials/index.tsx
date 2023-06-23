@@ -9,7 +9,8 @@ import TextField from '../../../../components/TextField/TextFieldDark';
 import textStyles from '../../../../constants/fonts';
 import {socialMappings} from '../../../../constants/socials';
 import {AppStackParams} from '../../../../navigation/AppNavigation';
-import {useCreateBusinessCard} from '../../../../store/createBusinessCard';
+import Toast from '../../../../lib/toast';
+import {useCreateBusinessCard} from '../../../../hooks/useBusinessCard';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams,
@@ -18,11 +19,13 @@ export type SocialLinksProps = NativeStackScreenProps<
 
 const OtherSocialsScreen = ({navigation}: SocialLinksProps) => {
   const {
-    currentSocialStep,
-    setCurrentSocialStep,
+    step,
+    setStep,
     socialItems,
     socialLinks,
     setSocialLink,
+    currentSocialStep,
+    setCurrentSocialStep,
   } = useCreateBusinessCard();
 
   const socialItem = useMemo(
@@ -43,8 +46,12 @@ const OtherSocialsScreen = ({navigation}: SocialLinksProps) => {
 
   const handleSave = () => {
     if (currentSocialStep === socialItems.length - 1) {
-      return;
+      setStep(step + 1);
+      return navigation.navigate('RegisterScreen');
     }
+
+    if (!socialLink.url && !socialLink.title)
+      return Toast.error({primaryText: 'Please fill up all the fields.'});
 
     const nextItem = socialItems[currentSocialStep + 1];
 

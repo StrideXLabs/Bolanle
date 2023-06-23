@@ -1,17 +1,13 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {
-  ImageBackground,
-  ImageSourcePropType,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Text, View} from 'react-native';
 
 import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
-import bgImage from '../../../assets/images/bg-2.png';
 import Button from '../../../components/Button';
-import TextField from '../../../components/TextField/TextFieldLight';
+import HeaderStepCount from '../../../components/Header/HeaderStepCount';
+import HeaderWithText from '../../../components/Header/HeaderWithText';
+import TextField from '../../../components/TextField/TextFieldDark';
+import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 
 export type RegisterScreenProps = NativeStackScreenProps<
@@ -25,6 +21,7 @@ export interface ICredentials {
 }
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
+  const {step} = useCreateBusinessCard();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [authState, setAuthState] = useState<ICredentials>({
     email: '',
@@ -32,87 +29,73 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
   });
 
   return (
-    <ImageBackground
-      className="h-screen"
-      resizeMode="cover"
-      source={bgImage as ImageSourcePropType}>
-      <View className="flex justify-center items-center h-full">
-        <View className="h-[55%] bg-accent w-[85%] rounded-lg py-[35px] pr-[40px] pl-[35px]">
-          <Text className="text-5xl font-bold text-off-white">REGISTER</Text>
-          <View className="mt-10">
-            <View className="flex gap-2">
-              <Text className="text-base font-bold text-off-white">Email</Text>
-              <TextField
-                value={authState.email}
-                onChangeText={email =>
-                  setAuthState(state => ({
-                    ...state,
-                    email,
-                  }))
-                }
-                placeholder="john@gmail.com"
+    <View className="px-[40px] py-[53px]">
+      <HeaderStepCount
+        step={step}
+        onBackPress={() => {
+          navigation.canGoBack() && navigation.goBack();
+        }}
+      />
+      <Text>PersonalInformation</Text>
+      <View className="mt-9 mb-[30px]">
+        <HeaderWithText
+          heading="CHOOSE PASSWORD"
+          subtitle="Please choose a password for yourself to create the account."
+        />
+      </View>
+
+      <View className="flex gap-[10px]">
+        <View>
+          <Text className="text-dark-blue mb-1 text-base font-bold text-off-white">
+            Email
+          </Text>
+          <TextField
+            value={authState.email}
+            onChangeText={email =>
+              setAuthState(state => ({
+                ...state,
+                email,
+              }))
+            }
+            placeholder="john@gmail.com"
+          />
+        </View>
+        <View>
+          <Text className="text-dark-blue mb-1 text-base font-bold text-off-white">
+            Password
+          </Text>
+          <TextField
+            value={authState.password}
+            onChangeText={password =>
+              setAuthState(state => ({...state, password}))
+            }
+            placeholder="Password"
+            className="relative"
+            secureTextEntry={secureTextEntry}
+          />
+          <View className="absolute right-1 top-[41px]">
+            {secureTextEntry ? (
+              <EyeIcon
+                size={27}
+                color="white"
+                onPress={() => setSecureTextEntry(false)}
               />
-            </View>
-          </View>
-          <View className="mt-6">
-            <View className="flex gap-2">
-              <Text className="text-base font-bold text-off-white">
-                Password
-              </Text>
-              <TextField
-                value={authState.password}
-                onChangeText={password =>
-                  setAuthState(state => ({...state, password}))
-                }
-                placeholder="Password"
-                className="relative"
-                secureTextEntry={secureTextEntry}
+            ) : (
+              <EyeSlashIcon
+                size={27}
+                color="white"
+                onPress={() => setSecureTextEntry(true)}
               />
-              <View className="absolute right-1 top-[41px]">
-                {secureTextEntry ? (
-                  <EyeIcon
-                    size={27}
-                    color="white"
-                    onPress={() => setSecureTextEntry(false)}
-                  />
-                ) : (
-                  <EyeSlashIcon
-                    size={27}
-                    color="white"
-                    onPress={() => setSecureTextEntry(true)}
-                  />
-                )}
-              </View>
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => navigation.push('ForgotPasswordScreen')}>
-                <Text className="text-right text-base font-bold text-off-white">
-                  Forgot password?
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View className="w-[102%] mt-auto">
-            <Button
-              text="Register"
-              className="w-full"
-              callback={() => {}}
-              showBackgroundColor={false}
-            />
-            <View className="mt-4 flex flex-row justify-center">
-              <Text className="text-off-white">Already have an Account?</Text>
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => navigation.navigate('LoginScreen')}>
-                <Text className="ml-1 text-off-white font-extrabold">
-                  Login
-                </Text>
-              </TouchableOpacity>
-            </View>
+            )}
           </View>
         </View>
+        <Button
+          text="Create Account"
+          callback={() => {}}
+          className="w-full ml-1 mt-[52px]"
+        />
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 
