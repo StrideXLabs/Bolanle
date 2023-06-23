@@ -1,12 +1,11 @@
 import {create} from 'zustand';
 import {immer} from 'zustand/middleware/immer';
-
+import SOCIALS from '../../constants/socials';
 import {initialContactDetails, initialPersonalInformation} from './constants';
 import {
   ICreateBusinessCardActions,
   ICreateBusinessCardState,
 } from './interface';
-import SOCIALS from '../constants/socials';
 
 export const useCreateBusinessCard = create<
   ICreateBusinessCardState & ICreateBusinessCardActions
@@ -56,8 +55,8 @@ export const useCreateBusinessCard = create<
         const exist = state.socialLinks.find(item => item.id === data.id);
 
         if (exist) {
-          exist.url = data.url || exist.url;
-          exist.title = data.title || exist.title;
+          exist.url = data.url || '';
+          exist.title = data.title || '';
           return;
         }
 

@@ -13,11 +13,11 @@ import twitch from '../assets/images/twitch.png';
 import venmo from '../assets/images/venmo.png';
 import yelp from '../assets/images/yelp.png';
 
-import whatsapp from '../assets/images/yelp.png';
-import calendly from '../assets/images/yelp.png';
-import linkedin from '../assets/images/yelp.png';
-import paypal from '../assets/images/yelp.png';
-import signal from '../assets/images/yelp.png';
+import whatsapp from '../assets/images/whatsapp.png';
+import calendly from '../assets/images/calendly.png';
+import linkedin from '../assets/images/linkedin.png';
+import paypal from '../assets/images/paypal.png';
+import signal from '../assets/images/signal.png';
 
 export interface ISocial {
   image: string;

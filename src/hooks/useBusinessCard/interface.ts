@@ -1,5 +1,5 @@
 import {Asset} from 'react-native-image-picker';
-import {ISocial, SocialLinkType} from '../constants/socials';
+import {ISocial, SocialLinkType} from '../../constants/socials';
 
 export interface IPersonalInformation {
   company: string;

@@ -1,15 +1,17 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {Text, View, ScrollView} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 
 import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
 import TextField from '../../../components/TextField/TextFieldDark';
+import {emailRegex} from '../../../constants';
 import textStyles from '../../../constants/fonts';
+import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
+import isValidURL from '../../../lib/isValidUrl';
+import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
-import {useCreateBusinessCard} from '../../../store/createBusinessCard';
-import {PlusIcon} from 'react-native-heroicons/outline';
 import Upload from './Upload';
 
 export type ContactDetailsProps = NativeStackScreenProps<
@@ -18,8 +20,38 @@ export type ContactDetailsProps = NativeStackScreenProps<
 >;
 
 const ContactDetails = ({navigation}: ContactDetailsProps) => {
-  const {step, setStep, personalInformation, setPersonalInformation} =
+  const {step, setStep, contactDetails, setContactDetails} =
     useCreateBusinessCard();
+
+  const handleNextClick = () => {
+    if (
+      !contactDetails.email ||
+      !contactDetails.mobile ||
+      !contactDetails.websiteUrl ||
+      !contactDetails.companyAddress ||
+      !contactDetails.companyLogo ||
+      !contactDetails.profilePicture
+    ) {
+      Toast.error({
+        primaryText: 'All fields are required.',
+        secondaryText: 'Please fill up all the details to continue.',
+      });
+      return;
+    }
+
+    if (!emailRegex.test(contactDetails.email)) {
+      Toast.error({primaryText: 'Email must be a valid.'});
+      return;
+    }
+
+    if (!isValidURL(contactDetails.websiteUrl)) {
+      Toast.error({primaryText: 'Website URL must be valid URL.'});
+      return;
+    }
+
+    setStep(step + 1);
+    navigation.push('SocialLinksScreen');
+  };
 
   return (
     <ScrollView>
@@ -31,7 +63,7 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
             navigation.canGoBack() && navigation.goBack();
           }}
         />
-        <Text>PersonalInformation</Text>
+        <Text>contactDetails</Text>
         <View className="mt-9 mb-[30px]">
           <HeaderWithText
             heading="CONTACT DETAILS"
@@ -47,12 +79,12 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
             </Text>
             <TextField
               onChangeText={text => {
-                setPersonalInformation({
-                  ...personalInformation,
-                  fullName: text,
+                setContactDetails({
+                  ...contactDetails,
+                  email: text,
                 });
               }}
-              value={personalInformation.fullName}
+              value={contactDetails.email}
               placeholder="Enter your email address"
             />
           </View>
@@ -63,13 +95,14 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
               Mobile
             </Text>
             <TextField
+              keyboardType="number-pad"
               onChangeText={text => {
-                setPersonalInformation({
-                  ...personalInformation,
-                  designation: text,
+                setContactDetails({
+                  ...contactDetails,
+                  mobile: text,
                 });
               }}
-              value={personalInformation.designation}
+              value={contactDetails.mobile}
               placeholder="Enter mobile number"
             />
           </View>
@@ -81,12 +114,12 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
             </Text>
             <TextField
               onChangeText={text => {
-                setPersonalInformation({
-                  ...personalInformation,
-                  department: text,
+                setContactDetails({
+                  ...contactDetails,
+                  websiteUrl: text,
                 });
               }}
-              value={personalInformation.department}
+              value={contactDetails.websiteUrl}
               placeholder="Enter your company website url"
             />
           </View>
@@ -101,23 +134,16 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
               className="h-[80px]"
               textAlignVertical="top"
               onChangeText={text => {
-                setPersonalInformation({...personalInformation, company: text});
+                setContactDetails({...contactDetails, companyAddress: text});
               }}
-              value={personalInformation.company}
+              value={contactDetails.companyAddress}
               placeholder="Enter your company address"
             />
           </View>
         </View>
         <Upload />
         <View className="w-full flex-grow mt-10 ml-1">
-          <Button
-            callback={() => {
-              setStep(step + 1);
-              navigation.push('SocialLinksScreen');
-            }}
-            text="Next"
-            className="w-full"
-          />
+          <Button callback={handleNextClick} text="Next" className="w-full" />
         </View>
       </View>
     </ScrollView>
