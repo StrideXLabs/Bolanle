@@ -19,11 +19,11 @@ export type AppStackParams = {
   LoginScreen: undefined;
   AppBottomNav: undefined;
   WelcomeScreen: undefined;
-  RegisterScreen: undefined;
   ContactDetailsScreen: undefined;
   ForgotPasswordScreen: undefined;
   BottomNavigatorScreen: undefined;
   PersonalInformationScreen: undefined;
+  RegisterScreen?: {showHeader?: boolean};
   WhatsAppScreen?: {fromSocialLinks?: boolean};
   SocialLinksScreen?: {toSocialLinks?: boolean};
   OtherSocialsScreen?: {fromSocialLinks?: boolean};
@@ -47,7 +47,11 @@ const AppNavigation = () => {
         screenOptions={{headerShown: false, animation: 'slide_from_right'}}>
         <AppStack.Screen name="LoginScreen" component={LoginScreen} />
         <AppStack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-        <AppStack.Screen name="RegisterScreen" component={RegisterScreen} />
+        <AppStack.Screen
+          name="RegisterScreen"
+          component={RegisterScreen}
+          initialParams={{showHeader: true}}
+        />
         <AppStack.Screen
           name="ForgotPasswordScreen"
           component={ForgotPasswordScreen}

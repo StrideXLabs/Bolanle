@@ -112,7 +112,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               <Text className="text-off-white">Don't have an Account?</Text>
               <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={() => navigation.navigate('RegisterScreen')}>
+                onPress={() =>
+                  navigation.navigate('RegisterScreen', {showHeader: false})
+                }>
                 <Text className="ml-1 text-off-white font-extrabold">
                   Create
                 </Text>

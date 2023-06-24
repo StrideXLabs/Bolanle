@@ -29,7 +29,11 @@ export interface ICredentials {
   password: string;
 }
 
-const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
+const RegisterScreen: React.FC<RegisterScreenProps> = ({
+  navigation,
+  route: {params},
+}) => {
+  const showHeader = params?.showHeader ?? true;
   const {setAuthState} = useAuth();
   const {step, socialLinks, personalInformation, contactDetails} =
     useCreateBusinessCard();
@@ -89,12 +93,11 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
     }
   };
 
-  console.log({contactDetails, personalInformation});
-
   return (
     <View className="px-[40px] py-[53px]">
       <HeaderStepCount
         step={step}
+        showDotes={showHeader}
         onBackPress={() => {
           navigation.canGoBack() && navigation.goBack();
         }}
