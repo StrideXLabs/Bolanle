@@ -5,7 +5,9 @@ export interface IAuthState {
 }
 
 export interface IUser {
+  id: string;
   email: string;
+  expires: number;
 }
 
 export interface IAuthStateActions {

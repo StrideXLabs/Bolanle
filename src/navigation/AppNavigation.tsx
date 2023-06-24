@@ -13,6 +13,7 @@ import OtherSocialScreen from '../screens/BusinessCard/SocialLinks/OtherSocials'
 import WhatsAppScreen from '../screens/BusinessCard/SocialLinks/WhatsApp';
 import WelcomeScreen from '../screens/Welcome';
 import BottomNavigation from './BottomNavigation';
+import {useAuth} from '../hooks/useAuth';
 
 export type AppStackParams = {
   LoginScreen: undefined;
@@ -21,6 +22,7 @@ export type AppStackParams = {
   RegisterScreen: undefined;
   ContactDetailsScreen: undefined;
   ForgotPasswordScreen: undefined;
+  BottomNavigatorScreen: undefined;
   PersonalInformationScreen: undefined;
   WhatsAppScreen?: {fromSocialLinks?: boolean};
   SocialLinksScreen?: {toSocialLinks?: boolean};
@@ -30,6 +32,8 @@ export type AppStackParams = {
 const AppStack = createNativeStackNavigator<AppStackParams>();
 
 const AppNavigation = () => {
+  const {authed, token, user} = useAuth();
+
   return (
     <>
       <StatusBar
@@ -39,7 +43,7 @@ const AppNavigation = () => {
         backgroundColor="#F5F5F5"
       />
       <AppStack.Navigator
-        initialRouteName="WelcomeScreen"
+        initialRouteName={authed ? 'BottomNavigatorScreen' : 'WelcomeScreen'}
         screenOptions={{headerShown: false, animation: 'slide_from_right'}}>
         <AppStack.Screen name="LoginScreen" component={LoginScreen} />
         <AppStack.Screen name="WelcomeScreen" component={WelcomeScreen} />

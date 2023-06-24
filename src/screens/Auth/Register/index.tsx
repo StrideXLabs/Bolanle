@@ -1,4 +1,5 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import decodeJWT from 'jwt-decode';
 import React, {useState} from 'react';
 import {Text, View} from 'react-native';
 
@@ -7,10 +8,16 @@ import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
 import TextField from '../../../components/TextField/TextFieldDark';
+import {TOKEN} from '../../../constants';
+import {socialMappings} from '../../../constants/socials';
+import {useAuth} from '../../../hooks/useAuth';
+import {IUser} from '../../../hooks/useAuth/interface';
 import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
+import {setTokenToStorage} from '../../../lib/storage';
+import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 import authService from '../../../services/auth.service';
-import Toast from '../../../lib/toast';
+import cardService from '../../../services/card.service';
 
 export type RegisterScreenProps = NativeStackScreenProps<
   AppStackParams,
@@ -23,28 +30,66 @@ export interface ICredentials {
 }
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
-  const {step} = useCreateBusinessCard();
+  const {setAuthState} = useAuth();
+  const {step, socialLinks, personalInformation, contactDetails} =
+    useCreateBusinessCard();
 
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [authState, setAuthState] = useState<ICredentials>({
+  const [credentials, setCredentials] = useState<ICredentials>({
     email: '',
     password: '',
   });
 
   const handleCreateAccount = async () => {
-    setCreatingAccount(true);
-    const data = await authService.register(authState);
+    try {
+      setCreatingAccount(true);
+      const response = await authService.register(credentials);
 
-    console.log(data);
+      if (!response.success) {
+        setCreatingAccount(false);
+        return Toast.error({primaryText: response.message});
+      }
 
-    if (!data.success) {
       setCreatingAccount(false);
-      return Toast.error({primaryText: data.message});
-    }
+      Toast.success({primaryText: 'Account created successfully.'});
 
-    setCreatingAccount(false);
+      const token = response.data?.token ?? '';
+      await setTokenToStorage(TOKEN, token);
+
+      const decodedUser = decodeJWT(token) as {[key: string]: string | number};
+      const user = {
+        id: decodedUser._id,
+        email: decodedUser.email,
+        expires: decodedUser.exp,
+      } as IUser;
+
+      const mappedSocialLinks = socialLinks.map(item => ({
+        url: item.url,
+        title: item.title,
+        platform: socialMappings[item.id],
+      }));
+
+      const res = await cardService.create({
+        contactDetails,
+        personalInformation,
+        socialLinks: mappedSocialLinks,
+        companyLogo: contactDetails.companyLogo!,
+        profileImage: contactDetails.profilePicture!,
+      });
+
+      console.log(res);
+
+      if (!res.success) Toast.error({primaryText: res.message});
+      else Toast.success({primaryText: res.message});
+
+      setAuthState({authed: true, token, user});
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  console.log({contactDetails, personalInformation});
 
   return (
     <View className="px-[40px] py-[53px]">
@@ -68,14 +113,10 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
             Email
           </Text>
           <TextField
-            value={authState.email}
-            onChangeText={email =>
-              setAuthState(state => ({
-                ...state,
-                email,
-              }))
-            }
+            value={credentials.email}
+            keyboardType="email-address"
             placeholder="john@gmail.com"
+            onChangeText={email => setCredentials(state => ({...state, email}))}
           />
         </View>
         <View>
@@ -83,9 +124,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
             Password
           </Text>
           <TextField
-            value={authState.password}
+            value={credentials.password}
             onChangeText={password =>
-              setAuthState(state => ({...state, password}))
+              setCredentials(state => ({...state, password}))
             }
             placeholder="Password"
             className="relative"

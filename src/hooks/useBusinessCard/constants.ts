@@ -10,8 +10,8 @@ export const initialContactDetails = {
 } as IContactDetails;
 
 export const initialPersonalInformation = {
-  company: '',
-  fullName: '',
+  companyName: '',
+  name: '',
   department: '',
   designation: '',
 } as IPersonalInformation;

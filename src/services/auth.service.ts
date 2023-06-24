@@ -36,14 +36,16 @@ class AuthService {
       const response = await fetcher<
         ICreateAccountData,
         IICreateAccountResponse
-      >('/signup', {data: {email, password}, method: 'POST'});
+      >('/user/signup', {data: {email, password}, method: 'POST'});
 
       return {
-        data: response,
         success: true,
+        data: response,
         message: 'Account created successfully.',
       };
     } catch (error) {
+      console.log(error);
+
       return {
         data: null,
         success: false,

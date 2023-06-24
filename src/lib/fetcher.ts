@@ -1,4 +1,5 @@
 import {BASE_URL, TOKEN} from '../constants';
+import {getTokenFromStorage} from './storage';
 
 interface IRequestBody<T> {
   data: T;
@@ -9,20 +10,23 @@ interface IRequestBody<T> {
 export default async function fetcher<
   TRequestBody extends {},
   TResponseData extends {message: string},
->(endpoint: string, data: IRequestBody<TRequestBody>): Promise<TResponseData> {
+>(
+  endpoint: string,
+  options: IRequestBody<TRequestBody>,
+): Promise<TResponseData> {
+  const token = await getTokenFromStorage<string>(TOKEN);
+
   const response = await fetch(`${BASE_URL}${endpoint}`, {
-    method: data.method,
+    method: options.method,
     headers: {
-      'x-access-token': '',
-      'Content-Type': 'application/x-www-form-urlencoded',
-      ...(data.headers || {}),
+      'x-access-token': token || '',
+      'Content-Type': 'application/json',
+      ...(options.headers || {}),
     },
-    ...(data.method !== 'GET' && {body: JSON.stringify(data.data)}),
+    ...(options.method !== 'GET' && {body: JSON.stringify(options.data)}),
   });
 
   const responseData = (await response.json()) as TResponseData;
-
-  console.log(response, responseData);
 
   if (!response.ok)
     throw new Error(

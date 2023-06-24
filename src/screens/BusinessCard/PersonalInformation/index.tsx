@@ -22,10 +22,10 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
 
   const handleNextClick = () => {
     if (
-      !personalInformation.fullName ||
+      !personalInformation.name ||
       !personalInformation.designation ||
       !personalInformation.department ||
-      !personalInformation.company
+      !personalInformation.companyName
     ) {
       Toast.error({
         position: 'bottom',
@@ -67,10 +67,10 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
               onChangeText={text => {
                 setPersonalInformation({
                   ...personalInformation,
-                  fullName: text,
+                  name: text,
                 });
               }}
-              value={personalInformation.fullName}
+              value={personalInformation.name}
               placeholder="Enter your full name"
             />
           </View>
@@ -116,9 +116,12 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
             </Text>
             <TextField
               onChangeText={text => {
-                setPersonalInformation({...personalInformation, company: text});
+                setPersonalInformation({
+                  ...personalInformation,
+                  companyName: text,
+                });
               }}
-              value={personalInformation.company}
+              value={personalInformation.companyName}
               placeholder="Enter your company name"
             />
           </View>

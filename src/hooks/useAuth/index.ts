@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {create} from 'zustand';
 import {immer} from 'zustand/middleware/immer';
-import {createJSONStorage, persist} from 'zustand/middleware/persist';
+import {createJSONStorage, persist} from 'zustand/middleware';
 import {IAuthState, IAuthStateActions} from './interface';
 
 export const useAuth = create<IAuthState & IAuthStateActions>()(
