@@ -16,15 +16,18 @@ export interface ICreateCardData {
   companyLogo: Asset;
   profileImage: Asset;
   socialLinks: ICard[];
-  contactDetails: IContactDetails;
   personalInformation: IPersonalInformation;
+  contactDetails: Omit<Omit<IContactDetails, 'profilePicture'>, 'companyLogo'>;
 }
 
 export interface ICreateApiCardData {
   formData: any;
   socialLinks: ICard[];
-  contactDetails: IContactDetails;
-  personalInformation: IPersonalInformation;
+  contactDetails: Omit<
+    Omit<IContactDetails, 'profilePicture'>,
+    'companyLogo'
+  > & {profileImage: string; companyLogo: string};
+  personalInfo: IPersonalInformation;
 }
 
 export interface ICreateCardResponse {
@@ -46,23 +49,26 @@ class CardService {
       }
 
       const formData = new FormData();
+
+      formData.append('socialLinks', JSON.stringify(data.socialLinks));
+      formData.append('contactDetails', JSON.stringify(data.contactDetails));
+      formData.append('personalInfo', JSON.stringify(data.personalInformation));
       formData.append('companyLogo', {
         uri: data.companyLogo.uri,
         type: data.companyLogo.type,
         name: data.companyLogo.fileName,
       });
-
-      formData.append('profileImage ', {
+      formData.append('profileImage', {
         uri: data.profileImage.uri,
         type: data.profileImage.type,
         name: data.profileImage.fileName,
       });
 
-      const response = await fetcher<ICreateApiCardData, ICreateCardResponse>(
+      const response = await fetcher<FormData, ICreateCardResponse>(
         '/business-card',
         {
+          body: formData,
           method: 'POST',
-          data: {...data, formData},
           headers: {'Content-Type': 'multipart/form-data'},
         },
       );

@@ -1,11 +1,21 @@
-import {BASE_URL, TOKEN} from '../constants';
-import {getTokenFromStorage} from './storage';
+import {BASE_URL, TokenKey} from '../constants';
+import {getDataFromAsyncStorage} from './storage';
 
-interface IRequestBody<T> {
+interface IRequestBodyData<T> {
+  data?: T;
+  headers?: {[key: string]: string | number};
+  method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
+  body: T;
+}
+
+interface IRequestData<T> {
   data: T;
   headers?: {[key: string]: string | number};
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
+  body?: T;
 }
+
+type IRequestBody<T> = IRequestBodyData<T> | IRequestData<T>;
 
 export default async function fetcher<
   TRequestBody extends {},
@@ -14,7 +24,7 @@ export default async function fetcher<
   endpoint: string,
   options: IRequestBody<TRequestBody>,
 ): Promise<TResponseData> {
-  const token = await getTokenFromStorage<string>(TOKEN);
+  const token = await getDataFromAsyncStorage<string>(TokenKey);
 
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     method: options.method,
@@ -23,7 +33,11 @@ export default async function fetcher<
       'Content-Type': 'application/json',
       ...(options.headers || {}),
     },
-    ...(options.method !== 'GET' && {body: JSON.stringify(options.data)}),
+    ...(options.method !== 'GET' && {
+      body: options.body
+        ? (options.body as BodyInit_)
+        : JSON.stringify(options.data),
+    }),
   });
 
   const responseData = (await response.json()) as TResponseData;

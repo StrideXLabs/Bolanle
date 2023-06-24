@@ -1,5 +1,6 @@
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import React from 'react';
+import SplashScreen from 'react-native-splash-screen';
 import AppNavigation from './AppNavigation';
 
 const theme = Object.freeze({
@@ -12,7 +13,7 @@ const theme = Object.freeze({
 
 const RootNavigation = () => {
   return (
-    <NavigationContainer theme={theme}>
+    <NavigationContainer theme={theme} onReady={() => SplashScreen.hide()}>
       <AppNavigation />
     </NavigationContainer>
   );

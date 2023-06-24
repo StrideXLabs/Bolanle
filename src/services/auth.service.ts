@@ -1,21 +1,22 @@
-import {BASE_URL, emailRegex} from '../constants';
+import {emailRegex} from '../constants';
 import fetcher from '../lib/fetcher';
 import {IDefaultAPIResponse} from '../types/api-response';
 
-export interface ICreateAccountData {
+export interface ICredentialsData {
   email: string;
   password: string;
 }
 
-export interface IICreateAccountResponse {
+export interface IAuthedResponse {
   message: string;
   token: string;
 }
 
 class AuthService {
-  async register(
-    data: ICreateAccountData,
-  ): Promise<IDefaultAPIResponse<IICreateAccountResponse>> {
+  async authenticate(
+    data: ICredentialsData,
+    type: 'LOGIN' | 'REGISTRATION',
+  ): Promise<IDefaultAPIResponse<IAuthedResponse>> {
     try {
       const {email, password} = data;
 
@@ -33,15 +34,18 @@ class AuthService {
           message: 'Password must be 5 characters long.',
         };
 
-      const response = await fetcher<
-        ICreateAccountData,
-        IICreateAccountResponse
-      >('/user/signup', {data: {email, password}, method: 'POST'});
+      const response = await fetcher<ICredentialsData, IAuthedResponse>(
+        `/user${type === 'REGISTRATION' ? '/signup' : '/login'}`,
+        {data: {email, password}, method: 'POST'},
+      );
 
       return {
         success: true,
         data: response,
-        message: 'Account created successfully.',
+        message:
+          type === 'REGISTRATION'
+            ? 'Account created successfully.'
+            : 'Logged in.',
       };
     } catch (error) {
       console.log(error);
@@ -52,7 +56,9 @@ class AuthService {
         message:
           error instanceof Error
             ? error.message
-            : 'Error while creating account. Please try again.',
+            : type === 'REGISTRATION'
+            ? 'Error while creating account. Please try again.'
+            : 'Error while login. Please try again.',
       };
     }
   }

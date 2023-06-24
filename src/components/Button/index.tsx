@@ -1,6 +1,7 @@
 import React from 'react';
 import {Pressable, Text, View, ActivityIndicator} from 'react-native';
 import textStyles from '../../constants/fonts';
+import {accentColor} from '../../constants';
 
 export interface IButtonProps {
   text: string;
@@ -34,7 +35,7 @@ const Button = ({
           }`}>
           {showLoading ? (
             <ActivityIndicator
-              color={showBackgroundColor ? '#F7F6F0' : '#F1592A'}
+              color={showBackgroundColor ? '#F7F6F0' : accentColor}
             />
           ) : (
             text

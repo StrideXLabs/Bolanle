@@ -9,7 +9,7 @@ const HeaderStepCount = ({
   onBackPress,
   showDotes = true,
 }: {
-  step: number;
+  step?: number;
   showDotes?: boolean;
   onBackPress: () => void;
 }) => {

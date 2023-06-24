@@ -30,7 +30,7 @@ export const useCreateBusinessCard = create<
       }),
 
     // SOCIAL ITEMS
-    socialItems: [SOCIALS[0], SOCIALS[1]],
+    socialItems: [],
     setSocialItem: item => {
       set(state => {
         const exist = state.socialItems.find(i => i.id === item.id);
@@ -46,15 +46,6 @@ export const useCreateBusinessCard = create<
 
     // SOCIAL LINKS
     socialLinks: [],
-    currentSocialStep: 0,
-    setCurrentSocialStep: step => {
-      set(state => {
-        if (step < 0) return;
-        if (step > state.socialItems.length - 1) return;
-
-        state.currentSocialStep = step;
-      });
-    },
     setSocialLink: data => {
       set(state => {
         const exist = state.socialLinks.find(item => item.id === data.id);

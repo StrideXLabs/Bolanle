@@ -8,16 +8,17 @@ import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
 import TextField from '../../../components/TextField/TextFieldDark';
-import {TOKEN} from '../../../constants';
+import {AuthStateKey, TokenKey} from '../../../constants';
 import {socialMappings} from '../../../constants/socials';
 import {useAuth} from '../../../hooks/useAuth';
-import {IUser} from '../../../hooks/useAuth/interface';
+import {IAuthState, IUser} from '../../../hooks/useAuth/interface';
 import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
-import {setTokenToStorage} from '../../../lib/storage';
+import {setDataToAsyncStorage} from '../../../lib/storage';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 import authService from '../../../services/auth.service';
 import cardService from '../../../services/card.service';
+import {useFocusEffect} from '@react-navigation/native';
 
 export type RegisterScreenProps = NativeStackScreenProps<
   AppStackParams,
@@ -33,12 +34,14 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   navigation,
   route: {params},
 }) => {
-  const showHeader = params?.showHeader ?? true;
-  const {setAuthState} = useAuth();
+  const {setAuthState, authed} = useAuth();
   const {step, socialLinks, personalInformation, contactDetails} =
     useCreateBusinessCard();
 
+  const fromLoginScreen = params.fromLoginScreen;
   const [creatingAccount, setCreatingAccount] = useState(false);
+  const [creatingBusinessCard, setCreatingBusinessCard] = useState(false);
+
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [credentials, setCredentials] = useState<ICredentials>({
     email: '',
@@ -48,19 +51,17 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   const handleCreateAccount = async () => {
     try {
       setCreatingAccount(true);
-      const response = await authService.register(credentials);
+      const response = await authService.authenticate(
+        credentials,
+        'REGISTRATION',
+      );
 
       if (!response.success) {
         setCreatingAccount(false);
         return Toast.error({primaryText: response.message});
       }
 
-      setCreatingAccount(false);
-      Toast.success({primaryText: 'Account created successfully.'});
-
       const token = response.data?.token ?? '';
-      await setTokenToStorage(TOKEN, token);
-
       const decodedUser = decodeJWT(token) as {[key: string]: string | number};
       const user = {
         id: decodedUser._id,
@@ -68,36 +69,68 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
         expires: decodedUser.exp,
       } as IUser;
 
+      await setDataToAsyncStorage(TokenKey, token);
+      await setDataToAsyncStorage<IAuthState>(AuthStateKey, {
+        user,
+        token,
+        authed: true,
+      });
+
+      setCreatingAccount(false);
+      Toast.success({primaryText: 'Account created successfully.'});
+
+      if (fromLoginScreen) {
+        setAuthState({authed: true, token, user});
+        return;
+      }
+
+      setCreatingBusinessCard(true);
       const mappedSocialLinks = socialLinks.map(item => ({
         url: item.url,
         title: item.title,
         platform: socialMappings[item.id],
       }));
 
+      const cDetails = {
+        email: contactDetails.email,
+        mobile: contactDetails.mobile,
+        websiteUrl: contactDetails.websiteUrl,
+        companyAddress: contactDetails.companyAddress,
+      };
+
       const res = await cardService.create({
-        contactDetails,
         personalInformation,
+        contactDetails: cDetails,
         socialLinks: mappedSocialLinks,
         companyLogo: contactDetails.companyLogo!,
         profileImage: contactDetails.profilePicture!,
       });
 
-      console.log(res);
-
+      setCreatingBusinessCard(false);
       if (!res.success) Toast.error({primaryText: res.message});
-      else Toast.success({primaryText: res.message});
-
       setAuthState({authed: true, token, user});
+
+      navigation.canGoBack() && navigation.popToTop();
+      navigation.replace('AppBottomNav');
     } catch (error) {
-      console.log(error);
+      Toast.error({
+        primaryText: 'Something went wrong.',
+        secondaryText: 'Please close and reopen the app.',
+      });
     }
   };
+
+  if (authed) {
+    // fromLoginScreen && navigation.canGoBack() && navigation.pop();
+    navigation.replace('AppBottomNav');
+    return null;
+  }
 
   return (
     <View className="px-[40px] py-[53px]">
       <HeaderStepCount
         step={step}
-        showDotes={showHeader}
+        showDotes={!fromLoginScreen}
         onBackPress={() => {
           navigation.canGoBack() && navigation.goBack();
         }}
@@ -135,24 +168,28 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
             className="relative"
             secureTextEntry={secureTextEntry}
           />
-          <View className="absolute right-1 top-[41px]">
+          <View className="absolute right-2 top-[36px]">
             {secureTextEntry ? (
               <EyeIcon
                 size={27}
-                color="white"
+                color="#C9C9C9"
                 onPress={() => setSecureTextEntry(false)}
               />
             ) : (
               <EyeSlashIcon
                 size={27}
-                color="white"
+                color="#C9C9C9"
                 onPress={() => setSecureTextEntry(true)}
               />
             )}
           </View>
         </View>
         <Button
-          text="Create Account"
+          text={
+            creatingBusinessCard
+              ? 'Creating Business Card...'
+              : 'Create Account'
+          }
           showLoading={creatingAccount}
           callback={handleCreateAccount}
           className="w-full ml-1 mt-[52px]"

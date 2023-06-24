@@ -11,8 +11,9 @@ import {
 import bgImage from '../../../assets/images/bg-2.png';
 import Button from '../../../components/Button';
 import TextField from '../../../components/TextField/TextFieldLight';
-import {AppStackParams} from '../../../navigation/AppNavigation';
 import textStyles from '../../../constants/fonts';
+import {useAuth} from '../../../hooks/useAuth';
+import {AppStackParams} from '../../../navigation/AppNavigation';
 
 export type LoginScreenProps = NativeStackScreenProps<
   AppStackParams,
@@ -25,11 +26,13 @@ export interface ICredentials {
 }
 
 const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [authState, setAuthState] = useState<ICredentials>({
-    email: '',
-    password: '',
-  });
+  const {authed} = useAuth();
+  const [email, setEmail] = useState('');
+
+  if (authed) {
+    navigation.replace('AppBottomNav');
+    return null;
+  }
 
   return (
     <ImageBackground
@@ -56,16 +59,10 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                 Email
               </Text>
               <TextField
-                value={authState.email}
-                autoFocus
-                enablesReturnKeyAutomatically
-                onChangeText={email =>
-                  setAuthState(state => ({
-                    ...state,
-                    email,
-                  }))
-                }
+                value={email}
                 placeholder="john@gmail.com"
+                enablesReturnKeyAutomatically
+                onChangeText={text => setEmail(text)}
               />
             </View>
           </View>

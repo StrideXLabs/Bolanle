@@ -26,7 +26,6 @@ export interface ISocialLink {
 export interface ICreateBusinessCardState {
   step: number;
   socialItems: ISocial[];
-  currentSocialStep: number;
   socialLinks: ISocialLink[];
   contactDetails: IContactDetails;
   personalInformation: IPersonalInformation;
@@ -36,7 +35,6 @@ export interface ICreateBusinessCardActions {
   setStep: (step: number) => void;
   setSocialItem: (item: ISocial) => void;
   setSocialLink: (data: ISocialLink) => void;
-  setCurrentSocialStep: (step: number) => void;
   removeSocialItem: (id: SocialLinkType) => void;
   removeSocialLink: (id: SocialLinkType) => void;
   setContactDetails: (contactDetails: IContactDetails) => void;
