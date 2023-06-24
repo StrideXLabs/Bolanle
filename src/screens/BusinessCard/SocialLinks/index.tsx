@@ -15,7 +15,7 @@ import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
 import textStyles from '../../../constants/fonts';
-import SOCIALS, {ISocial} from '../../../constants/socials';
+import SOCIALS, {ISocial, SocialLinkType} from '../../../constants/socials';
 import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
@@ -30,7 +30,7 @@ const SocialView = ({
   image,
   title,
   onRemoveItem,
-}: ISocial & {onRemoveItem: (id: string) => void}) => {
+}: ISocial & {onRemoveItem: (id: SocialLinkType) => void}) => {
   return (
     <View className="flex flex-row justify-between items-center">
       <View className="flex flex-row items-center gap-4">
@@ -59,9 +59,16 @@ const SocialView = ({
   );
 };
 
-const SocialLinksScreen = ({navigation}: SocialLinksProps) => {
-  const {step, setStep, socialItems, setSocialItem, removeSocialItem} =
-    useCreateBusinessCard();
+const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
+  const {
+    step,
+    setStep,
+    socialItems,
+    setSocialItem,
+    removeSocialItem,
+    removeSocialLink,
+  } = useCreateBusinessCard();
+  const toSocial = params?.toSocialLinks ?? false;
 
   const handleNextClick = () => {
     if (socialItems.length === 0)
@@ -72,8 +79,23 @@ const SocialLinksScreen = ({navigation}: SocialLinksProps) => {
       });
 
     const item = socialItems[0];
-    if (item.id === 'whatsapp') navigation.navigate('WhatsAppScreen');
-    else navigation.navigate('OtherSocialsScreen');
+
+    if (item.id === 'whatsapp')
+      navigation.navigate('WhatsAppScreen', {fromSocialLinks: false});
+    else navigation.navigate('OtherSocialsScreen', {fromSocialLinks: false});
+  };
+
+  const handleSelectSocialItem = (item: ISocial) => {
+    if (toSocial) {
+      const exist = socialItems.find(i => i.id === item.id);
+      if (!exist)
+        navigation.navigate(
+          item.id === 'whatsapp' ? 'WhatsAppScreen' : 'OtherSocialsScreen',
+          {fromSocialLinks: true},
+        );
+    }
+
+    setSocialItem(item);
   };
 
   return (
@@ -111,7 +133,13 @@ const SocialLinksScreen = ({navigation}: SocialLinksProps) => {
             </Text>
           )}
           renderItem={({item}) => (
-            <SocialView {...item} onRemoveItem={removeSocialItem} />
+            <SocialView
+              {...item}
+              onRemoveItem={id => {
+                removeSocialItem(id);
+                removeSocialLink(id);
+              }}
+            />
           )}
         />
       </View>
@@ -121,12 +149,12 @@ const SocialLinksScreen = ({navigation}: SocialLinksProps) => {
           data={SOCIALS}
           numColumns={5}
           horizontal={false}
-          renderItem={({item}) => {
+          renderItem={({item}: {item: ISocial}) => {
             const exist = socialItems.find(i => i.id === item.id);
             const selected = exist !== null && exist !== undefined;
 
             return (
-              <Pressable onPress={() => setSocialItem(item)}>
+              <Pressable onPress={() => handleSelectSocialItem(item)}>
                 <View
                   className={`${
                     selected ? 'border-[1px] border-accent' : 'bg-accent'

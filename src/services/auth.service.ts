@@ -26,6 +26,13 @@ class AuthService {
           message: 'Provide a valid email address.',
         };
 
+      if (!password || password.length < 5)
+        return {
+          data: null,
+          success: false,
+          message: 'Password must be 5 characters long.',
+        };
+
       const response = await fetcher<
         ICreateAccountData,
         IICreateAccountResponse
@@ -33,8 +40,8 @@ class AuthService {
 
       return {
         data: response,
-        success: false,
-        message: 'Provide a valid email address.',
+        success: true,
+        message: 'Account created successfully.',
       };
     } catch (error) {
       return {

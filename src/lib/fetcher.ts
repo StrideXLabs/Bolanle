@@ -1,20 +1,28 @@
-import {BASE_URL} from '../constants';
+import {BASE_URL, TOKEN} from '../constants';
 
-interface IResponseBody<T> {
+interface IRequestBody<T> {
   data: T;
   headers?: {[key: string]: string | number};
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
 }
 
 export default async function fetcher<
-  TResponseBody,
+  TRequestBody extends {},
   TResponseData extends {message: string},
->(
-  endpoint: string,
-  data: IResponseBody<TResponseBody>,
-): Promise<TResponseData> {
-  const response = await fetch(`${BASE_URL}/${endpoint}`, {});
+>(endpoint: string, data: IRequestBody<TRequestBody>): Promise<TResponseData> {
+  const response = await fetch(`${BASE_URL}${endpoint}`, {
+    method: data.method,
+    headers: {
+      'x-access-token': '',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      ...(data.headers || {}),
+    },
+    ...(data.method !== 'GET' && {body: JSON.stringify(data.data)}),
+  });
+
   const responseData = (await response.json()) as TResponseData;
+
+  console.log(response, responseData);
 
   if (!response.ok)
     throw new Error(

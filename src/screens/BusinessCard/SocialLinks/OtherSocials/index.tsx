@@ -17,7 +17,12 @@ export type SocialLinksProps = NativeStackScreenProps<
   'OtherSocialsScreen'
 >;
 
-const OtherSocialsScreen = ({navigation}: SocialLinksProps) => {
+const OtherSocialsScreen = ({
+  navigation,
+  route: {params},
+}: SocialLinksProps) => {
+  const fromSocialLinks = params?.fromSocialLinks ?? false;
+
   const {
     step,
     setStep,
@@ -40,17 +45,31 @@ const OtherSocialsScreen = ({navigation}: SocialLinksProps) => {
   };
 
   const handleBackPress = () => {
-    if (currentSocialStep === 0) navigation.navigate('SocialLinksScreen');
+    if (currentSocialStep === 0) {
+      navigation.navigate('SocialLinksScreen', {toSocialLinks: true});
+      return;
+    }
+
+    const prevScreen = socialItems[currentSocialStep - 1];
     setCurrentSocialStep(currentSocialStep - 1);
+
+    if (prevScreen.id === 'whatsapp') {
+      navigation.navigate('WhatsAppScreen');
+    }
   };
 
   const handleSave = () => {
+    if (fromSocialLinks) {
+      navigation.navigate('SocialLinksScreen', {toSocialLinks: true});
+      return;
+    }
+
     if (currentSocialStep === socialItems.length - 1) {
       setStep(step + 1);
       return navigation.navigate('RegisterScreen');
     }
 
-    if (!socialLink.url && !socialLink.title)
+    if (!socialLink.url || !socialLink.title)
       return Toast.error({primaryText: 'Please fill up all the fields.'});
 
     const nextItem = socialItems[currentSocialStep + 1];
@@ -63,7 +82,7 @@ const OtherSocialsScreen = ({navigation}: SocialLinksProps) => {
     setCurrentSocialStep(currentSocialStep + 1);
   };
 
-  if (socialItem.id === 'whatsapp') return null;
+  // if (socialItem.id === 'whatsapp') return null;
 
   return (
     <ScrollView nestedScrollEnabled>

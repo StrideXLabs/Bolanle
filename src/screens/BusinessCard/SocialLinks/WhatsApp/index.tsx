@@ -18,7 +18,8 @@ export type SocialLinksProps = NativeStackScreenProps<
   'WhatsAppScreen'
 >;
 
-const WhatsAppScreen = ({navigation}: SocialLinksProps) => {
+const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
+  const fromSocialLinks = params?.fromSocialLinks ?? false;
   const [open, setOpen] = useState<boolean>(false);
   const [data, setData] = useState<{flag: string; code: string}>({
     code: '+91',
@@ -49,24 +50,32 @@ const WhatsAppScreen = ({navigation}: SocialLinksProps) => {
 
   const handleBackPress = () => {
     setCurrentSocialStep(currentSocialStep - 1);
-    if (firstItem.id === 'whatsapp') navigation.pop();
-    else navigation.replace('OtherSocialsScreen');
+    if (firstItem.id === 'whatsapp') {
+      navigation.navigate('SocialLinksScreen', {toSocialLinks: true});
+    } else navigation.replace('OtherSocialsScreen');
   };
 
   const handleSave = () => {
+    if (fromSocialLinks) {
+      navigation.navigate('SocialLinksScreen', {toSocialLinks: false});
+      return;
+    }
+
     if (currentSocialStep === socialItems.length - 1) {
       setStep(step + 1);
       return navigation.navigate('RegisterScreen');
     }
 
-    if (!socialLink.url && !socialLink.title)
+    if (!socialLink.url || !socialLink.title)
       return Toast.error({primaryText: 'Please fill up all the fields.'});
 
-    setCurrentSocialStep(currentSocialStep + 1);
     navigation.navigate('OtherSocialsScreen');
+    setCurrentSocialStep(currentSocialStep + 1);
   };
 
   useEffect(() => {
+    if (socialLink.url) return;
+
     setSocialLink({
       id: 'whatsapp',
       url: `(${data.code}) `,

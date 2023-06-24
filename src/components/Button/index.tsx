@@ -1,22 +1,28 @@
 import React from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {Pressable, Text, View, ActivityIndicator} from 'react-native';
 import textStyles from '../../constants/fonts';
 
 export interface IButtonProps {
   text: string;
+  className?: string;
+  showLoading?: boolean;
   callback: () => void;
   showBackgroundColor?: boolean;
-  className?: string;
 }
 
 const Button = ({
   text,
   callback,
   className = '',
+  showLoading = false,
   showBackgroundColor = true,
 }: IButtonProps) => {
   return (
-    <Pressable onPress={callback} className="active:scale-95 transition-all">
+    <Pressable
+      onPress={callback}
+      disabled={showLoading}
+      className="active:scale-95 transition-all"
+      style={{opacity: showLoading ? 0.85 : 1}}>
       <View
         className={`${
           showBackgroundColor ? 'bg-accent' : 'bg-slate-50'
@@ -26,7 +32,13 @@ const Button = ({
           className={`font-extrabold text-base ${
             showBackgroundColor ? 'text-white' : 'text-accent'
           }`}>
-          {text}
+          {showLoading ? (
+            <ActivityIndicator
+              color={showBackgroundColor ? '#F7F6F0' : '#F1592A'}
+            />
+          ) : (
+            text
+          )}
         </Text>
       </View>
     </Pressable>

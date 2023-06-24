@@ -9,6 +9,8 @@ import HeaderWithText from '../../../components/Header/HeaderWithText';
 import TextField from '../../../components/TextField/TextFieldDark';
 import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 import {AppStackParams} from '../../../navigation/AppNavigation';
+import authService from '../../../services/auth.service';
+import Toast from '../../../lib/toast';
 
 export type RegisterScreenProps = NativeStackScreenProps<
   AppStackParams,
@@ -22,11 +24,27 @@ export interface ICredentials {
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
   const {step} = useCreateBusinessCard();
+
+  const [creatingAccount, setCreatingAccount] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [authState, setAuthState] = useState<ICredentials>({
     email: '',
     password: '',
   });
+
+  const handleCreateAccount = async () => {
+    setCreatingAccount(true);
+    const data = await authService.register(authState);
+
+    console.log(data);
+
+    if (!data.success) {
+      setCreatingAccount(false);
+      return Toast.error({primaryText: data.message});
+    }
+
+    setCreatingAccount(false);
+  };
 
   return (
     <View className="px-[40px] py-[53px]">
@@ -91,7 +109,8 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
         </View>
         <Button
           text="Create Account"
-          callback={() => {}}
+          showLoading={creatingAccount}
+          callback={handleCreateAccount}
           className="w-full ml-1 mt-[52px]"
         />
       </View>
