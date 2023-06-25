@@ -1,4 +1,5 @@
 import {BASE_URL, TokenKey} from '../constants';
+import HttpError from './http-error';
 import {getDataFromAsyncStorage} from './storage';
 
 interface IRequestBodyData<T> {
@@ -39,6 +40,10 @@ export default async function fetcher<
         : JSON.stringify(options.data),
     }),
   });
+
+  if (response.status === 401 || response.status === 403) {
+    throw new HttpError(response.status, 'UNAUTHORIZED');
+  }
 
   const responseData = (await response.json()) as TResponseData;
 

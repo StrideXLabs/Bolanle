@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 import {immer} from 'zustand/middleware/immer';
-import SOCIALS from '../../constants/socials';
+import FieldSocialIconsList from '../../constants/socials';
 import {initialContactDetails, initialPersonalInformation} from './constants';
 import {
   ICreateBusinessCardActions,

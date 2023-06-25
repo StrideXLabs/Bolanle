@@ -13,8 +13,8 @@ const Upload = () => {
   const handleAddImage = async (type: 'Profile' | 'Logo') => {
     try {
       const result = await launchImageLibrary({
-        mediaType: 'photo',
         selectionLimit: 1,
+        mediaType: 'photo',
         presentationStyle: 'formSheet',
       });
 

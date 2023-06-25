@@ -15,7 +15,13 @@ import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
 import {accentColor} from '../../constants';
 import textStyles from '../../constants/fonts';
-import SOCIALS, {ISocial, SocialLinkType} from '../../constants/socials';
+import {
+  SocialItemsList,
+  ISocial,
+  SocialLinkType,
+  unFilledIconsMapping,
+  filledIconsMapping,
+} from '../../constants/socials';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
@@ -27,23 +33,17 @@ export type SocialLinksProps = NativeStackScreenProps<
 
 const SocialView = ({
   id,
-  image,
   title,
   onRemoveItem,
 }: ISocial & {onRemoveItem: (id: SocialLinkType) => void}) => {
   return (
     <View className="flex flex-row justify-between items-center">
       <View className="flex flex-row items-center gap-4">
-        <View className="bg-accent w-10 h-10 rounded-full flex justify-center items-center">
-          <View className="bg-white p-3 w-5 h-5 flex items-center justify-center rounded-full">
-            <Image
-              resizeMode="center"
-              className="w-4 h-4"
-              source={image as ImageSourcePropType}
-              style={{tintColor: accentColor}}
-            />
-          </View>
-        </View>
+        <Image
+          resizeMode="center"
+          className="w-10 h-10"
+          source={filledIconsMapping[id] as ImageSourcePropType}
+        />
         <Text
           style={textStyles.robotoMedium}
           className="text-dark-blue text-base">
@@ -124,48 +124,37 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
           )}
         />
       </View>
-      <View className="w-full h-[1px] bg-accent rounded-sm my-[10px]" />
+      <View className="w-full h-[1px] bg-accent rounded-sm my-[15px]" />
       <FlatList
-        data={SOCIALS}
         numColumns={5}
         horizontal={false}
+        data={SocialItemsList}
         renderItem={({item}: {item: ISocial}) => {
           const exist = socialItems.find(i => i.id === item.id);
           const selected = exist !== null && exist !== undefined;
 
           return (
             <Pressable onPress={() => handleSelectSocialItem(item)}>
-              <View
-                className={`${
-                  selected ? 'border-[1px] border-accent' : 'bg-accent'
-                } w-14 h-14 rounded-full flex justify-center items-center`}>
-                {selected ? (
-                  <View className="bg-accent p-[14px] w-5 h-5 flex items-center justify-center rounded-full">
-                    <Image
-                      resizeMode="contain"
-                      className="w-[14px] h-[14px]"
-                      source={item.image as ImageSourcePropType}
-                      style={{tintColor: selected ? 'white' : 'white'}}
-                    />
-                  </View>
-                ) : (
-                  <View className="bg-accent w-10 h-10 rounded-full flex justify-center items-center">
-                    <Image
-                      resizeMode="contain"
-                      className="w-5 h-5"
-                      source={item.image as ImageSourcePropType}
-                      style={{tintColor: selected ? accentColor : 'white'}}
-                    />
-                  </View>
-                )}
-              </View>
+              {selected ? (
+                <Image
+                  resizeMode="cover"
+                  className="w-[50px] h-[50px]"
+                  source={unFilledIconsMapping[item.id] as ImageSourcePropType}
+                />
+              ) : (
+                <Image
+                  resizeMode="cover"
+                  className="w-[50px] h-[50px]"
+                  source={filledIconsMapping[item.id] as ImageSourcePropType}
+                />
+              )}
             </Pressable>
           );
         }}
         keyExtractor={item => item.id}
         columnWrapperStyle={{
+          gap: 25,
           flexWrap: 'wrap',
-          gap: 19,
         }}
         contentContainerStyle={{gap: 19}}
       />

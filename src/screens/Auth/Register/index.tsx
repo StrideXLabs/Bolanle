@@ -120,8 +120,8 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
     }
   };
 
-  if (authed) {
-    // fromLoginScreen && navigation.canGoBack() && navigation.pop();
+  if (authed && !creatingAccount && !creatingBusinessCard) {
+    !fromLoginScreen && navigation.canGoBack() && navigation.pop();
     navigation.replace('AppBottomNav');
     return null;
   }

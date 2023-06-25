@@ -52,7 +52,10 @@ class CardService {
 
       formData.append('socialLinks', JSON.stringify(data.socialLinks));
       formData.append('contactDetails', JSON.stringify(data.contactDetails));
-      formData.append('personalInfo', JSON.stringify(data.personalInformation));
+      formData.append(
+        'personalInformation',
+        JSON.stringify(data.personalInformation),
+      );
       formData.append('companyLogo', {
         uri: data.companyLogo.uri,
         type: data.companyLogo.type,
@@ -79,8 +82,6 @@ class CardService {
         message: 'Account created successfully.',
       };
     } catch (error) {
-      console.log(error);
-
       return {
         data: null,
         success: false,

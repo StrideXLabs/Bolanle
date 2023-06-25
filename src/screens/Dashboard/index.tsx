@@ -1,15 +1,14 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, Image, Text, View} from 'react-native';
+import {ActivityIndicator, FlatList, Text, View} from 'react-native';
 import Button from '../../components/Button';
 import DashboardHeader from '../../components/Header/DashboardHeader';
-import {BASE_URL, accentColor} from '../../constants';
+import {accentColor} from '../../constants';
 import textStyles from '../../constants/fonts';
-import {useAuth} from '../../hooks/useAuth';
-import {flushStorage} from '../../lib/storage';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import dashboardService, {ICardData} from '../../services/dashboard.service';
+import Card from './Card';
 
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
@@ -17,7 +16,6 @@ type DashboardScreenProps = NativeStackScreenProps<
 >;
 
 const DashboardScreen = ({navigation}: DashboardScreenProps) => {
-  const {setAuthState} = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [cards, setCards] = useState<ICardData[]>([]);
@@ -42,6 +40,10 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCardPress = (card: ICardData) => {
+    navigation.navigate('EditCardScreen', {card});
   };
 
   useEffect(() => {
@@ -70,43 +72,19 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
         {!loading && !error && cards.length > 0 && (
           <FlatList
             data={cards}
+            numColumns={1}
             horizontal={false}
+            className="px-10"
+            style={{width: '100%'}}
             keyExtractor={item => item._id}
             renderItem={({item}) => (
-              <View
-                key={item._id}
-                className="px-5 pb-3 pt-[22px] w-[350px]  rounded-md border-[1px] border-[#E3E3E3]">
-                <View className="w-full flex justify-center items-center">
-                  <Image
-                    resizeMode="cover"
-                    className="h-[94px] w-[94px] rounded-md"
-                    source={{
-                      uri: BASE_URL + `/${item.contactDetails.companyLogo}`,
-                    }}
-                  />
-                </View>
-                <View className="mt-2">
-                  <Image
-                    resizeMode="contain"
-                    className="h-[60px] w-[60px] rounded-full"
-                    source={{
-                      uri: BASE_URL + `/${item.contactDetails.profileImage}`,
-                    }}
-                  />
-                  <View>
-                    <Text
-                      className="text-dark-blue text-lg"
-                      style={textStyles.robotoBold}>
-                      {item.personalInfo.name}
-                    </Text>
-                  </View>
-                </View>
-              </View>
+              <Card card={item} onCardPress={handleCardPress} />
             )}
           />
         )}
       </View>
-      <Button
+      {/* <Button
+        className="mt-10"
         text="LOGOUT"
         callback={async () => {
           await flushStorage();
@@ -114,7 +92,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
           navigation.canGoBack() && navigation.popToTop();
           navigation.replace('LoginScreen');
         }}
-      />
+      /> */}
     </View>
   );
 };

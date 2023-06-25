@@ -19,6 +19,8 @@ import OtherSocialScreen from '../screens/SocialLinks/OtherSocials';
 import WhatsAppScreen from '../screens/SocialLinks/WhatsApp';
 import WelcomeScreen from '../screens/Welcome';
 import BottomNavigation from './BottomNavigation';
+import {ICardData} from '../services/dashboard.service';
+import EditCardScreen from '../screens/EditCard';
 
 export type AppStackParams = {
   LoginScreen: undefined;
@@ -27,6 +29,7 @@ export type AppStackParams = {
   SocialLinksScreen: undefined;
   ForgotPasswordScreen: undefined;
   ContactDetailsScreen: undefined;
+  EditCardScreen: {card: ICardData};
   WhatsAppScreen: {social: ISocial};
   PersonalInformationScreen: undefined;
   OtherSocialsScreen: {social: ISocial};
@@ -113,6 +116,11 @@ const AppNavigation = () => {
           component={OtherSocialScreen}
           name={'OtherSocialsScreen' as any}
           options={{animation: 'none'}}
+        />
+        <AppStack.Screen
+          component={EditCardScreen}
+          name={'EditCardScreen' as any}
+          options={{animation: 'slide_from_right'}}
         />
       </AppStack.Navigator>
     </>

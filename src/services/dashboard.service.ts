@@ -40,7 +40,7 @@ class DashboardService {
       };
     } catch (error) {
       return {
-        data: null,
+        data: {data: [], message: ''},
         message:
           error instanceof Error
             ? error.message
