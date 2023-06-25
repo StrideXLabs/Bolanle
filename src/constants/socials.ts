@@ -1,26 +1,46 @@
-import instagram from '../assets/images/instagram.png';
-import twitter from '../assets/images/twitter.png';
-import youtube from '../assets/images/youtube.png';
-import cashApp from '../assets/images/cash-app.png';
-import discord from '../assets/images/discord.png';
-import facebook from '../assets/images/facebook.png';
-import github from '../assets/images/github.png';
-import skype from '../assets/images/skype.png';
-import snapchat from '../assets/images/snapchat.png';
-import telegram from '../assets/images/telegram.png';
-import tikTok from '../assets/images/tik-tok.png';
-import twitch from '../assets/images/twitch.png';
-import venmo from '../assets/images/venmo.png';
-import yelp from '../assets/images/yelp.png';
+// FILLED ICONS
+import instagram from '../assets/images/filled/instagram.png';
+import twitter from '../assets/images/filled/twitter.png';
+import youtube from '../assets/images/filled/youtube.png';
+import cashApp from '../assets/images/filled/cash-app.png';
+import discord from '../assets/images/filled/discord.png';
+import facebook from '../assets/images/filled/facebook.png';
+import github from '../assets/images/filled/github.png';
+import skype from '../assets/images/filled/skype.png';
+import snapchat from '../assets/images/filled/snapchat.png';
+import telegram from '../assets/images/filled/telegram.png';
+import tikTok from '../assets/images/filled/tik-tok.png';
+import twitch from '../assets/images/filled/twitch.png';
+import venmo from '../assets/images/filled/venmo.png';
+import yelp from '../assets/images/filled/yelp.png';
+import whatsapp from '../assets/images/filled/whatsapp.png';
+import calendly from '../assets/images/filled/calendly.png';
+import linkedin from '../assets/images/filled/linkedin.png';
+import paypal from '../assets/images/filled/paypal.png';
+import signal from '../assets/images/filled/signal.png';
 
-import whatsapp from '../assets/images/whatsapp.png';
-import calendly from '../assets/images/calendly.png';
-import linkedin from '../assets/images/linkedin.png';
-import paypal from '../assets/images/paypal.png';
-import signal from '../assets/images/signal.png';
+// FILLED ICONS
+import instagramUnfilled from '../assets/images/unfilled/instagram.png';
+import twitterUnfilled from '../assets/images/unfilled/twitter.png';
+import youtubeUnfilled from '../assets/images/unfilled/youtube.png';
+import cashAppUnfilled from '../assets/images/unfilled/cash-app.png';
+import discordUnfilled from '../assets/images/unfilled/discord.png';
+import facebookUnfilled from '../assets/images/unfilled/facebook.png';
+import githubUnfilled from '../assets/images/unfilled/github.png';
+import skypeUnfilled from '../assets/images/unfilled/skype.png';
+import snapchatUnfilled from '../assets/images/unfilled/snapchat.png';
+import telegramUnfilled from '../assets/images/unfilled/telegram.png';
+import tikTokUnfilled from '../assets/images/unfilled/tik-tok.png';
+import twitchUnfilled from '../assets/images/unfilled/twitch.png';
+import venmoUnfilled from '../assets/images/unfilled/venmo.png';
+import yelpUnfilled from '../assets/images/unfilled/yelp.png';
+import whatsappUnfilled from '../assets/images/unfilled/whatsapp.png';
+import calendlyUnfilled from '../assets/images/unfilled/calendly.png';
+import linkedinUnfilled from '../assets/images/unfilled/linkedin.png';
+import paypalUnfilled from '../assets/images/unfilled/paypal.png';
+import signalUnfilled from '../assets/images/unfilled/signal.png';
 
 export interface ISocial {
-  image: string;
   title: string;
   id: SocialLinkType;
 }
@@ -46,26 +66,70 @@ export type SocialLinkType =
   | 'paypal'
   | 'signal';
 
-const SOCIALS = [
-  {id: 'linkedin', image: linkedin, title: 'Linkedin'},
-  {id: 'instagram', image: instagram, title: 'Instagram'},
-  {id: 'twitter', image: twitter, title: 'Twitter'},
-  {id: 'calendly', image: calendly, title: 'Calendly'},
-  {id: 'facebook', image: facebook, title: 'Facebook'},
-  {id: 'youtube', image: youtube, title: 'YouTube'},
-  {id: 'whatsapp', image: whatsapp, title: 'WhatsApp'},
-  {id: 'snapchat', image: snapchat, title: 'Snapchat'},
-  {id: 'tikTok', image: tikTok, title: 'Tik Tok'},
-  {id: 'github', image: github, title: 'Github'},
-  {id: 'yelp', image: yelp, title: 'Yelp'},
-  {id: 'venmo', image: venmo, title: 'Venmo'},
-  {id: 'paypal', image: paypal, title: 'Paypal'},
-  {id: 'cashApp', image: cashApp, title: 'Cash App'},
-  {id: 'discord', image: discord, title: 'Discord'},
-  {id: 'signal', image: signal, title: 'Signal'},
-  {id: 'skype', image: skype, title: 'Skype'},
-  {id: 'telegram', image: telegram, title: 'Telegram'},
-  {id: 'twitch', image: twitch, title: 'Twitch'},
+export const unFilledIconsMapping = {
+  calendly: calendlyUnfilled,
+  cashApp: cashAppUnfilled,
+  discord: discordUnfilled,
+  facebook: facebookUnfilled,
+  github: githubUnfilled,
+  instagram: instagramUnfilled,
+  linkedin: linkedinUnfilled,
+  paypal: paypalUnfilled,
+  signal: signalUnfilled,
+  skype: skypeUnfilled,
+  snapchat: snapchatUnfilled,
+  telegram: telegramUnfilled,
+  tikTok: tikTokUnfilled,
+  twitch: twitchUnfilled,
+  twitter: twitterUnfilled,
+  venmo: venmoUnfilled,
+  whatsapp: whatsappUnfilled,
+  yelp: yelpUnfilled,
+  youtube: youtubeUnfilled,
+} as {[key in SocialLinkType]: string};
+
+export const filledIconsMapping = {
+  calendly,
+  cashApp,
+  discord,
+  facebook,
+  github,
+  instagram,
+  linkedin,
+  paypal,
+  signal,
+  skype,
+  snapchat,
+  telegram,
+  tikTok,
+  twitch,
+  twitter,
+  venmo,
+  whatsapp,
+  yelp,
+  youtube,
+} as {[key in SocialLinkType]: string};
+
+export const SocialItemsList = [
+  {id: 'linkedin', title: 'Linkedin'},
+  {id: 'instagram', title: 'Instagram'},
+  {id: 'twitter', title: 'Twitter'},
+  {id: 'calendly', title: 'Calendly'},
+  {id: 'facebook', title: 'Facebook'},
+  {id: 'youtube', title: 'YouTube'},
+  {id: 'whatsapp', title: 'WhatsApp'},
+  {id: 'snapchat', title: 'Snapchat'},
+  {id: 'tikTok', title: 'Tik Tok'},
+  {id: 'github', title: 'Github'},
+  {id: 'yelp', title: 'Yelp'},
+  {id: 'venmo', title: 'Venmo'},
+  {id: 'paypal', title: 'Paypal'},
+  {id: 'cashApp', title: 'Cash App'},
+  {id: 'discord', title: 'Discord'},
+  {id: 'signal', title: 'Signal'},
+  {id: 'skype', title: 'Skype'},
+  {id: 'telegram', title: 'Telegram'},
+  {id: 'twitch', title: 'Twitch'},
 ] as ISocial[];
 
 export const socialMappings = {
@@ -89,5 +153,3 @@ export const socialMappings = {
   signal: 'Signal',
   whatsapp: 'WhatsApp',
 } as {[key in SocialLinkType]: string};
-
-export default SOCIALS;

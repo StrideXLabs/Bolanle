@@ -7,11 +7,13 @@ export const useAuth = create<IAuthState & IAuthStateActions>()(
     user: null,
     token: null,
     authed: false,
+    redirectToLogin: false,
     setAuthState: data => {
       set(state => {
         state.user = data.user || null;
         state.token = data.token || '';
-        state.authed = data.authed || false;
+        state.authed = data.authed ?? false;
+        state.redirectToLogin = data.redirectToLogin ?? false;
       });
     },
   })),

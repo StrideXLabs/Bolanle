@@ -1,4 +1,5 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import decodeJWT from 'jwt-decode';
 import React, {useState} from 'react';
 import {
   ImageBackground,
@@ -12,11 +13,18 @@ import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
 import bgImage from '../../../assets/images/bg-2.png';
 import Button from '../../../components/Button';
 import TextField from '../../../components/TextField/TextFieldLight';
-import {AppStackParams} from '../../../navigation/AppNavigation';
+import {AuthStateKey, TokenKey} from '../../../constants';
 import textStyles from '../../../constants/fonts';
+import {useAuth} from '../../../hooks/useAuth';
+import {IUser} from '../../../hooks/useAuth/interface';
+import {setDataToAsyncStorage} from '../../../lib/storage';
+import Toast from '../../../lib/toast';
+import {AppStackParams} from '../../../navigation/AppNavigation';
+import {AuthStackParams} from '../../../navigation/AuthNavigation';
+import authService from '../../../services/auth.service';
 
 export type LoginScreenProps = NativeStackScreenProps<
-  AppStackParams,
+  AuthStackParams & AppStackParams,
   'LoginScreen'
 >;
 
@@ -26,11 +34,52 @@ export interface ICredentials {
 }
 
 const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
+  const {authed, setAuthState} = useAuth();
+  const [loading, setLoading] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [authState, setAuthState] = useState<ICredentials>({
+  const [credentials, setCredentials] = useState<ICredentials>({
     email: '',
     password: '',
   });
+
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      const response = await authService.authenticate(credentials, 'LOGIN');
+
+      if (!response.success) {
+        setLoading(false);
+        return Toast.error({primaryText: response.message});
+      }
+
+      const token = response.data?.token ?? '';
+      const decodedUser = decodeJWT(token) as {[key: string]: string | number};
+      const user = {
+        id: decodedUser._id,
+        email: decodedUser.email,
+        expires: decodedUser.exp,
+      } as IUser;
+
+      await setDataToAsyncStorage(TokenKey, token);
+      await setDataToAsyncStorage('user', user);
+      await setDataToAsyncStorage(AuthStateKey, {authed: true, token, user});
+
+      setAuthState({authed: true, token, user});
+      navigation.replace('AppBottomNav');
+    } catch (error) {
+      Toast.error({
+        primaryText: 'Something went wrong.',
+        secondaryText: 'Please close and reopen the app.',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!loading && authed) {
+    navigation.replace('AppBottomNav');
+    return null;
+  }
 
   return (
     <ImageBackground
@@ -52,9 +101,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                 Email
               </Text>
               <TextField
-                value={authState.email}
+                keyboardType="email-address"
+                value={credentials.email}
                 onChangeText={email =>
-                  setAuthState(state => ({
+                  setCredentials(state => ({
                     ...state,
                     email,
                   }))
@@ -65,13 +115,15 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           </View>
           <View className="mt-6">
             <View className="flex gap-2">
-              <Text className="text-base font-bold text-off-white">
+              <Text
+                style={textStyles.robotoMedium}
+                className="text-base font-bold text-off-white">
                 Password
               </Text>
               <TextField
-                value={authState.password}
+                value={credentials.password}
                 onChangeText={password =>
-                  setAuthState(state => ({...state, password}))
+                  setCredentials(state => ({...state, password}))
                 }
                 placeholder="Password"
                 secureTextEntry={secureTextEntry}
@@ -95,7 +147,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() => navigation.push('ForgotPasswordScreen')}>
-                <Text className="text-right text-base font-bold text-off-white">
+                <Text
+                  style={textStyles.robotoMedium}
+                  className="-mr-[10px] text-right text-base font-bold text-off-white">
                   Forgot password?
                 </Text>
               </TouchableOpacity>
@@ -105,15 +159,22 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
             <Button
               text="Login"
               className="w-full"
-              callback={() => {}}
+              showLoading={loading}
+              callback={handleLogin}
               showBackgroundColor={false}
             />
             <View className="mt-4 flex flex-row justify-center">
-              <Text className="text-off-white">Don't have an Account?</Text>
+              <Text style={textStyles.robotoMedium} className="text-off-white">
+                Don't have an Account?
+              </Text>
               <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={() => navigation.navigate('RegisterScreen')}>
-                <Text className="ml-1 text-off-white font-extrabold">
+                onPress={() =>
+                  navigation.navigate('RegisterScreen', {fromLoginScreen: true})
+                }>
+                <Text
+                  style={textStyles.robotoMedium}
+                  className="ml-1 text-off-white font-extrabold">
                   Create
                 </Text>
               </TouchableOpacity>

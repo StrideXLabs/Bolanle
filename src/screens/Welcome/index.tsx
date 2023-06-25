@@ -55,7 +55,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
                 <Button
                   className="mb-5"
                   callback={() =>
-                    navigation.replace('PersonalInformationScreen')
+                    navigation.navigate('PersonalInformationScreen')
                   }
                   text="Create New"
                 />

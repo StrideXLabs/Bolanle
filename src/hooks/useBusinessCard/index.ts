@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 import {immer} from 'zustand/middleware/immer';
-import SOCIALS from '../../constants/socials';
+import FieldSocialIconsList from '../../constants/socials';
 import {initialContactDetails, initialPersonalInformation} from './constants';
 import {
   ICreateBusinessCardActions,
@@ -12,23 +12,25 @@ export const useCreateBusinessCard = create<
 >()(
   immer<ICreateBusinessCardState & ICreateBusinessCardActions>(set => ({
     step: 0,
-    currentSocialStep: 0,
-    contactDetails: initialContactDetails,
-    personalInformation: initialPersonalInformation,
     setStep: step =>
       set(state => {
         state.step = step <= 3 ? step : state.step;
       }),
+
+    contactDetails: initialContactDetails,
     setContactDetails: contactDetails =>
       set(state => {
         state.contactDetails = contactDetails;
       }),
+
+    personalInformation: initialPersonalInformation,
     setPersonalInformation: personalInfo =>
       set(state => {
         state.personalInformation = personalInfo;
       }),
 
-    socialItems: [SOCIALS[0], SOCIALS[1]],
+    // SOCIAL ITEMS
+    socialItems: [],
     setSocialItem: item => {
       set(state => {
         const exist = state.socialItems.find(i => i.id === item.id);
@@ -41,15 +43,9 @@ export const useCreateBusinessCard = create<
         state.socialItems = state.socialItems.filter(i => i.id !== id);
       });
     },
-    socialLinks: [],
-    setCurrentSocialStep: step => {
-      set(state => {
-        if (step < 0) return;
-        if (step > state.socialItems.length - 1) return;
 
-        state.currentSocialStep = step;
-      });
-    },
+    // SOCIAL LINKS
+    socialLinks: [],
     setSocialLink: data => {
       set(state => {
         const exist = state.socialLinks.find(item => item.id === data.id);
@@ -61,6 +57,11 @@ export const useCreateBusinessCard = create<
         }
 
         state.socialLinks.push(data);
+      });
+    },
+    removeSocialLink: id => {
+      set(state => {
+        state.socialLinks = state.socialLinks.filter(item => item.id !== id);
       });
     },
   })),
