@@ -20,10 +20,11 @@ import {IUser} from '../../../hooks/useAuth/interface';
 import {setDataToAsyncStorage} from '../../../lib/storage';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
+import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import authService from '../../../services/auth.service';
 
 export type LoginScreenProps = NativeStackScreenProps<
-  AppStackParams,
+  AuthStackParams & AppStackParams,
   'LoginScreen'
 >;
 
@@ -100,6 +101,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                 Email
               </Text>
               <TextField
+                keyboardType="email-address"
                 value={credentials.email}
                 onChangeText={email =>
                   setCredentials(state => ({
@@ -113,7 +115,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           </View>
           <View className="mt-6">
             <View className="flex gap-2">
-              <Text className="text-base font-bold text-off-white">
+              <Text
+                style={textStyles.robotoMedium}
+                className="text-base font-bold text-off-white">
                 Password
               </Text>
               <TextField
@@ -143,7 +147,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() => navigation.push('ForgotPasswordScreen')}>
-                <Text className="text-right text-base font-bold text-off-white">
+                <Text
+                  style={textStyles.robotoMedium}
+                  className="-mr-[10px] text-right text-base font-bold text-off-white">
                   Forgot password?
                 </Text>
               </TouchableOpacity>
@@ -158,13 +164,17 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               showBackgroundColor={false}
             />
             <View className="mt-4 flex flex-row justify-center">
-              <Text className="text-off-white">Don't have an Account?</Text>
+              <Text style={textStyles.robotoMedium} className="text-off-white">
+                Don't have an Account?
+              </Text>
               <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() =>
                   navigation.navigate('RegisterScreen', {fromLoginScreen: true})
                 }>
-                <Text className="ml-1 text-off-white font-extrabold">
+                <Text
+                  style={textStyles.robotoMedium}
+                  className="ml-1 text-off-white font-extrabold">
                   Create
                 </Text>
               </TouchableOpacity>

@@ -78,6 +78,7 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
               Email
             </Text>
             <TextField
+              keyboardType="email-address"
               onChangeText={text => {
                 setContactDetails({
                   ...contactDetails,
@@ -113,6 +114,7 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
               Website URL
             </Text>
             <TextField
+              keyboardType="url"
               onChangeText={text => {
                 setContactDetails({
                   ...contactDetails,

@@ -2,7 +2,9 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {ScrollView, View} from 'react-native';
 import DashboardHeader from '../../components/Header/DashboardHeader';
+import {IPersonalInformation} from '../../hooks/useBusinessCard/interface';
 import {AppStackParams} from '../../navigation/AppNavigation';
+import {ICardData} from '../../services/dashboard.service';
 import ContactDetails from './ContactDetails';
 import Header from './Header';
 import PersonalInfo from './PersonalInfo';
@@ -19,40 +21,46 @@ const EditCardScreen = ({
   route: {params},
 }: PersonalInformationProps) => {
   const {
-    card: {
-      qr,
-      _id,
-      userId,
-      updatedAt,
-      createdAt,
-      socialLinks,
-      personalInfo,
-      contactDetails,
-    },
+    card: {qr, socialLinks, personalInfo, contactDetails},
   } = params;
 
-  const handleEditProfileAndLogo = () => {};
+  const handleEditProfileAndLogo = (info: ICardData['contactDetails']) => {};
+
+  const handleEditPersonalInformation = (info: IPersonalInformation) => {};
+
+  const handleEditContactDetails = (info: ICardData['contactDetails']) => {};
+
+  const handleEditSocialLinks = (info: ICardData['socialLinks']) => {};
+
+  const handleDeleteCard = () => {};
 
   return (
     <>
       <DashboardHeader
         subheading="EDIT CARD"
         subtitle="You can edit your card info here."
+        onBackBtnPress={() => navigation.goBack()}
       />
       <View className="flex p-10" style={{flex: 1}}>
         <ScrollView className="px-5 py-5 rounded-md border-[1px] border-[#E3E3E3]">
           <Header
-            contactDetails={contactDetails}
             personalInfo={personalInfo}
-            onEditPress={() => {}}
-          />
-          <PersonalInfo onEditPress={() => {}} personalInfo={personalInfo} />
-          <ContactDetails
-            onEditPress={() => {}}
             contactDetails={contactDetails}
+            onEditPress={handleEditProfileAndLogo}
           />
-          <SocialLinks onEditPress={() => {}} socialLinks={socialLinks} />
-          <QR qr={qr} onDeleteCard={() => {}} />
+          <PersonalInfo
+            personalInfo={personalInfo}
+            onEditPress={handleEditPersonalInformation}
+          />
+          <ContactDetails
+            contactDetails={contactDetails}
+            onEditPress={handleEditContactDetails}
+          />
+          <SocialLinks
+            socialLinks={socialLinks}
+            onEditPress={handleEditSocialLinks}
+          />
+          <QR qr={qr} onDeleteCard={handleDeleteCard} />
         </ScrollView>
       </View>
     </>

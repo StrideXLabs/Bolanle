@@ -6,6 +6,7 @@ import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {PlusIcon} from 'react-native-heroicons/outline';
 import textStyles from '../../constants/fonts';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
+import Toast from '../../lib/toast';
 
 const Upload = () => {
   const {setContactDetails, contactDetails} = useCreateBusinessCard();
@@ -25,7 +26,7 @@ const Upload = () => {
         setContactDetails({...contactDetails, companyLogo: file});
       else setContactDetails({...contactDetails, profilePicture: file});
     } catch (error) {
-      console.log(error);
+      Toast.error({primaryText: 'Error selecting image. Please try again.'});
     }
   };
 

@@ -1,27 +1,27 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import decodeJWT from 'jwt-decode';
-import React, {useState} from 'react';
-import {Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Text, View} from 'react-native';
 
 import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
 import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
 import TextField from '../../../components/TextField/TextFieldDark';
-import {AuthStateKey, TokenKey} from '../../../constants';
-import {socialMappings} from '../../../constants/socials';
+import {AuthStateKey, TokenKey, accentColor} from '../../../constants';
+import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
 import {IAuthState, IUser} from '../../../hooks/useAuth/interface';
 import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 import {setDataToAsyncStorage} from '../../../lib/storage';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
+import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import authService from '../../../services/auth.service';
 import cardService from '../../../services/card.service';
-import {useFocusEffect} from '@react-navigation/native';
 
 export type RegisterScreenProps = NativeStackScreenProps<
-  AppStackParams,
+  AppStackParams & AuthStackParams,
   'RegisterScreen'
 >;
 
@@ -88,7 +88,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
       const mappedSocialLinks = socialLinks.map(item => ({
         url: item.url,
         title: item.title,
-        platform: socialMappings[item.id],
+        platform: item.id,
       }));
 
       const cDetails = {
@@ -110,8 +110,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
       if (!res.success) Toast.error({primaryText: res.message});
       setAuthState({authed: true, token, user});
 
-      navigation.canGoBack() && navigation.popToTop();
+      navigation.popToTop();
       navigation.replace('AppBottomNav');
+      return;
     } catch (error) {
       Toast.error({
         primaryText: 'Something went wrong.',
@@ -120,10 +121,22 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
     }
   };
 
+  useEffect(() => {
+    if (authed && !creatingAccount && !creatingBusinessCard) {
+      navigation.popToTop();
+      navigation.replace('AppBottomNav');
+    }
+  }, [authed, creatingAccount, creatingBusinessCard]);
+
   if (authed && !creatingAccount && !creatingBusinessCard) {
-    !fromLoginScreen && navigation.canGoBack() && navigation.pop();
+    navigation.popToTop();
     navigation.replace('AppBottomNav');
-    return null;
+
+    return (
+      <View className="h-screen w-full flex justify-center items-center bg-off-white-1">
+        <ActivityIndicator color={accentColor} size={50} />
+      </View>
+    );
   }
 
   return (
@@ -135,17 +148,17 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
           navigation.canGoBack() && navigation.goBack();
         }}
       />
-      <Text>PersonalInformation</Text>
       <View className="mt-9 mb-[30px]">
         <HeaderWithText
           heading="CHOOSE PASSWORD"
           subtitle="Please choose a password for yourself to create the account."
         />
       </View>
-
       <View className="flex gap-[10px]">
         <View>
-          <Text className="text-dark-blue mb-1 text-base font-bold text-off-white">
+          <Text
+            style={textStyles.robotoMedium}
+            className="text-dark-blue mb-1 text-base font-bold text-off-white">
             Email
           </Text>
           <TextField
@@ -156,7 +169,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
           />
         </View>
         <View>
-          <Text className="text-dark-blue mb-1 text-base font-bold text-off-white">
+          <Text
+            style={textStyles.robotoMedium}
+            className="text-dark-blue mb-1 text-base font-bold text-off-white">
             Password
           </Text>
           <TextField
@@ -187,12 +202,12 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
         <Button
           text={
             creatingBusinessCard
-              ? 'Creating Business Card...'
+              ? 'Creating Your Business Card...'
               : 'Create Account'
           }
           showLoading={creatingAccount}
           callback={handleCreateAccount}
-          className="w-full ml-1 mt-[52px]"
+          className="w-full ml-[6px] mt-[52px]"
         />
       </View>
     </View>

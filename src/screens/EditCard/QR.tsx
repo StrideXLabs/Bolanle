@@ -18,12 +18,16 @@ const QR = ({onDeleteCard, qr}: Props) => {
           QR Code
         </Text>
       </View>
-      <View className="mt-2 flex justify-center items-center">
+      <View className="mt-2 mx-auto flex justify-center items-center">
         <Image
           className="w-[130px] h-[130px] rounded-lg"
           source={{uri: `${BASE_URL}/${qr}`}}
         />
-        <Button text="Delete Card" callback={() => {}} />
+        <Button
+          text="Delete Card"
+          callback={onDeleteCard}
+          className="w-[200px] mt-[20px]"
+        />
       </View>
     </View>
   );

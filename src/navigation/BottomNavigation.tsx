@@ -6,6 +6,7 @@ import contactsIcon from '../assets/images/contacts.png';
 import dashboardIcon from '../assets/images/dashboard.png';
 import profileIcon from '../assets/images/profile.png';
 import {accentColor} from '../constants';
+import ProfileScreen from '../screens/Profile';
 
 export type BottomTabNavigatorParams = {
   ProfileScreen: undefined;
@@ -78,7 +79,7 @@ const BottomNavigation = () => {
             />
           ),
         }}
-        component={DashboardScreen}
+        component={ProfileScreen}
       />
     </BottomTabNavigator.Navigator>
   );

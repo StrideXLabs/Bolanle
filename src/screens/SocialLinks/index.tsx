@@ -16,18 +16,19 @@ import HeaderWithText from '../../components/Header/HeaderWithText';
 import {accentColor} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {
-  SocialItemsList,
   ISocial,
+  SocialItemsList,
   SocialLinkType,
-  unFilledIconsMapping,
   filledIconsMapping,
+  unFilledIconsMapping,
 } from '../../constants/socials';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
+import {AuthStackParams} from '../../navigation/AuthNavigation';
 
 export type SocialLinksProps = NativeStackScreenProps<
-  AppStackParams,
+  AppStackParams & AuthStackParams,
   'SocialLinksScreen'
 >;
 

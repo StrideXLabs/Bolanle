@@ -3,30 +3,18 @@ import {immer} from 'zustand/middleware/immer';
 import {IAuthState, IAuthStateActions} from './interface';
 
 export const useAuth = create<IAuthState & IAuthStateActions>()(
-  // persist(
   immer<IAuthState & IAuthStateActions>(set => ({
     user: null,
     token: null,
     authed: false,
+    redirectToLogin: false,
     setAuthState: data => {
       set(state => {
         state.user = data.user || null;
         state.token = data.token || '';
-        state.authed = data.authed || false;
-      });
-    },
-    removeAuthState: () => {
-      set(state => {
-        state.user = null;
-        state.token = null;
-        state.authed = false;
+        state.authed = data.authed ?? false;
+        state.redirectToLogin = data.redirectToLogin ?? false;
       });
     },
   })),
-  //   {
-  //     name: AuthStateKey,
-  //     skipHydration: false,
-  //     storage: createJSONStorage(() => AsyncStorage),
-  //   },
-  // ),
 );

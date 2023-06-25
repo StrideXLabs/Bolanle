@@ -24,10 +24,11 @@ const OtherSocialsScreen = ({
 }: SocialLinksProps) => {
   const socialItem = params.social;
   const {setSocialLink, setSocialItem} = useCreateBusinessCard();
+
   const [social, setSocial] = useState<ISocialLink>({
     url: '',
-    title: '',
-    id: socialItem.id || 'whatsapp',
+    id: socialItem.id,
+    title: socialMappings[socialItem.id],
   });
 
   const handleSave = () => {
@@ -77,7 +78,10 @@ const OtherSocialsScreen = ({
               Title
             </Text>
             <TextField
+              editable={false}
+              focusable={false}
               value={social.title}
+              selectTextOnFocus={false}
               placeholder={socialMappings[socialItem.id]}
               onChangeText={title => setSocial(state => ({...state, title}))}
             />

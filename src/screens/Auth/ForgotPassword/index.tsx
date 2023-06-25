@@ -14,9 +14,10 @@ import TextField from '../../../components/TextField/TextFieldLight';
 import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
 import {AppStackParams} from '../../../navigation/AppNavigation';
+import {AuthStackParams} from '../../../navigation/AuthNavigation';
 
 export type LoginScreenProps = NativeStackScreenProps<
-  AppStackParams,
+  AppStackParams & AuthStackParams,
   'ForgotPasswordScreen'
 >;
 
@@ -60,6 +61,7 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               </Text>
               <TextField
                 value={email}
+                keyboardType="email-address"
                 placeholder="john@gmail.com"
                 enablesReturnKeyAutomatically
                 onChangeText={text => setEmail(text)}
@@ -81,7 +83,7 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                 activeOpacity={0.6}
                 onPress={() => navigation.navigate('LoginScreen')}>
                 <Text
-                  style={textStyles.robotoMedium}
+                  style={textStyles.robotoBold}
                   className="ml-1 text-off-white font-extrabold">
                   Login
                 </Text>

@@ -21,14 +21,15 @@ export type SocialLinksProps = NativeStackScreenProps<
 
 const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
   const socialItem = params.social;
-  const {setSocialLink, setSocialItem} = useCreateBusinessCard();
   const [open, setOpen] = useState<boolean>(false);
+  const {setSocialLink, setSocialItem} = useCreateBusinessCard();
 
   const [social, setSocial] = useState<ISocialLink>({
     url: '',
-    title: '',
-    id: socialItem.id || 'whatsapp',
+    id: 'whatsapp',
+    title: 'WhatsApp',
   });
+
   const [data, setData] = useState<{flag: string; code: string}>({
     flag: '🇮🇳',
     code: '+91',
@@ -43,6 +44,7 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
       url: social.url.trim(),
       title: social.title.trim(),
     });
+
     setSocialItem(socialItem);
     navigation.navigate('SocialLinksScreen');
   };
@@ -50,7 +52,7 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
   useEffect(() => {
     if (social.url) return;
 
-    setSocialLink({
+    setSocial({
       id: 'whatsapp',
       title: social.title,
       url: `(${data.code}) `,
@@ -129,8 +131,11 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
                 Title
               </Text>
               <TextField
+                editable={false}
+                focusable={false}
                 value={social.title}
                 placeholder="Whatsapp"
+                selectTextOnFocus={false}
                 onChangeText={title => setSocial(state => ({...state, title}))}
               />
             </View>

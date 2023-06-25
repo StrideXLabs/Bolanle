@@ -1,15 +1,22 @@
 import React from 'react';
-import {Text, View, Image, ImageSourcePropType} from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import textStyles from '../../../constants/fonts';
 
-import arrowLeft from '../../../assets/images/arrow-left.png';
 import addNewIcon from '../../../assets/images/add.png';
+import arrowLeft from '../../../assets/images/arrow-left.png';
 import shareIcon from '../../../assets/images/share.png';
 
 export interface IDashboardHeaderProps {
   heading?: string;
   subtitle?: string;
   subheading?: string;
+  onBackBtnPress?: () => void;
   onShareBtnPress?: () => void;
   onAddNewBtnPress?: () => void;
   options?: {
@@ -24,6 +31,8 @@ const DashboardHeader = ({
   options,
   subtitle,
   subheading,
+  onBackBtnPress,
+  onShareBtnPress,
   onAddNewBtnPress,
 }: IDashboardHeaderProps) => {
   return (
@@ -53,11 +62,18 @@ const DashboardHeader = ({
         <View>
           <View className="flex flex-row justify-between">
             <View>
-              <Image
-                className="w-[22px] h-[14px]"
-                resizeMode="contain"
-                source={arrowLeft as ImageSourcePropType}
-              />
+              <TouchableOpacity
+                onPress={
+                  typeof onBackBtnPress === 'function'
+                    ? onBackBtnPress
+                    : () => {}
+                }>
+                <Image
+                  className="w-[22px] h-[14px]"
+                  resizeMode="contain"
+                  source={arrowLeft as ImageSourcePropType}
+                />
+              </TouchableOpacity>
               <Text
                 style={textStyles.bebasNeueBold}
                 className="text-dark-blue text-4xl mt-[15px]">
