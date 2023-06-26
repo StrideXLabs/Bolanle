@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {ActivityIndicator, StatusBar, View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 
 /* -------- SCREENS -------- */
 import {accentColor} from '../constants';
@@ -34,19 +34,13 @@ const AppNavigation = () => {
 
   if (loading)
     return (
-      <View className="h-screen w-full flex justify-center items-center bg-off-white-1">
+      <View className="h-screen w-full flex justify-center items-center bg-white">
         <ActivityIndicator color={accentColor} size={50} />
       </View>
     );
 
   return (
     <>
-      <StatusBar
-        animated
-        barStyle="dark-content"
-        showHideTransition="slide"
-        backgroundColor="#F5F5F5"
-      />
       {authed ? (
         <AppStack.Navigator
           initialRouteName="AppBottomNav"

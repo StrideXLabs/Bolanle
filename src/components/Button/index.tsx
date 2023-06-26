@@ -1,19 +1,33 @@
 import React from 'react';
-import {Pressable, Text, View, ActivityIndicator} from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleProp,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
+import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
-import {accentColor} from '../../constants';
 
 export interface IButtonProps {
   text: string;
   className?: string;
-  showLoading?: boolean;
   callback: () => void;
+  showLoading?: boolean;
   showBackgroundColor?: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
 const Button = ({
   text,
   callback,
+  style = {},
   className = '',
   showLoading = false,
   showBackgroundColor = true,
@@ -25,12 +39,22 @@ const Button = ({
       className="active:scale-95 transition-all"
       style={{opacity: showLoading ? 0.85 : 1}}>
       <View
+        style={[
+          {
+            // width: responsiveWidth(80),
+            padding: responsiveHeight(13 / percentToPx),
+          },
+          style,
+        ]}
         className={`${
           showBackgroundColor ? 'bg-accent' : 'bg-slate-50'
-        } w-[330px] flex justify-center items-center p-4 rounded-lg ${className}`}>
+        } flex justify-center items-center rounded-lg ${className}`}>
         <Text
-          style={textStyles.robotoBold}
-          className={`font-extrabold text-base ${
+          style={[
+            textStyles.robotoBold,
+            {fontSize: responsiveFontSize(16 / percentToPx)},
+          ]}
+          className={`font-extrabold ${
             showBackgroundColor ? 'text-white' : 'text-accent'
           }`}>
           {showLoading ? (

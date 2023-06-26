@@ -3,12 +3,13 @@ import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, Text, View} from 'react-native';
 import Button from '../../components/Button';
 import DashboardHeader from '../../components/Header/DashboardHeader';
-import {accentColor} from '../../constants';
+import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import dashboardService, {ICardData} from '../../services/dashboard.service';
 import Card from './Card';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
@@ -51,7 +52,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
   }, []);
 
   return (
-    <View className="h-full w-full">
+    <View className="h-full w-full bg-white">
       <DashboardHeader heading="DASHBOARD" />
       {loading && (
         <View className="h-[90%] flex justify-center items-center">
@@ -68,13 +69,16 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
           <Button text="RETRY" callback={fetchDashboardData} className="mt-3" />
         </View>
       )}
-      <View className="w-full items-center mt-[46px]">
+      <View
+        style={{
+          marginTop: responsiveHeight(34 / percentToPx),
+          paddingHorizontal: responsiveHeight(30 / percentToPx),
+        }}>
         {!loading && !error && cards.length > 0 && (
           <FlatList
             data={cards}
             numColumns={1}
             horizontal={false}
-            className="px-10"
             style={{width: '100%'}}
             keyExtractor={item => item._id}
             renderItem={({item}) => (
@@ -83,16 +87,6 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
           />
         )}
       </View>
-      {/* <Button
-        className="mt-10"
-        text="LOGOUT"
-        callback={async () => {
-          await flushStorage();
-          setAuthState({authed: false, token: null, user: null});
-          navigation.canGoBack() && navigation.popToTop();
-          navigation.replace('LoginScreen');
-        }}
-      /> */}
     </View>
   );
 };

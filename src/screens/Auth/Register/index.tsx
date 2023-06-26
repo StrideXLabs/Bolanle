@@ -8,7 +8,12 @@ import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
 import TextField from '../../../components/TextField/TextFieldDark';
-import {AuthStateKey, TokenKey, accentColor} from '../../../constants';
+import {
+  AuthStateKey,
+  TokenKey,
+  accentColor,
+  percentToPx,
+} from '../../../constants';
 import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
 import {IAuthState, IUser} from '../../../hooks/useAuth/interface';
@@ -19,6 +24,7 @@ import {AppStackParams} from '../../../navigation/AppNavigation';
 import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import authService from '../../../services/auth.service';
 import cardService from '../../../services/card.service';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 
 export type RegisterScreenProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -140,7 +146,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   }
 
   return (
-    <View className="px-[40px] py-[53px]">
+    <View className="px-[40px] py-[53px] bg-white h-full">
       <HeaderStepCount
         step={step}
         showDotes={!fromLoginScreen}
@@ -183,7 +189,12 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
             className="relative"
             secureTextEntry={secureTextEntry}
           />
-          <View className="absolute right-2 top-[36px]">
+          <View
+            className="absolute"
+            style={{
+              top: 35,
+              right: responsiveHeight(6 / percentToPx),
+            }}>
             {secureTextEntry ? (
               <EyeIcon
                 size={27}
@@ -199,6 +210,8 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
             )}
           </View>
         </View>
+      </View>
+      <View style={{marginTop: responsiveHeight(52 / percentToPx)}}>
         <Button
           text={
             creatingBusinessCard
@@ -207,7 +220,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
           }
           showLoading={creatingAccount}
           callback={handleCreateAccount}
-          className="w-full ml-[6px] mt-[52px]"
         />
       </View>
     </View>

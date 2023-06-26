@@ -1,11 +1,10 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {ActivityIndicator, StatusBar, View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 
 /* -------- SCREENS -------- */
 import {accentColor} from '../constants';
 import {ISocial} from '../constants/socials';
-import {useAuth} from '../hooks/useAuth';
 import useAuthState from '../hooks/useAuthState';
 import ForgotPasswordScreen from '../screens/Auth/ForgotPassword';
 import LoginScreen from '../screens/Auth/Login';
@@ -43,12 +42,6 @@ const AuthNavigation = () => {
 
   return (
     <>
-      <StatusBar
-        animated
-        barStyle="dark-content"
-        showHideTransition="slide"
-        backgroundColor="#F5F5F5"
-      />
       <AuthStack.Navigator
         initialRouteName={redirectToLogin ? 'LoginScreen' : 'WelcomeScreen'}
         screenOptions={{headerShown: false, animation: 'slide_from_right'}}>
