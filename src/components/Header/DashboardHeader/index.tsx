@@ -8,14 +8,14 @@ import {
 } from 'react-native';
 import textStyles from '../../../constants/fonts';
 
-import addNewIcon from '../../../assets/images/add.png';
-import arrowLeft from '../../../assets/images/arrow-left.png';
-import shareIcon from '../../../assets/images/share.png';
 import {
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
+import addNewIcon from '../../../assets/images/add.png';
+import arrowLeft from '../../../assets/images/arrow-left.png';
+import shareIcon from '../../../assets/images/share.png';
 import {percentToPx} from '../../../constants';
 
 export interface IDashboardHeaderProps {
@@ -45,8 +45,8 @@ const DashboardHeader = ({
     <View
       className="bg-white"
       style={{
-        paddingHorizontal: responsiveHeight(30 / percentToPx),
         paddingVertical: responsiveHeight(17 / percentToPx),
+        paddingHorizontal: responsiveHeight(30 / percentToPx),
       }}>
       {heading && (
         <View className="flex flex-row items-center justify-between">
@@ -58,7 +58,13 @@ const DashboardHeader = ({
             className="text-dark-blue">
             {heading}
           </Text>
-          <View className="flex flex-row items-center">
+          <TouchableOpacity
+            onPress={
+              typeof onAddNewBtnPress === 'function'
+                ? onAddNewBtnPress
+                : () => {}
+            }
+            className="flex flex-row items-center">
             <Image
               resizeMode="center"
               style={{
@@ -78,7 +84,7 @@ const DashboardHeader = ({
               className="text-dark-blue">
               Add New
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       )}
       {subheading && (
