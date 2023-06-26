@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Text, View} from 'react-native';
 
 import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
@@ -18,13 +19,16 @@ import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
 import {IAuthState, IUser} from '../../../hooks/useAuth/interface';
 import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
+import {
+  initialContactDetails,
+  initialPersonalInformation,
+} from '../../../hooks/useBusinessCard/constants';
 import {setDataToAsyncStorage} from '../../../lib/storage';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import authService from '../../../services/auth.service';
 import cardService from '../../../services/card.service';
-import {responsiveHeight} from 'react-native-responsive-dimensions';
 
 export type RegisterScreenProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -41,8 +45,17 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   route: {params},
 }) => {
   const {setAuthState, authed} = useAuth();
-  const {step, socialLinks, personalInformation, contactDetails} =
-    useCreateBusinessCard();
+  const {
+    step,
+    setStep,
+    socialLinks,
+    setSocialItems,
+    contactDetails,
+    setSocialLinks,
+    setContactDetails,
+    personalInformation,
+    setPersonalInformation,
+  } = useCreateBusinessCard();
 
   const fromLoginScreen = params.fromLoginScreen;
   const [creatingAccount, setCreatingAccount] = useState(false);
@@ -114,6 +127,12 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
 
       setCreatingBusinessCard(false);
       if (!res.success) Toast.error({primaryText: res.message});
+
+      setStep(0);
+      setSocialItems([]);
+      setSocialLinks([]);
+      setContactDetails(initialContactDetails);
+      setPersonalInformation(initialPersonalInformation);
       setAuthState({authed: true, token, user});
 
       navigation.popToTop();

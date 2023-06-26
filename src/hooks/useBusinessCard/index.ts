@@ -1,6 +1,5 @@
 import {create} from 'zustand';
 import {immer} from 'zustand/middleware/immer';
-import FieldSocialIconsList from '../../constants/socials';
 import {initialContactDetails, initialPersonalInformation} from './constants';
 import {
   ICreateBusinessCardActions,
@@ -16,6 +15,13 @@ export const useCreateBusinessCard = create<
       set(state => {
         state.step = step <= 3 ? step : state.step;
       }),
+
+    fromDashBoard: false,
+    setFromDashBoard: val => {
+      set(state => {
+        state.fromDashBoard = val;
+      });
+    },
 
     contactDetails: initialContactDetails,
     setContactDetails: contactDetails =>
@@ -43,6 +49,11 @@ export const useCreateBusinessCard = create<
         state.socialItems = state.socialItems.filter(i => i.id !== id);
       });
     },
+    setSocialItems: items => {
+      set(state => {
+        state.socialItems = items;
+      });
+    },
 
     // SOCIAL LINKS
     socialLinks: [],
@@ -62,6 +73,11 @@ export const useCreateBusinessCard = create<
     removeSocialLink: id => {
       set(state => {
         state.socialLinks = state.socialLinks.filter(item => item.id !== id);
+      });
+    },
+    setSocialLinks: data => {
+      set(state => {
+        state.socialLinks = data;
       });
     },
   })),

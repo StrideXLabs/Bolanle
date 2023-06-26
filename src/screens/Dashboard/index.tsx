@@ -1,6 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, Text, View} from 'react-native';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import DashboardHeader from '../../components/Header/DashboardHeader';
 import {accentColor, percentToPx} from '../../constants';
@@ -9,7 +10,7 @@ import {AppStackParams} from '../../navigation/AppNavigation';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import dashboardService, {ICardData} from '../../services/dashboard.service';
 import Card from './Card';
-import {responsiveHeight} from 'react-native-responsive-dimensions';
+import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
@@ -19,6 +20,7 @@ type DashboardScreenProps = NativeStackScreenProps<
 const DashboardScreen = ({navigation}: DashboardScreenProps) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const {setFromDashBoard} = useCreateBusinessCard();
   const [cards, setCards] = useState<ICardData[]>([]);
 
   const fetchDashboardData = async () => {
@@ -53,7 +55,13 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
 
   return (
     <View className="h-full w-full bg-white">
-      <DashboardHeader heading="DASHBOARD" />
+      <DashboardHeader
+        heading="DASHBOARD"
+        onAddNewBtnPress={() => {
+          setFromDashBoard(true);
+          navigation.navigate('PersonalInformationScreen');
+        }}
+      />
       {loading && (
         <View className="h-[90%] flex justify-center items-center">
           <ActivityIndicator size={50} color={accentColor} />
@@ -71,7 +79,8 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
       )}
       <View
         style={{
-          marginTop: responsiveHeight(34 / percentToPx),
+          height: responsiveHeight(100),
+          marginTop: responsiveHeight(15 / percentToPx),
           paddingHorizontal: responsiveHeight(30 / percentToPx),
         }}>
         {!loading && !error && cards.length > 0 && (
@@ -81,9 +90,14 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
             horizontal={false}
             style={{width: '100%'}}
             keyExtractor={item => item._id}
+            showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
               <Card card={item} onCardPress={handleCardPress} />
             )}
+            contentContainerStyle={{
+              paddingBottom: responsiveHeight(25),
+              gap: responsiveHeight(10 / percentToPx),
+            }}
           />
         )}
       </View>

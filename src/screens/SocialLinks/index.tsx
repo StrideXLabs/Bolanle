@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   FlatList,
   Image,
@@ -30,9 +30,14 @@ import {
   unFilledIconsMapping,
 } from '../../constants/socials';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
+import {
+  initialContactDetails,
+  initialPersonalInformation,
+} from '../../hooks/useBusinessCard/constants';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {AuthStackParams} from '../../navigation/AuthNavigation';
+import cardService from '../../services/card.service';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -80,8 +85,23 @@ const SocialView = ({
 };
 
 const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
-  const {step, setStep, socialItems, removeSocialLink, removeSocialItem} =
-    useCreateBusinessCard();
+  const {
+    step,
+    setStep,
+    socialItems,
+    socialLinks,
+    fromDashBoard,
+    setSocialLinks,
+    setSocialItems,
+    contactDetails,
+    removeSocialLink,
+    setFromDashBoard,
+    removeSocialItem,
+    setContactDetails,
+    personalInformation,
+    setPersonalInformation,
+  } = useCreateBusinessCard();
+  const [creatingBusinessCard, setCreatingBusinessCard] = useState(false);
 
   const handleSelectSocialItem = (item: ISocial) => {
     const exist = socialItems.find(i => i.id === item.id);
@@ -99,6 +119,57 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
 
     setStep(step + 1);
     navigation.navigate('RegisterScreen', {fromLoginScreen: false});
+  };
+
+  const handleCreateNewCard = async () => {
+    try {
+      if (socialItems.length === 0)
+        return Toast.error({
+          primaryText: 'Please add at least one social link.',
+        });
+
+      setCreatingBusinessCard(true);
+      const mappedSocialLinks = socialLinks.map(item => ({
+        url: item.url,
+        title: item.title,
+        platform: item.id,
+      }));
+
+      const cDetails = {
+        email: contactDetails.email,
+        mobile: contactDetails.mobile,
+        websiteUrl: contactDetails.websiteUrl,
+        companyAddress: contactDetails.companyAddress,
+      };
+
+      const res = await cardService.create({
+        personalInformation,
+        contactDetails: cDetails,
+        socialLinks: mappedSocialLinks,
+        companyLogo: contactDetails.companyLogo!,
+        profileImage: contactDetails.profilePicture!,
+      });
+
+      if (!res.success) Toast.error({primaryText: res.message});
+
+      setStep(0);
+      setSocialItems([]);
+      setSocialLinks([]);
+      setFromDashBoard(false);
+      setContactDetails(initialContactDetails);
+      setPersonalInformation(initialPersonalInformation);
+
+      navigation.popToTop();
+      navigation.replace('AppBottomNav');
+      return;
+    } catch (error) {
+      Toast.error({
+        primaryText: 'Something went wrong.',
+        secondaryText: 'Please close and reopen the app.',
+      });
+    } finally {
+      setCreatingBusinessCard(false);
+    }
   };
 
   return (
@@ -208,7 +279,11 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
           contentContainerStyle={{gap: 19}}
         />
         <View style={{marginTop: responsiveHeight(70 / percentToPx)}}>
-          <Button text="Next" callback={handleNextClick} />
+          <Button
+            showLoading={creatingBusinessCard}
+            text={fromDashBoard ? 'Create Card' : 'Next'}
+            callback={fromDashBoard ? handleCreateNewCard : handleNextClick}
+          />
         </View>
       </ScrollView>
     </View>
