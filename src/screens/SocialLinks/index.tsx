@@ -13,7 +13,7 @@ import {TrashIcon} from 'react-native-heroicons/outline';
 import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
-import {accentColor} from '../../constants';
+import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {
   ISocial,
@@ -26,6 +26,12 @@ import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {AuthStackParams} from '../../navigation/AuthNavigation';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveScreenFontSize,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -39,15 +45,23 @@ const SocialView = ({
 }: ISocial & {onRemoveItem: (id: SocialLinkType) => void}) => {
   return (
     <View className="flex flex-row justify-between items-center">
-      <View className="flex flex-row items-center gap-4">
+      <View
+        className="flex flex-row items-center"
+        style={{gap: responsiveHeight(10 / percentToPx)}}>
         <Image
-          resizeMode="center"
-          className="w-10 h-10"
+          resizeMode="contain"
+          style={{
+            height: responsiveHeight(6),
+            width: responsiveWidth(70 / percentToPx),
+          }}
           source={filledIconsMapping[id] as ImageSourcePropType}
         />
         <Text
-          style={textStyles.robotoMedium}
-          className="text-dark-blue text-base">
+          style={[
+            textStyles.robotoMedium,
+            {fontSize: responsiveFontSize(14 / percentToPx)},
+          ]}
+          className="text-dark-blue">
           {title}
         </Text>
       </View>
@@ -82,7 +96,11 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
   };
 
   return (
-    <View className="px-[40px] py-[53px]">
+    <View
+      style={{
+        paddingVertical: responsiveHeight(32 / percentToPx),
+        paddingHorizontal: responsiveHeight(40 / percentToPx),
+      }}>
       <HeaderStepCount
         step={step}
         onBackPress={() => {
@@ -90,8 +108,11 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
           navigation.canGoBack() && navigation.goBack();
         }}
       />
-      <Text>PersonalInformation</Text>
-      <View className="mt-9 mb-[30px]">
+      <View
+        style={{
+          marginTop: responsiveHeight(20 / percentToPx),
+          marginBottom: responsiveHeight(22 / percentToPx),
+        }}>
         <HeaderWithText
           heading="SOCIAL LINKS"
           subtitle="Please add your social links to display on digital card."
@@ -103,14 +124,19 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
           bouncesZoom
           data={socialItems}
           horizontal={false}
-          className="max-h-[250px]"
+          style={{
+            maxHeight: responsiveHeight(150 / percentToPx),
+          }}
           keyExtractor={item => item.id}
-          contentContainerStyle={{gap: 10}}
+          contentContainerStyle={{gap: responsiveHeight(10 / percentToPx)}}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={() => (
             <Text
-              className="text-dark-blue text-center text-lg"
-              style={textStyles.robotoBold}>
+              className="text-dark-blue text-center"
+              style={[
+                textStyles.robotoBold,
+                {fontSize: responsiveScreenFontSize(14 / percentToPx)},
+              ]}>
               Please add at least one social link.
             </Text>
           )}
@@ -125,7 +151,10 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
           )}
         />
       </View>
-      <View className="w-full h-[1px] bg-accent rounded-sm my-[15px]" />
+      <View
+        className="w-full h-[1px] bg-accent rounded-sm"
+        style={{marginVertical: responsiveHeight(10 / percentToPx)}}
+      />
       <FlatList
         numColumns={5}
         horizontal={false}
@@ -138,14 +167,20 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
             <Pressable onPress={() => handleSelectSocialItem(item)}>
               {selected ? (
                 <Image
-                  resizeMode="cover"
-                  className="w-[50px] h-[50px]"
+                  resizeMode="contain"
+                  style={{
+                    height: responsiveHeight(6),
+                    width: responsiveWidth(85 / percentToPx),
+                  }}
                   source={unFilledIconsMapping[item.id] as ImageSourcePropType}
                 />
               ) : (
                 <Image
-                  resizeMode="cover"
-                  className="w-[50px] h-[50px]"
+                  resizeMode="contain"
+                  style={{
+                    height: responsiveHeight(6),
+                    width: responsiveWidth(85 / percentToPx),
+                  }}
                   source={filledIconsMapping[item.id] as ImageSourcePropType}
                 />
               )}
@@ -154,16 +189,14 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
         }}
         keyExtractor={item => item.id}
         columnWrapperStyle={{
-          gap: 25,
+          gap: responsiveHeight(15 / percentToPx),
           flexWrap: 'wrap',
         }}
         contentContainerStyle={{gap: 19}}
       />
-      <Button
-        text="Next"
-        callback={handleNextClick}
-        className="mt-[74px] w-full"
-      />
+      <View style={{marginTop: responsiveHeight(70 / percentToPx)}}>
+        <Button text="Next" callback={handleNextClick} className="w-full" />
+      </View>
     </View>
   );
 };

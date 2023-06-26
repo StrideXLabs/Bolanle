@@ -12,6 +12,11 @@ import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 import {ISocialLink} from '../../../hooks/useBusinessCard/interface';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+} from 'react-native-responsive-dimensions';
+import {percentToPx} from '../../../constants';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams,
@@ -46,23 +51,36 @@ const OtherSocialsScreen = ({
 
   return (
     <ScrollView nestedScrollEnabled>
-      <View className="px-[40px] py-[53px]">
+      <View
+        style={{
+          paddingVertical: responsiveHeight(32 / percentToPx),
+          paddingHorizontal: responsiveHeight(40 / percentToPx),
+        }}>
         <HeaderStepCount
           showDotes={false}
           onBackPress={() => navigation.navigate('SocialLinksScreen')}
         />
-        <Text>PersonalInformation</Text>
-        <View className="mt-9 mb-[30px]">
+        <View
+          style={{
+            marginTop: responsiveHeight(20 / percentToPx),
+            marginBottom: responsiveHeight(22 / percentToPx),
+          }}>
           <HeaderWithText
             heading={`ADD ${socialMappings[socialItem.id]}`}
             subtitle="Please fill the following detail."
           />
         </View>
         <View className="flex gap-2">
-          <View className="flex gap-1">
+          <View className="flex">
             <Text
-              style={textStyles.robotoMedium}
-              className="text-base font-bold text-dark-blue">
+              style={[
+                textStyles.robotoMedium,
+                {
+                  marginBottom: responsiveHeight(5 / percentToPx),
+                  fontSize: responsiveFontSize(16 / percentToPx),
+                },
+              ]}
+              className="font-bold text-dark-blue">
               Link/Username
             </Text>
             <TextField
@@ -71,10 +89,16 @@ const OtherSocialsScreen = ({
               onChangeText={url => setSocial(state => ({...state, url}))}
             />
           </View>
-          <View className="flex gap-1">
+          <View className="flex">
             <Text
-              style={textStyles.robotoMedium}
-              className="text-base font-bold text-dark-blue">
+              style={[
+                textStyles.robotoMedium,
+                {
+                  marginBottom: responsiveHeight(5 / percentToPx),
+                  fontSize: responsiveFontSize(16 / percentToPx),
+                },
+              ]}
+              className="font-bold text-dark-blue">
               Title
             </Text>
             <TextField

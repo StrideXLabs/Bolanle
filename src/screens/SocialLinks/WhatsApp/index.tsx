@@ -13,6 +13,11 @@ import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 import {ISocialLink} from '../../../hooks/useBusinessCard/interface';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+} from 'react-native-responsive-dimensions';
+import {percentToPx} from '../../../constants';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams,
@@ -60,94 +65,117 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
   }, []);
 
   return (
-    <ScrollView nestedScrollEnabled>
-      <SafeAreaView>
-        <CountryPicker
-          lang="en"
-          show={open}
-          style={{
-            modal: {height: 400},
-            textInput: {color: '#334155'},
-            dialCode: {color: '#334155', fontFamily: 'Roboto-Bold'},
-            countryName: {color: '#334155', fontFamily: 'Roboto-Bold'},
-          }}
-          onRequestClose={() => setOpen(false)}
-          onBackdropPress={() => setOpen(false)}
-          pickerButtonOnPress={item => {
-            setData({flag: item.flag, code: item.dial_code});
-            setSocial({
-              id: social.id,
-              title: social.title,
-              url: `(${data.code}) `,
-            });
-            setOpen(false);
-          }}
+    <>
+      <CountryPicker
+        lang="en"
+        show={open}
+        style={{
+          modal: {height: 400},
+          textInput: {color: '#334155'},
+          dialCode: {color: '#334155', fontFamily: 'Roboto-Bold'},
+          countryName: {color: '#334155', fontFamily: 'Roboto-Bold'},
+        }}
+        onRequestClose={() => setOpen(false)}
+        onBackdropPress={() => setOpen(false)}
+        pickerButtonOnPress={item => {
+          setData({flag: item.flag, code: item.dial_code});
+          setSocial({
+            id: social.id,
+            title: social.title,
+            url: `(${data.code}) `,
+          });
+          setOpen(false);
+        }}
+      />
+      <View
+        style={{
+          paddingVertical: responsiveHeight(32 / percentToPx),
+          paddingHorizontal: responsiveHeight(40 / percentToPx),
+        }}>
+        <HeaderStepCount
+          showDotes={false}
+          onBackPress={() => navigation.navigate('SocialLinksScreen')}
         />
-        <View className="px-[40px] py-[53px]">
-          <HeaderStepCount
-            showDotes={false}
-            onBackPress={() => navigation.navigate('SocialLinksScreen')}
-          />
-          <Text>PersonalInformation</Text>
-          <View className="mt-9 mb-[30px]">
-            <HeaderWithText
-              heading="ADD WHATSAPP"
-              subtitle="Please fill the following detail."
-            />
-          </View>
-          <View className="flex gap-2">
-            <View className="flex gap-1">
-              <Text
-                style={textStyles.robotoMedium}
-                className="text-base font-bold text-dark-blue">
-                WhatsApp
-              </Text>
-              <TextField
-                value={social.url}
-                keyboardType="number-pad"
-                className="relative pl-20"
-                placeholder="WhatsApp number"
-                onChangeText={url => setSocial(state => ({...state, url}))}
-              />
-              {data.flag && (
-                <View className="absolute top-8 left-3">
-                  <Pressable
-                    className="flex flex-row items-center gap-1 justify-center"
-                    onPress={() => setOpen(true)}>
-                    <View className="flex flex-row items-center gap-1 justify-center">
-                      <Text className="text-[24px]">{data.flag}</Text>
-                      <View className="top-[1.5px]">
-                        <ChevronDownIcon size={20} color="black" />
-                      </View>
-                    </View>
-                  </Pressable>
-                </View>
-              )}
-            </View>
-            <View className="flex gap-1">
-              <Text
-                style={textStyles.robotoMedium}
-                className="text-base font-bold text-dark-blue">
-                Title
-              </Text>
-              <TextField
-                editable={false}
-                focusable={false}
-                value={social.title}
-                placeholder="Whatsapp"
-                selectTextOnFocus={false}
-                onChangeText={title => setSocial(state => ({...state, title}))}
-              />
-            </View>
-          </View>
-          <Button
-            text="Next"
-            callback={handleSave}
-            className="mt-[74px] w-full"
+        <View
+          style={{
+            marginTop: responsiveHeight(20 / percentToPx),
+            marginBottom: responsiveHeight(22 / percentToPx),
+          }}>
+          <HeaderWithText
+            heading="ADD WHATSAPP"
+            subtitle="Please fill the following detail."
           />
         </View>
-      </SafeAreaView>
-    </ScrollView>
+        <View className="flex">
+          <View
+            className="flex"
+            style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
+            <Text
+              style={[
+                textStyles.robotoMedium,
+                {
+                  marginBottom: responsiveHeight(5 / percentToPx),
+                  fontSize: responsiveFontSize(16 / percentToPx),
+                },
+              ]}
+              className="font-bold text-dark-blue">
+              WhatsApp
+            </Text>
+            <TextField
+              value={social.url}
+              className="relative"
+              style={{paddingLeft: 75}}
+              keyboardType="number-pad"
+              placeholder="WhatsApp number"
+              onChangeText={url => setSocial(state => ({...state, url}))}
+            />
+            {data.flag && (
+              <View
+                className="absolute"
+                style={{
+                  top: responsiveHeight(3.8),
+                  left: responsiveHeight(1.3),
+                }}>
+                <Pressable
+                  className="flex flex-row items-center gap-1 justify-center"
+                  onPress={() => setOpen(true)}>
+                  <View className="flex flex-row items-center gap-1 justify-center">
+                    <Text className="text-[24px]">{data.flag}</Text>
+                    <View className="top-[1.5px]">
+                      <ChevronDownIcon size={20} color="black" />
+                    </View>
+                  </View>
+                </Pressable>
+              </View>
+            )}
+          </View>
+          <View className="flex">
+            <Text
+              style={[
+                textStyles.robotoMedium,
+                {
+                  marginBottom: responsiveHeight(5 / percentToPx),
+                  fontSize: responsiveFontSize(16 / percentToPx),
+                },
+              ]}
+              className="text-base font-bold text-dark-blue">
+              Title
+            </Text>
+            <TextField
+              editable={false}
+              focusable={false}
+              value={social.title}
+              placeholder="Whatsapp"
+              selectTextOnFocus={false}
+              onChangeText={title => setSocial(state => ({...state, title}))}
+            />
+          </View>
+        </View>
+        <View style={{marginTop: responsiveHeight(52 / percentToPx)}}>
+          <Button text="Next" callback={handleSave} />
+        </View>
+      </View>
+    </>
   );
 };
 

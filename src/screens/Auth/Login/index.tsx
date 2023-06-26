@@ -13,7 +13,7 @@ import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
 import bgImage from '../../../assets/images/bg-2.png';
 import Button from '../../../components/Button';
 import TextField from '../../../components/TextField/TextFieldLight';
-import {AuthStateKey, TokenKey} from '../../../constants';
+import {AuthStateKey, TokenKey, percentToPx} from '../../../constants';
 import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
 import {IUser} from '../../../hooks/useAuth/interface';
@@ -22,6 +22,11 @@ import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import authService from '../../../services/auth.service';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 
 export type LoginScreenProps = NativeStackScreenProps<
   AuthStackParams & AppStackParams,
@@ -83,14 +88,23 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
 
   return (
     <ImageBackground
-      className="h-screen"
       resizeMode="cover"
+      className="h-screen"
       source={bgImage as ImageSourcePropType}>
-      <View className="flex justify-center items-center h-full">
-        <View className="h-[55%] bg-accent w-[85%] rounded-lg py-[35px] pr-[40px] pl-[35px]">
+      <View className="justify-center items-center h-full">
+        <View
+          className="bg-accent rounded-lg"
+          style={{
+            width: responsiveWidth(85),
+            padding: responsiveHeight(40 / percentToPx),
+            paddingLeft: responsiveHeight(35 / percentToPx),
+          }}>
           <Text
-            style={textStyles.bebasNeueBold}
-            className="text-5xl font-bold text-off-white">
+            style={[
+              textStyles.bebasNeueBold,
+              {fontSize: responsiveFontSize(40 / percentToPx)},
+            ]}
+            className="font-bold text-off-white-1">
             LOGIN
           </Text>
           <View className="mt-10">
@@ -155,13 +169,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               </TouchableOpacity>
             </View>
           </View>
-          <View className="w-[102%] mt-auto">
+          <View>
             <Button
               text="Login"
-              className="w-full"
               showLoading={loading}
               callback={handleLogin}
               showBackgroundColor={false}
+              style={{width: responsiveWidth(64)}}
             />
             <View className="mt-4 flex flex-row justify-center">
               <Text style={textStyles.robotoMedium} className="text-off-white">

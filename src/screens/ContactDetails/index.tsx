@@ -6,13 +6,17 @@ import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
 import TextField from '../../components/TextField/TextFieldDark';
-import {emailRegex} from '../../constants';
+import {emailRegex, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import isValidURL from '../../lib/isValidUrl';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import Upload from './Upload';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+} from 'react-native-responsive-dimensions';
 
 export type ContactDetailsProps = NativeStackScreenProps<
   AppStackParams,
@@ -55,7 +59,11 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
 
   return (
     <ScrollView>
-      <View className="px-[40px] py-[53px]">
+      <View
+        style={{
+          paddingVertical: responsiveHeight(32 / percentToPx),
+          paddingHorizontal: responsiveHeight(40 / percentToPx),
+        }}>
         <HeaderStepCount
           step={step}
           onBackPress={() => {
@@ -63,18 +71,26 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
             navigation.canGoBack() && navigation.goBack();
           }}
         />
-        <Text>contactDetails</Text>
-        <View className="mt-9 mb-[30px]">
+        <View
+          style={{
+            marginTop: responsiveHeight(20 / percentToPx),
+            marginBottom: responsiveHeight(22 / percentToPx),
+          }}>
           <HeaderWithText
             heading="CONTACT DETAILS"
             subtitle="Please add the contact details to display on digital card."
           />
         </View>
-        <View className="flex gap-[10px]">
-          <View className="flex gap-1">
+        <View style={{gap: responsiveHeight(10 / percentToPx)}}>
+          <View
+            className="flex"
+            style={{gap: responsiveHeight(10 / percentToPx)}}>
             <Text
-              style={textStyles.robotoMedium}
-              className="text-base font-bold text-dark-blue">
+              style={[
+                textStyles.robotoMedium,
+                {fontSize: responsiveFontSize(14 / percentToPx)},
+              ]}
+              className="font-bold text-dark-blue">
               Email
             </Text>
             <TextField
@@ -89,10 +105,15 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
               placeholder="Enter your email address"
             />
           </View>
-          <View className="flex gap-1">
+          <View
+            className="flex"
+            style={{gap: responsiveHeight(10 / percentToPx)}}>
             <Text
-              style={textStyles.robotoMedium}
-              className="text-base font-bold text-dark-blue">
+              style={[
+                textStyles.robotoMedium,
+                {fontSize: responsiveFontSize(14 / percentToPx)},
+              ]}
+              className="font-bold text-dark-blue">
               Mobile
             </Text>
             <TextField
@@ -107,10 +128,15 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
               placeholder="Enter mobile number"
             />
           </View>
-          <View className="flex gap-1">
+          <View
+            className="flex"
+            style={{gap: responsiveHeight(10 / percentToPx)}}>
             <Text
-              style={textStyles.robotoMedium}
-              className="text-base font-bold text-dark-blue">
+              style={[
+                textStyles.robotoMedium,
+                {fontSize: responsiveFontSize(14 / percentToPx)},
+              ]}
+              className="font-bold text-dark-blue">
               Website URL
             </Text>
             <TextField
@@ -125,26 +151,31 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
               placeholder="Enter your company website url"
             />
           </View>
-          <View className="flex gap-1">
+          <View
+            className="flex"
+            style={{gap: responsiveHeight(10 / percentToPx)}}>
             <Text
-              style={textStyles.robotoMedium}
-              className="text-base font-bold text-dark-blue">
+              style={[
+                textStyles.robotoMedium,
+                {fontSize: responsiveFontSize(14 / percentToPx)},
+              ]}
+              className="font-bold text-dark-blue">
               Company Address
             </Text>
             <TextField
               multiline
-              className="h-[80px]"
               textAlignVertical="top"
               onChangeText={text => {
                 setContactDetails({...contactDetails, companyAddress: text});
               }}
               value={contactDetails.companyAddress}
               placeholder="Enter your company address"
+              style={{height: responsiveHeight(80 / percentToPx)}}
             />
           </View>
         </View>
         <Upload />
-        <View className="w-full flex-grow mt-10 ml-1">
+        <View style={{marginTop: responsiveHeight(30 / percentToPx)}}>
           <Button callback={handleNextClick} text="Next" className="w-full" />
         </View>
       </View>

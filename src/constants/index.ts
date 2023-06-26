@@ -1,6 +1,7 @@
 export const TokenKey = 'token';
 export const UserKey = 'userKey';
 export const AuthStateKey = 'authState';
+export const percentToPx = 7.3430239002743285;
 
 export const accentColor = '#F1592A';
 export const BASE_URL = 'http://192.168.246.122:3000'; // 'http://3.7.121.248';

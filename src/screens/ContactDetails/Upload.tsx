@@ -7,6 +7,11 @@ import {PlusIcon} from 'react-native-heroicons/outline';
 import textStyles from '../../constants/fonts';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import Toast from '../../lib/toast';
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
+import {percentToPx} from '../../constants';
 
 const Upload = () => {
   const {setContactDetails, contactDetails} = useCreateBusinessCard();
@@ -43,7 +48,12 @@ const Upload = () => {
             e.stopPropagation();
             handleAddImage('Logo');
           }}>
-          <View className="border-[1px] border-off-white-2 h-[120px] w-[120px] mt-2 rounded-md bg-off-white-3 flex justify-center items-center">
+          <View
+            style={{
+              width: responsiveWidth(28),
+              height: responsiveHeight(90 / percentToPx),
+            }}
+            className="border-[1px] border-off-white-2 mt-2 rounded-md bg-off-white-3 flex justify-center items-center">
             {contactDetails.companyLogo ? (
               <Image
                 resizeMode="cover"
@@ -79,7 +89,12 @@ const Upload = () => {
             e.stopPropagation();
             handleAddImage('Profile');
           }}>
-          <View className="border-[1px] border-off-white-2 h-[120px] w-[120px] mt-2 rounded-md bg-off-white-3 flex justify-center items-center">
+          <View
+            style={{
+              width: responsiveWidth(28),
+              height: responsiveHeight(90 / percentToPx),
+            }}
+            className="border-[1px] border-off-white-2 mt-2 rounded-md bg-off-white-3 flex justify-center items-center">
             {contactDetails.profilePicture ? (
               <Image
                 resizeMode="cover"

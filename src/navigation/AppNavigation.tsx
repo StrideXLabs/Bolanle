@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {ActivityIndicator, StatusBar, View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 
 /* -------- SCREENS -------- */
 import {accentColor} from '../constants';
@@ -41,12 +41,6 @@ const AppNavigation = () => {
 
   return (
     <>
-      <StatusBar
-        animated
-        barStyle="dark-content"
-        showHideTransition="slide"
-        backgroundColor="#F5F5F5"
-      />
       {authed ? (
         <AppStack.Navigator
           initialRouteName="AppBottomNav"

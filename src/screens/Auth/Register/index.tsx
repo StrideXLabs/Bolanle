@@ -8,7 +8,12 @@ import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
 import TextField from '../../../components/TextField/TextFieldDark';
-import {AuthStateKey, TokenKey, accentColor} from '../../../constants';
+import {
+  AuthStateKey,
+  TokenKey,
+  accentColor,
+  percentToPx,
+} from '../../../constants';
 import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
 import {IAuthState, IUser} from '../../../hooks/useAuth/interface';
@@ -19,6 +24,7 @@ import {AppStackParams} from '../../../navigation/AppNavigation';
 import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import authService from '../../../services/auth.service';
 import cardService from '../../../services/card.service';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 
 export type RegisterScreenProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -199,6 +205,8 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
             )}
           </View>
         </View>
+      </View>
+      <View style={{marginTop: responsiveHeight(52 / percentToPx)}}>
         <Button
           text={
             creatingBusinessCard
@@ -207,7 +215,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
           }
           showLoading={creatingAccount}
           callback={handleCreateAccount}
-          className="w-full ml-[6px] mt-[52px]"
         />
       </View>
     </View>
