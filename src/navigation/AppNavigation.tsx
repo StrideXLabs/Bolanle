@@ -34,7 +34,7 @@ const AppNavigation = () => {
 
   if (loading)
     return (
-      <View className="h-screen w-full flex justify-center items-center bg-off-white-1">
+      <View className="h-screen w-full flex justify-center items-center bg-white">
         <ActivityIndicator color={accentColor} size={50} />
       </View>
     );

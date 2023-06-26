@@ -50,12 +50,13 @@ const OtherSocialsScreen = ({
   };
 
   return (
-    <ScrollView nestedScrollEnabled>
-      <View
-        style={{
-          paddingVertical: responsiveHeight(32 / percentToPx),
-          paddingHorizontal: responsiveHeight(40 / percentToPx),
-        }}>
+    <View
+      className="h-screen bg-white"
+      style={{
+        paddingVertical: responsiveHeight(32 / percentToPx),
+        paddingHorizontal: responsiveHeight(40 / percentToPx),
+      }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <HeaderStepCount
           showDotes={false}
           onBackPress={() => navigation.navigate('SocialLinksScreen')}
@@ -116,8 +117,8 @@ const OtherSocialsScreen = ({
           callback={handleSave}
           className="mt-[74px] w-full"
         />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

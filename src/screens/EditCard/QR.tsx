@@ -4,6 +4,7 @@ import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
 import {BASE_URL} from '../../constants';
 import Button from '../../components/Button';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 
 type Props = {
   qr: ICardData['qr'];
@@ -12,7 +13,7 @@ type Props = {
 
 const QR = ({onDeleteCard, qr}: Props) => {
   return (
-    <View className="pb-[40px]">
+    <View className="pb-[50px]">
       <View className="flex flex-row items-center justify-between mt-[21px] mb-[10px]">
         <Text style={textStyles.robotoBold} className="text-accent text-[20px]">
           QR Code
@@ -25,8 +26,9 @@ const QR = ({onDeleteCard, qr}: Props) => {
         />
         <Button
           text="Delete Card"
+          className="mt-[20px]"
           callback={onDeleteCard}
-          className="w-[200px] mt-[20px]"
+          style={{width: responsiveWidth(60)}}
         />
       </View>
     </View>

@@ -10,6 +10,8 @@ import Header from './Header';
 import PersonalInfo from './PersonalInfo';
 import QR from './QR';
 import SocialLinks from './SocialLinks';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
+import {percentToPx} from '../../constants';
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams,
@@ -35,14 +37,24 @@ const EditCardScreen = ({
   const handleDeleteCard = () => {};
 
   return (
-    <>
+    <View className="h-full bg-white">
       <DashboardHeader
         subheading="EDIT CARD"
         subtitle="You can edit your card info here."
         onBackBtnPress={() => navigation.goBack()}
       />
-      <View className="flex p-10" style={{flex: 1}}>
-        <ScrollView className="px-5 py-5 rounded-md border-[1px] border-[#E3E3E3]">
+      <View
+        style={{
+          flex: 1,
+          marginTop: responsiveHeight(25 / percentToPx),
+          paddingBottom: responsiveHeight(17 / percentToPx),
+          paddingHorizontal: responsiveHeight(30 / percentToPx),
+        }}>
+        <ScrollView
+          bounces={false}
+          showsVerticalScrollIndicator={false}
+          style={{padding: responsiveHeight(20 / percentToPx)}}
+          className="rounded-md border-[1px] border-[#E3E3E3]">
           <Header
             personalInfo={personalInfo}
             contactDetails={contactDetails}
@@ -63,7 +75,7 @@ const EditCardScreen = ({
           <QR qr={qr} onDeleteCard={handleDeleteCard} />
         </ScrollView>
       </View>
-    </>
+    </View>
   );
 };
 

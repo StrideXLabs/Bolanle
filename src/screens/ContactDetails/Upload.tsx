@@ -1,17 +1,18 @@
 import React from 'react';
-import {Image, Pressable, Text, View} from 'react-native';
-import {TrashIcon} from 'react-native-heroicons/outline';
+import {Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 
 import {PlusIcon} from 'react-native-heroicons/outline';
-import textStyles from '../../constants/fonts';
-import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
-import Toast from '../../lib/toast';
 import {
+  responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
+import trash from '../../assets/images/trash.png';
 import {percentToPx} from '../../constants';
+import textStyles from '../../constants/fonts';
+import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
+import Toast from '../../lib/toast';
 
 const Upload = () => {
   const {setContactDetails, contactDetails} = useCreateBusinessCard();
@@ -36,11 +37,16 @@ const Upload = () => {
   };
 
   return (
-    <View className="ml-1 mt-[10px] flex flex-row justify-between items-center">
+    <View
+      className="flex flex-row justify-between items-center"
+      style={{marginTop: responsiveHeight(10 / percentToPx)}}>
       <View>
         <Text
-          style={textStyles.robotoRegular}
-          className="text-base text-dark-blue">
+          style={[
+            textStyles.robotoRegular,
+            {fontSize: responsiveFontSize(16 / percentToPx)},
+          ]}
+          className="text-dark-blue">
           Company Logo
         </Text>
         <Pressable
@@ -52,8 +58,9 @@ const Upload = () => {
             style={{
               width: responsiveWidth(28),
               height: responsiveHeight(90 / percentToPx),
+              marginTop: responsiveHeight(10 / percentToPx),
             }}
-            className="border-[1px] border-off-white-2 mt-2 rounded-md bg-off-white-3 flex justify-center items-center">
+            className="border-[1px] border-off-white-2 rounded-md bg-off-white-3 flex justify-center items-center">
             {contactDetails.companyLogo ? (
               <Image
                 resizeMode="cover"
@@ -66,21 +73,34 @@ const Upload = () => {
           </View>
           {contactDetails.companyLogo && (
             <Pressable
-              className="absolute top-4 right-2"
+              style={{
+                top: 16,
+                right: 3,
+                width: 24,
+                height: 24,
+                padding: 4,
+              }}
+              className="absolute bg-[#FFD9D9] rounded-md"
               onPress={e => {
                 e.stopPropagation();
                 setContactDetails({...contactDetails, companyLogo: null});
               }}>
-              <View className="bg-[#FFD9D9] p-1 rounded-md">
-                <TrashIcon size={18} color="#F1592A" />
-              </View>
+              <Image
+                resizeMode="center"
+                className="w-full h-full"
+                source={trash as ImageSourcePropType}
+              />
             </Pressable>
           )}
         </Pressable>
       </View>
+
       <View>
         <Text
-          style={textStyles.robotoRegular}
+          style={[
+            textStyles.robotoRegular,
+            {fontSize: responsiveFontSize(16 / percentToPx)},
+          ]}
           className="text-base text-dark-blue">
           Profile Image
         </Text>
@@ -93,8 +113,9 @@ const Upload = () => {
             style={{
               width: responsiveWidth(28),
               height: responsiveHeight(90 / percentToPx),
+              marginTop: responsiveHeight(10 / percentToPx),
             }}
-            className="border-[1px] border-off-white-2 mt-2 rounded-md bg-off-white-3 flex justify-center items-center">
+            className="border-[1px] border-off-white-2 rounded-md bg-off-white-3 flex justify-center items-center">
             {contactDetails.profilePicture ? (
               <Image
                 resizeMode="cover"
@@ -106,14 +127,23 @@ const Upload = () => {
             )}
             {contactDetails.profilePicture && (
               <Pressable
-                className="absolute top-2 right-2"
+                style={{
+                  top: 2,
+                  right: 3,
+                  width: 24,
+                  height: 24,
+                  padding: 4,
+                }}
+                className="absolute bg-[#FFD9D9] rounded-md"
                 onPress={e => {
                   e.stopPropagation();
                   setContactDetails({...contactDetails, profilePicture: null});
                 }}>
-                <View className="bg-[#FFD9D9] p-1 rounded-md">
-                  <TrashIcon size={18} color="#F1592A" />
-                </View>
+                <Image
+                  resizeMode="center"
+                  className="w-full h-full"
+                  source={trash as ImageSourcePropType}
+                />
               </Pressable>
             )}
           </View>

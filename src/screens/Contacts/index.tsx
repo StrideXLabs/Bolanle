@@ -6,7 +6,7 @@ const ContactsScreen = () => {
   const {user, token, authed} = useAuth();
 
   return (
-    <View>
+    <View className="bg-white">
       <Text className="text-dark-blue">
         {JSON.stringify({user, token, authed}, null, 2)}
       </Text>

@@ -58,8 +58,12 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView
+      className="h-screen"
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{paddingBottom: 20}}>
       <View
+        className="h-screen bg-white"
         style={{
           paddingVertical: responsiveHeight(32 / percentToPx),
           paddingHorizontal: responsiveHeight(40 / percentToPx),

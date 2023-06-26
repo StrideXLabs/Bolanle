@@ -1,8 +1,9 @@
 import React from 'react';
 import {Image, Pressable, Text, View} from 'react-native';
-import {BASE_URL} from '../../constants';
+import {BASE_URL, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 
 interface ICardProps {
   card: ICardData;

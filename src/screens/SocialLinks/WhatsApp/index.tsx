@@ -88,6 +88,7 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
         }}
       />
       <View
+        className="h-screen bg-white"
         style={{
           paddingVertical: responsiveHeight(32 / percentToPx),
           paddingHorizontal: responsiveHeight(40 / percentToPx),

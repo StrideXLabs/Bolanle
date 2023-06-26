@@ -89,14 +89,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   return (
     <ImageBackground
       resizeMode="cover"
-      className="h-screen"
+      className="h-full"
       source={bgImage as ImageSourcePropType}>
       <View className="justify-center items-center h-full">
         <View
           className="bg-accent rounded-lg"
           style={{
             width: responsiveWidth(85),
-            padding: responsiveHeight(40 / percentToPx),
+            padding: responsiveHeight(25 / percentToPx),
             paddingLeft: responsiveHeight(35 / percentToPx),
           }}>
           <Text
@@ -107,11 +107,17 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
             className="font-bold text-off-white-1">
             LOGIN
           </Text>
-          <View className="mt-10">
-            <View className="flex gap-2">
+          <View style={{marginTop: responsiveHeight(36 / percentToPx)}}>
+            <View className="flex">
               <Text
-                style={textStyles.robotoMedium}
-                className="text-base font-bold text-off-white">
+                style={[
+                  textStyles.robotoMedium,
+                  {
+                    fontSize: responsiveFontSize(16 / percentToPx),
+                    marginBottom: responsiveHeight(10 / percentToPx),
+                  },
+                ]}
+                className="font-bold text-off-white-1">
                 Email
               </Text>
               <TextField
@@ -127,11 +133,17 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               />
             </View>
           </View>
-          <View className="mt-6">
-            <View className="flex gap-2">
+          <View style={{marginTop: responsiveHeight(26 / percentToPx)}}>
+            <View className="flex">
               <Text
-                style={textStyles.robotoMedium}
-                className="text-base font-bold text-off-white">
+                style={[
+                  textStyles.robotoMedium,
+                  {
+                    fontSize: responsiveFontSize(16 / percentToPx),
+                    marginBottom: responsiveHeight(10 / percentToPx),
+                  },
+                ]}
+                className="font-bold text-off-white-1">
                 Password
               </Text>
               <TextField
@@ -143,7 +155,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                 secureTextEntry={secureTextEntry}
                 className="relative"
               />
-              <View className="absolute right-1 top-[41px]">
+              <View
+                className="absolute"
+                style={{
+                  top: responsiveHeight(38 / percentToPx),
+                  right: responsiveHeight(6 / percentToPx),
+                }}>
                 {secureTextEntry ? (
                   <EyeIcon
                     size={27}
@@ -160,25 +177,30 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               </View>
               <TouchableOpacity
                 activeOpacity={0.6}
+                style={{marginTop: responsiveHeight(12 / percentToPx)}}
                 onPress={() => navigation.push('ForgotPasswordScreen')}>
                 <Text
                   style={textStyles.robotoMedium}
-                  className="-mr-[10px] text-right text-base font-bold text-off-white">
+                  className="text-right font-bold text-off-white-1">
                   Forgot password?
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
-          <View>
+          <View style={{marginTop: responsiveHeight(36 / percentToPx)}}>
             <Button
               text="Login"
               showLoading={loading}
               callback={handleLogin}
               showBackgroundColor={false}
-              style={{width: responsiveWidth(64)}}
+              style={{width: responsiveWidth(69)}}
             />
-            <View className="mt-4 flex flex-row justify-center">
-              <Text style={textStyles.robotoMedium} className="text-off-white">
+            <View
+              className="flex flex-row justify-center"
+              style={{marginTop: responsiveHeight(12 / percentToPx)}}>
+              <Text
+                style={textStyles.robotoRegular}
+                className="text-off-white-1">
                 Don't have an Account?
               </Text>
               <TouchableOpacity
@@ -187,8 +209,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                   navigation.navigate('RegisterScreen', {fromLoginScreen: true})
                 }>
                 <Text
-                  style={textStyles.robotoMedium}
-                  className="ml-1 text-off-white font-extrabold">
+                  style={textStyles.robotoBold}
+                  className="ml-1 text-off-white-1 font-extrabold">
                   Create
                 </Text>
               </TouchableOpacity>

@@ -146,7 +146,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   }
 
   return (
-    <View className="px-[40px] py-[53px]">
+    <View className="px-[40px] py-[53px] bg-white h-full">
       <HeaderStepCount
         step={step}
         showDotes={!fromLoginScreen}
@@ -189,7 +189,12 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
             className="relative"
             secureTextEntry={secureTextEntry}
           />
-          <View className="absolute right-2 top-[36px]">
+          <View
+            className="absolute"
+            style={{
+              top: 35,
+              right: responsiveHeight(6 / percentToPx),
+            }}>
             {secureTextEntry ? (
               <EyeIcon
                 size={27}

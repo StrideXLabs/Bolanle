@@ -15,6 +15,12 @@ import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 import {AuthStackParams} from '../../../navigation/AuthNavigation';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
+import {percentToPx} from '../../../constants';
 
 export type LoginScreenProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -41,22 +47,40 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       resizeMode="contain"
       source={bgImage as ImageSourcePropType}>
       <View className="flex justify-center items-center h-full">
-        <View className="h-[45%] bg-accent w-[85%] rounded-lg py-[35px] pr-[40px] pl-[35px]">
+        <View
+          className="bg-accent w-[85%] rounded-lg"
+          style={{
+            width: responsiveWidth(85),
+            padding: responsiveHeight(38 / percentToPx),
+            paddingLeft: responsiveHeight(35 / percentToPx),
+          }}>
           <Text
-            style={textStyles.bebasNeueBold}
-            className="text-3xl font-bold text-off-white">
+            style={[
+              textStyles.bebasNeueBold,
+              {fontSize: responsiveFontSize(35 / percentToPx)},
+            ]}
+            className="font-bold text-off-white-1">
             FORGOT PASSWORD
           </Text>
           <Text
-            style={textStyles.robotoMedium}
-            className="mt-8 text-[18px] text-off-white">
+            style={[
+              textStyles.robotoRegular,
+              {
+                fontSize: responsiveFontSize(16 / percentToPx),
+                marginTop: responsiveHeight(30 / percentToPx),
+              },
+            ]}
+            className="text-off-white-1">
             Please enter the registered email address to reset your password
           </Text>
-          <View className="mt-8">
+          <View style={{marginTop: responsiveHeight(30 / percentToPx)}}>
             <View className="flex gap-2">
               <Text
-                style={textStyles.robotoMedium}
-                className="text-base font-bold text-off-white">
+                style={[
+                  textStyles.robotoRegular,
+                  {fontSize: responsiveFontSize(16 / percentToPx)},
+                ]}
+                className="font-bold text-off-white-1">
                 Email
               </Text>
               <TextField
@@ -68,15 +92,17 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               />
             </View>
           </View>
-          <View className="w-[102%] mt-auto">
+          <View style={{marginTop: responsiveHeight(50 / percentToPx)}}>
             <Button
               text="Submit"
-              className="w-full"
               callback={() => {}}
               showBackgroundColor={false}
+              style={{width: responsiveWidth(67)}}
             />
             <View className="mt-4 flex flex-row justify-center">
-              <Text style={textStyles.robotoMedium} className="text-off-white">
+              <Text
+                style={textStyles.robotoRegular}
+                className="text-off-white-1">
                 Go back to
               </Text>
               <TouchableOpacity
@@ -84,7 +110,7 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                 onPress={() => navigation.navigate('LoginScreen')}>
                 <Text
                   style={textStyles.robotoBold}
-                  className="ml-1 text-off-white font-extrabold">
+                  className="ml-1 text-off-white-1 font-extrabold">
                   Login
                 </Text>
               </TouchableOpacity>

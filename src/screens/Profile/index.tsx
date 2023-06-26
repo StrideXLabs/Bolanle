@@ -27,7 +27,7 @@ const ProfileScreen = () => {
   };
 
   return (
-    <View className="px-10 py-5">
+    <View className="px-10 py-5 bg-white h-screen">
       <Text
         style={textStyles.bebasNeueBold}
         className="text-dark-blue text-4xl">

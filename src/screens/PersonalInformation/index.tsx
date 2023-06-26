@@ -45,13 +45,16 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
   };
 
   return (
-    <KeyboardAvoidingView>
-      <ScrollView>
-        <View
-          style={{
-            paddingVertical: responsiveHeight(32 / percentToPx),
-            paddingHorizontal: responsiveHeight(40 / percentToPx),
-          }}>
+    <View
+      className="bg-white"
+      style={{
+        paddingVertical: responsiveHeight(32 / percentToPx),
+        paddingHorizontal: responsiveHeight(40 / percentToPx),
+      }}>
+      <KeyboardAvoidingView contentContainerStyle={{height: '100%'}}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{height: '100%'}}>
           <HeaderStepCount
             step={step}
             onBackPress={() => {
@@ -69,8 +72,10 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
               subtitle="Please add your personal details to get started."
             />
           </View>
-          <View className="flex gap-[10px]">
-            <View className="flex">
+          <View className="flex">
+            <View
+              className="flex"
+              style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
               <Text
                 style={[
                   textStyles.robotoMedium,
@@ -93,7 +98,9 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
                 placeholder="Enter your full name"
               />
             </View>
-            <View className="flex gap-1">
+            <View
+              className="flex"
+              style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
               <Text
                 style={[
                   textStyles.robotoMedium,
@@ -116,7 +123,9 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
                 placeholder="Enter your designation"
               />
             </View>
-            <View className="flex gap-1">
+            <View
+              className="flex"
+              style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
               <Text
                 style={[
                   textStyles.robotoMedium,
@@ -139,7 +148,7 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
                 placeholder="Enter your department"
               />
             </View>
-            <View className="flex gap-1">
+            <View className="flex">
               <Text
                 style={[
                   textStyles.robotoMedium,
@@ -180,12 +189,12 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
         </View> */}
           <View
             style={{marginTop: responsiveHeight(78 / percentToPx)}}
-            className="w-full flex-grow ml-1">
-            <Button text="Next" className="w-full" callback={handleNextClick} />
+            className="w-full">
+            <Button text="Next" callback={handleNextClick} />
           </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
