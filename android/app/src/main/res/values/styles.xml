@@ -3,11 +3,26 @@
     <!-- Base application theme. -->
     <color name="primary_dark">#000000</color>
     <color name="status_bar_color">#F1592A</color>
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackground">@color/status_bar_color</item>
+        <item name="android:windowBackground">@color/status_bar_color</item>
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
     </style>
-    <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">
+    <style name="SplashScreenTheme" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimaryDark">@color/status_bar_color</item>
+        <item name="android:windowBackground">@color/status_bar_color</item>
     </style>
 </resources>

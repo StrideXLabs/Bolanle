@@ -13,7 +13,6 @@ import {percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import Toast from '../../lib/toast';
-import {getFileName} from '../../lib/getFileName';
 
 const Upload = () => {
   const {setContactDetails, contactDetails} = useCreateBusinessCard();
