@@ -1,10 +1,11 @@
-import {Asset} from 'react-native-image-picker';
+import {Image} from 'react-native-image-crop-picker';
 import {
   IContactDetails,
   IPersonalInformation,
 } from '../hooks/useBusinessCard/interface';
 import fetcher from '../lib/fetcher';
 import {IDefaultAPIResponse} from '../types/api-response';
+import {getFileName} from '../lib/getFileName';
 
 export interface ICard {
   url: string;
@@ -13,8 +14,8 @@ export interface ICard {
 }
 
 export interface ICreateCardData {
-  companyLogo: Asset;
-  profileImage: Asset;
+  companyLogo: Image;
+  profileImage: Image;
   socialLinks: ICard[];
   personalInformation: IPersonalInformation;
   contactDetails: Omit<Omit<IContactDetails, 'profilePicture'>, 'companyLogo'>;
@@ -56,15 +57,16 @@ class CardService {
         'personalInformation',
         JSON.stringify(data.personalInformation),
       );
+
       formData.append('companyLogo', {
-        uri: data.companyLogo.uri,
-        type: data.companyLogo.type,
-        name: data.companyLogo.fileName,
+        uri: data.companyLogo.path,
+        type: data.companyLogo.mime,
+        name: data.companyLogo.filename || getFileName(data.companyLogo.path),
       });
       formData.append('profileImage', {
-        uri: data.profileImage.uri,
-        type: data.profileImage.type,
-        name: data.profileImage.fileName,
+        uri: data.profileImage.path,
+        type: data.profileImage.mime,
+        name: data.profileImage.filename || getFileName(data.profileImage.path),
       });
 
       const response = await fetcher<FormData, ICreateCardResponse>(

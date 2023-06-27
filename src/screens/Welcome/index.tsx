@@ -16,7 +16,7 @@ import {
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 
-import linearBg from '../../assets/images/bg-2.png';
+import linearBg from '../../assets/images/bg-1.png';
 import logo from '../../assets/images/logo.png';
 import Button from '../../components/Button';
 import {percentToPx} from '../../constants';
@@ -32,7 +32,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <View style={{flex: 1}} className="h-screen">
+    <View style={{flex: 1}} className="h-screen bg-accent">
       <StatusBar
         animated
         showHideTransition="slide"
@@ -70,8 +70,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
               <View style={{marginTop: responsiveHeight(22 / percentToPx)}}>
                 <Button
                   style={{
-                    marginBottom: responsiveHeight(22 / percentToPx),
-                    width: responsiveWidth(70),
+                    marginBottom: responsiveHeight(20 / percentToPx),
+                    width: responsiveWidth(80),
                   }}
                   callback={() =>
                     navigation.navigate('PersonalInformationScreen')
@@ -81,7 +81,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
                 <Button
                   text="Log in"
                   showBackgroundColor={false}
-                  style={{width: responsiveWidth(70)}}
+                  style={{width: responsiveWidth(80)}}
                   callback={() => navigation.replace('LoginScreen')}
                 />
               </View>

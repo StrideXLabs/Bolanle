@@ -8,19 +8,19 @@ import {
   View,
 } from 'react-native';
 
-import bgImage from '../../../assets/images/bg-2.png';
-import Button from '../../../components/Button';
-import TextField from '../../../components/TextField/TextFieldLight';
-import textStyles from '../../../constants/fonts';
-import {useAuth} from '../../../hooks/useAuth';
-import {AppStackParams} from '../../../navigation/AppNavigation';
-import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import {
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
+import bgImage from '../../../assets/images/bg-2.png';
+import Button from '../../../components/Button';
+import TextField from '../../../components/TextField/TextFieldLight';
 import {percentToPx} from '../../../constants';
+import textStyles from '../../../constants/fonts';
+import {useAuth} from '../../../hooks/useAuth';
+import {AppStackParams} from '../../../navigation/AppNavigation';
+import {AuthStackParams} from '../../../navigation/AuthNavigation';
 
 export type LoginScreenProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -74,23 +74,14 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
             Please enter the registered email address to reset your password
           </Text>
           <View style={{marginTop: responsiveHeight(30 / percentToPx)}}>
-            <View className="flex gap-2">
-              <Text
-                style={[
-                  textStyles.robotoRegular,
-                  {fontSize: responsiveFontSize(16 / percentToPx)},
-                ]}
-                className="font-bold text-off-white-1">
-                Email
-              </Text>
-              <TextField
-                value={email}
-                keyboardType="email-address"
-                placeholder="john@gmail.com"
-                enablesReturnKeyAutomatically
-                onChangeText={text => setEmail(text)}
-              />
-            </View>
+            <TextField
+              label="Email"
+              value={email}
+              keyboardType="email-address"
+              placeholder="john@gmail.com"
+              enablesReturnKeyAutomatically
+              onChangeText={text => setEmail(text)}
+            />
           </View>
           <View style={{marginTop: responsiveHeight(50 / percentToPx)}}>
             <Button

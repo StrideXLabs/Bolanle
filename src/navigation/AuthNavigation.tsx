@@ -19,13 +19,13 @@ import WelcomeScreen from '../screens/Welcome';
 export type AuthStackParams = {
   LoginScreen: undefined;
   WelcomeScreen: undefined;
+  RegisterScreen: undefined;
   SocialLinksScreen: undefined;
   ForgotPasswordScreen: undefined;
   ContactDetailsScreen: undefined;
   WhatsAppScreen: {social: ISocial};
   PersonalInformationScreen: undefined;
   OtherSocialsScreen: {social: ISocial};
-  RegisterScreen: {fromLoginScreen: boolean};
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackParams>();
