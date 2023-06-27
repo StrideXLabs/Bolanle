@@ -1,22 +1,18 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
 import TextField from '../../components/TextField/TextFieldDark';
 import {emailRegex, percentToPx} from '../../constants';
-import textStyles from '../../constants/fonts';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import isValidURL from '../../lib/isValidUrl';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import Upload from './Upload';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-} from 'react-native-responsive-dimensions';
 
 export type ContactDetailsProps = NativeStackScreenProps<
   AppStackParams,
