@@ -1,4 +1,4 @@
-import {Asset} from 'react-native-image-picker';
+import {Image} from 'react-native-image-crop-picker';
 import {ISocial, SocialLinkType} from '../../constants/socials';
 
 export interface IPersonalInformation {
@@ -13,8 +13,8 @@ export interface IContactDetails {
   mobile: string;
   websiteUrl: string;
   companyAddress: string;
-  companyLogo: Asset | null;
-  profilePicture: Asset | null;
+  companyLogo: Image | null;
+  profilePicture: Image | null;
 }
 
 export interface ISocialLink {

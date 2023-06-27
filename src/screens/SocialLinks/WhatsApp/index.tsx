@@ -107,73 +107,45 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
             subtitle="Please fill the following detail."
           />
         </View>
-        <View className="flex">
-          <View
-            className="flex"
-            style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
-            <Text
-              style={[
-                textStyles.robotoMedium,
-                {
-                  marginBottom: responsiveHeight(5 / percentToPx),
-                  fontSize: responsiveFontSize(16 / percentToPx),
-                },
-              ]}
-              className="font-bold text-dark-blue">
-              WhatsApp
-            </Text>
-            <TextField
-              value={social.url}
-              className="relative"
-              style={{paddingLeft: 75}}
-              keyboardType="number-pad"
-              placeholder="WhatsApp number"
-              onChangeText={url => setSocial(state => ({...state, url}))}
-            />
-            {data.flag && (
-              <View
-                className="absolute"
-                style={{
-                  top: responsiveHeight(3.8),
-                  left: responsiveHeight(1.3),
-                }}>
-                <Pressable
-                  className="flex flex-row items-center gap-1 justify-center"
-                  onPress={() => setOpen(true)}>
-                  <View className="flex flex-row items-center gap-1 justify-center">
-                    <Text className="text-[24px]">{data.flag}</Text>
-                    <View className="top-[1.5px]">
-                      <ChevronDownIcon size={20} color="black" />
-                    </View>
+        <View
+          className="relative"
+          style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
+          <TextField
+            label="WhatsApp"
+            value={social.url}
+            style={{paddingLeft: 75}}
+            keyboardType="number-pad"
+            placeholder="WhatsApp number"
+            onChangeText={url => setSocial(state => ({...state, url}))}
+          />
+          {data.flag && (
+            <View
+              className="absolute"
+              style={{
+                top: responsiveHeight(3.7),
+                left: responsiveHeight(1.3),
+              }}>
+              <Pressable
+                className="flex flex-row items-center gap-1 justify-center"
+                onPress={() => setOpen(true)}>
+                <View className="flex flex-row items-center gap-1 justify-center">
+                  <Text className="text-[24px]">{data.flag}</Text>
+                  <View className="top-[1.5px]">
+                    <ChevronDownIcon size={20} color="black" />
                   </View>
-                </Pressable>
-              </View>
-            )}
-          </View>
-          <View className="flex">
-            <Text
-              style={[
-                textStyles.robotoMedium,
-                {
-                  marginBottom: responsiveHeight(5 / percentToPx),
-                  fontSize: responsiveFontSize(16 / percentToPx),
-                },
-              ]}
-              className="text-base font-bold text-dark-blue">
-              Title
-            </Text>
-            <TextField
-              editable={false}
-              focusable={false}
-              value={social.title}
-              placeholder="Whatsapp"
-              selectTextOnFocus={false}
-              onChangeText={title => setSocial(state => ({...state, title}))}
-            />
-          </View>
+                </View>
+              </Pressable>
+            </View>
+          )}
         </View>
+        <TextField
+          label="Title"
+          value={social.title}
+          placeholder="Whatsapp"
+          onChangeText={title => setSocial(state => ({...state, title}))}
+        />
         <View style={{marginTop: responsiveHeight(52 / percentToPx)}}>
-          <Button text="Next" callback={handleSave} />
+          <Button text="Save" callback={handleSave} />
         </View>
       </View>
     </>

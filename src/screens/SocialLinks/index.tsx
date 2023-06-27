@@ -118,7 +118,7 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
       return Toast.error({primaryText: 'Please add at least one social link.'});
 
     setStep(step + 1);
-    navigation.navigate('RegisterScreen', {fromLoginScreen: false});
+    navigation.navigate('RegisterScreen');
   };
 
   const handleCreateNewCard = async () => {
