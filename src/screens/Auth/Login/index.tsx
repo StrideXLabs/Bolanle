@@ -108,84 +108,60 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
             LOGIN
           </Text>
           <View style={{marginTop: responsiveHeight(36 / percentToPx)}}>
-            <View className="flex">
-              <Text
-                style={[
-                  textStyles.robotoMedium,
-                  {
-                    fontSize: responsiveFontSize(16 / percentToPx),
-                    marginBottom: responsiveHeight(10 / percentToPx),
-                  },
-                ]}
-                className="font-bold text-off-white-1">
-                Email
-              </Text>
-              <TextField
-                keyboardType="email-address"
-                value={credentials.email}
-                onChangeText={email =>
-                  setCredentials(state => ({
-                    ...state,
-                    email,
-                  }))
-                }
-                placeholder="john@gmail.com"
-              />
-            </View>
+            <TextField
+              label="Email"
+              keyboardType="email-address"
+              value={credentials.email}
+              onChangeText={email =>
+                setCredentials(state => ({
+                  ...state,
+                  email,
+                }))
+              }
+              placeholder="john@gmail.com"
+            />
           </View>
-          <View style={{marginTop: responsiveHeight(26 / percentToPx)}}>
-            <View className="flex">
-              <Text
-                style={[
-                  textStyles.robotoMedium,
-                  {
-                    fontSize: responsiveFontSize(16 / percentToPx),
-                    marginBottom: responsiveHeight(10 / percentToPx),
-                  },
-                ]}
-                className="font-bold text-off-white-1">
-                Password
-              </Text>
-              <TextField
-                value={credentials.password}
-                onChangeText={password =>
-                  setCredentials(state => ({...state, password}))
-                }
-                placeholder="Password"
-                secureTextEntry={secureTextEntry}
-                className="relative"
-              />
-              <View
-                className="absolute"
-                style={{
-                  top: responsiveHeight(38 / percentToPx),
-                  right: responsiveHeight(6 / percentToPx),
-                }}>
-                {secureTextEntry ? (
-                  <EyeIcon
-                    size={27}
-                    color="white"
-                    onPress={() => setSecureTextEntry(false)}
-                  />
-                ) : (
-                  <EyeSlashIcon
-                    size={27}
-                    color="white"
-                    onPress={() => setSecureTextEntry(true)}
-                  />
-                )}
-              </View>
-              <TouchableOpacity
-                activeOpacity={0.6}
-                style={{marginTop: responsiveHeight(12 / percentToPx)}}
-                onPress={() => navigation.push('ForgotPasswordScreen')}>
-                <Text
-                  style={textStyles.robotoMedium}
-                  className="text-right font-bold text-off-white-1">
-                  Forgot password?
-                </Text>
-              </TouchableOpacity>
+          <View style={{marginTop: responsiveHeight(22 / percentToPx)}}>
+            <TextField
+              label="Password"
+              value={credentials.password}
+              onChangeText={password =>
+                setCredentials(state => ({...state, password}))
+              }
+              placeholder="Password"
+              secureTextEntry={secureTextEntry}
+              className="relative"
+            />
+            <View
+              className="absolute"
+              style={{
+                top: responsiveHeight(36 / percentToPx),
+                right: responsiveHeight(6 / percentToPx),
+              }}>
+              {secureTextEntry ? (
+                <EyeIcon
+                  size={25}
+                  color="white"
+                  onPress={() => setSecureTextEntry(false)}
+                />
+              ) : (
+                <EyeSlashIcon
+                  size={25}
+                  color="white"
+                  onPress={() => setSecureTextEntry(true)}
+                />
+              )}
             </View>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              style={{marginTop: responsiveHeight(12 / percentToPx)}}
+              onPress={() => navigation.push('ForgotPasswordScreen')}>
+              <Text
+                style={textStyles.robotoMedium}
+                className="text-right font-bold text-off-white-1">
+                Forgot password?
+              </Text>
+            </TouchableOpacity>
           </View>
           <View style={{marginTop: responsiveHeight(36 / percentToPx)}}>
             <Button
@@ -206,7 +182,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() =>
-                  navigation.navigate('RegisterScreen', {fromLoginScreen: true})
+                  navigation.navigate('PersonalInformationScreen')
                 }>
                 <Text
                   style={textStyles.robotoBold}

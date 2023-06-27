@@ -1,18 +1,17 @@
-import React from 'react';
-import {KeyboardAvoidingView, ScrollView, Text, View} from 'react-native';
-
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-} from 'react-native-responsive-dimensions';
+import React from 'react';
+import {KeyboardAvoidingView, ScrollView, View} from 'react-native';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
 import TextField from '../../components/TextField/TextFieldDark';
 import {percentToPx} from '../../constants';
-import textStyles from '../../constants/fonts';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
+import {
+  initialContactDetails,
+  initialPersonalInformation,
+} from '../../hooks/useBusinessCard/constants';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
 
@@ -22,8 +21,28 @@ export type PersonalInformationProps = NativeStackScreenProps<
 >;
 
 const PersonalInformation = ({navigation}: PersonalInformationProps) => {
-  const {step, setStep, personalInformation, setPersonalInformation} =
-    useCreateBusinessCard();
+  const {
+    step,
+    setStep,
+    setSocialLinks,
+    setSocialItems,
+    setFromDashBoard,
+    setContactDetails,
+    personalInformation,
+    setPersonalInformation,
+  } = useCreateBusinessCard();
+
+  const handleBackPress = async () => {
+    await Promise.all([
+      setSocialLinks([]),
+      setSocialItems([]),
+      setFromDashBoard(false),
+      setContactDetails(initialContactDetails),
+      setPersonalInformation(initialPersonalInformation),
+    ]);
+    setStep(step === 0 ? 0 : step - 1);
+    navigation.canGoBack() && navigation.goBack();
+  };
 
   const handleNextClick = () => {
     if (
@@ -55,13 +74,7 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{height: '100%'}}>
-          <HeaderStepCount
-            step={step}
-            onBackPress={() => {
-              setStep(step === 0 ? 0 : step - 1);
-              navigation.canGoBack() && navigation.goBack();
-            }}
-          />
+          <HeaderStepCount step={step} onBackPress={handleBackPress} />
           <View
             style={{
               marginTop: responsiveHeight(20 / percentToPx),
@@ -76,18 +89,8 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
             <View
               className="flex"
               style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
-              <Text
-                style={[
-                  textStyles.robotoMedium,
-                  {
-                    marginBottom: responsiveHeight(5 / percentToPx),
-                    fontSize: responsiveFontSize(16 / percentToPx),
-                  },
-                ]}
-                className="font-bold text-dark-blue">
-                Full Name
-              </Text>
               <TextField
+                label="Full Name"
                 onChangeText={text => {
                   setPersonalInformation({
                     ...personalInformation,
@@ -101,18 +104,8 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
             <View
               className="flex"
               style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
-              <Text
-                style={[
-                  textStyles.robotoMedium,
-                  {
-                    marginBottom: responsiveHeight(5 / percentToPx),
-                    fontSize: responsiveFontSize(16 / percentToPx),
-                  },
-                ]}
-                className="font-bold text-dark-blue">
-                Designation
-              </Text>
               <TextField
+                label="Designation"
                 onChangeText={text => {
                   setPersonalInformation({
                     ...personalInformation,
@@ -126,18 +119,8 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
             <View
               className="flex"
               style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
-              <Text
-                style={[
-                  textStyles.robotoMedium,
-                  {
-                    marginBottom: responsiveHeight(5 / percentToPx),
-                    fontSize: responsiveFontSize(16 / percentToPx),
-                  },
-                ]}
-                className="font-bold text-dark-blue">
-                Department
-              </Text>
               <TextField
+                label="Department"
                 onChangeText={text => {
                   setPersonalInformation({
                     ...personalInformation,
@@ -148,19 +131,9 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
                 placeholder="Enter your department"
               />
             </View>
-            <View className="flex">
-              <Text
-                style={[
-                  textStyles.robotoMedium,
-                  {
-                    marginBottom: responsiveHeight(5 / percentToPx),
-                    fontSize: responsiveFontSize(16 / percentToPx),
-                  },
-                ]}
-                className="font-bold text-dark-blue">
-                Company
-              </Text>
+            <View>
               <TextField
+                label="Company"
                 onChangeText={text => {
                   setPersonalInformation({
                     ...personalInformation,
@@ -172,21 +145,6 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
               />
             </View>
           </View>
-          {/* <View className="flex flex-row items-center flex-wrap ml-1 mt-[22px]">
-          <Text className="text-dark-blue text-[14px]">
-            By Continuing, you agree to the{' '}
-          </Text>
-          <Text className="text-dark-blue text-[14px] underline decoration-dark-blue">
-            Privacy Policy
-          </Text>
-          <Text className="text-dark-blue text-[14px]"> & </Text>
-          <Text className="text-dark-blue text-[14px] underline decoration-dark-blue">
-            Terms
-          </Text>
-          <Text className="text-dark-blue text-[14px] underline decoration-dark-blue">
-            of Service
-          </Text>
-        </View> */}
           <View
             style={{marginTop: responsiveHeight(78 / percentToPx)}}
             className="w-full">

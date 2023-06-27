@@ -1,22 +1,18 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
 import TextField from '../../../components/TextField/TextFieldDark';
-import textStyles from '../../../constants/fonts';
+import {percentToPx} from '../../../constants';
 import {socialMappings} from '../../../constants/socials';
 import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 import {ISocialLink} from '../../../hooks/useBusinessCard/interface';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-} from 'react-native-responsive-dimensions';
-import {percentToPx} from '../../../constants';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams,
@@ -71,46 +67,19 @@ const OtherSocialsScreen = ({
             subtitle="Please fill the following detail."
           />
         </View>
-        <View className="flex gap-2">
-          <View className="flex">
-            <Text
-              style={[
-                textStyles.robotoMedium,
-                {
-                  marginBottom: responsiveHeight(5 / percentToPx),
-                  fontSize: responsiveFontSize(16 / percentToPx),
-                },
-              ]}
-              className="font-bold text-dark-blue">
-              Link/Username
-            </Text>
-            <TextField
-              value={social.url}
-              placeholder="Link/Username"
-              onChangeText={url => setSocial(state => ({...state, url}))}
-            />
-          </View>
-          <View className="flex">
-            <Text
-              style={[
-                textStyles.robotoMedium,
-                {
-                  marginBottom: responsiveHeight(5 / percentToPx),
-                  fontSize: responsiveFontSize(16 / percentToPx),
-                },
-              ]}
-              className="font-bold text-dark-blue">
-              Title
-            </Text>
-            <TextField
-              editable={false}
-              focusable={false}
-              value={social.title}
-              selectTextOnFocus={false}
-              placeholder={socialMappings[socialItem.id]}
-              onChangeText={title => setSocial(state => ({...state, title}))}
-            />
-          </View>
+        <TextField
+          value={social.url}
+          label="Link/Username"
+          placeholder="Link/Username"
+          onChangeText={url => setSocial(state => ({...state, url}))}
+        />
+        <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
+          <TextField
+            label="Title"
+            value={social.title}
+            placeholder={socialMappings[socialItem.id]}
+            onChangeText={title => setSocial(state => ({...state, title}))}
+          />
         </View>
         <Button
           text="Save"

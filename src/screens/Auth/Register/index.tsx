@@ -1,7 +1,7 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import decodeJWT from 'jwt-decode';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Text, View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 
 import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
@@ -15,7 +15,6 @@ import {
   accentColor,
   percentToPx,
 } from '../../../constants';
-import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
 import {IAuthState, IUser} from '../../../hooks/useAuth/interface';
 import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
@@ -40,10 +39,7 @@ export interface ICredentials {
   password: string;
 }
 
-const RegisterScreen: React.FC<RegisterScreenProps> = ({
-  navigation,
-  route: {params},
-}) => {
+const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
   const {setAuthState, authed} = useAuth();
   const {
     step,
@@ -57,7 +53,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
     setPersonalInformation,
   } = useCreateBusinessCard();
 
-  const fromLoginScreen = params.fromLoginScreen;
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [creatingBusinessCard, setCreatingBusinessCard] = useState(false);
 
@@ -97,11 +92,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
 
       setCreatingAccount(false);
       Toast.success({primaryText: 'Account created successfully.'});
-
-      if (fromLoginScreen) {
-        setAuthState({authed: true, token, user});
-        return;
-      }
 
       setCreatingBusinessCard(true);
       const mappedSocialLinks = socialLinks.map(item => ({
@@ -168,8 +158,8 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
     <View className="px-[40px] py-[53px] bg-white h-full">
       <HeaderStepCount
         step={step}
-        showDotes={!fromLoginScreen}
         onBackPress={() => {
+          setStep(step - 1);
           navigation.canGoBack() && navigation.goBack();
         }}
       />
@@ -179,27 +169,17 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
           subtitle="Please choose a password for yourself to create the account."
         />
       </View>
-      <View className="flex gap-[10px]">
-        <View>
-          <Text
-            style={textStyles.robotoMedium}
-            className="text-dark-blue mb-1 text-base font-bold text-off-white">
-            Email
-          </Text>
+      <View>
+        <TextField
+          label="Email"
+          value={credentials.email}
+          keyboardType="email-address"
+          placeholder="john@gmail.com"
+          onChangeText={email => setCredentials(state => ({...state, email}))}
+        />
+        <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
           <TextField
-            value={credentials.email}
-            keyboardType="email-address"
-            placeholder="john@gmail.com"
-            onChangeText={email => setCredentials(state => ({...state, email}))}
-          />
-        </View>
-        <View>
-          <Text
-            style={textStyles.robotoMedium}
-            className="text-dark-blue mb-1 text-base font-bold text-off-white">
-            Password
-          </Text>
-          <TextField
+            label="Password"
             value={credentials.password}
             onChangeText={password =>
               setCredentials(state => ({...state, password}))
@@ -211,18 +191,18 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
           <View
             className="absolute"
             style={{
-              top: 35,
+              top: 40,
               right: responsiveHeight(6 / percentToPx),
             }}>
             {secureTextEntry ? (
               <EyeIcon
-                size={27}
+                size={25}
                 color="#C9C9C9"
                 onPress={() => setSecureTextEntry(false)}
               />
             ) : (
               <EyeSlashIcon
-                size={27}
+                size={25}
                 color="#C9C9C9"
                 onPress={() => setSecureTextEntry(true)}
               />

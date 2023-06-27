@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
-import {Asset, launchImageLibrary} from 'react-native-image-picker';
+import {openPicker} from 'react-native-image-crop-picker';
 
 import {PlusIcon} from 'react-native-heroicons/outline';
 import {
@@ -13,25 +13,28 @@ import {percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import Toast from '../../lib/toast';
+import {getFileName} from '../../lib/getFileName';
 
 const Upload = () => {
   const {setContactDetails, contactDetails} = useCreateBusinessCard();
 
   const handleAddImage = async (type: 'Profile' | 'Logo') => {
     try {
-      const result = await launchImageLibrary({
-        selectionLimit: 1,
+      const result = await openPicker({
+        maxFiles: 1,
+        cropping: true,
         mediaType: 'photo',
-        presentationStyle: 'formSheet',
+        waitAnimationEnd: true,
+        freeStyleCropEnabled: true,
+        enableRotationGesture: true,
+        avoidEmptySpaceAroundImage: true,
       });
 
-      if (result.didCancel) return;
-      const file = result.assets?.[0] as Asset;
-
       if (type === 'Logo')
-        setContactDetails({...contactDetails, companyLogo: file});
-      else setContactDetails({...contactDetails, profilePicture: file});
+        setContactDetails({...contactDetails, companyLogo: result});
+      else setContactDetails({...contactDetails, profilePicture: result});
     } catch (error) {
+      if ((error as any)?.code === 'E_PICKER_CANCELLED') return;
       Toast.error({primaryText: 'Error selecting image. Please try again.'});
     }
   };
@@ -65,7 +68,7 @@ const Upload = () => {
               <Image
                 resizeMode="cover"
                 className="w-full h-full rounded-md"
-                source={{uri: contactDetails.companyLogo.uri}}
+                source={{uri: contactDetails.companyLogo.path}}
               />
             ) : (
               <PlusIcon size={25} color="black" />
@@ -120,7 +123,7 @@ const Upload = () => {
               <Image
                 resizeMode="cover"
                 className="w-full h-full rounded-md"
-                source={{uri: contactDetails.profilePicture.uri}}
+                source={{uri: contactDetails.profilePicture.path}}
               />
             ) : (
               <PlusIcon size={25} color="black" />
