@@ -8,6 +8,7 @@ import profileIcon from '../assets/images/profile.png';
 import {accentColor} from '../constants';
 import ContactsScreen from '../screens/Contacts';
 import ProfileScreen from '../screens/Profile';
+import {useOpenModalState} from '../hooks/useOpenModal';
 
 export type BottomTabNavigatorParams = {
   ProfileScreen: undefined;
@@ -18,11 +19,13 @@ export type BottomTabNavigatorParams = {
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParams>();
 
 const BottomNavigation = () => {
+  const open = useOpenModalState(state => state.open);
+
   return (
     <BottomTabNavigator.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {minHeight: 66},
+        tabBarStyle: {minHeight: 66, display: open ? 'none' : 'flex'},
         tabBarLabelStyle: {
           fontSize: 13,
           marginBottom: 12,
