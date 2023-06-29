@@ -426,13 +426,15 @@ const ContactsScreen = ({navigation}: WelcomeScreenProps) => {
         </View>
       )}
       <Modal
+        hasBackdrop
         isVisible={open}
         swipeDirection="down"
         backdropOpacity={0.7}
         animationIn="slideInUp"
         animationInTiming={250}
+        animationOutTiming={500}
         backdropColor="#33373D"
-        animationOutTiming={1000}
+        useNativeDriverForBackdrop
         animationOut="slideOutDown"
         onSwipeComplete={handleClose}
         onBackdropPress={handleClose}
