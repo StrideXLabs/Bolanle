@@ -11,26 +11,29 @@ import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
 
 type Props = {
+  editable: boolean;
   personalInfo: ICardData['personalInfo'];
   onEditPress: (info: ICardData['personalInfo']) => void;
 };
 
-const PersonalInfo = ({personalInfo, onEditPress}: Props) => {
+const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
   return (
     <>
       <View className="flex flex-row items-center justify-between mt-[21px] mb-[10px]">
         <Text style={textStyles.robotoBold} className="text-accent text-[20px]">
           Personal Information
         </Text>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => onEditPress(personalInfo)}>
-          <Image
-            resizeMode="contain"
-            className="w-[16.5px] h-[16.5px]"
-            source={editIcon as ImageSourcePropType}
-          />
-        </TouchableOpacity>
+        {editable && (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => onEditPress(personalInfo)}>
+            <Image
+              resizeMode="contain"
+              className="w-[16.5px] h-[16.5px]"
+              source={editIcon as ImageSourcePropType}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <View className="flex">
         <View className="flex flex-row gap-2 mb-[5px]">

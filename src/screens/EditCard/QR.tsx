@@ -7,11 +7,12 @@ import Button from '../../components/Button';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
 
 type Props = {
+  editable: boolean;
   qr: ICardData['qr'];
   onDeleteCard: () => void;
 };
 
-const QR = ({onDeleteCard, qr}: Props) => {
+const QR = ({onDeleteCard, qr, editable}: Props) => {
   return (
     <View className="pb-[50px]">
       <View className="flex flex-row items-center justify-between mt-[21px] mb-[10px]">
@@ -24,12 +25,14 @@ const QR = ({onDeleteCard, qr}: Props) => {
           className="w-[130px] h-[130px] rounded-lg"
           source={{uri: `${BASE_URL}/${qr}`}}
         />
-        <Button
-          text="Delete Card"
-          className="mt-[20px]"
-          callback={onDeleteCard}
-          style={{width: responsiveWidth(60)}}
-        />
+        {editable && (
+          <Button
+            text="Delete Card"
+            className="mt-[20px]"
+            callback={onDeleteCard}
+            style={{width: responsiveWidth(60)}}
+          />
+        )}
       </View>
     </View>
   );

@@ -3,19 +3,24 @@ import {Image, Text, View} from 'react-native';
 import {
   responsiveFontSize,
   responsiveHeight,
-  responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import {BASE_URL, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
 
 type Props = {
+  editable: boolean;
   personalInfo: ICardData['personalInfo'];
   contactDetails: ICardData['contactDetails'];
   onEditPress: (info: ICardData['contactDetails']) => void;
 };
 
-const Header = ({contactDetails, onEditPress, personalInfo}: Props) => {
+const Header = ({
+  editable,
+  onEditPress,
+  personalInfo,
+  contactDetails,
+}: Props) => {
   return (
     <>
       <View
