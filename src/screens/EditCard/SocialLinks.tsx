@@ -13,26 +13,29 @@ import {ICardData} from '../../services/dashboard.service';
 import {filledIconsMapping} from '../../constants/socials';
 
 type Props = {
+  editable: boolean;
   socialLinks: ICardData['socialLinks'];
   onEditPress: (info: ICardData['socialLinks']) => void;
 };
 
-const SocialLinks = ({socialLinks, onEditPress}: Props) => {
+const SocialLinks = ({socialLinks, onEditPress, editable}: Props) => {
   return (
     <View>
       <View className="flex flex-row items-center justify-between mt-[21px] mb-[10px]">
         <Text style={textStyles.robotoBold} className="text-accent text-[20px]">
           Social Links
         </Text>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => onEditPress(socialLinks)}>
-          <Image
-            resizeMode="contain"
-            className="w-[16.5px] h-[16.5px]"
-            source={editIcon as ImageSourcePropType}
-          />
-        </TouchableOpacity>
+        {editable && (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => onEditPress(socialLinks)}>
+            <Image
+              resizeMode="contain"
+              className="w-[16.5px] h-[16.5px]"
+              source={editIcon as ImageSourcePropType}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <View className="mt-2">
         {socialLinks.map(social => {
@@ -56,13 +59,15 @@ const SocialLinks = ({socialLinks, onEditPress}: Props) => {
                   {social.title}
                 </Text>
               </View>
-              <View className="w-4 h-4">
-                <Image
-                  resizeMode="center"
-                  className="w-full h-full"
-                  source={deleteIcon as ImageSourcePropType}
-                />
-              </View>
+              {editable && (
+                <View className="w-4 h-4">
+                  <Image
+                    resizeMode="center"
+                    className="w-full h-full"
+                    source={deleteIcon as ImageSourcePropType}
+                  />
+                </View>
+              )}
             </View>
           );
         })}

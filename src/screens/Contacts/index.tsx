@@ -1,10 +1,9 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
   Image,
   ImageSourcePropType,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
@@ -15,12 +14,15 @@ import {
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import searchIcon from '../../assets/images/search.png';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField/TextFieldDark';
 import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {useOpenModalState} from '../../hooks/useOpenModal';
+import Toast from '../../lib/toast';
+import {AppStackParams} from '../../navigation/AppNavigation';
 import {ICardData} from '../../services/dashboard.service';
 import ContactCard from './ContactCard';
 import ModalContent from './ModalContent';
@@ -246,10 +248,15 @@ const data = [
   },
 ] as IContact[];
 
+export type WelcomeScreenProps = NativeStackScreenProps<
+  AppStackParams,
+  'EditCardScreen'
+>;
+
 export interface IContact
   extends Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'> {}
 
-const ContactsScreen = () => {
+const ContactsScreen = ({navigation}: WelcomeScreenProps) => {
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const {open, setOpen} = useOpenModalState();
@@ -267,9 +274,27 @@ const ContactsScreen = () => {
 
   const fetchContactData = async () => {};
 
-  const handleViewCard = () => {};
+  const handleViewCard = () => {
+    if (!selectedContactRef.current)
+      return Toast.error({primaryText: 'Please select a card first.'});
+
+    setOpen(false);
+    navigation.navigate('EditCardScreen', {
+      card: selectedContactRef.current!,
+      editable: false,
+    });
+  };
 
   const handleShareCard = () => {};
+
+  const handleClose = () => {
+    selectedContactRef.current = null;
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    selectedContactRef.current = null;
+  }, []);
 
   return (
     <View
@@ -373,15 +398,15 @@ const ContactsScreen = () => {
         backdropColor="#33373D"
         animationOutTiming={1000}
         animationOut="slideOutDown"
+        onSwipeComplete={handleClose}
+        onBackdropPress={handleClose}
+        onBackButtonPress={handleClose}
         backdropTransitionInTiming={500}
-        onSwipeComplete={() => setOpen(false)}
-        onBackdropPress={() => setOpen(false)}
-        onBackButtonPress={() => setOpen(false)}
         style={{margin: 0, paddingHorizontal: 15, justifyContent: 'flex-end'}}>
         <ModalContent
+          onCancel={handleClose}
           onViewCard={handleViewCard}
           onShareCard={handleShareCard}
-          onCancel={() => setOpen(false)}
         />
       </Modal>
     </View>

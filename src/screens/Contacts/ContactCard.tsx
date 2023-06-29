@@ -10,6 +10,7 @@ import {IContact} from '.';
 import menuIcon from '../../assets/images/menu.png';
 import {BASE_URL} from '../../constants';
 import textStyles from '../../constants/fonts';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 
 interface IContactCardProps {
   contact: IContact;
@@ -48,7 +49,9 @@ const ContactCard = ({contact, onPress}: IContactCardProps) => {
             </Text>
           </View>
         </View>
-        <TouchableOpacity onPress={() => onPress(contact)}>
+        <TouchableOpacity
+          onPress={() => onPress(contact)}
+          style={{padding: responsiveHeight(1)}}>
           <Image
             resizeMode="center"
             className="h-[20px] w-[20px]"

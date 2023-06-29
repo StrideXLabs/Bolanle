@@ -21,10 +21,13 @@ export type AppStackParams = {
   WelcomeScreen: undefined;
   SocialLinksScreen: undefined;
   ContactDetailsScreen: undefined;
-  EditCardScreen: {card: ICardData};
   WhatsAppScreen: {social: ISocial};
   PersonalInformationScreen: undefined;
   OtherSocialsScreen: {social: ISocial};
+  EditCardScreen: {
+    card: Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>;
+    editable: boolean;
+  };
 };
 
 const AppStack = createNativeStackNavigator<AppStackParams>();
