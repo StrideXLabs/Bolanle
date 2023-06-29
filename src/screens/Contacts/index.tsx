@@ -283,7 +283,7 @@ const ContactsScreen = ({navigation}: WelcomeScreenProps) => {
         setError(data.message);
       }
 
-      setContacts(data.data?.data || []);
+      setContacts(data.data || []);
     } catch (error) {
       setError(
         error instanceof Error

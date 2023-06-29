@@ -1,11 +1,12 @@
+import {isHttpError} from 'http-errors';
 import {Image} from 'react-native-image-crop-picker';
 import {
   IContactDetails,
   IPersonalInformation,
 } from '../hooks/useBusinessCard/interface';
 import fetcher from '../lib/fetcher';
-import {IDefaultAPIResponse} from '../types/api-response';
 import {getFileName} from '../lib/getFileName';
+import {IDefaultAPIResponse} from '../types/api-response';
 
 export interface ICard {
   url: string;
@@ -57,7 +58,6 @@ class CardService {
         'personalInformation',
         JSON.stringify(data.personalInformation),
       );
-
       formData.append('companyLogo', {
         uri: data.companyLogo.path,
         type: data.companyLogo.mime,
@@ -72,8 +72,9 @@ class CardService {
       const response = await fetcher<FormData, ICreateCardResponse>(
         '/business-card',
         {
-          body: formData,
           method: 'POST',
+          body: formData,
+          isFormData: true,
           headers: {'Content-Type': 'multipart/form-data'},
         },
       );
@@ -87,10 +88,9 @@ class CardService {
       return {
         data: null,
         success: false,
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Error while creating account. Please try again.',
+        message: isHttpError(error)
+          ? error.message
+          : 'Error while creating account. Please try again.',
       };
     }
   }

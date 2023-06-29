@@ -1,6 +1,6 @@
 export const TokenKey = 'token';
-export const UserKey = 'userKey';
 export const AuthStateKey = 'authState';
+export const refreshTokenTime = 3000000;
 export const percentToPx = 7.3430239002743285;
 
 export const accentColor = '#F1592A';

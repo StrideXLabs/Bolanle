@@ -1,23 +1,19 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {Pressable, SafeAreaView, ScrollView, Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import {CountryPicker} from 'react-native-country-codes-picker';
 import {ChevronDownIcon} from 'react-native-heroicons/outline';
 
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
 import TextField from '../../../components/TextField/TextFieldDark';
-import textStyles from '../../../constants/fonts';
+import {percentToPx} from '../../../constants';
 import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 import {ISocialLink} from '../../../hooks/useBusinessCard/interface';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-} from 'react-native-responsive-dimensions';
-import {percentToPx} from '../../../constants';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams,

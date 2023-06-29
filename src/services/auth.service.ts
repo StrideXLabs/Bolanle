@@ -1,3 +1,4 @@
+import {isHttpError} from 'http-errors';
 import {emailRegex} from '../constants';
 import fetcher from '../lib/fetcher';
 import {IDefaultAPIResponse} from '../types/api-response';
@@ -8,15 +9,15 @@ export interface ICredentialsData {
 }
 
 export interface IAuthedResponse {
-  message: string;
   token: string;
+  message: string;
 }
 
 class AuthService {
   async authenticate(
     data: ICredentialsData,
     type: 'LOGIN' | 'REGISTRATION',
-  ): Promise<IDefaultAPIResponse<IAuthedResponse>> {
+  ): Promise<IDefaultAPIResponse<string>> {
     try {
       const {email, password} = data;
 
@@ -36,12 +37,12 @@ class AuthService {
 
       const response = await fetcher<ICredentialsData, IAuthedResponse>(
         `/user${type === 'REGISTRATION' ? '/signup' : '/login'}`,
-        {data: {email, password}, method: 'POST'},
+        {body: {email, password}, method: 'POST'},
       );
 
       return {
         success: true,
-        data: response,
+        data: response.token,
         message:
           type === 'REGISTRATION'
             ? 'Account created successfully.'
@@ -51,12 +52,11 @@ class AuthService {
       return {
         data: null,
         success: false,
-        message:
-          error instanceof Error
-            ? error.message
-            : type === 'REGISTRATION'
-            ? 'Error while creating account. Please try again.'
-            : 'Error while login. Please try again.',
+        message: isHttpError(error)
+          ? error.message
+          : type === 'REGISTRATION'
+          ? 'Error while creating account. Please try again.'
+          : 'Error while login. Please try again.',
       };
     }
   }

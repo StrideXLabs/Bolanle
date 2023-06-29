@@ -2,7 +2,6 @@ import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {ArrowLeftIcon} from 'react-native-heroicons/outline';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
-import {percentToPx} from '../../../constants';
 
 const list = new Array(4).fill(0);
 

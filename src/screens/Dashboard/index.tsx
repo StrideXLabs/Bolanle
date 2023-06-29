@@ -6,11 +6,11 @@ import Button from '../../components/Button';
 import DashboardHeader from '../../components/Header/DashboardHeader';
 import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
+import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import dashboardService, {ICardData} from '../../services/dashboard.service';
 import Card from './Card';
-import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
@@ -33,7 +33,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
         setError(data.message);
       }
 
-      setCards(data.data?.data || []);
+      setCards(data.data || []);
     } catch (error) {
       setError(
         error instanceof Error

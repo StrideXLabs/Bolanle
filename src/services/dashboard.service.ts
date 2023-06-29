@@ -1,3 +1,4 @@
+import {isHttpError} from 'http-errors';
 import {
   IContactDetails,
   IPersonalInformation,
@@ -26,25 +27,20 @@ export interface ICardsResponse {
 }
 
 class DashboardService {
-  async getAllCards(): Promise<IDefaultAPIResponse<ICardsResponse>> {
+  async getAllCards(): Promise<IDefaultAPIResponse<ICardsResponse['data']>> {
     try {
-      const data = await fetcher<{}, ICardsResponse>('/dashboard', {
-        body: {},
-        method: 'GET',
-      });
-
+      const data = await fetcher<{}, ICardsResponse>('/dashboard');
       return {
         success: true,
+        data: data.data,
         message: data.message,
-        data: {data: data.data, message: data.message},
       };
     } catch (error) {
       return {
-        data: {data: [], message: ''},
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Something went wrong. Please try again.',
+        data: [],
+        message: isHttpError(error)
+          ? error.message
+          : 'Something went wrong. Please try again.',
         success: false,
       };
     }

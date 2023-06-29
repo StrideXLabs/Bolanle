@@ -75,7 +75,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
         return Toast.error({primaryText: response.message});
       }
 
-      const token = response.data?.token ?? '';
+      const token = response.data ?? '';
       const decodedUser = decodeJWT(token) as {[key: string]: string | number};
       const user = {
         id: decodedUser._id,
