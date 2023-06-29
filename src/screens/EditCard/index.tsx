@@ -85,8 +85,8 @@ const EditCardScreen = ({
           <QR editable={editable} qr={qr} onDeleteCard={() => setOpen(true)} />
           <DeleteCardModal
             visible={open}
-            onClose={() => setOpen(false)}
             onDelete={() => {}}
+            onClose={() => setOpen(false)}
           />
         </ScrollView>
       </View>

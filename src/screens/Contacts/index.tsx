@@ -23,11 +23,12 @@ import textStyles from '../../constants/fonts';
 import {useOpenModalState} from '../../hooks/useOpenModal';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
+import contactsService from '../../services/contacts.service';
 import {ICardData} from '../../services/dashboard.service';
 import ContactCard from './ContactCard';
 import ModalContent from './ModalContent';
 
-const data = [
+const DATA = [
   {
     _id: '6499c21909c3108faef126da',
     userId: '6499c21809c3108faef126d8',
@@ -262,7 +263,7 @@ const ContactsScreen = ({navigation}: WelcomeScreenProps) => {
   const {open, setOpen} = useOpenModalState();
   const [loading, setLoading] = useState(false);
   const selectedContactRef = useRef<IContact | null>(null);
-  const [contacts, setContacts] = useState<IContact[]>(data);
+  const [contacts, setContacts] = useState<IContact[]>(DATA);
 
   const filteredContacts = search.trim()
     ? contacts.filter(c =>
@@ -272,7 +273,27 @@ const ContactsScreen = ({navigation}: WelcomeScreenProps) => {
       )
     : contacts;
 
-  const fetchContactData = async () => {};
+  const fetchContactData = async () => {
+    try {
+      setLoading(true);
+      const data = await contactsService.getAll();
+
+      if (!data.success) {
+        setLoading(false);
+        setError(data.message);
+      }
+
+      setContacts(data.data?.data || []);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message || 'Something went wrong. Please try again.'
+          : 'Something went wrong. Please try again.',
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleViewCard = () => {
     if (!selectedContactRef.current)
@@ -294,6 +315,7 @@ const ContactsScreen = ({navigation}: WelcomeScreenProps) => {
 
   useEffect(() => {
     selectedContactRef.current = null;
+    // fetchContactData();
   }, []);
 
   return (
@@ -360,7 +382,21 @@ const ContactsScreen = ({navigation}: WelcomeScreenProps) => {
           />
         </View>
       )}
-      {!loading && !error && contacts.length > 0 && (
+      {!loading && !error && contacts.length == 0 && (
+        <View
+          className="flex justify-center items-center"
+          style={{marginTop: responsiveHeight(5)}}>
+          <Text
+            className="text-dark-blue"
+            style={[
+              textStyles.robotoBold,
+              {fontSize: responsiveFontSize(18 / percentToPx)},
+            ]}>
+            No contacts found.
+          </Text>
+        </View>
+      )}
+      {!loading && !error && filteredContacts.length > 0 && (
         <View
           style={{
             height: responsiveHeight(100),
