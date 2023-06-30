@@ -46,7 +46,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
   };
 
   const handleCardPress = (card: ICardData) => {
-    navigation.navigate('EditCardScreen', {card});
+    navigation.navigate('EditCardScreen', {card, editable: true});
   };
 
   useEffect(() => {

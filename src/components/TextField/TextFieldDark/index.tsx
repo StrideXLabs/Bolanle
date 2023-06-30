@@ -26,17 +26,19 @@ const TextField: React.FC<TextFieldProps> = ({
 
   return (
     <View>
-      <Text
-        style={[
-          isFocused ? textStyles.robotoBold : textStyles.robotoRegular,
-          {
-            fontSize: responsiveFontSize(15 / percentToPx),
-            marginBottom: responsiveHeight(5 / percentToPx),
-          },
-        ]}
-        className="text-dark-blue">
-        {label}
-      </Text>
+      {label && (
+        <Text
+          style={[
+            isFocused ? textStyles.robotoBold : textStyles.robotoRegular,
+            {
+              fontSize: responsiveFontSize(15 / percentToPx),
+              marginBottom: responsiveHeight(5 / percentToPx),
+            },
+          ]}
+          className="text-dark-blue">
+          {label}
+        </Text>
+      )}
       <TextInput
         focusable
         value={value}

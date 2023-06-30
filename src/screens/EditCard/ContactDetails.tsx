@@ -16,26 +16,29 @@ import phone from '../../assets/images/phone.png';
 import web from '../../assets/images/web.png';
 
 type Props = {
+  editable: boolean;
   contactDetails: ICardData['contactDetails'];
   onEditPress: (info: ICardData['contactDetails']) => void;
 };
 
-const ContactDetails = ({contactDetails, onEditPress}: Props) => {
+const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
   return (
     <>
       <View className="flex flex-row items-center justify-between mt-[21px] mb-[10px]">
         <Text style={textStyles.robotoBold} className="text-accent text-[20px]">
           Contact Details
         </Text>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => onEditPress(contactDetails)}>
-          <Image
-            resizeMode="contain"
-            className="w-[16.5px] h-[16.5px]"
-            source={editIcon as ImageSourcePropType}
-          />
-        </TouchableOpacity>
+        {editable && (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => onEditPress(contactDetails)}>
+            <Image
+              resizeMode="contain"
+              className="w-[16.5px] h-[16.5px]"
+              source={editIcon as ImageSourcePropType}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <View>
         <View className="flex flex-row items-center gap-2 mb-[12px]">
