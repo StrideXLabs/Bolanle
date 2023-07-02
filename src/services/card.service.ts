@@ -1,4 +1,4 @@
-import {isHttpError} from 'http-errors';
+import {HttpError, isHttpError} from 'http-errors';
 import {Image} from 'react-native-image-crop-picker';
 import {
   IContactDetails,
@@ -91,6 +91,34 @@ class CardService {
         message: isHttpError(error)
           ? error.message
           : 'Error while creating account. Please try again.',
+      };
+    }
+  }
+
+  async delete(
+    cardId: string,
+  ): Promise<IDefaultAPIResponse<{message: string}>> {
+    try {
+      if (!cardId)
+        return {
+          data: null,
+          success: false,
+          message: 'Please provide a card ID.',
+        };
+
+      const response = fetcher<{}, {message: string}>(
+        `/business-card/${cardId}`,
+        {
+          method: 'DELETE',
+        },
+      );
+
+      return {success: true, data: null, message: 'Card deleted successfully.'};
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: (error as HttpError).message,
       };
     }
   }

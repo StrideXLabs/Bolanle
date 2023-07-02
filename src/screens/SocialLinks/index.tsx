@@ -20,6 +20,7 @@ import trash from '../../assets/images/trash.png';
 import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
+import Layout from '../../components/Layout';
 import {percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {
@@ -173,120 +174,123 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
   };
 
   return (
-    <View
-      className="h-screen bg-white"
-      style={{
-        paddingVertical: responsiveHeight(32 / percentToPx),
-        paddingHorizontal: responsiveHeight(40 / percentToPx),
-      }}>
-      <ScrollView
-        className="h-screen"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 10}}>
-        <HeaderStepCount
-          step={step}
-          onBackPress={() => {
-            setStep(step === 0 ? 0 : step - 1);
-            navigation.canGoBack() && navigation.goBack();
-          }}
-        />
-        <View
-          style={{
-            marginTop: responsiveHeight(20 / percentToPx),
-            marginBottom: responsiveHeight(22 / percentToPx),
-          }}>
-          <HeaderWithText
-            heading="SOCIAL LINKS"
-            subtitle="Please add your social links to display on digital card."
+    <Layout>
+      <View
+        style={{
+          paddingVertical: responsiveHeight(32 / percentToPx),
+          paddingHorizontal: responsiveHeight(40 / percentToPx),
+        }}>
+        <ScrollView
+          className="h-screen"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: 10}}>
+          <HeaderStepCount
+            step={step}
+            onBackPress={() => {
+              setStep(step === 0 ? 0 : step - 1);
+              navigation.canGoBack() && navigation.goBack();
+            }}
           />
-        </View>
-        <View className="overflow-y-scroll">
-          <FlatList
-            bounces
-            bouncesZoom
-            data={socialItems}
-            horizontal={false}
+          <View
             style={{
-              maxHeight: responsiveHeight(140 / percentToPx),
+              marginTop: responsiveHeight(20 / percentToPx),
+              marginBottom: responsiveHeight(22 / percentToPx),
+            }}>
+            <HeaderWithText
+              heading="SOCIAL LINKS"
+              subtitle="Please add your social links to display on digital card."
+            />
+          </View>
+          <View className="overflow-y-scroll">
+            <FlatList
+              bounces
+              bouncesZoom
+              data={socialItems}
+              horizontal={false}
+              style={{
+                maxHeight: responsiveHeight(140 / percentToPx),
+              }}
+              keyExtractor={item => item.id}
+              contentContainerStyle={{gap: responsiveHeight(3 / percentToPx)}}
+              showsVerticalScrollIndicator={false}
+              ListEmptyComponent={() => (
+                <Text
+                  className="text-dark-blue text-center"
+                  style={[
+                    textStyles.robotoBold,
+                    {fontSize: responsiveScreenFontSize(14 / percentToPx)},
+                  ]}>
+                  Please add at least one social link.
+                </Text>
+              )}
+              renderItem={({item}) => (
+                <SocialView
+                  {...item}
+                  onRemoveItem={id => {
+                    removeSocialItem(id);
+                    removeSocialLink(id);
+                  }}
+                />
+              )}
+            />
+          </View>
+          <View
+            className="w-full h-[1px] bg-accent rounded-sm"
+            style={{marginVertical: responsiveHeight(10 / percentToPx)}}
+          />
+          <FlatList
+            numColumns={5}
+            horizontal={false}
+            data={SocialItemsList}
+            renderItem={({item}: {item: ISocial}) => {
+              const exist = socialItems.find(i => i.id === item.id);
+              const selected = exist !== null && exist !== undefined;
+
+              return (
+                <Pressable onPress={() => handleSelectSocialItem(item)}>
+                  {selected ? (
+                    <Image
+                      resizeMode="contain"
+                      style={{
+                        height: responsiveHeight(6),
+                        width: responsiveWidth(85 / percentToPx),
+                      }}
+                      source={
+                        unFilledIconsMapping[item.id] as ImageSourcePropType
+                      }
+                    />
+                  ) : (
+                    <Image
+                      resizeMode="contain"
+                      style={{
+                        height: responsiveHeight(6),
+                        width: responsiveWidth(85 / percentToPx),
+                      }}
+                      source={
+                        filledIconsMapping[item.id] as ImageSourcePropType
+                      }
+                    />
+                  )}
+                </Pressable>
+              );
             }}
             keyExtractor={item => item.id}
-            contentContainerStyle={{gap: responsiveHeight(3 / percentToPx)}}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={() => (
-              <Text
-                className="text-dark-blue text-center"
-                style={[
-                  textStyles.robotoBold,
-                  {fontSize: responsiveScreenFontSize(14 / percentToPx)},
-                ]}>
-                Please add at least one social link.
-              </Text>
-            )}
-            renderItem={({item}) => (
-              <SocialView
-                {...item}
-                onRemoveItem={id => {
-                  removeSocialItem(id);
-                  removeSocialLink(id);
-                }}
-              />
-            )}
+            columnWrapperStyle={{
+              flexWrap: 'wrap',
+              gap: responsiveHeight(15 / percentToPx),
+            }}
+            contentContainerStyle={{gap: 19}}
           />
-        </View>
-        <View
-          className="w-full h-[1px] bg-accent rounded-sm"
-          style={{marginVertical: responsiveHeight(10 / percentToPx)}}
-        />
-        <FlatList
-          numColumns={5}
-          horizontal={false}
-          data={SocialItemsList}
-          renderItem={({item}: {item: ISocial}) => {
-            const exist = socialItems.find(i => i.id === item.id);
-            const selected = exist !== null && exist !== undefined;
-
-            return (
-              <Pressable onPress={() => handleSelectSocialItem(item)}>
-                {selected ? (
-                  <Image
-                    resizeMode="contain"
-                    style={{
-                      height: responsiveHeight(6),
-                      width: responsiveWidth(85 / percentToPx),
-                    }}
-                    source={
-                      unFilledIconsMapping[item.id] as ImageSourcePropType
-                    }
-                  />
-                ) : (
-                  <Image
-                    resizeMode="contain"
-                    style={{
-                      height: responsiveHeight(6),
-                      width: responsiveWidth(85 / percentToPx),
-                    }}
-                    source={filledIconsMapping[item.id] as ImageSourcePropType}
-                  />
-                )}
-              </Pressable>
-            );
-          }}
-          keyExtractor={item => item.id}
-          columnWrapperStyle={{
-            flexWrap: 'wrap',
-            gap: responsiveHeight(15 / percentToPx),
-          }}
-          contentContainerStyle={{gap: 19}}
-        />
-        <View style={{marginTop: responsiveHeight(70 / percentToPx)}}>
-          <Button
-            showLoading={creatingBusinessCard}
-            text={fromDashBoard ? 'Create Card' : 'Next'}
-            callback={fromDashBoard ? handleCreateNewCard : handleNextClick}
-          />
-        </View>
-      </ScrollView>
-    </View>
+          <View style={{marginTop: responsiveHeight(70 / percentToPx)}}>
+            <Button
+              showLoading={creatingBusinessCard}
+              text={fromDashBoard ? 'Create Card' : 'Next'}
+              callback={fromDashBoard ? handleCreateNewCard : handleNextClick}
+            />
+          </View>
+        </ScrollView>
+      </View>
+    </Layout>
   );
 };
 

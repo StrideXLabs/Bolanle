@@ -8,6 +8,7 @@ import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
+import Layout from '../../../components/Layout';
 import TextField from '../../../components/TextField/TextFieldDark';
 import {percentToPx} from '../../../constants';
 import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
@@ -61,30 +62,31 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
   }, []);
 
   return (
-    <>
-      <CountryPicker
-        lang="en"
-        show={open}
-        style={{
-          modal: {height: 400},
-          textInput: {color: '#334155'},
-          dialCode: {color: '#334155', fontFamily: 'Roboto-Bold'},
-          countryName: {color: '#334155', fontFamily: 'Roboto-Bold'},
-        }}
-        onRequestClose={() => setOpen(false)}
-        onBackdropPress={() => setOpen(false)}
-        pickerButtonOnPress={item => {
-          setData({flag: item.flag, code: item.dial_code});
-          setSocial({
-            id: social.id,
-            title: social.title,
-            url: `(${data.code}) `,
-          });
-          setOpen(false);
-        }}
-      />
+    <Layout>
+      {open && (
+        <CountryPicker
+          lang="en"
+          show={open}
+          style={{
+            modal: {height: 400},
+            textInput: {color: '#334155'},
+            dialCode: {color: '#334155', fontFamily: 'Roboto-Bold'},
+            countryName: {color: '#334155', fontFamily: 'Roboto-Bold'},
+          }}
+          onRequestClose={() => setOpen(false)}
+          onBackdropPress={() => setOpen(false)}
+          pickerButtonOnPress={item => {
+            setData({flag: item.flag, code: item.dial_code});
+            setSocial({
+              id: social.id,
+              title: social.title,
+              url: `(${data.code}) `,
+            });
+            setOpen(false);
+          }}
+        />
+      )}
       <View
-        className="h-screen bg-white"
         style={{
           paddingVertical: responsiveHeight(32 / percentToPx),
           paddingHorizontal: responsiveHeight(40 / percentToPx),
@@ -144,7 +146,7 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
           <Button text="Save" callback={handleSave} />
         </View>
       </View>
-    </>
+    </Layout>
   );
 };
 

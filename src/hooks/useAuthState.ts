@@ -13,7 +13,6 @@ export default function useAuthState() {
 
   const handleRefreshToken = async (data: IAuthState) => {
     try {
-      console.log('handleRefreshToken', data);
       setAuthState({...data, redirectToLogin});
     } catch (error) {
       setAuthState({...initialAuthState, redirectToLogin});
@@ -26,7 +25,6 @@ export default function useAuthState() {
     const data = await getDataFromAsyncStorage<IAuthState>(AuthStateKey);
 
     if (!data) {
-      console.log('handleRefreshUserData', data);
       setAuthState({...initialAuthState, redirectToLogin});
       setLoading(false);
       return;
@@ -41,12 +39,10 @@ export default function useAuthState() {
 
   useEffect(() => {
     if (authed && !timeId.current) {
-      console.log('USE EFFECT', {authed, timeId});
       timeId.current = setInterval(handleRefreshUserData, refreshTokenTime);
     }
 
     return () => {
-      console.log('CLEAN USE EFFECT');
       timeId.current && clearInterval(timeId.current);
       timeId.current = null;
     };

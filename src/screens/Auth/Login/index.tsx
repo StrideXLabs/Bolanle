@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import {
   ImageBackground,
   ImageSourcePropType,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -95,6 +96,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       className="h-full"
       source={bgImage as ImageSourcePropType}>
       <View className="justify-center items-center h-full">
+        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
         <View
           className="bg-accent rounded-lg"
           style={{

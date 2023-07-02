@@ -4,6 +4,7 @@ import {ActivityIndicator, FlatList, Text, View} from 'react-native';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import DashboardHeader from '../../components/Header/DashboardHeader';
+import Layout from '../../components/Layout';
 import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
@@ -54,12 +55,15 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
   }, []);
 
   return (
-    <View className="h-full w-full bg-white">
+    <Layout>
       <DashboardHeader
-        heading="DASHBOARD"
-        onAddNewBtnPress={() => {
-          setFromDashBoard(true);
-          navigation.navigate('PersonalInformationScreen');
+        options={{
+          type: 'ADD_NEW_VIEW',
+          heading: 'DASHBOARD',
+          onAddNewBtnPress: () => {
+            setFromDashBoard(true);
+            navigation.navigate('PersonalInformationScreen');
+          },
         }}
       />
       {loading && (
@@ -101,7 +105,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
           />
         )}
       </View>
-    </View>
+    </Layout>
   );
 };
 

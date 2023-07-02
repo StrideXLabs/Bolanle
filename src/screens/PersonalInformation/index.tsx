@@ -14,6 +14,7 @@ import {
 } from '../../hooks/useBusinessCard/constants';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
+import Layout from '../../components/Layout';
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams,
@@ -64,95 +65,96 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
   };
 
   return (
-    <View
-      className="bg-white"
-      style={{
-        paddingVertical: responsiveHeight(32 / percentToPx),
-        paddingHorizontal: responsiveHeight(40 / percentToPx),
-      }}>
-      <KeyboardAvoidingView contentContainerStyle={{height: '100%'}}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{height: '100%'}}>
-          <HeaderStepCount step={step} onBackPress={handleBackPress} />
-          <View
-            style={{
-              marginTop: responsiveHeight(20 / percentToPx),
-              marginBottom: responsiveHeight(22 / percentToPx),
-            }}>
-            <HeaderWithText
-              heading="PERSONAL INFORMATION"
-              subtitle="Please add your personal details to get started."
-            />
-          </View>
-          <View className="flex">
+    <Layout>
+      <View
+        style={{
+          paddingVertical: responsiveHeight(32 / percentToPx),
+          paddingHorizontal: responsiveHeight(40 / percentToPx),
+        }}>
+        <KeyboardAvoidingView contentContainerStyle={{height: '100%'}}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{height: '100%'}}>
+            <HeaderStepCount step={step} onBackPress={handleBackPress} />
             <View
-              className="flex"
-              style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
-              <TextField
-                label="Full Name"
-                onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
-                    name: text,
-                  });
-                }}
-                value={personalInformation.name}
-                placeholder="Enter your full name"
+              style={{
+                marginTop: responsiveHeight(20 / percentToPx),
+                marginBottom: responsiveHeight(22 / percentToPx),
+              }}>
+              <HeaderWithText
+                heading="PERSONAL INFORMATION"
+                subtitle="Please add your personal details to get started."
               />
+            </View>
+            <View className="flex">
+              <View
+                className="flex"
+                style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
+                <TextField
+                  label="Full Name"
+                  onChangeText={text => {
+                    setPersonalInformation({
+                      ...personalInformation,
+                      name: text,
+                    });
+                  }}
+                  value={personalInformation.name}
+                  placeholder="Enter your full name"
+                />
+              </View>
+              <View
+                className="flex"
+                style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
+                <TextField
+                  label="Designation"
+                  onChangeText={text => {
+                    setPersonalInformation({
+                      ...personalInformation,
+                      designation: text,
+                    });
+                  }}
+                  value={personalInformation.designation}
+                  placeholder="Enter your designation"
+                />
+              </View>
+              <View
+                className="flex"
+                style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
+                <TextField
+                  label="Department"
+                  onChangeText={text => {
+                    setPersonalInformation({
+                      ...personalInformation,
+                      department: text,
+                    });
+                  }}
+                  value={personalInformation.department}
+                  placeholder="Enter your department"
+                />
+              </View>
+              <View>
+                <TextField
+                  label="Company"
+                  onChangeText={text => {
+                    setPersonalInformation({
+                      ...personalInformation,
+                      companyName: text,
+                    });
+                  }}
+                  value={personalInformation.companyName}
+                  placeholder="Enter your company name"
+                />
+              </View>
             </View>
             <View
-              className="flex"
-              style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
-              <TextField
-                label="Designation"
-                onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
-                    designation: text,
-                  });
-                }}
-                value={personalInformation.designation}
-                placeholder="Enter your designation"
-              />
+              style={{marginTop: responsiveHeight(78 / percentToPx)}}
+              className="w-full">
+              <Button text="Next" callback={handleNextClick} />
             </View>
-            <View
-              className="flex"
-              style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
-              <TextField
-                label="Department"
-                onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
-                    department: text,
-                  });
-                }}
-                value={personalInformation.department}
-                placeholder="Enter your department"
-              />
-            </View>
-            <View>
-              <TextField
-                label="Company"
-                onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
-                    companyName: text,
-                  });
-                }}
-                value={personalInformation.companyName}
-                placeholder="Enter your company name"
-              />
-            </View>
-          </View>
-          <View
-            style={{marginTop: responsiveHeight(78 / percentToPx)}}
-            className="w-full">
-            <Button text="Next" callback={handleNextClick} />
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
+    </Layout>
   );
 };
 

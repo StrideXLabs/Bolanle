@@ -1,18 +1,21 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import {ScrollView, View} from 'react-native';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 import DashboardHeader from '../../components/Header/DashboardHeader';
+import Layout from '../../components/Layout';
+import {percentToPx} from '../../constants';
 import {IPersonalInformation} from '../../hooks/useBusinessCard/interface';
 import {AppStackParams} from '../../navigation/AppNavigation';
+import cardService from '../../services/card.service';
 import {ICardData} from '../../services/dashboard.service';
 import ContactDetails from './ContactDetails';
+import DeleteCardModal from './DeleteModal';
 import Header from './Header';
 import PersonalInfo from './PersonalInfo';
 import QR from './QR';
 import SocialLinks from './SocialLinks';
-import {responsiveHeight} from 'react-native-responsive-dimensions';
-import {percentToPx} from '../../constants';
-import DeleteCardModal from './DeleteModal';
+import Toast from '../../lib/toast';
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams,
@@ -23,12 +26,11 @@ const EditCardScreen = ({
   navigation,
   route: {params},
 }: PersonalInformationProps) => {
-  const {
-    card: {qr, socialLinks, personalInfo, contactDetails},
-    editable,
-  } = params;
-
   const [open, setOpen] = useState(false);
+  const [deletingCard, setDeletingCard] = useState(false);
+
+  const {card, editable} = params;
+  const {qr, socialLinks, personalInfo, contactDetails} = card;
 
   const handleEditProfileAndLogo = (info: ICardData['contactDetails']) => {};
 
@@ -38,16 +40,41 @@ const EditCardScreen = ({
 
   const handleEditSocialLinks = (info: ICardData['socialLinks']) => {};
 
+  const handleDeleteCard = async () => {
+    try {
+      setDeletingCard(true);
+      const response = await cardService.delete(card._id);
+
+      setDeletingCard(false);
+      if (response.success) {
+        Toast.success({primaryText: 'Card deleted.'});
+        // return navigation.navigate('AppBottomNav');
+      } else Toast.success({primaryText: 'Error while deleting card'});
+    } catch (error) {
+      console.log(error);
+      setDeletingCard(false);
+      Toast.success({primaryText: 'Error while deleting card'});
+    }
+  };
+
   return (
-    <View className="h-full bg-white">
+    <Layout>
       <DashboardHeader
-        onBackBtnPress={() => navigation.goBack()}
-        subheading={editable ? 'EDIT CARD' : 'VIEW CARD'}
-        subtitle={
-          editable
+        options={{
+          type: 'VIEW_OR_EDIT',
+          onBackBtnPress: () => navigation.goBack(),
+          onShareBtnPress: () =>
+            navigation.navigate('ShareCardScreen', {
+              card,
+              type: 'WITH_DATA',
+              fullName: personalInfo.name,
+              company: personalInfo.companyName,
+            }),
+          heading: editable ? 'EDIT CARD' : 'VIEW CARD',
+          subheading: editable
             ? 'You can edit your card info here.'
-            : 'Viewing card info here.'
-        }
+            : 'Viewing card info here.',
+        }}
       />
       <View
         style={{
@@ -85,12 +112,13 @@ const EditCardScreen = ({
           <QR editable={editable} qr={qr} onDeleteCard={() => setOpen(true)} />
           <DeleteCardModal
             visible={open}
-            onDelete={() => {}}
+            deleting={deletingCard}
+            onDelete={handleDeleteCard}
             onClose={() => setOpen(false)}
           />
         </ScrollView>
       </View>
-    </View>
+    </Layout>
   );
 };
 

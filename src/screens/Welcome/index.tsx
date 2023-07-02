@@ -34,8 +34,6 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
   return (
     <View style={{flex: 1}} className="h-screen bg-accent">
       <StatusBar
-        animated
-        showHideTransition="slide"
         backgroundColor="#38251F"
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
       />

@@ -17,6 +17,7 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import searchIcon from '../../assets/images/search.png';
 import Button from '../../components/Button';
+import Layout from '../../components/Layout';
 import TextField from '../../components/TextField/TextFieldDark';
 import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
@@ -306,7 +307,17 @@ const ContactsScreen = ({navigation}: WelcomeScreenProps) => {
     });
   };
 
-  const handleShareCard = () => {};
+  const handleShareCard = () => {
+    if (!selectedContactRef.current) return;
+
+    setOpen(false);
+    navigation.navigate('ShareCardScreen', {
+      type: 'WITH_DATA',
+      card: selectedContactRef.current,
+      fullName: selectedContactRef.current?.personalInfo.name,
+      company: selectedContactRef.current?.personalInfo.companyName,
+    });
+  };
 
   const handleClose = () => {
     selectedContactRef.current = null;
@@ -319,135 +330,139 @@ const ContactsScreen = ({navigation}: WelcomeScreenProps) => {
   }, []);
 
   return (
-    <View
-      className="bg-white"
-      style={{
-        height: '100%',
-        paddingLeft: responsiveHeight(36 / percentToPx),
-        paddingRight: responsiveHeight(40 / percentToPx),
-        paddingVertical: responsiveHeight(20 / percentToPx),
-      }}>
-      <Text
-        style={textStyles.bebasNeueBold}
-        className="text-dark-blue text-4xl">
-        Contacts
-      </Text>
-      <View style={{marginTop: responsiveHeight(46 / percentToPx)}}>
-        <TextField
-          label=""
-          value={search}
-          placeholder="Search contacts"
-          className="border-dark-blue border-[2px]"
-          style={{paddingLeft: responsiveHeight(5)}}
-          onChangeText={text => setSearch(text)}
-        />
-        <Image
-          className="absolute"
-          resizeMode="contain"
-          source={searchIcon as ImageSourcePropType}
-          style={{
-            top: responsiveHeight(12.7 / percentToPx),
-            left: responsiveHeight(13 / percentToPx),
-            width: responsiveWidth(30.46 / percentToPx),
-            height: responsiveWidth(30.46 / percentToPx),
-          }}
-        />
-      </View>
-      {loading && (
-        <View
-          className="flex justify-center items-center"
-          style={{height: responsiveHeight(60)}}>
-          <ActivityIndicator size={50} color={accentColor} />
-        </View>
-      )}
-      {!loading && contacts.length === 0 && error && (
-        <View
-          className="flex justify-center items-center"
-          style={{height: responsiveHeight(70)}}>
-          <Text
-            className="text-dark-blue"
-            style={[
-              textStyles.robotoBold,
-              {fontSize: responsiveFontSize(18 / percentToPx)},
-            ]}>
-            {error}
-          </Text>
-          <Button
-            text="RETRY"
-            callback={fetchContactData}
+    <Layout>
+      <View
+        style={{
+          paddingLeft: responsiveHeight(36 / percentToPx),
+          paddingRight: responsiveHeight(40 / percentToPx),
+          paddingVertical: responsiveHeight(20 / percentToPx),
+        }}>
+        <Text
+          style={textStyles.bebasNeueBold}
+          className="text-dark-blue text-4xl">
+          Contacts
+        </Text>
+        <View style={{marginTop: responsiveHeight(46 / percentToPx)}}>
+          <TextField
+            label=""
+            value={search}
+            placeholder="Search contacts"
+            className="border-dark-blue border-[2px]"
+            style={{paddingLeft: responsiveHeight(5)}}
+            onChangeText={text => setSearch(text)}
+          />
+          <Image
+            className="absolute"
+            resizeMode="contain"
+            source={searchIcon as ImageSourcePropType}
             style={{
-              width: responsiveWidth(60),
-              marginTop: responsiveHeight(12 / percentToPx),
+              top: responsiveHeight(12.7 / percentToPx),
+              left: responsiveHeight(13 / percentToPx),
+              width: responsiveWidth(30.46 / percentToPx),
+              height: responsiveWidth(30.46 / percentToPx),
             }}
           />
         </View>
-      )}
-      {!loading && !error && contacts.length == 0 && (
-        <View
-          className="flex justify-center items-center"
-          style={{marginTop: responsiveHeight(5)}}>
-          <Text
-            className="text-dark-blue"
-            style={[
-              textStyles.robotoBold,
-              {fontSize: responsiveFontSize(18 / percentToPx)},
-            ]}>
-            No contacts found.
-          </Text>
-        </View>
-      )}
-      {!loading && !error && filteredContacts.length > 0 && (
-        <View
+        {loading && (
+          <View
+            className="flex justify-center items-center"
+            style={{height: responsiveHeight(60)}}>
+            <ActivityIndicator size={50} color={accentColor} />
+          </View>
+        )}
+        {!loading && contacts.length === 0 && error && (
+          <View
+            className="flex justify-center items-center"
+            style={{height: responsiveHeight(70)}}>
+            <Text
+              className="text-dark-blue"
+              style={[
+                textStyles.robotoBold,
+                {fontSize: responsiveFontSize(18 / percentToPx)},
+              ]}>
+              {error}
+            </Text>
+            <Button
+              text="RETRY"
+              callback={fetchContactData}
+              style={{
+                width: responsiveWidth(60),
+                marginTop: responsiveHeight(12 / percentToPx),
+              }}
+            />
+          </View>
+        )}
+        {!loading && !error && contacts.length == 0 && (
+          <View
+            className="flex justify-center items-center"
+            style={{marginTop: responsiveHeight(5)}}>
+            <Text
+              className="text-dark-blue"
+              style={[
+                textStyles.robotoBold,
+                {fontSize: responsiveFontSize(18 / percentToPx)},
+              ]}>
+              No contacts found.
+            </Text>
+          </View>
+        )}
+        {!loading && !error && filteredContacts.length > 0 && (
+          <View
+            style={{
+              height: responsiveHeight(100),
+              marginTop: responsiveHeight(34 / percentToPx),
+            }}>
+            <FlatList
+              numColumns={1}
+              horizontal={false}
+              data={filteredContacts}
+              style={{width: '100%'}}
+              keyExtractor={item => item._id}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => (
+                <ContactCard
+                  contact={item}
+                  onPress={contact => {
+                    setOpen(true);
+                    selectedContactRef.current = contact;
+                  }}
+                />
+              )}
+              contentContainerStyle={{
+                paddingBottom: responsiveHeight(33),
+                gap: responsiveHeight(10 / percentToPx),
+              }}
+            />
+          </View>
+        )}
+        <Modal
+          hasBackdrop
+          isVisible={open}
+          swipeDirection="down"
+          backdropOpacity={0.7}
+          animationIn="slideInUp"
+          animationInTiming={250}
+          animationOutTiming={500}
+          backdropColor="#33373D"
+          useNativeDriverForBackdrop
+          animationOut="slideOutDown"
+          onSwipeComplete={handleClose}
+          onBackdropPress={handleClose}
+          onBackButtonPress={handleClose}
+          backdropTransitionInTiming={500}
           style={{
-            height: responsiveHeight(100),
-            marginTop: responsiveHeight(34 / percentToPx),
+            margin: 0,
+            paddingHorizontal: 15,
+            justifyContent: 'flex-end',
           }}>
-          <FlatList
-            numColumns={1}
-            horizontal={false}
-            data={filteredContacts}
-            style={{width: '100%'}}
-            keyExtractor={item => item._id}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <ContactCard
-                contact={item}
-                onPress={contact => {
-                  setOpen(true);
-                  selectedContactRef.current = contact;
-                }}
-              />
-            )}
-            contentContainerStyle={{
-              paddingBottom: responsiveHeight(33),
-              gap: responsiveHeight(10 / percentToPx),
-            }}
+          <ModalContent
+            onCancel={handleClose}
+            onViewCard={handleViewCard}
+            onShareCard={handleShareCard}
           />
-        </View>
-      )}
-      <Modal
-        hasBackdrop
-        isVisible={open}
-        swipeDirection="down"
-        backdropOpacity={0.7}
-        animationIn="slideInUp"
-        animationInTiming={250}
-        animationOutTiming={500}
-        backdropColor="#33373D"
-        useNativeDriverForBackdrop
-        animationOut="slideOutDown"
-        onSwipeComplete={handleClose}
-        onBackdropPress={handleClose}
-        onBackButtonPress={handleClose}
-        backdropTransitionInTiming={500}
-        style={{margin: 0, paddingHorizontal: 15, justifyContent: 'flex-end'}}>
-        <ModalContent
-          onCancel={handleClose}
-          onViewCard={handleViewCard}
-          onShareCard={handleShareCard}
-        />
-      </Modal>
-    </View>
+        </Modal>
+      </View>
+    </Layout>
   );
 };
 

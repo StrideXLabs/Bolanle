@@ -7,7 +7,7 @@ interface IRequestBodyData<T> {
   body?: T;
   isFormData?: boolean;
   headers?: {[key: string]: string | number};
-  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
+  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE' | 'PUT';
 }
 
 export const API = axios.create({
@@ -39,9 +39,10 @@ export default async function fetcher<
     const {data: response} = await API<TResponseData>(endpoint, {
       method,
       headers: {'x-access-token': token || '', ...headers},
-      ...(method !== 'GET' && {
-        data: !isFormData && body ? JSON.stringify(body) : body,
-      }),
+      ...(method !== 'GET' &&
+        body && {
+          data: !isFormData && body ? JSON.stringify(body) : body,
+        }),
     });
 
     return response;

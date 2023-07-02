@@ -36,6 +36,7 @@ class DashboardService {
         message: data.message,
       };
     } catch (error) {
+      console.log(error);
       return {
         data: [],
         message: isHttpError(error)
