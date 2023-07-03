@@ -22,7 +22,7 @@ export type SocialLinksProps = NativeStackScreenProps<
 >;
 
 const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
-  const socialItem = params.social;
+  const {social: socialItem, cardId, status} = params;
   const [open, setOpen] = useState<boolean>(false);
   const {setSocialLink, setSocialItem} = useCreateBusinessCard();
 
@@ -48,7 +48,7 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
     });
 
     setSocialItem(socialItem);
-    navigation.navigate('SocialLinksScreen');
+    navigation.navigate('SocialLinksScreen', {cardId, status});
   };
 
   useEffect(() => {
@@ -93,7 +93,9 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
         }}>
         <HeaderStepCount
           showDotes={false}
-          onBackPress={() => navigation.navigate('SocialLinksScreen')}
+          onBackPress={() =>
+            navigation.navigate('SocialLinksScreen', {cardId, status})
+          }
         />
         <View
           style={{

@@ -1,10 +1,12 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React from 'react';
+import {HttpError} from 'http-errors';
+import React, {useState} from 'react';
 import {KeyboardAvoidingView, ScrollView, View} from 'react-native';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
+import Layout from '../../components/Layout';
 import TextField from '../../components/TextField/TextFieldDark';
 import {percentToPx} from '../../constants';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
@@ -14,14 +16,19 @@ import {
 } from '../../hooks/useBusinessCard/constants';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
-import Layout from '../../components/Layout';
+import dashboardService from '../../services/dashboard.service';
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams,
   'PersonalInformationScreen'
 >;
 
-const PersonalInformation = ({navigation}: PersonalInformationProps) => {
+const PersonalInformation = ({
+  navigation,
+  route: {params},
+}: PersonalInformationProps) => {
+  const {status, cardId} = params;
+  const [updating, setUpdating] = useState(false);
   const {
     step,
     setStep,
@@ -32,6 +39,30 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
     personalInformation,
     setPersonalInformation,
   } = useCreateBusinessCard();
+
+  const handleUpdateDetails = async () => {
+    try {
+      if (!cardId) return;
+      setUpdating(true);
+      const response = await dashboardService.editCardDetails(cardId, {
+        personalInfo: personalInformation,
+      });
+
+      setUpdating(false);
+      if (!response.success)
+        return Toast.error({primaryText: response.message});
+
+      Toast.success({primaryText: 'Information updated.'});
+      setPersonalInformation(initialPersonalInformation);
+      navigation.replace('EditCardScreen', {
+        editable: true,
+        card: response.data!,
+      });
+    } catch (error) {
+      setUpdating(false);
+      Toast.error({primaryText: (error as HttpError).message});
+    }
+  };
 
   const handleBackPress = async () => {
     await Promise.all([
@@ -61,7 +92,7 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
     }
 
     setStep(step + 1);
-    navigation.push('ContactDetailsScreen');
+    navigation.push('ContactDetailsScreen', {status, cardId});
   };
 
   return (
@@ -149,7 +180,13 @@ const PersonalInformation = ({navigation}: PersonalInformationProps) => {
             <View
               style={{marginTop: responsiveHeight(78 / percentToPx)}}
               className="w-full">
-              <Button text="Next" callback={handleNextClick} />
+              <Button
+                showLoading={updating}
+                text={status === 'EDITING' ? 'Save' : 'Next'}
+                callback={
+                  status === 'EDITING' ? handleUpdateDetails : handleNextClick
+                }
+              />
             </View>
           </ScrollView>
         </KeyboardAvoidingView>

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Image,
   ImageSourcePropType,
+  Pressable,
   Text,
   TouchableOpacity,
   View,
@@ -9,16 +10,23 @@ import {
 import editIcon from '../../assets/images/edit.png';
 import deleteIcon from '../../assets/images/trash.png';
 import textStyles from '../../constants/fonts';
-import {ICardData} from '../../services/dashboard.service';
 import {filledIconsMapping} from '../../constants/socials';
+import {ICard} from '../../services/card.service';
+import {ICardData} from '../../services/dashboard.service';
 
 type Props = {
   editable: boolean;
   socialLinks: ICardData['socialLinks'];
+  onDeleteLink: (social: ICard) => void;
   onEditPress: (info: ICardData['socialLinks']) => void;
 };
 
-const SocialLinks = ({socialLinks, onEditPress, editable}: Props) => {
+const SocialLinks = ({
+  editable,
+  socialLinks,
+  onEditPress,
+  onDeleteLink,
+}: Props) => {
   return (
     <View>
       <View className="flex flex-row items-center justify-between mt-[21px] mb-[10px]">
@@ -27,6 +35,7 @@ const SocialLinks = ({socialLinks, onEditPress, editable}: Props) => {
         </Text>
         {editable && (
           <TouchableOpacity
+            className="p-1"
             activeOpacity={0.8}
             onPress={() => onEditPress(socialLinks)}>
             <Image
@@ -60,13 +69,15 @@ const SocialLinks = ({socialLinks, onEditPress, editable}: Props) => {
                 </Text>
               </View>
               {editable && (
-                <View className="w-4 h-4">
+                <Pressable
+                  className="w-4 h-4"
+                  onPress={() => onDeleteLink(social)}>
                   <Image
                     resizeMode="center"
                     className="w-full h-full"
                     source={deleteIcon as ImageSourcePropType}
                   />
-                </View>
+                </Pressable>
               )}
             </View>
           );

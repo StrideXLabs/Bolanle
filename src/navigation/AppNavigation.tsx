@@ -18,16 +18,27 @@ import {ICardData} from '../services/dashboard.service';
 import AuthNavigation from './AuthNavigation';
 import BottomNavigation from './BottomNavigation';
 
+export type ScreenStatus = 'EDITING' | 'CREATING';
 export type ShareType = '' | 'TEXT_CARD' | 'EMAIL_CARD' | 'WHATSAPP_CARD';
+
+export type EditScreenParams = {
+  SocialLinksScreen: {status: ScreenStatus; cardId: string | null};
+  ContactDetailsScreen: {status: ScreenStatus; cardId: string | null};
+  PersonalInformationScreen: {status: ScreenStatus; cardId: string | null};
+  WhatsAppScreen: {
+    social: ISocial;
+    status: ScreenStatus;
+    cardId: string | null;
+  };
+  OtherSocialsScreen: {
+    social: ISocial;
+    status: ScreenStatus;
+    cardId: string | null;
+  };
+};
 
 export type AppStackParams = {
   AppBottomNav: undefined;
-  WelcomeScreen: undefined;
-  SocialLinksScreen: undefined;
-  ContactDetailsScreen: undefined;
-  WhatsAppScreen: {social: ISocial};
-  PersonalInformationScreen: undefined;
-  OtherSocialsScreen: {social: ISocial};
   EditCardScreen: {
     card: Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>;
     editable: boolean;
@@ -47,7 +58,7 @@ export type AppStackParams = {
     shareType: ShareType;
     card: Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>;
   };
-};
+} & EditScreenParams;
 
 const AppStack = createNativeStackNavigator<AppStackParams>();
 

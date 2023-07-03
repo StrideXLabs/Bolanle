@@ -1,3 +1,4 @@
+import {useIsFocused} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, Text, View} from 'react-native';
@@ -15,7 +16,6 @@ import {AppStackParams} from '../../navigation/AppNavigation';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import dashboardService, {ICardData} from '../../services/dashboard.service';
 import Card from './Card';
-import {useIsFocused} from '@react-navigation/native';
 
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
@@ -69,7 +69,10 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
           heading: 'DASHBOARD',
           onAddNewBtnPress: () => {
             setFromDashBoard(true);
-            navigation.navigate('PersonalInformationScreen');
+            navigation.navigate('PersonalInformationScreen', {
+              cardId: null,
+              status: 'CREATING',
+            });
           },
         }}
       />

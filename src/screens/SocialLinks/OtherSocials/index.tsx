@@ -24,7 +24,7 @@ const OtherSocialsScreen = ({
   navigation,
   route: {params},
 }: SocialLinksProps) => {
-  const socialItem = params.social;
+  const {social: socialItem, cardId, status} = params;
   const {setSocialLink, setSocialItem} = useCreateBusinessCard();
 
   const [social, setSocial] = useState<ISocialLink>({
@@ -43,7 +43,7 @@ const OtherSocialsScreen = ({
       title: social.title.trim(),
     });
     setSocialItem(socialItem);
-    navigation.navigate('SocialLinksScreen');
+    navigation.navigate('SocialLinksScreen', {cardId, status});
   };
 
   return (
@@ -56,7 +56,9 @@ const OtherSocialsScreen = ({
         <ScrollView showsVerticalScrollIndicator={false}>
           <HeaderStepCount
             showDotes={false}
-            onBackPress={() => navigation.navigate('SocialLinksScreen')}
+            onBackPress={() =>
+              navigation.navigate('SocialLinksScreen', {cardId, status})
+            }
           />
           <View
             style={{

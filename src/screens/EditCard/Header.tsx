@@ -1,5 +1,11 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -7,6 +13,7 @@ import {
 import {BASE_URL, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
+import editIcon from '../../assets/images/edit.png';
 
 type Props = {
   cardId: string;
@@ -37,6 +44,19 @@ const Header = ({
           }}
         />
       </View>
+      {editable && (
+        <TouchableOpacity
+          className="absolute p-1 -mt-1"
+          style={{right: 0}}
+          activeOpacity={0.8}
+          onPress={() => onEditPress(contactDetails)}>
+          <Image
+            resizeMode="contain"
+            className="w-[16.5px] h-[16.5px]"
+            source={editIcon as ImageSourcePropType}
+          />
+        </TouchableOpacity>
+      )}
       <View className="flex flex-row gap-2">
         <Image
           resizeMode="center"

@@ -1,4 +1,4 @@
-import {isHttpError} from 'http-errors';
+import {HttpError, isHttpError} from 'http-errors';
 import {
   IContactDetails,
   IPersonalInformation,
@@ -26,6 +26,11 @@ export interface ICardsResponse {
   data: ICardData[];
 }
 
+export type IEditCardData =
+  | {socialLinks: ICard[]}
+  | {contactDetails: FormData}
+  | {personalInfo: IPersonalInformation};
+
 class DashboardService {
   async getAllCards(): Promise<IDefaultAPIResponse<ICardsResponse['data']>> {
     try {
@@ -43,6 +48,34 @@ class DashboardService {
           ? error.message
           : 'Something went wrong. Please try again.',
         success: false,
+      };
+    }
+  }
+
+  async editCardDetails(
+    cardId: string,
+    data: IEditCardData,
+  ): Promise<IDefaultAPIResponse<ICardData>> {
+    try {
+      const response = await fetcher<
+        IEditCardData,
+        {data: ICardData; message: string}
+      >(`/business-card/${cardId}`, {
+        body: data,
+        method: 'PUT',
+        ...(data instanceof FormData && {
+          isFormData: true,
+          headers: {'Content-Type': 'multipart/form-data'},
+        }),
+      });
+
+      return {success: true, data: response.data, message: ''};
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        success: false,
+        message: (error as HttpError).message,
       };
     }
   }

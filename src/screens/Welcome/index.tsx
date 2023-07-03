@@ -72,7 +72,10 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
                     width: responsiveWidth(80),
                   }}
                   callback={() =>
-                    navigation.navigate('PersonalInformationScreen')
+                    navigation.navigate('PersonalInformationScreen', {
+                      cardId: null,
+                      status: 'CREATING',
+                    })
                   }
                   text="Create New"
                 />

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
 import {openPicker} from 'react-native-image-crop-picker';
-
 import {PlusIcon} from 'react-native-heroicons/outline';
 import {
   responsiveFontSize,
@@ -9,12 +8,13 @@ import {
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import trash from '../../assets/images/trash.png';
-import {percentToPx} from '../../constants';
+import {BASE_URL, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import Toast from '../../lib/toast';
+import {ScreenStatus} from '../../navigation/AppNavigation';
 
-const Upload = () => {
+const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
   const {setContactDetails, contactDetails} = useCreateBusinessCard();
 
   const handleAddImage = async (type: 'Profile' | 'Logo') => {
@@ -67,7 +67,13 @@ const Upload = () => {
               <Image
                 resizeMode="cover"
                 className="w-full h-full rounded-md"
-                source={{uri: contactDetails.companyLogo.path}}
+                source={{
+                  uri:
+                    status === 'EDITING' &&
+                    typeof contactDetails.companyLogo === 'string'
+                      ? `${BASE_URL}/${cardId}/${contactDetails.companyLogo}`
+                      : (contactDetails.companyLogo as any).path,
+                }}
               />
             ) : (
               <PlusIcon size={25} color="black" />
@@ -96,7 +102,6 @@ const Upload = () => {
           )}
         </Pressable>
       </View>
-
       <View>
         <Text
           style={[
@@ -122,7 +127,13 @@ const Upload = () => {
               <Image
                 resizeMode="cover"
                 className="w-full h-full rounded-md"
-                source={{uri: contactDetails.profilePicture.path}}
+                source={{
+                  uri:
+                    status === 'EDITING' &&
+                    typeof contactDetails.profilePicture === 'string'
+                      ? `${BASE_URL}/${cardId}/${contactDetails.profilePicture}`
+                      : (contactDetails.profilePicture as any).path,
+                }}
               />
             ) : (
               <PlusIcon size={25} color="black" />

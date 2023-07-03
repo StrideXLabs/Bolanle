@@ -13,8 +13,8 @@ export interface IContactDetails {
   mobile: string;
   websiteUrl: string;
   companyAddress: string;
-  companyLogo: Image | null;
-  profilePicture: Image | null;
+  companyLogo: Image | string | null;
+  profilePicture: Image | string | null;
 }
 
 export interface ISocialLink {

@@ -9,7 +9,6 @@ import {
   Text,
   View,
 } from 'react-native';
-
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -39,6 +38,9 @@ import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {AuthStackParams} from '../../navigation/AuthNavigation';
 import cardService from '../../services/card.service';
+import {Image as PickerImage} from 'react-native-image-crop-picker';
+import dashboardService from '../../services/dashboard.service';
+import {HttpError} from 'http-errors';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -85,7 +87,12 @@ const SocialView = ({
   );
 };
 
-const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
+const SocialLinksScreen = ({
+  navigation,
+  route: {
+    params: {status, cardId},
+  },
+}: SocialLinksProps) => {
   const {
     step,
     setStep,
@@ -102,6 +109,7 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
     personalInformation,
     setPersonalInformation,
   } = useCreateBusinessCard();
+  const [updating, setUpdating] = useState(false);
   const [creatingBusinessCard, setCreatingBusinessCard] = useState(false);
 
   const handleSelectSocialItem = (item: ISocial) => {
@@ -110,7 +118,7 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
 
     navigation.navigate(
       item.id === 'whatsapp' ? 'WhatsAppScreen' : 'OtherSocialsScreen',
-      {social: item},
+      {social: item, cardId, status},
     );
   };
 
@@ -147,8 +155,8 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
         personalInformation,
         contactDetails: cDetails,
         socialLinks: mappedSocialLinks,
-        companyLogo: contactDetails.companyLogo!,
-        profileImage: contactDetails.profilePicture!,
+        companyLogo: contactDetails.companyLogo as PickerImage,
+        profileImage: contactDetails.profilePicture as PickerImage,
       });
 
       if (!res.success) Toast.error({primaryText: res.message});
@@ -170,6 +178,34 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
       });
     } finally {
       setCreatingBusinessCard(false);
+    }
+  };
+
+  const handleUpdateDetails = async () => {
+    try {
+      if (!cardId) return;
+
+      setUpdating(true);
+      const response = await dashboardService.editCardDetails(cardId, {
+        socialLinks: socialLinks.map(item => ({...item, platform: item.id})),
+      });
+
+      setUpdating(false);
+      if (!response.success)
+        return Toast.error({primaryText: response.message});
+
+      Toast.success({primaryText: 'Information updated.'});
+      setSocialItems([]);
+      setSocialLinks([]);
+      setStep(0);
+
+      navigation.replace('EditCardScreen', {
+        editable: true,
+        card: response.data!,
+      });
+    } catch (error) {
+      setUpdating(false);
+      Toast.error({primaryText: (error as HttpError).message});
     }
   };
 
@@ -283,9 +319,21 @@ const SocialLinksScreen = ({navigation, route: {params}}: SocialLinksProps) => {
           />
           <View style={{marginTop: responsiveHeight(70 / percentToPx)}}>
             <Button
-              showLoading={creatingBusinessCard}
-              text={fromDashBoard ? 'Create Card' : 'Next'}
-              callback={fromDashBoard ? handleCreateNewCard : handleNextClick}
+              showLoading={creatingBusinessCard || updating}
+              callback={
+                fromDashBoard
+                  ? handleCreateNewCard
+                  : status === 'EDITING'
+                  ? handleUpdateDetails
+                  : handleNextClick
+              }
+              text={
+                fromDashBoard
+                  ? 'Create Card'
+                  : status === 'EDITING'
+                  ? 'Save'
+                  : 'Next'
+              }
             />
           </View>
         </ScrollView>
