@@ -187,7 +187,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() =>
-                  navigation.navigate('PersonalInformationScreen')
+                  navigation.navigate('PersonalInformationScreen', {
+                    cardId: null,
+                    status: 'CREATING',
+                  })
                 }>
                 <Text
                   style={textStyles.robotoBold}
