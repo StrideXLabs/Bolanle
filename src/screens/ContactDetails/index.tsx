@@ -1,27 +1,81 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React from 'react';
+import {HttpError} from 'http-errors';
+import React, {useState} from 'react';
 import {ScrollView, View} from 'react-native';
-
+import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
+import Layout from '../../components/Layout';
 import TextField from '../../components/TextField/TextFieldDark';
 import {emailRegex, percentToPx} from '../../constants';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
+import {initialContactDetails} from '../../hooks/useBusinessCard/constants';
 import isValidURL from '../../lib/isValidUrl';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
+import dashboardService from '../../services/dashboard.service';
 import Upload from './Upload';
+import {getFileName} from '../../lib/getFileName';
 
 export type ContactDetailsProps = NativeStackScreenProps<
   AppStackParams,
   'ContactDetailsScreen'
 >;
 
-const ContactDetails = ({navigation}: ContactDetailsProps) => {
+const ContactDetails = ({
+  navigation,
+  route: {
+    params: {status, cardId},
+  },
+}: ContactDetailsProps) => {
+  const [updating, setUpdating] = useState(false);
   const {step, setStep, contactDetails, setContactDetails} =
     useCreateBusinessCard();
+
+  const handleUpdateDetails = async () => {
+    try {
+      if (!cardId) return;
+      setUpdating(true);
+
+      const formData = new FormData();
+      formData.append('contactDetails', JSON.stringify(contactDetails));
+      formData.append('companyLogo', {
+        uri: (contactDetails.companyLogo as PickerImage).path,
+        type: (contactDetails.companyLogo as PickerImage).mime,
+        name:
+          (contactDetails.companyLogo as PickerImage).filename ||
+          getFileName((contactDetails.companyLogo as PickerImage).path),
+      });
+
+      formData.append('profileImage', {
+        uri: (contactDetails.profilePicture as PickerImage).path,
+        type: (contactDetails.profilePicture as PickerImage).mime,
+        name:
+          (contactDetails.profilePicture as PickerImage).filename ||
+          getFileName((contactDetails.profilePicture as PickerImage).path),
+      });
+
+      const response = await dashboardService.editCardDetails(cardId, {
+        contactDetails: formData,
+      });
+
+      setUpdating(false);
+      if (!response.success)
+        return Toast.error({primaryText: response.message});
+
+      Toast.success({primaryText: 'Information updated.'});
+      setContactDetails(initialContactDetails);
+      navigation.replace('EditCardScreen', {
+        editable: true,
+        card: response.data!,
+      });
+    } catch (error) {
+      setUpdating(false);
+      Toast.error({primaryText: (error as HttpError).message});
+    }
+  };
 
   const handleNextClick = () => {
     if (
@@ -50,89 +104,100 @@ const ContactDetails = ({navigation}: ContactDetailsProps) => {
     }
 
     setStep(step + 1);
-    navigation.push('SocialLinksScreen');
+    navigation.push('SocialLinksScreen', {status, cardId});
   };
 
   return (
-    <ScrollView className="h-screen" showsVerticalScrollIndicator={false}>
-      <View
-        className="h-screen bg-white"
-        style={{
-          paddingVertical: responsiveHeight(32 / percentToPx),
-          paddingHorizontal: responsiveHeight(40 / percentToPx),
-        }}>
-        <HeaderStepCount
-          step={step}
-          onBackPress={() => {
-            setStep(step === 0 ? 0 : step - 1);
-            navigation.canGoBack() && navigation.goBack();
-          }}
-        />
+    <Layout>
+      <ScrollView className="h-screen" showsVerticalScrollIndicator={false}>
         <View
           style={{
-            marginTop: responsiveHeight(20 / percentToPx),
-            marginBottom: responsiveHeight(22 / percentToPx),
+            paddingVertical: responsiveHeight(32 / percentToPx),
+            paddingHorizontal: responsiveHeight(40 / percentToPx),
           }}>
-          <HeaderWithText
-            heading="CONTACT DETAILS"
-            subtitle="Please add the contact details to display on digital card."
+          <HeaderStepCount
+            step={step}
+            onBackPress={() => {
+              if (status === 'EDITING')
+                setContactDetails(initialContactDetails);
+
+              setStep(step === 0 ? 0 : step - 1);
+              navigation.canGoBack() && navigation.goBack();
+            }}
           />
+          <View
+            style={{
+              marginTop: responsiveHeight(20 / percentToPx),
+              marginBottom: responsiveHeight(22 / percentToPx),
+            }}>
+            <HeaderWithText
+              heading="CONTACT DETAILS"
+              subtitle="Please add the contact details to display on digital card."
+            />
+          </View>
+          <View style={{gap: responsiveHeight(10 / percentToPx)}}>
+            <TextField
+              label="Email"
+              keyboardType="email-address"
+              onChangeText={text => {
+                setContactDetails({
+                  ...contactDetails,
+                  email: text,
+                });
+              }}
+              value={contactDetails.email}
+              placeholder="Enter your email address"
+            />
+            <TextField
+              label="Mobile"
+              keyboardType="number-pad"
+              onChangeText={text => {
+                setContactDetails({
+                  ...contactDetails,
+                  mobile: text,
+                });
+              }}
+              value={contactDetails.mobile}
+              placeholder="Enter mobile number"
+            />
+            <TextField
+              label="Website URL"
+              keyboardType="url"
+              onChangeText={text => {
+                setContactDetails({
+                  ...contactDetails,
+                  websiteUrl: text,
+                });
+              }}
+              value={contactDetails.websiteUrl}
+              placeholder="Enter your company website url"
+            />
+            <TextField
+              label="Company Address"
+              multiline
+              textAlignVertical="top"
+              onChangeText={text => {
+                setContactDetails({...contactDetails, companyAddress: text});
+              }}
+              value={contactDetails.companyAddress}
+              placeholder="Enter your company address"
+              style={{height: responsiveHeight(80 / percentToPx)}}
+            />
+          </View>
+          <Upload status={status} cardId={cardId!} />
+          <View style={{marginTop: responsiveHeight(35 / percentToPx)}}>
+            <Button
+              showLoading={updating}
+              callback={
+                status === 'EDITING' ? handleUpdateDetails : handleNextClick
+              }
+              text={status === 'EDITING' ? 'Save' : 'Next'}
+              className="w-full"
+            />
+          </View>
         </View>
-        <View style={{gap: responsiveHeight(10 / percentToPx)}}>
-          <TextField
-            label="Email"
-            keyboardType="email-address"
-            onChangeText={text => {
-              setContactDetails({
-                ...contactDetails,
-                email: text,
-              });
-            }}
-            value={contactDetails.email}
-            placeholder="Enter your email address"
-          />
-          <TextField
-            label="Mobile"
-            keyboardType="number-pad"
-            onChangeText={text => {
-              setContactDetails({
-                ...contactDetails,
-                mobile: text,
-              });
-            }}
-            value={contactDetails.mobile}
-            placeholder="Enter mobile number"
-          />
-          <TextField
-            label="Website URL"
-            keyboardType="url"
-            onChangeText={text => {
-              setContactDetails({
-                ...contactDetails,
-                websiteUrl: text,
-              });
-            }}
-            value={contactDetails.websiteUrl}
-            placeholder="Enter your company website url"
-          />
-          <TextField
-            label="Company Address"
-            multiline
-            textAlignVertical="top"
-            onChangeText={text => {
-              setContactDetails({...contactDetails, companyAddress: text});
-            }}
-            value={contactDetails.companyAddress}
-            placeholder="Enter your company address"
-            style={{height: responsiveHeight(80 / percentToPx)}}
-          />
-        </View>
-        <Upload />
-        <View style={{marginTop: responsiveHeight(35 / percentToPx)}}>
-          <Button callback={handleNextClick} text="Next" className="w-full" />
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </Layout>
   );
 };
 

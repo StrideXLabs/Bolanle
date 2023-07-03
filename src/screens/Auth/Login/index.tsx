@@ -4,11 +4,17 @@ import React, {useState} from 'react';
 import {
   ImageBackground,
   ImageSourcePropType,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 
 import bgImage from '../../../assets/images/bg-2.png';
 import Button from '../../../components/Button';
@@ -16,17 +22,12 @@ import TextField from '../../../components/TextField/TextFieldLight';
 import {AuthStateKey, TokenKey, percentToPx} from '../../../constants';
 import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
-import {IUser} from '../../../hooks/useAuth/interface';
+import {IAuthState, IUser} from '../../../hooks/useAuth/interface';
 import {setDataToAsyncStorage} from '../../../lib/storage';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import authService from '../../../services/auth.service';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-  responsiveWidth,
-} from 'react-native-responsive-dimensions';
 
 export type LoginScreenProps = NativeStackScreenProps<
   AuthStackParams & AppStackParams,
@@ -57,7 +58,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
         return Toast.error({primaryText: response.message});
       }
 
-      const token = response.data?.token ?? '';
+      const token = response.data ?? '';
       const decodedUser = decodeJWT(token) as {[key: string]: string | number};
       const user = {
         id: decodedUser._id,
@@ -66,8 +67,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       } as IUser;
 
       await setDataToAsyncStorage(TokenKey, token);
-      await setDataToAsyncStorage('user', user);
-      await setDataToAsyncStorage(AuthStateKey, {authed: true, token, user});
+      await setDataToAsyncStorage(AuthStateKey, {
+        user,
+        token,
+        authed: true,
+      } as IAuthState);
 
       setAuthState({authed: true, token, user});
       navigation.replace('AppBottomNav');
@@ -92,6 +96,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       className="h-full"
       source={bgImage as ImageSourcePropType}>
       <View className="justify-center items-center h-full">
+        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
         <View
           className="bg-accent rounded-lg"
           style={{

@@ -1,5 +1,11 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -7,8 +13,10 @@ import {
 import {BASE_URL, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
+import editIcon from '../../assets/images/edit.png';
 
 type Props = {
+  cardId: string;
   editable: boolean;
   personalInfo: ICardData['personalInfo'];
   contactDetails: ICardData['contactDetails'];
@@ -16,6 +24,7 @@ type Props = {
 };
 
 const Header = ({
+  cardId,
   editable,
   onEditPress,
   personalInfo,
@@ -31,16 +40,30 @@ const Header = ({
           style={{width: 94, height: 94}}
           className="rounded-md"
           source={{
-            uri: BASE_URL + `/${contactDetails?.companyLogo}`,
+            uri: BASE_URL + `/${cardId}/${contactDetails?.companyLogo}`,
           }}
         />
       </View>
+      {editable && (
+        <TouchableOpacity
+          className="absolute p-1 -mt-1"
+          style={{right: 0}}
+          activeOpacity={0.8}
+          onPress={() => onEditPress(contactDetails)}>
+          <Image
+            resizeMode="contain"
+            className="w-[16.5px] h-[16.5px]"
+            source={editIcon as ImageSourcePropType}
+          />
+        </TouchableOpacity>
+      )}
       <View className="flex flex-row gap-2">
         <Image
+          resizeMode="center"
           style={{width: 60, height: 62}}
           className="rounded-full"
           source={{
-            uri: BASE_URL + `/${contactDetails?.profileImage}`,
+            uri: BASE_URL + `/${cardId}/${contactDetails?.profileImage}`,
           }}
         />
         <View>

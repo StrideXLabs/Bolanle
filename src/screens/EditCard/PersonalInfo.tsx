@@ -9,6 +9,8 @@ import {
 import editIcon from '../../assets/images/edit.png';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
+import {percentToPx} from '../../constants';
 
 type Props = {
   editable: boolean;
@@ -19,12 +21,20 @@ type Props = {
 const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
   return (
     <>
-      <View className="flex flex-row items-center justify-between mt-[21px] mb-[10px]">
-        <Text style={textStyles.robotoBold} className="text-accent text-[20px]">
+      <View
+        className="flex flex-row items-center justify-between"
+        style={{
+          marginTop: responsiveHeight(17 / percentToPx),
+          marginBottom: responsiveHeight(12 / percentToPx),
+        }}>
+        <Text
+          style={[textStyles.robotoBold]}
+          className="text-accent text-[20px]">
           Personal Information
         </Text>
         {editable && (
           <TouchableOpacity
+            className="p-1"
             activeOpacity={0.8}
             onPress={() => onEditPress(personalInfo)}>
             <Image
@@ -36,7 +46,9 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
         )}
       </View>
       <View className="flex">
-        <View className="flex flex-row gap-2 mb-[5px]">
+        <View
+          className="flex flex-row gap-2"
+          style={{marginBottom: responsiveHeight(8 / percentToPx)}}>
           <Text
             style={textStyles.robotoBold}
             className="text-dark-blue font-bold">
@@ -46,7 +58,9 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
             {personalInfo.name}
           </Text>
         </View>
-        <View className="flex flex-row gap-2 mb-[5px]">
+        <View
+          className="flex flex-row gap-2"
+          style={{marginBottom: responsiveHeight(8 / percentToPx)}}>
           <Text
             style={textStyles.robotoBold}
             className="text-dark-blue font-bold">
@@ -56,7 +70,9 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
             {personalInfo.designation}
           </Text>
         </View>
-        <View className="flex flex-row gap-2 mb-[5px]">
+        <View
+          className="flex flex-row gap-2"
+          style={{marginBottom: responsiveHeight(8 / percentToPx)}}>
           <Text
             style={textStyles.robotoBold}
             className="text-dark-blue font-bold">

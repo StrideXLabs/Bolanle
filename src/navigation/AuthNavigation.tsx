@@ -15,18 +15,14 @@ import SocialLinksScreen from '../screens/SocialLinks';
 import OtherSocialScreen from '../screens/SocialLinks/OtherSocials';
 import WhatsAppScreen from '../screens/SocialLinks/WhatsApp';
 import WelcomeScreen from '../screens/Welcome';
+import {EditScreenParams} from './AppNavigation';
 
 export type AuthStackParams = {
   LoginScreen: undefined;
   WelcomeScreen: undefined;
   RegisterScreen: undefined;
-  SocialLinksScreen: undefined;
   ForgotPasswordScreen: undefined;
-  ContactDetailsScreen: undefined;
-  WhatsAppScreen: {social: ISocial};
-  PersonalInformationScreen: undefined;
-  OtherSocialsScreen: {social: ISocial};
-};
+} & EditScreenParams;
 
 const AuthStack = createNativeStackNavigator<AuthStackParams>();
 

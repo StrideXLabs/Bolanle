@@ -6,14 +6,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 import editIcon from '../../assets/images/edit.png';
-import textStyles from '../../constants/fonts';
-import {ICardData} from '../../services/dashboard.service';
-
 import email from '../../assets/images/email.png';
 import location from '../../assets/images/location.png';
 import phone from '../../assets/images/phone.png';
 import web from '../../assets/images/web.png';
+import {percentToPx} from '../../constants';
+import textStyles from '../../constants/fonts';
+import {ICardData} from '../../services/dashboard.service';
 
 type Props = {
   editable: boolean;
@@ -24,13 +25,19 @@ type Props = {
 const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
   return (
     <>
-      <View className="flex flex-row items-center justify-between mt-[21px] mb-[10px]">
+      <View
+        className="flex flex-row items-center justify-between"
+        style={{
+          marginTop: responsiveHeight(17 / percentToPx),
+          marginBottom: responsiveHeight(12 / percentToPx),
+        }}>
         <Text style={textStyles.robotoBold} className="text-accent text-[20px]">
           Contact Details
         </Text>
         {editable && (
           <TouchableOpacity
             activeOpacity={0.8}
+            className="p-1"
             onPress={() => onEditPress(contactDetails)}>
             <Image
               resizeMode="contain"

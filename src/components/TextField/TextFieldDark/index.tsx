@@ -55,7 +55,7 @@ const TextField: React.FC<TextFieldProps> = ({
         } ${className}`}
         style={[
           {
-            paddingLeft: responsiveHeight(1.7),
+            paddingHorizontal: responsiveHeight(1.7),
             height: responsiveHeight(40 / percentToPx),
             borderRadius: responsiveHeight(8 / percentToPx),
           },

@@ -1,3 +1,4 @@
+import {HttpError, isHttpError} from 'http-errors';
 import {
   IContactDetails,
   IPersonalInformation,
@@ -25,27 +26,56 @@ export interface ICardsResponse {
   data: ICardData[];
 }
 
-class DashboardService {
-  async getAllCards(): Promise<IDefaultAPIResponse<ICardsResponse>> {
-    try {
-      const data = await fetcher<{}, ICardsResponse>('/dashboard', {
-        body: {},
-        method: 'GET',
-      });
+export type IEditCardData =
+  | {socialLinks: ICard[]}
+  | {contactDetails: FormData}
+  | {personalInfo: IPersonalInformation};
 
+class DashboardService {
+  async getAllCards(): Promise<IDefaultAPIResponse<ICardsResponse['data']>> {
+    try {
+      const data = await fetcher<{}, ICardsResponse>('/dashboard');
       return {
         success: true,
+        data: data.data,
         message: data.message,
-        data: {data: data.data, message: data.message},
       };
     } catch (error) {
+      console.log(error);
       return {
-        data: {data: [], message: ''},
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Something went wrong. Please try again.',
+        data: [],
+        message: isHttpError(error)
+          ? error.message
+          : 'Something went wrong. Please try again.',
         success: false,
+      };
+    }
+  }
+
+  async editCardDetails(
+    cardId: string,
+    data: IEditCardData,
+  ): Promise<IDefaultAPIResponse<ICardData>> {
+    try {
+      const response = await fetcher<
+        IEditCardData,
+        {data: ICardData; message: string}
+      >(`/business-card/${cardId}`, {
+        body: data,
+        method: 'PUT',
+        ...(data instanceof FormData && {
+          isFormData: true,
+          headers: {'Content-Type': 'multipart/form-data'},
+        }),
+      });
+
+      return {success: true, data: response.data, message: ''};
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        success: false,
+        message: (error as HttpError).message,
       };
     }
   }

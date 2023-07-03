@@ -1,16 +1,21 @@
+import {useIsFocused} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, Text, View} from 'react-native';
-import {responsiveHeight} from 'react-native-responsive-dimensions';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import DashboardHeader from '../../components/Header/DashboardHeader';
+import Layout from '../../components/Layout';
 import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
+import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import dashboardService, {ICardData} from '../../services/dashboard.service';
 import Card from './Card';
-import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
@@ -18,6 +23,7 @@ type DashboardScreenProps = NativeStackScreenProps<
 >;
 
 const DashboardScreen = ({navigation}: DashboardScreenProps) => {
+  const isFocused = useIsFocused();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const {setFromDashBoard} = useCreateBusinessCard();
@@ -25,6 +31,8 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
 
   const fetchDashboardData = async () => {
     try {
+      setCards([]);
+      setError('');
       setLoading(true);
       const data = await dashboardService.getAllCards();
 
@@ -33,7 +41,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
         setError(data.message);
       }
 
-      setCards(data.data?.data || []);
+      setCards(data.data || []);
     } catch (error) {
       setError(
         error instanceof Error
@@ -50,16 +58,22 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
   };
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    if (isFocused) fetchDashboardData();
+  }, [isFocused]);
 
   return (
-    <View className="h-full w-full bg-white">
+    <Layout>
       <DashboardHeader
-        heading="DASHBOARD"
-        onAddNewBtnPress={() => {
-          setFromDashBoard(true);
-          navigation.navigate('PersonalInformationScreen');
+        options={{
+          type: 'ADD_NEW_VIEW',
+          heading: 'DASHBOARD',
+          onAddNewBtnPress: () => {
+            setFromDashBoard(true);
+            navigation.navigate('PersonalInformationScreen', {
+              cardId: null,
+              status: 'CREATING',
+            });
+          },
         }}
       />
       {loading && (
@@ -77,13 +91,27 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
           <Button text="RETRY" callback={fetchDashboardData} className="mt-3" />
         </View>
       )}
-      <View
-        style={{
-          height: responsiveHeight(100),
-          marginTop: responsiveHeight(15 / percentToPx),
-          paddingHorizontal: responsiveHeight(30 / percentToPx),
-        }}>
-        {!loading && !error && cards.length > 0 && (
+      {!loading && !error && cards.length == 0 && (
+        <View
+          className="flex justify-center items-center"
+          style={{marginTop: responsiveHeight(10)}}>
+          <Text
+            className="text-dark-blue"
+            style={[
+              textStyles.robotoBold,
+              {fontSize: responsiveFontSize(18 / percentToPx)},
+            ]}>
+            No business card found.
+          </Text>
+        </View>
+      )}
+      {!loading && !error && cards.length > 0 && (
+        <View
+          style={{
+            height: responsiveHeight(100),
+            marginTop: responsiveHeight(15 / percentToPx),
+            paddingHorizontal: responsiveHeight(30 / percentToPx),
+          }}>
           <FlatList
             data={cards}
             numColumns={1}
@@ -99,9 +127,9 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
               gap: responsiveHeight(10 / percentToPx),
             }}
           />
-        )}
-      </View>
-    </View>
+        </View>
+      )}
+    </Layout>
   );
 };
 
