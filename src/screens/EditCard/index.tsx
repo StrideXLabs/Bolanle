@@ -6,6 +6,7 @@ import DashboardHeader from '../../components/Header/DashboardHeader';
 import Layout from '../../components/Layout';
 import {percentToPx} from '../../constants';
 import {IPersonalInformation} from '../../hooks/useBusinessCard/interface';
+import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import cardService from '../../services/card.service';
 import {ICardData} from '../../services/dashboard.service';
@@ -15,10 +16,10 @@ import Header from './Header';
 import PersonalInfo from './PersonalInfo';
 import QR from './QR';
 import SocialLinks from './SocialLinks';
-import Toast from '../../lib/toast';
+import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 
 export type PersonalInformationProps = NativeStackScreenProps<
-  AppStackParams,
+  AppStackParams & BottomTabNavigatorParams,
   'EditCardScreen'
 >;
 
@@ -46,12 +47,14 @@ const EditCardScreen = ({
       const response = await cardService.delete(card._id);
 
       setDeletingCard(false);
+
       if (response.success) {
         Toast.success({primaryText: 'Card deleted.'});
-        // return navigation.navigate('AppBottomNav');
-      } else Toast.success({primaryText: 'Error while deleting card'});
+        return navigation.navigate('AppBottomNav');
+      }
+
+      Toast.error({primaryText: 'Error while deleting card'});
     } catch (error) {
-      console.log(error);
       setDeletingCard(false);
       Toast.success({primaryText: 'Error while deleting card'});
     }
@@ -62,7 +65,8 @@ const EditCardScreen = ({
       <DashboardHeader
         options={{
           type: 'VIEW_OR_EDIT',
-          onBackBtnPress: () => navigation.goBack(),
+          onBackBtnPress: () =>
+            editable ? navigation.replace('AppBottomNav') : navigation.goBack(),
           onShareBtnPress: () =>
             navigation.navigate('ShareCardScreen', {
               card,
@@ -89,6 +93,7 @@ const EditCardScreen = ({
           style={{padding: responsiveHeight(20 / percentToPx)}}
           className="rounded-md border-[1px] border-[#E3E3E3]">
           <Header
+            cardId={card._id}
             editable={editable}
             personalInfo={personalInfo}
             contactDetails={contactDetails}
@@ -109,7 +114,12 @@ const EditCardScreen = ({
             socialLinks={socialLinks}
             onEditPress={handleEditSocialLinks}
           />
-          <QR editable={editable} qr={qr} onDeleteCard={() => setOpen(true)} />
+          <QR
+            qr={qr}
+            cardId={card._id}
+            editable={editable}
+            onDeleteCard={() => setOpen(true)}
+          />
           <DeleteCardModal
             visible={open}
             deleting={deletingCard}

@@ -1,9 +1,8 @@
 import React from 'react';
 import {Image, Pressable, Text, View} from 'react-native';
-import {BASE_URL, percentToPx} from '../../constants';
+import {BASE_URL} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
-import {responsiveWidth} from 'react-native-responsive-dimensions';
 
 interface ICardProps {
   card: ICardData;
@@ -22,7 +21,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
           resizeMode="center"
           className="h-[94px] w-[94px] rounded-md"
           source={{
-            uri: BASE_URL + `/${contactDetails?.companyLogo}`,
+            uri: BASE_URL + `/${card._id}/${contactDetails?.companyLogo}`,
           }}
         />
       </View>
@@ -31,7 +30,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
           resizeMode="center"
           className="h-[60px] w-[60px] rounded-full"
           source={{
-            uri: BASE_URL + `/${contactDetails?.profileImage}`,
+            uri: BASE_URL + `/${card._id}/${contactDetails?.profileImage}`,
           }}
         />
         <View>

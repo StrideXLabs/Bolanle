@@ -12,6 +12,7 @@ import Layout from '../../components/Layout';
 import {BASE_URL, TokenKey, percentToPx} from '../../constants';
 import {AppStackParams, ShareType} from '../../navigation/AppNavigation';
 import ShareButton from './ShareButton';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import copyIcon from '../../assets/images/copy.png';
 import emailIcon from '../../assets/images/email.png';
@@ -20,6 +21,7 @@ import textIcon from '../../assets/images/message.png';
 import shareIcon from '../../assets/images/share.png';
 import whatsappIcon from '../../assets/images/whatsapp.png';
 import {getDataFromAsyncStorage} from '../../lib/storage';
+import Toast from '../../lib/toast';
 
 export type ShareCardScreenProps = NativeStackScreenProps<
   AppStackParams,
@@ -42,20 +44,21 @@ const ShareCardScreen = ({navigation, route}: ShareCardScreenProps) => {
   };
 
   const handleDownload = async () => {
-    RNFetchBlob.config({
-      fileCache: true,
-      appendExt: 'png',
-    })
-      .fetch('GET', card?.qr!, {
+    try {
+      const res = await RNFetchBlob.config({
+        fileCache: true,
+        appendExt: 'png',
+      }).fetch('GET', `${BASE_URL}/${card?._id}/${card!.qr}`, {
         'x-access-token': await getDataFromAsyncStorage(TokenKey),
-      })
-      .then(res => {
-        console.log(res);
-        CameraRoll.saveToCameraRoll(res.data, 'photo')
-          .then(res => console.log(res))
-          .catch(err => console.log(err));
-      })
-      .catch(error => console.log(error));
+      });
+      await CameraRoll.save(res.data, {type: 'photo'});
+      Toast.success({
+        primaryText: 'Photo saved successfully.',
+        position: 'bottom',
+      });
+    } catch (error) {
+      Toast.error({primaryText: 'Error saving photo.'});
+    }
   };
 
   return (
@@ -82,14 +85,16 @@ const ShareCardScreen = ({navigation, route}: ShareCardScreenProps) => {
           <View className="flex justify-center items-center">
             <Image
               className="rounded-lg"
-              source={{uri: `${BASE_URL}/${card!.qr}`}}
+              source={{uri: `${BASE_URL}/${card?._id}/${card!.qr}`}}
               style={{width: responsiveWidth(38), height: responsiveHeight(15)}}
             />
           </View>
           <View style={{marginTop: responsiveHeight(50 / percentToPx)}}>
             <ShareButton
               text="Copy Link"
-              onPress={() => {}}
+              onPress={() => {
+                Clipboard.setString(`${BASE_URL}/${card?._id}/${card!.qr}`);
+              }}
               startIcon={copyIcon}
               styles={{borderRadius: responsiveHeight(8 / percentToPx)}}
             />
