@@ -29,6 +29,7 @@ import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import authService from '../../../services/auth.service';
 import cardService from '../../../services/card.service';
 import Layout from '../../../components/Layout';
+import {Image as PickerImage} from 'react-native-image-crop-picker';
 
 export type RegisterScreenProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -112,8 +113,8 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
         personalInformation,
         contactDetails: cDetails,
         socialLinks: mappedSocialLinks,
-        companyLogo: contactDetails.companyLogo!,
-        profileImage: contactDetails.profilePicture!,
+        companyLogo: contactDetails.companyLogo as PickerImage,
+        profileImage: contactDetails.profilePicture as PickerImage,
       });
 
       setCreatingBusinessCard(false);
