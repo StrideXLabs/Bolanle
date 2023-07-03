@@ -1,5 +1,7 @@
-import React from 'react';
+import {HttpError} from 'http-errors';
+import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   Image,
   ImageSourcePropType,
   Text,
@@ -14,22 +16,40 @@ import chevronRightIcon from '../../assets/images/chevron-right.png';
 import emailIcon from '../../assets/images/email-dark.png';
 import deleteIcon from '../../assets/images/trash.png';
 import userIcon from '../../assets/images/user.png';
-import {percentToPx} from '../../constants';
+import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
-import {useAuth} from '../../hooks/useAuth';
+import {initialAuthState, useAuth} from '../../hooks/useAuth';
 import {flushStorage} from '../../lib/storage';
+import Toast from '../../lib/toast';
+import authService from '../../services/auth.service';
 
 const ProfileScreen = () => {
   const {user, setAuthState} = useAuth();
+  const [deleting, setDeleting] = useState(false);
 
   const handleLogout = async () => {
     await flushStorage();
-    setAuthState({
-      user: null,
-      token: null,
-      authed: false,
-      redirectToLogin: true,
-    });
+    setAuthState({...initialAuthState, redirectToLogin: true});
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      setDeleting(true);
+      const res = await authService.deleteAccount();
+
+      if (!res.success) {
+        setDeleting(false);
+        Toast.error({primaryText: res.message});
+        return;
+      }
+
+      setDeleting(false);
+      Toast.success({primaryText: res.message});
+      await handleLogout();
+    } catch (error) {
+      setDeleting(false);
+      Toast.error({primaryText: (error as HttpError).message});
+    }
   };
 
   return (
@@ -107,24 +127,29 @@ const ProfileScreen = () => {
       </View>
       <TouchableOpacity
         activeOpacity={0.5}
+        onPress={handleDeleteAccount}
         className="flex flex-row justify-center items-center border-[1px] border-accent rounded-lg"
         style={{
           paddingVertical: responsiveHeight(10 / percentToPx),
         }}>
-        <>
-          <Image
-            resizeMode="center"
-            source={deleteIcon as ImageSourcePropType}
-            style={{
-              width: responsiveWidth(24 / percentToPx),
-              height: responsiveHeight(16 / percentToPx),
-              marginRight: responsiveHeight(10 / percentToPx),
-            }}
-          />
-          <Text className="text-accent" style={textStyles.robotoMedium}>
-            Delete Account
-          </Text>
-        </>
+        {deleting ? (
+          <ActivityIndicator size={25} color={accentColor} />
+        ) : (
+          <>
+            <Image
+              resizeMode="center"
+              source={deleteIcon as ImageSourcePropType}
+              style={{
+                width: responsiveWidth(24 / percentToPx),
+                height: responsiveHeight(16 / percentToPx),
+                marginRight: responsiveHeight(10 / percentToPx),
+              }}
+            />
+            <Text className="text-accent" style={textStyles.robotoMedium}>
+              Delete Account
+            </Text>
+          </>
+        )}
       </TouchableOpacity>
     </View>
   );

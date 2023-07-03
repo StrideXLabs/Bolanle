@@ -1,13 +1,15 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   ImageBackground,
   ImageSourcePropType,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 
+import {HttpError} from 'http-errors';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -19,8 +21,10 @@ import TextField from '../../../components/TextField/TextFieldLight';
 import {percentToPx} from '../../../constants';
 import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
+import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 import {AuthStackParams} from '../../../navigation/AuthNavigation';
+import authService from '../../../services/auth.service';
 
 export type LoginScreenProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -34,12 +38,39 @@ export interface ICredentials {
 
 const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   const {authed} = useAuth();
+  const idRef = useRef<number | null>(null);
+
   const [email, setEmail] = useState('');
+  const [sendingEmail, setSendingEmail] = useState(false);
 
   if (authed) {
     navigation.replace('AppBottomNav');
     return null;
   }
+
+  const handleSentForgotEmail = async () => {
+    try {
+      setSendingEmail(true);
+      const response = await authService.sendForgotPasswordEmail(email);
+
+      if (!response.success)
+        return Toast.error({primaryText: response.message});
+
+      setSendingEmail(false);
+      Toast.success({primaryText: 'Email sent successfully.'});
+
+      idRef.current = setTimeout(() => navigation.navigate('LoginScreen'), 300);
+    } catch (error) {
+      setSendingEmail(false);
+      Toast.error({primaryText: (error as HttpError).message});
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      idRef.current && clearTimeout(idRef.current);
+    };
+  }, []);
 
   return (
     <ImageBackground
@@ -47,6 +78,7 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       resizeMode="contain"
       source={bgImage as ImageSourcePropType}>
       <View className="flex justify-center items-center h-full">
+        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
         <View
           className="bg-accent w-[85%] rounded-lg"
           style={{
@@ -86,8 +118,9 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           <View style={{marginTop: responsiveHeight(50 / percentToPx)}}>
             <Button
               text="Submit"
-              callback={() => {}}
+              showLoading={sendingEmail}
               showBackgroundColor={false}
+              callback={handleSentForgotEmail}
               style={{width: responsiveWidth(67)}}
             />
             <View className="mt-4 flex flex-row justify-center">

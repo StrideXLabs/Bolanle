@@ -22,6 +22,7 @@ import Button from '../../components/Button';
 
 type DeleteCardModalProps = {
   visible: boolean;
+  deleting: boolean;
   onClose: () => void;
   onDelete: () => void;
 };
@@ -81,9 +82,10 @@ const ModalPopup = ({
 };
 
 const DeleteCardModal = ({
-  onClose,
-  onDelete,
   visible,
+  onClose,
+  deleting,
+  onDelete,
 }: DeleteCardModalProps) => {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -120,6 +122,7 @@ const DeleteCardModal = ({
           <Button
             text="Delete"
             callback={onDelete}
+            showLoading={deleting}
             className="py-3 text-sm"
             style={{
               width: responsiveWidth(30),

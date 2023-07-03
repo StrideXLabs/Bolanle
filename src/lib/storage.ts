@@ -1,17 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AuthStateKey, TokenKey, UserKey} from '../constants';
+import {AuthStateKey, TokenKey} from '../constants';
 
 export async function getDataFromAsyncStorage<TReturnData>(
   id: string,
 ): Promise<TReturnData> {
-  let token: string = '';
+  let token: TReturnData | null;
 
   try {
     const jsonData = await AsyncStorage.getItem(id);
     token =
-      jsonData && typeof jsonData === 'string' ? JSON.parse(jsonData) : '';
+      jsonData && typeof jsonData === 'string' ? JSON.parse(jsonData) : null;
   } catch (error) {
-    token = '';
+    token = null;
   }
 
   return token as TReturnData;
@@ -28,7 +28,7 @@ export async function setDataToAsyncStorage<T>(id: string, data: T) {
 
 export async function flushStorage() {
   try {
-    await AsyncStorage.multiRemove([TokenKey, AuthStateKey, UserKey]);
+    await AsyncStorage.multiRemove([TokenKey, AuthStateKey]);
     return true;
   } catch (error) {
     return false;

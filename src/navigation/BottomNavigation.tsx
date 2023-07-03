@@ -6,9 +6,9 @@ import contactsIcon from '../assets/images/contacts.png';
 import dashboardIcon from '../assets/images/dashboard.png';
 import profileIcon from '../assets/images/profile.png';
 import {accentColor} from '../constants';
+import {useOpenModalState} from '../hooks/useOpenModal';
 import ContactsScreen from '../screens/Contacts';
 import ProfileScreen from '../screens/Profile';
-import {useOpenModalState} from '../hooks/useOpenModal';
 
 export type BottomTabNavigatorParams = {
   ProfileScreen: undefined;
@@ -66,7 +66,7 @@ const BottomNavigation = () => {
             />
           ),
         }}
-        component={ContactsScreen}
+        component={ContactsScreen as any}
       />
       <BottomTabNavigator.Screen
         name={'ProfileScreen' as any}

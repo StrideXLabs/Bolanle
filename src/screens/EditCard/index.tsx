@@ -1,21 +1,27 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {HttpError} from 'http-errors';
 import React, {useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {ActivityIndicator, ScrollView, View} from 'react-native';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 import DashboardHeader from '../../components/Header/DashboardHeader';
-import {IPersonalInformation} from '../../hooks/useBusinessCard/interface';
+import Layout from '../../components/Layout';
+import {accentColor, percentToPx} from '../../constants';
+import {SocialLinkType} from '../../constants/socials';
+import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
+import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
-import {ICardData} from '../../services/dashboard.service';
+import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
+import cardService, {ICard} from '../../services/card.service';
+import dashboardService, {ICardData} from '../../services/dashboard.service';
 import ContactDetails from './ContactDetails';
+import DeleteCardModal from './DeleteModal';
 import Header from './Header';
 import PersonalInfo from './PersonalInfo';
 import QR from './QR';
 import SocialLinks from './SocialLinks';
-import {responsiveHeight} from 'react-native-responsive-dimensions';
-import {percentToPx} from '../../constants';
-import DeleteCardModal from './DeleteModal';
 
 export type PersonalInformationProps = NativeStackScreenProps<
-  AppStackParams,
+  AppStackParams & BottomTabNavigatorParams,
   'EditCardScreen'
 >;
 
@@ -24,36 +30,148 @@ const EditCardScreen = ({
   route: {params},
 }: PersonalInformationProps) => {
   const {
-    card: {qr, socialLinks, personalInfo, contactDetails},
-    editable,
-  } = params;
+    setStep,
+    setSocialItems,
+    setSocialLinks,
+    setContactDetails,
+    setPersonalInformation,
+  } = useCreateBusinessCard();
 
   const [open, setOpen] = useState(false);
+  const [deletingCard, setDeletingCard] = useState(false);
+  const [deletingSocial, setDeletingSocial] = useState(false);
 
-  const handleEditProfileAndLogo = (info: ICardData['contactDetails']) => {};
+  const {card, editable} = params;
+  const {qr, socialLinks, personalInfo, contactDetails} = card;
 
-  const handleEditPersonalInformation = (info: IPersonalInformation) => {};
+  const handleEditProfileAndLogo = () => {
+    setStep(1);
+    setContactDetails({
+      ...contactDetails,
+      companyLogo: contactDetails.companyLogo,
+      profilePicture: contactDetails.profileImage,
+    });
+    navigation.navigate('ContactDetailsScreen', {
+      cardId: card._id,
+      status: 'EDITING',
+    });
+  };
 
-  const handleEditContactDetails = (info: ICardData['contactDetails']) => {};
+  const handleEditPersonalInformation = (info: ICardData['personalInfo']) => {
+    setPersonalInformation(info);
+    navigation.navigate('PersonalInformationScreen', {
+      cardId: card._id,
+      status: 'EDITING',
+    });
+  };
 
-  const handleEditSocialLinks = (info: ICardData['socialLinks']) => {};
+  const handleEditContactDetails = (info: ICardData['contactDetails']) => {
+    setStep(1);
+    setContactDetails({
+      ...info,
+      companyLogo: info.companyLogo,
+      profilePicture: info.profileImage,
+    });
+    navigation.navigate('ContactDetailsScreen', {
+      cardId: card._id,
+      status: 'EDITING',
+    });
+  };
+
+  const handleEditSocialLinks = (info: ICardData['socialLinks']) => {
+    setStep(2);
+    setSocialItems(
+      info.map(item => ({
+        title: item.title,
+        id: item.platform as SocialLinkType,
+      })),
+    );
+
+    setSocialLinks(
+      info.map(item => ({
+        url: item.url,
+        title: item.title,
+        id: item.platform as SocialLinkType,
+      })),
+    );
+
+    navigation.navigate('SocialLinksScreen', {
+      cardId: card._id,
+      status: 'EDITING',
+    });
+  };
+
+  const handleDeleteSocialMedia = async (social: ICard) => {
+    try {
+      const filteredCards = card.socialLinks.filter(
+        item => item.platform !== social.platform,
+      );
+      setDeletingSocial(true);
+      const response = await dashboardService.editCardDetails(card._id, {
+        socialLinks: filteredCards,
+      });
+
+      setDeletingSocial(false);
+      if (!response.success)
+        return Toast.error({primaryText: response.message});
+
+      Toast.success({primaryText: 'Information updated.'});
+      navigation.setParams({editable: true, card: response.data!});
+    } catch (error) {
+      setDeletingSocial(false);
+      Toast.error({primaryText: (error as HttpError).message});
+    }
+  };
+
+  const handleDeleteCard = async () => {
+    try {
+      setDeletingCard(true);
+      const response = await cardService.delete(card._id);
+
+      setDeletingCard(false);
+
+      if (response.success) {
+        Toast.success({primaryText: 'Card deleted.'});
+        return navigation.navigate('AppBottomNav');
+      }
+
+      Toast.error({primaryText: 'Error while deleting card'});
+    } catch (error) {
+      setDeletingCard(false);
+      Toast.success({primaryText: 'Error while deleting card'});
+    }
+  };
 
   return (
-    <View className="h-full bg-white">
+    <Layout>
       <DashboardHeader
-        onBackBtnPress={() => navigation.goBack()}
-        subheading={editable ? 'EDIT CARD' : 'VIEW CARD'}
-        subtitle={
-          editable
+        options={{
+          type: 'VIEW_OR_EDIT',
+          onBackBtnPress: () =>
+            editable ? navigation.replace('AppBottomNav') : navigation.goBack(),
+          onShareBtnPress: () =>
+            navigation.navigate('ShareCardScreen', {
+              card,
+              type: 'WITH_DATA',
+              fullName: personalInfo.name,
+              company: personalInfo.companyName,
+            }),
+          heading: editable ? 'EDIT CARD' : 'VIEW CARD',
+          subheading: editable
             ? 'You can edit your card info here.'
-            : 'Viewing card info here.'
-        }
+            : 'Viewing card info here.',
+        }}
       />
+      {deletingSocial && (
+        <View className="absolute z-[1000000] h-screen w-screen bg-[#292c3366] justify-center items-center">
+          <ActivityIndicator size={40} color={accentColor} />
+        </View>
+      )}
       <View
         style={{
           flex: 1,
           marginTop: responsiveHeight(25 / percentToPx),
-          paddingBottom: responsiveHeight(17 / percentToPx),
+          // paddingBottom: responsiveHeight(20 / percentToPx),
           paddingHorizontal: responsiveHeight(30 / percentToPx),
         }}>
         <ScrollView
@@ -62,6 +180,7 @@ const EditCardScreen = ({
           style={{padding: responsiveHeight(20 / percentToPx)}}
           className="rounded-md border-[1px] border-[#E3E3E3]">
           <Header
+            cardId={card._id}
             editable={editable}
             personalInfo={personalInfo}
             contactDetails={contactDetails}
@@ -81,16 +200,24 @@ const EditCardScreen = ({
             editable={editable}
             socialLinks={socialLinks}
             onEditPress={handleEditSocialLinks}
+            onDeleteLink={handleDeleteSocialMedia}
           />
-          <QR editable={editable} qr={qr} onDeleteCard={() => setOpen(true)} />
+          <QR
+            qr={qr}
+            cardId={card._id}
+            editable={editable}
+            onDeleteCard={() => setOpen(true)}
+          />
           <DeleteCardModal
             visible={open}
-            onDelete={() => {}}
+            deleting={deletingCard}
+            onDelete={handleDeleteCard}
             onClose={() => setOpen(false)}
           />
         </ScrollView>
       </View>
-    </View>
+      <View style={{height: responsiveHeight(2)}} />
+    </Layout>
   );
 };
 

@@ -9,6 +9,8 @@ import useAuthState from '../hooks/useAuthState';
 import ContactDetails from '../screens/ContactDetails';
 import EditCardScreen from '../screens/EditCard';
 import PersonalInformation from '../screens/PersonalInformation';
+import ShareCardScreen from '../screens/ShareCard';
+import ShareCardDetailsScreen from '../screens/ShareDetails';
 import SocialLinksScreen from '../screens/SocialLinks';
 import OtherSocialScreen from '../screens/SocialLinks/OtherSocials';
 import WhatsAppScreen from '../screens/SocialLinks/WhatsApp';
@@ -16,19 +18,47 @@ import {ICardData} from '../services/dashboard.service';
 import AuthNavigation from './AuthNavigation';
 import BottomNavigation from './BottomNavigation';
 
+export type ScreenStatus = 'EDITING' | 'CREATING';
+export type ShareType = '' | 'TEXT_CARD' | 'EMAIL_CARD' | 'WHATSAPP_CARD';
+
+export type EditScreenParams = {
+  SocialLinksScreen: {status: ScreenStatus; cardId: string | null};
+  ContactDetailsScreen: {status: ScreenStatus; cardId: string | null};
+  PersonalInformationScreen: {status: ScreenStatus; cardId: string | null};
+  WhatsAppScreen: {
+    social: ISocial;
+    status: ScreenStatus;
+    cardId: string | null;
+  };
+  OtherSocialsScreen: {
+    social: ISocial;
+    status: ScreenStatus;
+    cardId: string | null;
+  };
+};
+
 export type AppStackParams = {
   AppBottomNav: undefined;
-  WelcomeScreen: undefined;
-  SocialLinksScreen: undefined;
-  ContactDetailsScreen: undefined;
-  WhatsAppScreen: {social: ISocial};
-  PersonalInformationScreen: undefined;
-  OtherSocialsScreen: {social: ISocial};
   EditCardScreen: {
     card: Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>;
     editable: boolean;
   };
-};
+  ShareCardScreen:
+    | {cardId: number; type: 'WITH_ID'; company: string; fullName: string}
+    | {
+        company: string;
+        type: 'WITH_DATA';
+        fullName: string;
+        card: Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>;
+      };
+
+  ShareCardDetailsScreen: {
+    company: string;
+    fullName: string;
+    shareType: ShareType;
+    card: Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>;
+  };
+} & EditScreenParams;
 
 const AppStack = createNativeStackNavigator<AppStackParams>();
 
@@ -73,11 +103,15 @@ const AppNavigation = () => {
             component={OtherSocialScreen}
             options={{animation: 'none'}}
           />
-
           <AppStack.Screen
             name="EditCardScreen"
             component={EditCardScreen}
             options={{animation: 'slide_from_right'}}
+          />
+          <AppStack.Screen name="ShareCardScreen" component={ShareCardScreen} />
+          <AppStack.Screen
+            component={ShareCardDetailsScreen}
+            name={'ShareCardDetailsScreen' as any}
           />
           <AppStack.Screen
             name="AppBottomNav"

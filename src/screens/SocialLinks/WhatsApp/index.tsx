@@ -1,23 +1,20 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {Pressable, SafeAreaView, ScrollView, Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import {CountryPicker} from 'react-native-country-codes-picker';
 import {ChevronDownIcon} from 'react-native-heroicons/outline';
 
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
+import Layout from '../../../components/Layout';
 import TextField from '../../../components/TextField/TextFieldDark';
-import textStyles from '../../../constants/fonts';
+import {percentToPx} from '../../../constants';
 import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 import {ISocialLink} from '../../../hooks/useBusinessCard/interface';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-} from 'react-native-responsive-dimensions';
-import {percentToPx} from '../../../constants';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams,
@@ -25,7 +22,7 @@ export type SocialLinksProps = NativeStackScreenProps<
 >;
 
 const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
-  const socialItem = params.social;
+  const {social: socialItem, cardId, status} = params;
   const [open, setOpen] = useState<boolean>(false);
   const {setSocialLink, setSocialItem} = useCreateBusinessCard();
 
@@ -51,7 +48,7 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
     });
 
     setSocialItem(socialItem);
-    navigation.navigate('SocialLinksScreen');
+    navigation.navigate('SocialLinksScreen', {cardId, status});
   };
 
   useEffect(() => {
@@ -65,37 +62,40 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
   }, []);
 
   return (
-    <>
-      <CountryPicker
-        lang="en"
-        show={open}
-        style={{
-          modal: {height: 400},
-          textInput: {color: '#334155'},
-          dialCode: {color: '#334155', fontFamily: 'Roboto-Bold'},
-          countryName: {color: '#334155', fontFamily: 'Roboto-Bold'},
-        }}
-        onRequestClose={() => setOpen(false)}
-        onBackdropPress={() => setOpen(false)}
-        pickerButtonOnPress={item => {
-          setData({flag: item.flag, code: item.dial_code});
-          setSocial({
-            id: social.id,
-            title: social.title,
-            url: `(${data.code}) `,
-          });
-          setOpen(false);
-        }}
-      />
+    <Layout>
+      {open && (
+        <CountryPicker
+          lang="en"
+          show={open}
+          style={{
+            modal: {height: 400},
+            textInput: {color: '#334155'},
+            dialCode: {color: '#334155', fontFamily: 'Roboto-Bold'},
+            countryName: {color: '#334155', fontFamily: 'Roboto-Bold'},
+          }}
+          onRequestClose={() => setOpen(false)}
+          onBackdropPress={() => setOpen(false)}
+          pickerButtonOnPress={item => {
+            setData({flag: item.flag, code: item.dial_code});
+            setSocial({
+              id: social.id,
+              title: social.title,
+              url: `(${data.code}) `,
+            });
+            setOpen(false);
+          }}
+        />
+      )}
       <View
-        className="h-screen bg-white"
         style={{
           paddingVertical: responsiveHeight(32 / percentToPx),
           paddingHorizontal: responsiveHeight(40 / percentToPx),
         }}>
         <HeaderStepCount
           showDotes={false}
-          onBackPress={() => navigation.navigate('SocialLinksScreen')}
+          onBackPress={() =>
+            navigation.navigate('SocialLinksScreen', {cardId, status})
+          }
         />
         <View
           style={{
@@ -148,7 +148,7 @@ const WhatsAppScreen = ({navigation, route: {params}}: SocialLinksProps) => {
           <Button text="Save" callback={handleSave} />
         </View>
       </View>
-    </>
+    </Layout>
   );
 };
 

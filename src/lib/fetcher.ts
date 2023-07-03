@@ -1,56 +1,64 @@
+import axios, {isAxiosError} from 'axios';
+import createHttpError from 'http-errors';
 import {BASE_URL, TokenKey} from '../constants';
-import HttpError from './http-error';
 import {getDataFromAsyncStorage} from './storage';
 
 interface IRequestBodyData<T> {
-  data?: T;
-  headers?: {[key: string]: string | number};
-  method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
-  body: T;
-}
-
-interface IRequestData<T> {
-  data: T;
-  headers?: {[key: string]: string | number};
-  method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
   body?: T;
+  isFormData?: boolean;
+  headers?: {[key: string]: string | number};
+  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE' | 'PUT';
 }
 
-type IRequestBody<T> = IRequestBodyData<T> | IRequestData<T>;
+export const API = axios.create({
+  baseURL: BASE_URL,
+  responseType: 'json',
+  withCredentials: true,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+});
 
 export default async function fetcher<
   TRequestBody extends {},
   TResponseData extends {message: string},
 >(
   endpoint: string,
-  options: IRequestBody<TRequestBody>,
+  options?: IRequestBodyData<TRequestBody>,
 ): Promise<TResponseData> {
-  const token = await getDataFromAsyncStorage<string>(TokenKey);
+  try {
+    const token = await getDataFromAsyncStorage<string>(TokenKey);
+    const {
+      body,
+      headers = {},
+      method = 'GET',
+      isFormData = false,
+    } = options || {};
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
-    method: options.method,
-    headers: {
-      'x-access-token': token || '',
-      'Content-Type': 'application/json',
-      ...(options.headers || {}),
-    },
-    ...(options.method !== 'GET' && {
-      body: options.body
-        ? (options.body as BodyInit_)
-        : JSON.stringify(options.data),
-    }),
-  });
+    const {data: response} = await API<TResponseData>(endpoint, {
+      method,
+      headers: {'x-access-token': token || '', ...headers},
+      ...(method !== 'GET' &&
+        body && {
+          data: !isFormData && body ? JSON.stringify(body) : body,
+        }),
+    });
 
-  if (response.status === 401 || response.status === 403) {
-    throw new HttpError(response.status, 'UNAUTHORIZED');
+    return response;
+  } catch (error) {
+    if (
+      isAxiosError(error) &&
+      (error.response?.status === 401 || error.response?.status === 401)
+    )
+      throw new createHttpError.Unauthorized();
+
+    if (isAxiosError(error)) {
+      throw new createHttpError.BadRequest(
+        error.response?.data?.message || 'Something went wrong.',
+      );
+    }
+
+    throw error;
   }
-
-  const responseData = (await response.json()) as TResponseData;
-
-  if (!response.ok)
-    throw new Error(
-      responseData.message || 'Something went wrong. Please try again.',
-    );
-
-  return responseData;
 }

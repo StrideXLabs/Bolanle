@@ -6,6 +6,7 @@ import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
+import Layout from '../../../components/Layout';
 import TextField from '../../../components/TextField/TextFieldDark';
 import {percentToPx} from '../../../constants';
 import {socialMappings} from '../../../constants/socials';
@@ -23,7 +24,7 @@ const OtherSocialsScreen = ({
   navigation,
   route: {params},
 }: SocialLinksProps) => {
-  const socialItem = params.social;
+  const {social: socialItem, cardId, status} = params;
   const {setSocialLink, setSocialItem} = useCreateBusinessCard();
 
   const [social, setSocial] = useState<ISocialLink>({
@@ -42,52 +43,55 @@ const OtherSocialsScreen = ({
       title: social.title.trim(),
     });
     setSocialItem(socialItem);
-    navigation.navigate('SocialLinksScreen');
+    navigation.navigate('SocialLinksScreen', {cardId, status});
   };
 
   return (
-    <View
-      className="h-screen bg-white"
-      style={{
-        paddingVertical: responsiveHeight(32 / percentToPx),
-        paddingHorizontal: responsiveHeight(40 / percentToPx),
-      }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <HeaderStepCount
-          showDotes={false}
-          onBackPress={() => navigation.navigate('SocialLinksScreen')}
-        />
-        <View
-          style={{
-            marginTop: responsiveHeight(20 / percentToPx),
-            marginBottom: responsiveHeight(22 / percentToPx),
-          }}>
-          <HeaderWithText
-            heading={`ADD ${socialMappings[socialItem.id]}`}
-            subtitle="Please fill the following detail."
+    <Layout>
+      <View
+        style={{
+          paddingVertical: responsiveHeight(32 / percentToPx),
+          paddingHorizontal: responsiveHeight(40 / percentToPx),
+        }}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <HeaderStepCount
+            showDotes={false}
+            onBackPress={() =>
+              navigation.navigate('SocialLinksScreen', {cardId, status})
+            }
           />
-        </View>
-        <TextField
-          value={social.url}
-          label="Link/Username"
-          placeholder="Link/Username"
-          onChangeText={url => setSocial(state => ({...state, url}))}
-        />
-        <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
+          <View
+            style={{
+              marginTop: responsiveHeight(20 / percentToPx),
+              marginBottom: responsiveHeight(22 / percentToPx),
+            }}>
+            <HeaderWithText
+              heading={`ADD ${socialMappings[socialItem.id]}`}
+              subtitle="Please fill the following detail."
+            />
+          </View>
           <TextField
-            label="Title"
-            value={social.title}
-            placeholder={socialMappings[socialItem.id]}
-            onChangeText={title => setSocial(state => ({...state, title}))}
+            value={social.url}
+            label="Link/Username"
+            placeholder="Link/Username"
+            onChangeText={url => setSocial(state => ({...state, url}))}
           />
-        </View>
-        <Button
-          text="Save"
-          callback={handleSave}
-          className="mt-[74px] w-full"
-        />
-      </ScrollView>
-    </View>
+          <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
+            <TextField
+              label="Title"
+              value={social.title}
+              placeholder={socialMappings[socialItem.id]}
+              onChangeText={title => setSocial(state => ({...state, title}))}
+            />
+          </View>
+          <Button
+            text="Save"
+            callback={handleSave}
+            className="mt-[74px] w-full"
+          />
+        </ScrollView>
+      </View>
+    </Layout>
   );
 };
 

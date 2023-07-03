@@ -1,41 +1,70 @@
-import jwtDecode from 'jwt-decode';
-import {useEffect, useState} from 'react';
-import {AuthStateKey} from '../constants';
+import {useEffect, useRef, useState} from 'react';
+import {AuthStateKey, refreshTokenTime} from '../constants';
 import {flushStorage, getDataFromAsyncStorage} from '../lib/storage';
-import {useAuth} from './useAuth';
+import {initialAuthState, useAuth} from './useAuth';
 import {IAuthState} from './useAuth/interface';
+import authService from '../services/auth.service';
 
 export default function useAuthState() {
-  const [loading, setLoading] = useState(true);
-  const {authed, token, user, redirectToLogin, setAuthState} = useAuth();
+  const timeId = useRef<number | null>(null);
+  const authed = useAuth(state => state.authed);
+  const [loading, setLoading] = useState(authed);
+  const setAuthState = useAuth(state => state.setAuthState);
+  const redirectToLogin = useAuth(state => state.redirectToLogin);
+
+  const handleLogout = async () => {
+    await flushStorage();
+    setAuthState({...initialAuthState, redirectToLogin});
+  };
+
+  const handleRefreshToken = async (data: IAuthState) => {
+    try {
+      const response = await authService.getCurrentUser();
+
+      setLoading(false);
+      if (!response.success) {
+        await handleLogout();
+        return;
+      }
+
+      setAuthState({
+        authed: true,
+        redirectToLogin,
+        user: data.user,
+        token: data.token,
+      });
+    } catch (error) {
+      setLoading(false);
+      await handleLogout();
+    }
+  };
+
+  const handleRefreshUserData = async () => {
+    const data = await getDataFromAsyncStorage<IAuthState>(AuthStateKey);
+
+    if (!data || !data.authed) {
+      setLoading(false);
+      await handleLogout();
+      return;
+    }
+
+    await handleRefreshToken(data);
+  };
 
   useEffect(() => {
-    (async function () {
-      try {
-        const data = await getDataFromAsyncStorage<IAuthState>(AuthStateKey);
+    if (!authed) handleRefreshUserData();
+  }, [authed]);
 
-        if (!data) {
-          await flushStorage();
-          setAuthState({
-            user: null,
-            token: null,
-            authed: false,
-            redirectToLogin,
-          });
-          setLoading(false);
-          return;
-        }
+  useEffect(() => {
+    if (authed && !timeId.current) {
+      timeId.current = setInterval(handleRefreshUserData, refreshTokenTime);
+    }
 
-        jwtDecode(data.token || '');
-        setAuthState({...data, redirectToLogin});
-      } catch (error) {
-        await flushStorage();
-        setAuthState({authed: false, token: null, user: null, redirectToLogin});
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+    return () => {
+      timeId.current && clearInterval(timeId.current);
+      timeId.current = null;
+    };
+  }, [authed]);
 
-  return {loading, user, token, authed, redirectToLogin};
+  return {loading, authed, redirectToLogin};
 }
