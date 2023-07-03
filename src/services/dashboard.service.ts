@@ -54,7 +54,7 @@ class DashboardService {
 
   async editCardDetails(
     cardId: string,
-    data: IEditCardData,
+    data: any,
   ): Promise<IDefaultAPIResponse<ICardData>> {
     try {
       const response = await fetcher<
