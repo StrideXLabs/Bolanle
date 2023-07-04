@@ -106,11 +106,12 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
   };
 
   useEffect(() => {
-    selectedContactRef.current = null;
     if (isFocused) {
       fetchContactData();
     }
   }, [isFocused]);
+
+  console.log({contacts});
 
   return (
     <Layout>
@@ -208,8 +209,9 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
                 <ContactCard
                   contact={item}
                   onPress={contact => {
-                    setOpen(true);
+                    console.log('ITEM', item);
                     selectedContactRef.current = contact;
+                    setOpen(true);
                   }}
                 />
               )}

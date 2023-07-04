@@ -134,10 +134,12 @@ class CardService {
         `/business-card/${cardId}`,
       );
 
+      console.log(response);
+
       return {
         success: true,
         data: response.data,
-        message: 'Card deleted successfully.',
+        message: response.message,
       };
     } catch (error) {
       return {

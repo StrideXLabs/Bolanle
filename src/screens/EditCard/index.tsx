@@ -171,13 +171,22 @@ const EditCardScreen = ({
       setLoading(true);
       const response = await cardService.getById(cardId);
 
-      if (!response.success || !response.data) {
+      if (!response.success) {
         setLoading(false);
         setError(response.message);
         return;
       }
 
-      setCardData(response.data);
+      setCardData(
+        response.data! || {
+          qr: '',
+          _id: '',
+          userId: '',
+          socialLinks: [],
+          contactDetails: initialContactDetails,
+          personalInfo: initialPersonalInformation,
+        },
+      );
     } catch (error) {
       setError('Error fetching card data.');
     } finally {
@@ -220,7 +229,9 @@ const EditCardScreen = ({
               onBackBtnPress: () =>
                 editable
                   ? navigation.replace('AppBottomNav')
-                  : navigation.goBack(),
+                  : navigation.canGoBack()
+                  ? navigation.goBack()
+                  : navigation.replace('AppBottomNav'),
               onShareBtnPress: () =>
                 navigation.push('ShareCardScreen', {
                   card,
