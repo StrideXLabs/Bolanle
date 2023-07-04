@@ -41,7 +41,6 @@ class DashboardService {
         message: data.message,
       };
     } catch (error) {
-      console.log(error);
       return {
         data: [],
         message: isHttpError(error)
@@ -62,7 +61,7 @@ class DashboardService {
         IEditCardData,
         {data: ICardData; message: string}
       >(`/business-card/${cardId}`, {
-        body: data,
+        body: isFormData ? (data as any).contactDetails : data,
         method: 'PUT',
         ...(isFormData && {
           isFormData: true,
