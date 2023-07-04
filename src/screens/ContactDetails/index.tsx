@@ -48,23 +48,25 @@ const ContactDetails = ({
         primaryText: 'All fields are required.',
         secondaryText: 'Please fill up all the details to continue.',
       });
-      return;
+      return false;
     }
 
     if (!emailRegex.test(contactDetails.email)) {
       Toast.error({primaryText: 'Email must be a valid.'});
-      return;
+      return false;
     }
 
     if (!isValidURL(contactDetails.websiteUrl)) {
       Toast.error({primaryText: 'Website URL must be valid URL.'});
-      return;
+      return false;
     }
+
+    return true;
   };
 
   const handleUpdateDetails = async () => {
     try {
-      validateData();
+      if (!validateData()) return;
       if (!cardId) return;
 
       setUpdating(true);
@@ -127,7 +129,7 @@ const ContactDetails = ({
   };
 
   const handleNextClick = () => {
-    validateData();
+    if (!validateData()) return;
     setStep(step + 1);
     navigation.push('SocialLinksScreen', {status, cardId});
   };

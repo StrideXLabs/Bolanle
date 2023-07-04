@@ -183,6 +183,11 @@ const SocialLinksScreen = ({
 
   const handleUpdateDetails = async () => {
     try {
+      if (socialItems.length === 0)
+        return Toast.error({
+          primaryText: 'Please add at least one social link.',
+        });
+
       if (!cardId) return;
 
       setUpdating(true);

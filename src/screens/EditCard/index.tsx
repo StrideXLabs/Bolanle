@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HttpError} from 'http-errors';
-import React, {useState} from 'react';
-import {ActivityIndicator, ScrollView, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, BackHandler, ScrollView, View} from 'react-native';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import DashboardHeader from '../../components/Header/DashboardHeader';
 import Layout from '../../components/Layout';
@@ -129,7 +129,7 @@ const EditCardScreen = ({
 
       if (response.success) {
         Toast.success({primaryText: 'Card deleted.'});
-        return navigation.navigate('AppBottomNav');
+        return navigation.navigate('DashboardScreen');
       }
 
       Toast.error({primaryText: 'Error while deleting card'});
@@ -138,6 +138,16 @@ const EditCardScreen = ({
       Toast.success({primaryText: 'Error while deleting card'});
     }
   };
+
+  useEffect(() => {
+    const goBack = () => {
+      editable ? navigation.replace('AppBottomNav') : navigation.goBack();
+      return true;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', goBack);
+    return () => BackHandler.removeEventListener('hardwareBackPress', goBack);
+  }, []);
 
   return (
     <Layout>
