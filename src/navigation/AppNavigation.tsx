@@ -40,8 +40,9 @@ export type EditScreenParams = {
 export type AppStackParams = {
   AppBottomNav: undefined;
   EditCardScreen: {
-    card: Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>;
     editable: boolean;
+    cardId?: string;
+    card: Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>;
   };
   ShareCardScreen:
     | {cardId: number; type: 'WITH_ID'; company: string; fullName: string}

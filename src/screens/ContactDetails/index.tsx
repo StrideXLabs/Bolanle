@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HttpError} from 'http-errors';
-import React, {useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {BackHandler, ScrollView, View} from 'react-native';
 import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
@@ -12,13 +12,13 @@ import TextField from '../../components/TextField/TextFieldDark';
 import {emailRegex, percentToPx} from '../../constants';
 import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import {initialContactDetails} from '../../hooks/useBusinessCard/constants';
+import {IContactDetails} from '../../hooks/useBusinessCard/interface';
+import {getFileName} from '../../lib/getFileName';
 import isValidURL from '../../lib/isValidUrl';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import dashboardService from '../../services/dashboard.service';
 import Upload from './Upload';
-import {getFileName} from '../../lib/getFileName';
-import {IContactDetails} from '../../hooks/useBusinessCard/interface';
 
 export type ContactDetailsProps = NativeStackScreenProps<
   AppStackParams,
@@ -32,7 +32,7 @@ const ContactDetails = ({
   },
 }: ContactDetailsProps) => {
   const [updating, setUpdating] = useState(false);
-  const {step, setStep, contactDetails, setContactDetails} =
+  const {step, setStep, contactDetails, setContactDetails, fromDashBoard} =
     useCreateBusinessCard();
 
   const validateData = () => {
@@ -118,6 +118,7 @@ const ContactDetails = ({
 
       Toast.success({primaryText: 'Information updated.'});
       setContactDetails(initialContactDetails);
+      navigation.pop();
       navigation.replace('EditCardScreen', {
         editable: true,
         card: response.data!,
@@ -134,6 +135,17 @@ const ContactDetails = ({
     navigation.push('SocialLinksScreen', {status, cardId});
   };
 
+  useEffect(() => {
+    const goBack = () => {
+      (status === 'EDITING' || fromDashBoard) &&
+        setContactDetails(initialContactDetails);
+      return false;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', goBack);
+    return () => BackHandler.removeEventListener('hardwareBackPress', goBack);
+  }, [fromDashBoard, status]);
+
   return (
     <Layout>
       <ScrollView className="h-screen" showsVerticalScrollIndicator={false}>
@@ -146,8 +158,9 @@ const ContactDetails = ({
             step={step}
             showDotes={status !== 'EDITING'}
             onBackPress={() => {
-              if (status === 'EDITING')
+              if (status === 'EDITING') {
                 setContactDetails(initialContactDetails);
+              }
 
               setStep(step === 0 ? 0 : step - 1);
               navigation.canGoBack() && navigation.goBack();
