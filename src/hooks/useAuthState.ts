@@ -1,9 +1,9 @@
 import {useEffect, useRef, useState} from 'react';
 import {AuthStateKey, refreshTokenTime} from '../constants';
 import {flushStorage, getDataFromAsyncStorage} from '../lib/storage';
+import authService from '../services/auth.service';
 import {initialAuthState, useAuth} from './useAuth';
 import {IAuthState} from './useAuth/interface';
-import authService from '../services/auth.service';
 
 export default function useAuthState() {
   const timeId = useRef<number | null>(null);
@@ -21,9 +21,9 @@ export default function useAuthState() {
     try {
       const response = await authService.getCurrentUser();
 
-      setLoading(false);
       if (!response.success) {
         await handleLogout();
+        setLoading(false);
         return;
       }
 
@@ -33,9 +33,10 @@ export default function useAuthState() {
         user: data.user,
         token: data.token,
       });
-    } catch (error) {
       setLoading(false);
+    } catch (error) {
       await handleLogout();
+      setLoading(false);
     }
   };
 
@@ -43,8 +44,8 @@ export default function useAuthState() {
     const data = await getDataFromAsyncStorage<IAuthState>(AuthStateKey);
 
     if (!data || !data.authed) {
-      setLoading(false);
       await handleLogout();
+      setLoading(false);
       return;
     }
 

@@ -48,7 +48,7 @@ const Button = ({
         <Text
           style={[
             textStyles.robotoBold,
-            {fontSize: responsiveFontSize(16 / percentToPx)},
+            {fontSize: responsiveFontSize(15 / percentToPx)},
             textStyle,
           ]}
           className={`font-extrabold ${

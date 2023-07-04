@@ -60,8 +60,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
               <Text
                 className="px-8 text-center text-white font-bold mb-1"
                 style={{
-                  fontSize: responsiveFontSize(24 / percentToPx),
-                  lineHeight: responsiveFontSize(32 / percentToPx),
+                  fontSize: responsiveFontSize(22 / percentToPx),
+                  lineHeight: responsiveFontSize(30 / percentToPx),
                 }}>
                 Your Digital Business Card at Your Fingertips!
               </Text>

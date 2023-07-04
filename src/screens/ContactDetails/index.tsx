@@ -41,13 +41,16 @@ const ContactDetails = ({
 
       const formData = new FormData();
       formData.append('contactDetails', JSON.stringify(contactDetails));
-      formData.append('companyLogo', {
-        uri: (contactDetails.companyLogo as PickerImage).path,
-        type: (contactDetails.companyLogo as PickerImage).mime,
-        name:
-          (contactDetails.companyLogo as PickerImage).filename ||
-          getFileName((contactDetails.companyLogo as PickerImage).path),
-      });
+
+      if (typeof contactDetails.companyLogo !== 'string') {
+        formData.append('companyLogo', {
+          uri: (contactDetails.companyLogo as PickerImage).path,
+          type: (contactDetails.companyLogo as PickerImage).mime,
+          name:
+            (contactDetails.companyLogo as PickerImage).filename ||
+            getFileName((contactDetails.companyLogo as PickerImage).path),
+        });
+      }
 
       formData.append('profileImage', {
         uri: (contactDetails.profilePicture as PickerImage).path,
