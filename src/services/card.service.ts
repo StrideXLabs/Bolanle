@@ -7,6 +7,7 @@ import {
 import fetcher from '../lib/fetcher';
 import {getFileName} from '../lib/getFileName';
 import {IDefaultAPIResponse} from '../types/api-response';
+import {ICardData} from './dashboard.service';
 
 export interface ICard {
   url: string;
@@ -106,14 +107,40 @@ class CardService {
           message: 'Please provide a card ID.',
         };
 
-      const response = fetcher<{}, {message: string}>(
-        `/business-card/${cardId}`,
-        {
-          method: 'DELETE',
-        },
-      );
+      await fetcher<{}, {message: string}>(`/business-card/${cardId}`, {
+        method: 'DELETE',
+      });
 
       return {success: true, data: null, message: 'Card deleted successfully.'};
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: (error as HttpError).message,
+      };
+    }
+  }
+
+  async getById(cardId: string): Promise<IDefaultAPIResponse<ICardData>> {
+    try {
+      if (!cardId)
+        return {
+          data: null,
+          success: false,
+          message: 'Please provide a card ID.',
+        };
+
+      const response = await fetcher<{}, {message: string; data: ICardData}>(
+        `/business-card/${cardId}`,
+      );
+
+      console.log(response);
+
+      return {
+        success: true,
+        data: response.data,
+        message: response.message,
+      };
     } catch (error) {
       return {
         data: null,

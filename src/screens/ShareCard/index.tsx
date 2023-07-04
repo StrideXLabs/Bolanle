@@ -67,7 +67,7 @@ const ShareCardScreen = ({navigation, route}: ShareCardScreenProps) => {
         options={{
           type: 'SHARE_VIEW',
           heading: 'SHARE CARD',
-          onBackBtnPress: () => navigation.goBack(),
+          onBackBtnPress: () => navigation.pop(),
           subheading: 'You can choose an option to share your card.',
         }}
       />

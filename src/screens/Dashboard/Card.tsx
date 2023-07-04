@@ -22,6 +22,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
           className="h-[94px] w-[94px] rounded-md"
           source={{
             uri: BASE_URL + `/${card._id}/${contactDetails?.companyLogo}`,
+            cache: 'reload',
           }}
         />
       </View>
@@ -30,7 +31,11 @@ const Card = ({card, onCardPress}: ICardProps) => {
           resizeMode="center"
           className="h-[60px] w-[60px] rounded-full"
           source={{
-            uri: BASE_URL + `/${card._id}/${contactDetails?.profileImage}`,
+            uri:
+              BASE_URL +
+              `/${card._id}/${contactDetails?.profileImage}` +
+              `?time=${Date.now()}`,
+            cache: 'reload',
           }}
         />
         <View>

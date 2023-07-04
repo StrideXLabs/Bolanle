@@ -40,7 +40,11 @@ const Header = ({
           style={{width: 94, height: 94}}
           className="rounded-md"
           source={{
-            uri: BASE_URL + `/${cardId}/${contactDetails?.companyLogo}`,
+            uri:
+              BASE_URL +
+              `/${cardId}/${contactDetails?.companyLogo}` +
+              `?time=${Date.now()}`,
+            cache: 'reload',
           }}
         />
       </View>
@@ -63,7 +67,11 @@ const Header = ({
           style={{width: 60, height: 62}}
           className="rounded-full"
           source={{
-            uri: BASE_URL + `/${cardId}/${contactDetails?.profileImage}`,
+            uri:
+              BASE_URL +
+              `/${cardId}/${contactDetails?.profileImage}` +
+              `?time=${Date.now()}`,
+            cache: 'reload',
           }}
         />
         <View>

@@ -1,7 +1,12 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HttpError} from 'http-errors';
-import React, {useState} from 'react';
-import {KeyboardAvoidingView, ScrollView, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  BackHandler,
+  KeyboardAvoidingView,
+  ScrollView,
+  View,
+} from 'react-native';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
@@ -32,6 +37,7 @@ const PersonalInformation = ({
   const {
     step,
     setStep,
+    fromDashBoard,
     setSocialLinks,
     setSocialItems,
     setFromDashBoard,
@@ -68,6 +74,7 @@ const PersonalInformation = ({
 
       Toast.success({primaryText: 'Information updated.'});
       setPersonalInformation(initialPersonalInformation);
+      navigation.pop();
       navigation.replace('EditCardScreen', {
         editable: true,
         card: response.data!,
@@ -108,6 +115,27 @@ const PersonalInformation = ({
     setStep(step + 1);
     navigation.push('ContactDetailsScreen', {status, cardId});
   };
+
+  useEffect(() => {
+    const goBack = () => {
+      (status === 'EDITING' || fromDashBoard) &&
+        (async function () {
+          await Promise.all([
+            setStep(0),
+            setSocialLinks([]),
+            setSocialItems([]),
+            setFromDashBoard(false),
+            setContactDetails(initialContactDetails),
+            setPersonalInformation(initialPersonalInformation),
+          ]);
+        })();
+
+      return false;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', goBack);
+    return () => BackHandler.removeEventListener('hardwareBackPress', goBack);
+  }, [fromDashBoard, status]);
 
   return (
     <Layout>

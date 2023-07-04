@@ -1,6 +1,8 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useState} from 'react';
+import {HttpError} from 'http-errors';
+import React, {useEffect, useState} from 'react';
 import {
+  BackHandler,
   FlatList,
   Image,
   ImageSourcePropType,
@@ -9,6 +11,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -38,9 +41,7 @@ import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {AuthStackParams} from '../../navigation/AuthNavigation';
 import cardService from '../../services/card.service';
-import {Image as PickerImage} from 'react-native-image-crop-picker';
 import dashboardService from '../../services/dashboard.service';
-import {HttpError} from 'http-errors';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -202,7 +203,7 @@ const SocialLinksScreen = ({
       Toast.success({primaryText: 'Information updated.'});
       setSocialItems([]);
       setSocialLinks([]);
-
+      navigation.pop();
       navigation.replace('EditCardScreen', {
         editable: true,
         card: response.data!,
@@ -212,6 +213,17 @@ const SocialLinksScreen = ({
       Toast.error({primaryText: (error as HttpError).message});
     }
   };
+
+  useEffect(() => {
+    const goBack = () => {
+      status === 'EDITING' && setSocialItems([]);
+      status === 'EDITING' && setSocialLinks([]);
+      return false;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', goBack);
+    return () => BackHandler.removeEventListener('hardwareBackPress', goBack);
+  }, []);
 
   return (
     <Layout>
@@ -228,6 +240,10 @@ const SocialLinksScreen = ({
             step={step}
             showDotes={status !== 'EDITING'}
             onBackPress={() => {
+              if (status === 'EDITING') {
+                setSocialItems([]);
+                setSocialLinks([]);
+              }
               setStep(step === 0 ? 0 : step - 1);
               navigation.canGoBack() && navigation.goBack();
             }}

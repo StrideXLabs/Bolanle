@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
-import {openPicker} from 'react-native-image-crop-picker';
 import {PlusIcon} from 'react-native-heroicons/outline';
+import {openPicker} from 'react-native-image-crop-picker';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -71,8 +71,11 @@ const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
                   uri:
                     status === 'EDITING' &&
                     typeof contactDetails.companyLogo === 'string'
-                      ? `${BASE_URL}/${cardId}/${contactDetails.companyLogo}`
+                      ? `${BASE_URL}/${cardId}/${contactDetails.companyLogo}` +
+                        `?time=${Date.now()}`
                       : (contactDetails.companyLogo as any).path,
+
+                  cache: 'reload',
                 }}
               />
             ) : (
@@ -131,8 +134,10 @@ const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
                   uri:
                     status === 'EDITING' &&
                     typeof contactDetails.profilePicture === 'string'
-                      ? `${BASE_URL}/${cardId}/${contactDetails.profilePicture}`
+                      ? `${BASE_URL}/${cardId}/${contactDetails.profilePicture}` +
+                        `?time=${Date.now()}`
                       : (contactDetails.profilePicture as any).path,
+                  cache: 'reload',
                 }}
               />
             ) : (
