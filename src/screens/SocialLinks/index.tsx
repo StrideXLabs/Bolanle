@@ -197,7 +197,6 @@ const SocialLinksScreen = ({
       Toast.success({primaryText: 'Information updated.'});
       setSocialItems([]);
       setSocialLinks([]);
-      setStep(0);
 
       navigation.replace('EditCardScreen', {
         editable: true,
@@ -222,6 +221,7 @@ const SocialLinksScreen = ({
           contentContainerStyle={{paddingBottom: 10}}>
           <HeaderStepCount
             step={step}
+            showDotes={status !== 'EDITING'}
             onBackPress={() => {
               setStep(step === 0 ? 0 : step - 1);
               navigation.canGoBack() && navigation.goBack();

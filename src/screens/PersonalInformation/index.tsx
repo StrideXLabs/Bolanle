@@ -106,7 +106,11 @@ const PersonalInformation = ({
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={{height: '100%'}}>
-            <HeaderStepCount step={step} onBackPress={handleBackPress} />
+            <HeaderStepCount
+              step={step}
+              showDotes={status !== 'EDITING'}
+              onBackPress={handleBackPress}
+            />
             <View
               style={{
                 marginTop: responsiveHeight(20 / percentToPx),

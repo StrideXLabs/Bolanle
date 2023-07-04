@@ -93,6 +93,7 @@ const TextMessage = ({onSave, company, fullName}: TextMessageProps) => {
             right: responsiveHeight(1.3),
           }}>
           <Image
+            resizeMode="contain"
             className="h-[30px] w-[30px]"
             style={{tintColor: accentColor}}
             source={contactIcon as ImageSourcePropType}

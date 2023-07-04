@@ -18,6 +18,7 @@ import {AppStackParams} from '../../navigation/AppNavigation';
 import dashboardService from '../../services/dashboard.service';
 import Upload from './Upload';
 import {getFileName} from '../../lib/getFileName';
+import {IContactDetails} from '../../hooks/useBusinessCard/interface';
 
 export type ContactDetailsProps = NativeStackScreenProps<
   AppStackParams,
@@ -34,53 +35,7 @@ const ContactDetails = ({
   const {step, setStep, contactDetails, setContactDetails} =
     useCreateBusinessCard();
 
-  const handleUpdateDetails = async () => {
-    try {
-      if (!cardId) return;
-      setUpdating(true);
-
-      const formData = new FormData();
-      formData.append('contactDetails', JSON.stringify(contactDetails));
-
-      if (typeof contactDetails.companyLogo !== 'string') {
-        formData.append('companyLogo', {
-          uri: (contactDetails.companyLogo as PickerImage).path,
-          type: (contactDetails.companyLogo as PickerImage).mime,
-          name:
-            (contactDetails.companyLogo as PickerImage).filename ||
-            getFileName((contactDetails.companyLogo as PickerImage).path),
-        });
-      }
-
-      formData.append('profileImage', {
-        uri: (contactDetails.profilePicture as PickerImage).path,
-        type: (contactDetails.profilePicture as PickerImage).mime,
-        name:
-          (contactDetails.profilePicture as PickerImage).filename ||
-          getFileName((contactDetails.profilePicture as PickerImage).path),
-      });
-
-      const response = await dashboardService.editCardDetails(cardId, {
-        contactDetails: formData,
-      });
-
-      setUpdating(false);
-      if (!response.success)
-        return Toast.error({primaryText: response.message});
-
-      Toast.success({primaryText: 'Information updated.'});
-      setContactDetails(initialContactDetails);
-      navigation.replace('EditCardScreen', {
-        editable: true,
-        card: response.data!,
-      });
-    } catch (error) {
-      setUpdating(false);
-      Toast.error({primaryText: (error as HttpError).message});
-    }
-  };
-
-  const handleNextClick = () => {
+  const validateData = () => {
     if (
       !contactDetails.email ||
       !contactDetails.mobile ||
@@ -105,7 +60,74 @@ const ContactDetails = ({
       Toast.error({primaryText: 'Website URL must be valid URL.'});
       return;
     }
+  };
 
+  const handleUpdateDetails = async () => {
+    try {
+      validateData();
+      if (!cardId) return;
+
+      setUpdating(true);
+      const formData = new FormData();
+
+      const tempData = {
+        email: contactDetails.email,
+        mobile: contactDetails.mobile,
+        websiteUrl: contactDetails.websiteUrl,
+        companyAddress: contactDetails.companyAddress,
+      } as IContactDetails;
+
+      formData.append('contactDetails', JSON.stringify(tempData));
+      if (
+        contactDetails.companyLogo &&
+        typeof contactDetails.companyLogo !== 'string'
+      ) {
+        formData.append('companyLogo', {
+          uri: (contactDetails.companyLogo as PickerImage).path,
+          type: (contactDetails.companyLogo as PickerImage).mime,
+          name:
+            (contactDetails.companyLogo as PickerImage).filename ||
+            getFileName((contactDetails.companyLogo as PickerImage).path),
+        });
+      }
+
+      if (
+        contactDetails.profilePicture &&
+        typeof contactDetails.profilePicture !== 'string'
+      ) {
+        formData.append('profileImage', {
+          uri: (contactDetails.profilePicture as PickerImage).path,
+          type: (contactDetails.profilePicture as PickerImage).mime,
+          name:
+            (contactDetails.profilePicture as PickerImage).filename ||
+            getFileName((contactDetails.profilePicture as PickerImage).path),
+        });
+      }
+
+      const response = await dashboardService.editCardDetails(
+        cardId,
+        {contactDetails: formData},
+        true,
+      );
+
+      setUpdating(false);
+      if (!response.success)
+        return Toast.error({primaryText: response.message});
+
+      Toast.success({primaryText: 'Information updated.'});
+      setContactDetails(initialContactDetails);
+      navigation.replace('EditCardScreen', {
+        editable: true,
+        card: response.data!,
+      });
+    } catch (error) {
+      setUpdating(false);
+      Toast.error({primaryText: (error as HttpError).message});
+    }
+  };
+
+  const handleNextClick = () => {
+    validateData();
     setStep(step + 1);
     navigation.push('SocialLinksScreen', {status, cardId});
   };
@@ -120,6 +142,7 @@ const ContactDetails = ({
           }}>
           <HeaderStepCount
             step={step}
+            showDotes={status !== 'EDITING'}
             onBackPress={() => {
               if (status === 'EDITING')
                 setContactDetails(initialContactDetails);

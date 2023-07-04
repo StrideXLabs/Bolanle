@@ -94,7 +94,10 @@ const ShareCardScreen = ({navigation, route}: ShareCardScreenProps) => {
               text="Copy Link"
               onPress={() => {
                 Clipboard.setString(`${BASE_URL}/card/${card!._id}`);
-                Toast.success({primaryText: 'Copied.'});
+                Toast.success({
+                  primaryText: 'Copied Link.',
+                  position: 'bottom',
+                });
               }}
               startIcon={copyIcon}
               styles={{borderRadius: responsiveHeight(8 / percentToPx)}}

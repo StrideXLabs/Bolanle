@@ -57,9 +57,11 @@ const BottomNavigation = () => {
           tabBarLabel: 'Contacts',
           tabBarIcon: ({focused}) => (
             <Image
+              resizeMode="contain"
               style={{
-                width: 21.6,
-                height: 21.6,
+                width: 24,
+                height: 27,
+                marginTop: 4,
                 tintColor: focused ? accentColor : '#C9C9C9',
               }}
               source={contactsIcon as ImageSourcePropType}
