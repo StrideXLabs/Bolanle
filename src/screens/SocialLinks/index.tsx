@@ -183,6 +183,11 @@ const SocialLinksScreen = ({
 
   const handleUpdateDetails = async () => {
     try {
+      if (socialItems.length === 0)
+        return Toast.error({
+          primaryText: 'Please add at least one social link.',
+        });
+
       if (!cardId) return;
 
       setUpdating(true);
@@ -197,7 +202,6 @@ const SocialLinksScreen = ({
       Toast.success({primaryText: 'Information updated.'});
       setSocialItems([]);
       setSocialLinks([]);
-      setStep(0);
 
       navigation.replace('EditCardScreen', {
         editable: true,
@@ -222,6 +226,7 @@ const SocialLinksScreen = ({
           contentContainerStyle={{paddingBottom: 10}}>
           <HeaderStepCount
             step={step}
+            showDotes={status !== 'EDITING'}
             onBackPress={() => {
               setStep(step === 0 ? 0 : step - 1);
               navigation.canGoBack() && navigation.goBack();

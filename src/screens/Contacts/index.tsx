@@ -1,3 +1,5 @@
+import {useIsFocused} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
@@ -13,8 +15,6 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import searchIcon from '../../assets/images/search.png';
 import Button from '../../components/Button';
 import Layout from '../../components/Layout';
@@ -29,7 +29,6 @@ import contactsService from '../../services/contacts.service';
 import {ICardData} from '../../services/dashboard.service';
 import ContactCard from './ContactCard';
 import ModalContent from './ModalContent';
-import {useIsFocused} from '@react-navigation/native';
 
 export type ContactsScreenProps = NativeStackScreenProps<
   AppStackParams & BottomTabNavigatorParams,
@@ -198,6 +197,8 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
             }}>
             <FlatList
               numColumns={1}
+              refreshing={loading}
+              onRefresh={fetchContactData}
               horizontal={false}
               data={filteredContacts}
               style={{width: '100%'}}

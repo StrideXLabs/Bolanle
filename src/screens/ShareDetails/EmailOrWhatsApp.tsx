@@ -44,12 +44,7 @@ const EmailOrWhatsAppCard = ({
           }
           onChangeText={c => setDetails(state => ({...state, contact: c}))}
         />
-        <View
-          className="absolute"
-          style={{
-            top: responsiveHeight(4.5),
-            left: responsiveHeight(1.3),
-          }}>
+        <View className="absolute" style={{top: 42, left: 12}}>
           <Image
             resizeMode="center"
             className="h-[22px] w-[22px]"
@@ -61,13 +56,9 @@ const EmailOrWhatsAppCard = ({
             }
           />
         </View>
-        <View
-          className="absolute"
-          style={{
-            top: responsiveHeight(4.1),
-            right: responsiveHeight(1.3),
-          }}>
+        <View className="absolute" style={{top: 39, right: 12}}>
           <Image
+            resizeMode="contain"
             className="h-[30px] w-[30px]"
             style={{tintColor: accentColor}}
             source={contactIcon as ImageSourcePropType}

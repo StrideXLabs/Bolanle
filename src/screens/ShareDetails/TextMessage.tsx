@@ -1,5 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Image,
+  ImageSourcePropType,
+  Pressable,
+  Text,
+  View,
+  TextInput,
+} from 'react-native';
 import {CountryPicker} from 'react-native-country-codes-picker';
 import {ChevronDownIcon} from 'react-native-heroicons/outline';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
@@ -26,6 +33,7 @@ const TextMessage = ({onSave, company, fullName}: TextMessageProps) => {
     flag: '🇮🇳',
     code: '+91',
   });
+  const inputRef = useRef<boolean | null>(true);
 
   useEffect(() => {
     if (details.contact) return;
@@ -50,7 +58,7 @@ const TextMessage = ({onSave, company, fullName}: TextMessageProps) => {
             setData({flag: item.flag, code: item.dial_code});
             setDetails(state => ({
               ...state,
-              contact: `(${item.code}) `,
+              contact: `(${item.dial_code}) `,
             }));
             setOpen(false);
           }}
@@ -65,15 +73,12 @@ const TextMessage = ({onSave, company, fullName}: TextMessageProps) => {
           style={{paddingLeft: 75}}
           keyboardType="number-pad"
           placeholder="WhatsApp number"
+          autoFocus={inputRef.current!}
+          focusable={inputRef.current!}
           onChangeText={c => setDetails(state => ({...state, contact: c}))}
         />
         {data.flag && (
-          <View
-            className="absolute"
-            style={{
-              top: responsiveHeight(3.7),
-              left: responsiveHeight(1.3),
-            }}>
+          <View className="absolute" style={{top: 35, left: 12}}>
             <Pressable
               className="flex flex-row items-center gap-1 justify-center"
               onPress={() => setOpen(true)}>
@@ -86,13 +91,9 @@ const TextMessage = ({onSave, company, fullName}: TextMessageProps) => {
             </Pressable>
           </View>
         )}
-        <View
-          className="absolute"
-          style={{
-            top: responsiveHeight(4.1),
-            right: responsiveHeight(1.3),
-          }}>
+        <View className="absolute" style={{top: 39, right: 12}}>
           <Image
+            resizeMode="contain"
             className="h-[30px] w-[30px]"
             style={{tintColor: accentColor}}
             source={contactIcon as ImageSourcePropType}

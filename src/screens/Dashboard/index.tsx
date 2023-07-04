@@ -1,7 +1,13 @@
 import {useIsFocused} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  Text,
+  View,
+} from 'react-native';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -105,6 +111,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
           </Text>
         </View>
       )}
+
       {!loading && !error && cards.length > 0 && (
         <View
           style={{
@@ -113,6 +120,13 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
             paddingHorizontal: responsiveHeight(30 / percentToPx),
           }}>
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                colors={[accentColor]}
+                onRefresh={fetchDashboardData}
+              />
+            }
             data={cards}
             numColumns={1}
             horizontal={false}

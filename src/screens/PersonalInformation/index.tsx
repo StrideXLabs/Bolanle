@@ -42,6 +42,20 @@ const PersonalInformation = ({
 
   const handleUpdateDetails = async () => {
     try {
+      if (
+        !personalInformation.name ||
+        !personalInformation.designation ||
+        !personalInformation.department ||
+        !personalInformation.companyName
+      ) {
+        Toast.error({
+          position: 'bottom',
+          primaryText: 'All fields are required.',
+          secondaryText: 'Please fill up all the details to continue.',
+        });
+        return;
+      }
+
       if (!cardId) return;
       setUpdating(true);
       const response = await dashboardService.editCardDetails(cardId, {
@@ -106,7 +120,11 @@ const PersonalInformation = ({
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={{height: '100%'}}>
-            <HeaderStepCount step={step} onBackPress={handleBackPress} />
+            <HeaderStepCount
+              step={step}
+              showDotes={status !== 'EDITING'}
+              onBackPress={handleBackPress}
+            />
             <View
               style={{
                 marginTop: responsiveHeight(20 / percentToPx),

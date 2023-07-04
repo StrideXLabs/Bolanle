@@ -13,7 +13,7 @@ const RootNavigation = () => {
   return (
     <NavigationContainer
       onReady={() => {
-        idRef.current = setTimeout(() => SplashScreen.hide(), 200);
+        idRef.current = setTimeout(() => SplashScreen.hide(), 300);
       }}>
       <AppNavigation />
     </NavigationContainer>

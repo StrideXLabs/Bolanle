@@ -41,7 +41,6 @@ class DashboardService {
         message: data.message,
       };
     } catch (error) {
-      console.log(error);
       return {
         data: [],
         message: isHttpError(error)
@@ -54,16 +53,17 @@ class DashboardService {
 
   async editCardDetails(
     cardId: string,
-    data: any,
+    data: IEditCardData,
+    isFormData = false,
   ): Promise<IDefaultAPIResponse<ICardData>> {
     try {
       const response = await fetcher<
         IEditCardData,
         {data: ICardData; message: string}
       >(`/business-card/${cardId}`, {
-        body: data,
+        body: isFormData ? (data as any).contactDetails : data,
         method: 'PUT',
-        ...(data instanceof FormData && {
+        ...(isFormData && {
           isFormData: true,
           headers: {'Content-Type': 'multipart/form-data'},
         }),
@@ -71,7 +71,6 @@ class DashboardService {
 
       return {success: true, data: response.data, message: ''};
     } catch (error) {
-      console.log(error);
       return {
         data: null,
         success: false,

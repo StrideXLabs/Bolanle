@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HttpError} from 'http-errors';
-import React, {useState} from 'react';
-import {ActivityIndicator, ScrollView, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, BackHandler, ScrollView, View} from 'react-native';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import DashboardHeader from '../../components/Header/DashboardHeader';
 import Layout from '../../components/Layout';
@@ -30,7 +30,6 @@ const EditCardScreen = ({
   route: {params},
 }: PersonalInformationProps) => {
   const {
-    setStep,
     setSocialItems,
     setSocialLinks,
     setContactDetails,
@@ -45,13 +44,12 @@ const EditCardScreen = ({
   const {qr, socialLinks, personalInfo, contactDetails} = card;
 
   const handleEditProfileAndLogo = () => {
-    setStep(1);
     setContactDetails({
       ...contactDetails,
       companyLogo: contactDetails.companyLogo,
       profilePicture: contactDetails.profileImage,
     });
-    navigation.navigate('ContactDetailsScreen', {
+    navigation.push('ContactDetailsScreen', {
       cardId: card._id,
       status: 'EDITING',
     });
@@ -59,27 +57,26 @@ const EditCardScreen = ({
 
   const handleEditPersonalInformation = (info: ICardData['personalInfo']) => {
     setPersonalInformation(info);
-    navigation.navigate('PersonalInformationScreen', {
+    navigation.push('PersonalInformationScreen', {
       cardId: card._id,
       status: 'EDITING',
     });
   };
 
   const handleEditContactDetails = (info: ICardData['contactDetails']) => {
-    setStep(1);
     setContactDetails({
       ...info,
       companyLogo: info.companyLogo,
       profilePicture: info.profileImage,
     });
-    navigation.navigate('ContactDetailsScreen', {
+
+    navigation.push('ContactDetailsScreen', {
       cardId: card._id,
       status: 'EDITING',
     });
   };
 
   const handleEditSocialLinks = (info: ICardData['socialLinks']) => {
-    setStep(2);
     setSocialItems(
       info.map(item => ({
         title: item.title,
@@ -95,7 +92,7 @@ const EditCardScreen = ({
       })),
     );
 
-    navigation.navigate('SocialLinksScreen', {
+    navigation.replace('SocialLinksScreen', {
       cardId: card._id,
       status: 'EDITING',
     });
@@ -132,7 +129,7 @@ const EditCardScreen = ({
 
       if (response.success) {
         Toast.success({primaryText: 'Card deleted.'});
-        return navigation.navigate('AppBottomNav');
+        return navigation.navigate('DashboardScreen');
       }
 
       Toast.error({primaryText: 'Error while deleting card'});
@@ -141,6 +138,16 @@ const EditCardScreen = ({
       Toast.success({primaryText: 'Error while deleting card'});
     }
   };
+
+  useEffect(() => {
+    const goBack = () => {
+      editable ? navigation.replace('AppBottomNav') : navigation.goBack();
+      return true;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', goBack);
+    return () => BackHandler.removeEventListener('hardwareBackPress', goBack);
+  }, []);
 
   return (
     <Layout>
