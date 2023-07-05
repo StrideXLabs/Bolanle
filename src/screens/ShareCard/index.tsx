@@ -121,7 +121,7 @@ const ShareCardScreen = ({navigation, route}: ShareCardScreenProps) => {
               <View className="h-[0.3px] bg-white" />
               <ShareButton
                 startIcon={whatsappIcon}
-                text="WhatsApp add your card"
+                text="WhatsApp your card"
                 onPress={() => handleShareBtnPress('WHATSAPP_CARD')}
               />
               <View className="h-[0.3px] bg-white" />

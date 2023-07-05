@@ -6,7 +6,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {responsiveHeight} from 'react-native-responsive-dimensions';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+} from 'react-native-responsive-dimensions';
 import editIcon from '../../assets/images/edit.png';
 import email from '../../assets/images/email.png';
 import location from '../../assets/images/location.png';
@@ -29,9 +32,14 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
         className="flex flex-row items-center justify-between"
         style={{
           marginTop: responsiveHeight(17 / percentToPx),
-          marginBottom: responsiveHeight(12 / percentToPx),
+          marginBottom: responsiveHeight(13 / percentToPx),
         }}>
-        <Text style={textStyles.robotoBold} className="text-accent text-[20px]">
+        <Text
+          style={[
+            textStyles.robotoBold,
+            {fontSize: responsiveFontSize(18 / percentToPx)},
+          ]}
+          className="text-accent">
           Contact Details
         </Text>
         {editable && (
@@ -56,7 +64,12 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
               source={email as ImageSourcePropType}
             />
           </View>
-          <Text style={textStyles.robotoRegular} className="text-dark-blue">
+          <Text
+            style={[
+              textStyles.robotoRegular,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
+            className="text-dark-blue">
             {contactDetails.email}
           </Text>
         </View>
@@ -68,11 +81,16 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
               source={phone as ImageSourcePropType}
             />
           </View>
-          <Text style={textStyles.robotoRegular} className="text-dark-blue">
+          <Text
+            style={[
+              textStyles.robotoRegular,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
+            className="text-dark-blue">
             {contactDetails.mobile}
           </Text>
         </View>
-        <View className="flex flex-row items-center gap-2 mb-[12px]">
+        <View className="flex flex-row flex-wrap items-center gap-2 mb-[12px]">
           <View className="flex justify-center items-center bg-accent rounded-full w-[30px] h-[30px] p-2">
             <Image
               resizeMode="cover"
@@ -80,11 +98,16 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
               source={web as ImageSourcePropType}
             />
           </View>
-          <Text style={textStyles.robotoRegular} className="text-dark-blue">
+          <Text
+            style={[
+              textStyles.robotoRegular,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
+            className="text-dark-blue">
             {contactDetails.websiteUrl}
           </Text>
         </View>
-        <View className="flex flex-row items-center gap-2 mb-[12px]">
+        <View className="flex flex-row flex-wrap items-center gap-2 mb-[12px] break-before-auto">
           <View className="flex justify-center items-center bg-accent rounded-full w-[30px] h-[30px] p-2">
             <Image
               resizeMode="center"
@@ -92,7 +115,12 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
               source={location as ImageSourcePropType}
             />
           </View>
-          <Text style={textStyles.robotoRegular} className="text-dark-blue">
+          <Text
+            style={[
+              textStyles.robotoRegular,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
+            className="text-dark-blue">
             {contactDetails.companyAddress}
           </Text>
         </View>

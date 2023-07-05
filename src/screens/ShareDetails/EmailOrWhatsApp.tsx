@@ -36,7 +36,7 @@ const EmailOrWhatsAppCard = ({
         style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
         <TextField
           value={details.contact}
-          label={type === 'EMAIL_CARD' ? 'Contact email' : 'Contact number'}
+          label={type === 'EMAIL_CARD' ? 'Contact email' : 'Whatsapp number'}
           style={{paddingLeft: 45}}
           keyboardType="email-address"
           placeholder={
@@ -44,7 +44,15 @@ const EmailOrWhatsAppCard = ({
           }
           onChangeText={c => setDetails(state => ({...state, contact: c}))}
         />
-        <View className="absolute" style={{bottom: 2, left: 9,height :responsiveHeight(5),flexDirection:"row",alignItems:'center'}}>
+        <View
+          className="absolute"
+          style={{
+            bottom: 2,
+            left: 9,
+            height: responsiveHeight(5),
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
           <Image
             resizeMode="center"
             className="h-[22px] w-[22px]"
@@ -77,7 +85,7 @@ const EmailOrWhatsAppCard = ({
         }
       />
       <View style={{marginTop: responsiveHeight(52 / percentToPx)}}>
-        <Button text="Save" callback={() => onSave(details)} />
+        <Button text="Send" callback={() => onSave(details)} />
       </View>
     </>
   );

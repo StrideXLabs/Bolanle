@@ -171,6 +171,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           <View style={{marginTop: responsiveHeight(36 / percentToPx)}}>
             <Button
               text="Login"
+              disabled={loading}
               showLoading={loading}
               callback={handleLogin}
               showBackgroundColor={false}

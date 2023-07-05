@@ -148,7 +148,10 @@ const ContactDetails = ({
 
   return (
     <Layout>
-      <ScrollView className="h-screen" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        className="h-screen"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 10}}>
         <View
           style={{
             paddingVertical: responsiveHeight(32 / percentToPx),
@@ -228,6 +231,7 @@ const ContactDetails = ({
           <Upload status={status} cardId={cardId!} />
           <View style={{marginTop: responsiveHeight(35 / percentToPx)}}>
             <Button
+              disabled={updating}
               showLoading={updating}
               callback={
                 status === 'EDITING' ? handleUpdateDetails : handleNextClick

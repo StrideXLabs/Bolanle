@@ -11,6 +11,8 @@ import {
 import {
   responsiveFontSize,
   responsiveHeight,
+  responsiveScreenHeight,
+  responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import DashboardHeader from '../../components/Header/DashboardHeader';
@@ -83,18 +85,27 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
         }}
       />
       {loading && (
-        <View className="h-[90%] flex justify-center items-center">
+        <View
+          className="flex justify-center items-center"
+          style={{height: responsiveScreenHeight(75)}}>
           <ActivityIndicator size={50} color={accentColor} />
         </View>
       )}
       {!loading && cards.length === 0 && error && (
-        <View className="h-[90%] flex justify-center items-center">
+        <View
+          className="flex justify-center items-center"
+          style={{height: responsiveScreenHeight(75)}}>
           <Text
             className="text-dark-blue text-lg"
             style={textStyles.robotoBold}>
             {error}
           </Text>
-          <Button text="RETRY" callback={fetchDashboardData} className="mt-3" />
+          <Button
+            text="RETRY"
+            callback={fetchDashboardData}
+            className="mt-3"
+            style={{width: responsiveWidth(60)}}
+          />
         </View>
       )}
       {!loading && !error && cards.length == 0 && (

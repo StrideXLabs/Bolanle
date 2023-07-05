@@ -13,6 +13,11 @@ import textStyles from '../../constants/fonts';
 import {filledIconsMapping} from '../../constants/socials';
 import {ICard} from '../../services/card.service';
 import {ICardData} from '../../services/dashboard.service';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+} from 'react-native-responsive-dimensions';
+import {percentToPx} from '../../constants';
 
 type Props = {
   editable: boolean;
@@ -28,9 +33,18 @@ const SocialLinks = ({
   onDeleteLink,
 }: Props) => {
   return (
-    <View>
-      <View className="flex flex-row items-center justify-between mt-[21px] mb-[10px]">
-        <Text style={textStyles.robotoBold} className="text-accent text-[20px]">
+    <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
+      <View
+        className="flex flex-row items-center justify-between"
+        style={{
+          marginBottom: responsiveHeight(12 / percentToPx),
+        }}>
+        <Text
+          style={[
+            textStyles.robotoBold,
+            {fontSize: responsiveFontSize(18 / percentToPx)},
+          ]}
+          className="text-accent">
           Social Links
         </Text>
         {editable && (
@@ -63,8 +77,11 @@ const SocialLinks = ({
                   }
                 />
                 <Text
-                  style={textStyles.robotoMedium}
-                  className="text-dark-blue text-base ml-2">
+                  style={[
+                    textStyles.robotoMedium,
+                    {fontSize: responsiveFontSize(13 / percentToPx)},
+                  ]}
+                  className="text-dark-blue ml-2">
                   {social.title}
                 </Text>
               </View>

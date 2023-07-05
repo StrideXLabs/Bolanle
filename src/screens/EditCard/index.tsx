@@ -200,14 +200,14 @@ const EditCardScreen = ({
   }, []);
 
   return (
-    <Layout>
+    <Layout viewStyle={{paddingBottom: responsiveHeight(6)}}>
       {loading && (
         <View className="h-screen flex justify-center items-center">
           <ActivityIndicator size={40} color={accentColor} />
         </View>
       )}
       {!loading && error && (
-        <View className="h-[90%] flex justify-center items-center">
+        <View className="h-screen flex justify-center items-center">
           <Text
             className="text-dark-blue text-lg text-center"
             style={textStyles.robotoBold}>
@@ -234,10 +234,17 @@ const EditCardScreen = ({
                   : navigation.replace('AppBottomNav'),
               onShareBtnPress: () =>
                 navigation.push('ShareCardScreen', {
-                  card,
                   type: 'WITH_DATA',
                   fullName: personalInfo.name,
                   company: personalInfo.companyName,
+                  card: {
+                    qr,
+                    _id,
+                    userId,
+                    socialLinks,
+                    personalInfo,
+                    contactDetails,
+                  },
                 }),
               heading: editable ? 'EDIT CARD' : 'VIEW CARD',
               subheading: editable
@@ -298,7 +305,6 @@ const EditCardScreen = ({
               />
             </ScrollView>
           </View>
-          <View style={{height: responsiveHeight(2)}} />
         </>
       )}
     </Layout>

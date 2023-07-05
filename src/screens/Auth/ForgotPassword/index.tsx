@@ -118,6 +118,7 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           <View style={{marginTop: responsiveHeight(50 / percentToPx)}}>
             <Button
               text="Submit"
+              disabled={sendingEmail}
               showLoading={sendingEmail}
               showBackgroundColor={false}
               callback={handleSentForgotEmail}
