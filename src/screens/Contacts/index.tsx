@@ -60,6 +60,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
       setLoading(true);
       const data = await contactsService.getAll();
 
+      console.log(JSON.stringify(data,null,2))
       if (!data.success) {
         setLoading(false);
         setError(data.message);
@@ -209,7 +210,6 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
                 <ContactCard
                   contact={item}
                   onPress={contact => {
-                    console.log('ITEM', item);
                     selectedContactRef.current = contact;
                     setOpen(true);
                   }}

@@ -44,7 +44,7 @@ const EmailOrWhatsAppCard = ({
           }
           onChangeText={c => setDetails(state => ({...state, contact: c}))}
         />
-        <View className="absolute" style={{top: 42, left: 12}}>
+        <View className="absolute" style={{bottom: 2, left: 9,height :responsiveHeight(5),flexDirection:"row",alignItems:'center'}}>
           <Image
             resizeMode="center"
             className="h-[22px] w-[22px]"
@@ -56,14 +56,14 @@ const EmailOrWhatsAppCard = ({
             }
           />
         </View>
-        <View className="absolute" style={{top: 39, right: 12}}>
+        {/* <View className="absolute" style={{bottom: 5, right: 5}}>
           <Image
             resizeMode="contain"
             className="h-[30px] w-[30px]"
             style={{tintColor: accentColor}}
             source={contactIcon as ImageSourcePropType}
           />
-        </View>
+        </View> */}
       </View>
       <TextField
         multiline

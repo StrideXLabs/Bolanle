@@ -6,19 +6,19 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {IContact} from '.';
+import { IContact } from '.';
 import menuIcon from '../../assets/images/menu.png';
-import {BASE_URL} from '../../constants';
+import { BASE_URL } from '../../constants';
 import textStyles from '../../constants/fonts';
-import {responsiveHeight} from 'react-native-responsive-dimensions';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 interface IContactCardProps {
   contact: IContact;
   onPress: (contact: IContact) => void;
 }
 
-const ContactCard = ({contact, onPress}: IContactCardProps) => {
-  const {contactDetails, personalInfo} = contact;
+const ContactCard = ({ contact, onPress }: IContactCardProps) => {
+  const { contact: { contactDetails, personalInfo,...rest } } = contact as any;
 
   return (
     <View className="px-5 py-5 w-full rounded-md border-[1px] border-[#E3E3E3]">
@@ -30,7 +30,7 @@ const ContactCard = ({contact, onPress}: IContactCardProps) => {
             source={{
               uri:
                 BASE_URL +
-                `/${contact._id}/${contactDetails?.profileImage}` +
+                `/${rest._id}/${contactDetails?.profileImage}` +
                 `?time=${Date.now()}`,
               cache: 'reload',
             }}
@@ -54,8 +54,8 @@ const ContactCard = ({contact, onPress}: IContactCardProps) => {
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => onPress(contact)}
-          style={{padding: responsiveHeight(1)}}>
+          onPress={() => onPress({contactDetails,personalInfo,...rest})}
+          style={{ padding: responsiveHeight(1) }}>
           <Image
             resizeMode="center"
             className="h-[20px] w-[20px]"

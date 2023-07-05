@@ -15,7 +15,7 @@ import {
 import addNewIcon from '../../../assets/images/add.png';
 import arrowLeft from '../../../assets/images/arrow-left.png';
 import shareIcon from '../../../assets/images/share.png';
-import {percentToPx} from '../../../constants';
+import { percentToPx } from '../../../constants';
 import textStyles from '../../../constants/fonts';
 
 interface IDashboardHeaderAddTypeProps {
@@ -39,12 +39,12 @@ interface IDashboardHeaderShareTypeProps
 
 export type DashboardHeaderProps = {
   options:
-    | IDashboardHeaderAddTypeProps
-    | IDashboardHeaderEditTypeProps
-    | IDashboardHeaderShareTypeProps;
+  | IDashboardHeaderAddTypeProps
+  | IDashboardHeaderEditTypeProps
+  | IDashboardHeaderShareTypeProps;
 };
 
-const DashboardHeader = ({options}: DashboardHeaderProps) => {
+const DashboardHeader = ({ options }: DashboardHeaderProps) => {
   return (
     <View
       className="bg-white"
@@ -57,7 +57,7 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
           <Text
             style={[
               textStyles.bebasNeueBold,
-              {fontSize: responsiveFontSize(28 / percentToPx)},
+              { fontSize: responsiveFontSize(28 / percentToPx) },
             ]}
             className="text-dark-blue">
             {options.heading}
@@ -116,6 +116,10 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
             {options.type !== 'SHARE_VIEW' && (
               <Pressable
                 className="flex flex-row"
+                style={{
+                  justifyContent: "center", alignItems: "center",
+                  height: responsiveHeight(25 / percentToPx),
+                }}
                 onPress={options.onShareBtnPress}>
                 <Image
                   resizeMode="contain"
@@ -132,7 +136,7 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
           </View>
           <View
             className="w-full h-[2px] bg-dark-blue rounded-sm"
-            style={{marginTop: responsiveHeight(10 / percentToPx)}}
+            style={{ marginTop: responsiveHeight(10 / percentToPx) }}
           />
           <Text
             style={[
