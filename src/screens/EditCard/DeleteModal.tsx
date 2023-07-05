@@ -122,6 +122,7 @@ const DeleteCardModal = ({
           <Button
             text="Delete"
             callback={onDelete}
+            disabled={deleting}
             showLoading={deleting}
             className="py-3 text-sm"
             style={{

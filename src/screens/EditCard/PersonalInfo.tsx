@@ -3,14 +3,17 @@ import {
   Image,
   ImageSourcePropType,
   Text,
-  View,
   TouchableOpacity,
+  View,
 } from 'react-native';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+} from 'react-native-responsive-dimensions';
 import editIcon from '../../assets/images/edit.png';
+import {percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
-import {responsiveHeight} from 'react-native-responsive-dimensions';
-import {percentToPx} from '../../constants';
 
 type Props = {
   editable: boolean;
@@ -25,11 +28,14 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
         className="flex flex-row items-center justify-between"
         style={{
           marginTop: responsiveHeight(17 / percentToPx),
-          marginBottom: responsiveHeight(12 / percentToPx),
+          marginBottom: responsiveHeight(13 / percentToPx),
         }}>
         <Text
-          style={[textStyles.robotoBold]}
-          className="text-accent text-[20px]">
+          style={[
+            textStyles.robotoBold,
+            {fontSize: responsiveFontSize(18 / percentToPx)},
+          ]}
+          className="text-accent">
           Personal Information
         </Text>
         {editable && (
@@ -50,11 +56,19 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
           className="flex flex-row gap-2"
           style={{marginBottom: responsiveHeight(8 / percentToPx)}}>
           <Text
-            style={textStyles.robotoBold}
+            style={[
+              textStyles.robotoBold,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
             className="text-dark-blue font-bold">
             Name
           </Text>
-          <Text style={textStyles.robotoRegular} className="text-dark-blue">
+          <Text
+            style={[
+              textStyles.robotoRegular,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
+            className="text-dark-blue">
             {personalInfo.name}
           </Text>
         </View>
@@ -62,11 +76,19 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
           className="flex flex-row gap-2"
           style={{marginBottom: responsiveHeight(8 / percentToPx)}}>
           <Text
-            style={textStyles.robotoBold}
+            style={[
+              textStyles.robotoBold,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
             className="text-dark-blue font-bold">
             Designation
           </Text>
-          <Text style={textStyles.robotoRegular} className="text-dark-blue">
+          <Text
+            style={[
+              textStyles.robotoRegular,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
+            className="text-dark-blue">
             {personalInfo.designation}
           </Text>
         </View>
@@ -74,21 +96,37 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
           className="flex flex-row gap-2"
           style={{marginBottom: responsiveHeight(8 / percentToPx)}}>
           <Text
-            style={textStyles.robotoBold}
+            style={[
+              textStyles.robotoBold,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
             className="text-dark-blue font-bold">
             Department
           </Text>
-          <Text style={textStyles.robotoRegular} className="text-dark-blue">
+          <Text
+            style={[
+              textStyles.robotoRegular,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
+            className="text-dark-blue">
             {personalInfo.department}
           </Text>
         </View>
-        <View className="flex flex-row gap-2">
+        <View className="flex flex-row gap-2 flex-wrap">
           <Text
-            style={textStyles.robotoBold}
+            style={[
+              textStyles.robotoBold,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
             className="text-dark-blue font-bold">
             Company
           </Text>
-          <Text style={textStyles.robotoRegular} className="text-dark-blue">
+          <Text
+            style={[
+              textStyles.robotoRegular,
+              {fontSize: responsiveFontSize(13 / percentToPx)},
+            ]}
+            className="text-dark-blue">
             {personalInfo.companyName}
           </Text>
         </View>

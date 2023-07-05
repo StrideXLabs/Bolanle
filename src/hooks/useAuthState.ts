@@ -7,8 +7,8 @@ import {IAuthState} from './useAuth/interface';
 
 export default function useAuthState() {
   const timeId = useRef<number | null>(null);
+  const [loading, setLoading] = useState(true);
   const authed = useAuth(state => state.authed);
-  const [loading, setLoading] = useState(authed);
   const setAuthState = useAuth(state => state.setAuthState);
   const redirectToLogin = useAuth(state => state.redirectToLogin);
 
@@ -54,6 +54,7 @@ export default function useAuthState() {
 
   useEffect(() => {
     if (!authed) handleRefreshUserData();
+    else setLoading(false);
   }, [authed]);
 
   useEffect(() => {

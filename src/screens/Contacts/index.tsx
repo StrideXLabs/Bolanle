@@ -60,7 +60,6 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
       setLoading(true);
       const data = await contactsService.getAll();
 
-      console.log(JSON.stringify(data,null,2))
       if (!data.success) {
         setLoading(false);
         setError(data.message);
@@ -111,8 +110,6 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
       fetchContactData();
     }
   }, [isFocused]);
-
-  console.log({contacts});
 
   return (
     <Layout>
@@ -178,6 +175,20 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
           </View>
         )}
         {!loading && !error && contacts.length == 0 && (
+          <View
+            className="flex justify-center items-center"
+            style={{marginTop: responsiveHeight(5)}}>
+            <Text
+              className="text-dark-blue"
+              style={[
+                textStyles.robotoBold,
+                {fontSize: responsiveFontSize(18 / percentToPx)},
+              ]}>
+              No contacts found.
+            </Text>
+          </View>
+        )}
+        {!loading && !error && search && filteredContacts.length == 0 && (
           <View
             className="flex justify-center items-center"
             style={{marginTop: responsiveHeight(5)}}>

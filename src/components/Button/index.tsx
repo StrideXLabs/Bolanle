@@ -18,6 +18,7 @@ import textStyles from '../../constants/fonts';
 export interface IButtonProps {
   text: string;
   className?: string;
+  disabled?: boolean;
   callback: () => void;
   showLoading?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -31,14 +32,15 @@ const Button = ({
   style = {},
   className = '',
   textStyle = {},
+  disabled = false,
   showLoading = false,
   showBackgroundColor = true,
 }: IButtonProps) => {
   return (
     <Pressable
       onPress={callback}
-      disabled={showLoading}
-      className="active:scale-95 transition-all"
+      disabled={disabled}
+      className="active:scale-95 transition-all disabled:opacity-75"
       style={{opacity: showLoading ? 0.85 : 1}}>
       <View
         style={[{padding: responsiveHeight(13 / percentToPx)}, style]}

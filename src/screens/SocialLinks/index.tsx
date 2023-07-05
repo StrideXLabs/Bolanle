@@ -340,6 +340,7 @@ const SocialLinksScreen = ({
           />
           <View style={{marginTop: responsiveHeight(70 / percentToPx)}}>
             <Button
+              disabled={creatingBusinessCard || updating}
               showLoading={creatingBusinessCard || updating}
               callback={
                 fromDashBoard

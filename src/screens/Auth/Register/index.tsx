@@ -222,6 +222,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
             }
             showLoading={creatingAccount}
             callback={handleCreateAccount}
+            disabled={creatingAccount || creatingBusinessCard}
           />
         </View>
       </View>

@@ -94,7 +94,9 @@ const PersonalInformation = ({
       setPersonalInformation(initialPersonalInformation),
     ]);
     setStep(step === 0 ? 0 : step - 1);
-    navigation.canGoBack() && navigation.goBack();
+
+    if (fromDashBoard) navigation.replace('AppBottomNav');
+    else navigation.canGoBack() && navigation.goBack();
   };
 
   const handleNextClick = () => {
@@ -139,15 +141,13 @@ const PersonalInformation = ({
 
   return (
     <Layout>
-      <View
-        style={{
-          paddingVertical: responsiveHeight(32 / percentToPx),
-          paddingHorizontal: responsiveHeight(40 / percentToPx),
-        }}>
-        <KeyboardAvoidingView contentContainerStyle={{height: '100%'}}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{height: '100%'}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{height: '100%'}}>
+        <View
+          style={{
+            paddingVertical: responsiveHeight(32 / percentToPx),
+            paddingHorizontal: responsiveHeight(40 / percentToPx),
+          }}>
+          <KeyboardAvoidingView contentContainerStyle={{height: '100%'}}>
             <HeaderStepCount
               step={step}
               showDotes={status !== 'EDITING'}
@@ -227,6 +227,7 @@ const PersonalInformation = ({
               style={{marginTop: responsiveHeight(78 / percentToPx)}}
               className="w-full">
               <Button
+                disabled={updating}
                 showLoading={updating}
                 text={status === 'EDITING' ? 'Save' : 'Next'}
                 callback={
@@ -234,9 +235,9 @@ const PersonalInformation = ({
                 }
               />
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </View>
+          </KeyboardAvoidingView>
+        </View>
+      </ScrollView>
     </Layout>
   );
 };

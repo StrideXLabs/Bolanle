@@ -1,10 +1,14 @@
 import React from 'react';
-import {Text, View, Image} from 'react-native';
+import {Image, Text, View} from 'react-native';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
+import Button from '../../components/Button';
+import {BASE_URL, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
-import {BASE_URL} from '../../constants';
-import Button from '../../components/Button';
-import {responsiveWidth} from 'react-native-responsive-dimensions';
 
 type Props = {
   cardId: string;
@@ -15,9 +19,14 @@ type Props = {
 
 const QR = ({onDeleteCard, qr, editable, cardId}: Props) => {
   return (
-    <View className="pb-[50px]">
+    <View style={{paddingBottom: responsiveHeight(5)}}>
       <View className="flex flex-row items-center justify-between mt-[21px] mb-[10px]">
-        <Text style={textStyles.robotoBold} className="text-accent text-[20px]">
+        <Text
+          style={[
+            textStyles.robotoBold,
+            {fontSize: responsiveFontSize(18 / percentToPx)},
+          ]}
+          className="text-accent">
           QR Code
         </Text>
       </View>
