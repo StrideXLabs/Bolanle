@@ -44,6 +44,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
   const [search, setSearch] = useState('');
   const {open, setOpen} = useOpenModalState();
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [contacts, setContacts] = useState<IContact[]>([]);
   const selectedContactRef = useRef<IContact | null>(null);
 
@@ -103,6 +104,31 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
   const handleClose = () => {
     selectedContactRef.current = null;
     setOpen(false);
+  };
+
+  const handleDeleteContact = async () => {
+    try {
+      if (!selectedContactRef.current) return;
+
+      setDeleting(true);
+      const response = await contactsService.delete(
+        selectedContactRef.current?._id || '',
+      );
+
+      if (!response.success) {
+        setDeleting(false);
+        return Toast.error({primaryText: response.message});
+      }
+
+      Toast.success({primaryText: 'Contact deleted.'});
+      selectedContactRef.current = null;
+      setDeleting(false);
+      setOpen(false);
+      await fetchContactData();
+    } catch (error) {
+      setDeleting(false);
+      Toast.error({primaryText: 'Error while deleting contact.'});
+    }
   };
 
   useEffect(() => {
@@ -254,9 +280,11 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
             justifyContent: 'flex-end',
           }}>
           <ModalContent
+            deleting={deleting}
             onCancel={handleClose}
             onViewCard={handleViewCard}
             onShareCard={handleShareCard}
+            onDeleteContact={handleDeleteContact}
           />
         </Modal>
       </View>

@@ -5,7 +5,7 @@ import {
 import fetcher from '../lib/fetcher';
 import {IDefaultAPIResponse} from '../types/api-response';
 import {ICard} from './card.service';
-import {isHttpError} from 'http-errors';
+import {HttpError, isHttpError} from 'http-errors';
 
 export interface IContactData {
   _id: string;
@@ -36,6 +36,19 @@ class ContactsService {
         message: isHttpError(error)
           ? error.message
           : 'Something went wrong. Please try again.',
+      };
+    }
+  }
+
+  async delete(id: string): Promise<IDefaultAPIResponse<{message: string}>> {
+    try {
+      await fetcher(`/contact/${id}`, {method: 'DELETE'});
+      return {success: true, data: null, message: 'Contact deleted.'};
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: (error as HttpError).message,
       };
     }
   }
