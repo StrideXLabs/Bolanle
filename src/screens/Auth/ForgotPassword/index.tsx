@@ -15,7 +15,7 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-import bgImage from '../../../assets/images/bg-2.png';
+import bgImage from '../../../assets/images/background.png';
 import Button from '../../../components/Button';
 import TextField from '../../../components/TextField/TextFieldLight';
 import {percentToPx} from '../../../constants';
@@ -107,7 +107,6 @@ const ForgotPasswordScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           </Text>
           <View style={{marginTop: responsiveHeight(30 / percentToPx)}}>
             <TextField
-              label="Email"
               value={email}
               keyboardType="email-address"
               placeholder="john@gmail.com"

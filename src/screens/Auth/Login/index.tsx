@@ -16,7 +16,7 @@ import {
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 
-import bgImage from '../../../assets/images/bg-2.png';
+import bgImage from '../../../assets/images/background.png';
 import Button from '../../../components/Button';
 import TextField from '../../../components/TextField/TextFieldLight';
 import {AuthStateKey, TokenKey, percentToPx} from '../../../constants';
@@ -114,7 +114,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           </Text>
           <View style={{marginTop: responsiveHeight(36 / percentToPx)}}>
             <TextField
-              label="Email"
               keyboardType="email-address"
               value={credentials.email}
               onChangeText={email =>
@@ -128,7 +127,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           </View>
           <View style={{marginTop: responsiveHeight(22 / percentToPx)}}>
             <TextField
-              label="Password"
               value={credentials.password}
               onChangeText={password =>
                 setCredentials(state => ({...state, password}))
@@ -140,8 +138,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
             <View
               className="absolute"
               style={{
-                top: responsiveHeight(36 / percentToPx),
-                right: responsiveHeight(6 / percentToPx),
+                top: responsiveHeight(10 / percentToPx),
+                right: responsiveHeight(8 / percentToPx),
               }}>
               {secureTextEntry ? (
                 <EyeIcon

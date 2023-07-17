@@ -43,10 +43,19 @@ const Button = ({
       className="active:scale-95 transition-all disabled:opacity-75"
       style={{opacity: showLoading ? 0.85 : 1}}>
       <View
-        style={[{padding: responsiveHeight(13 / percentToPx)}, style]}
+        style={[
+          {
+            borderRadius: 50,
+
+            borderWidth: showBackgroundColor ? 0 : 1,
+            padding: responsiveHeight(13 / percentToPx),
+            borderColor: showBackgroundColor ? 'none' : accentColor,
+          },
+          style,
+        ]}
         className={`${
           showBackgroundColor ? 'bg-accent' : 'bg-slate-50'
-        } flex justify-center items-center rounded-lg ${className}`}>
+        } flex justify-center items-center ${className}`}>
         <Text
           style={[
             textStyles.robotoBold,

@@ -152,7 +152,6 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
         </Text>
         <View style={{marginTop: responsiveHeight(46 / percentToPx)}}>
           <TextField
-            label=""
             value={search}
             placeholder="Search contacts"
             className="border-dark-blue border-[2px]"

@@ -14,8 +14,9 @@ const Card = ({card, onCardPress}: ICardProps) => {
 
   return (
     <Pressable
+      style={{borderRadius: 25}}
       onPress={() => onCardPress(card)}
-      className="px-5 py-5 w-full rounded-md border-[1px] border-[#E3E3E3]">
+      className="px-5 py-5 w-full border-[1px] border-[#E3E3E3]">
       <View className="w-full flex justify-center items-center mb-6">
         <Image
           resizeMode="center"

@@ -24,8 +24,9 @@ const ContactCard = ({contact, onPress}: IContactCardProps) => {
 
   return (
     <View
-      className="w-full rounded-md border-[1px] border-[#E3E3E3]"
+      className="w-full border-[1px] border-[#E3E3E3]"
       style={{
+        borderRadius: 25,
         paddingHorizontal: responsiveHeight(10 / percentToPx),
         paddingVertical: responsiveHeight(14 / percentToPx),
       }}>

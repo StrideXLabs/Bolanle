@@ -37,7 +37,7 @@ const EmailOrWhatsAppCard = ({
         <TextField
           value={details.contact}
           label={type === 'EMAIL_CARD' ? 'Contact email' : 'Whatsapp number'}
-          style={{paddingLeft: 45}}
+          style={{paddingLeft: 50}}
           keyboardType="email-address"
           placeholder={
             type === 'EMAIL_CARD' ? 'johndoe@gmail.com' : '(203) 555-0123'
@@ -47,8 +47,8 @@ const EmailOrWhatsAppCard = ({
         <View
           className="absolute"
           style={{
+            left: 12,
             bottom: 2,
-            left: 9,
             height: responsiveHeight(5),
             flexDirection: 'row',
             alignItems: 'center',
@@ -64,14 +64,6 @@ const EmailOrWhatsAppCard = ({
             }
           />
         </View>
-        {/* <View className="absolute" style={{bottom: 5, right: 5}}>
-          <Image
-            resizeMode="contain"
-            className="h-[30px] w-[30px]"
-            style={{tintColor: accentColor}}
-            source={contactIcon as ImageSourcePropType}
-          />
-        </View> */}
       </View>
       <TextField
         multiline
