@@ -181,7 +181,6 @@ const ContactDetails = ({
           </View>
           <View style={{gap: responsiveHeight(10 / percentToPx)}}>
             <TextField
-              label="Email"
               keyboardType="email-address"
               onChangeText={text => {
                 setContactDetails({
@@ -191,9 +190,9 @@ const ContactDetails = ({
               }}
               value={contactDetails.email}
               placeholder="Enter your email address"
+              style={{marginBottom: responsiveHeight(10 / percentToPx)}}
             />
             <TextField
-              label="Mobile"
               keyboardType="number-pad"
               onChangeText={text => {
                 setContactDetails({
@@ -203,9 +202,9 @@ const ContactDetails = ({
               }}
               value={contactDetails.mobile}
               placeholder="Enter mobile number"
+              style={{marginBottom: responsiveHeight(10 / percentToPx)}}
             />
             <TextField
-              label="Website URL"
               keyboardType="url"
               onChangeText={text => {
                 setContactDetails({
@@ -215,9 +214,9 @@ const ContactDetails = ({
               }}
               value={contactDetails.websiteUrl}
               placeholder="Enter your company website url"
+              style={{marginBottom: responsiveHeight(10 / percentToPx)}}
             />
             <TextField
-              label="Company Address"
               multiline
               textAlignVertical="top"
               onChangeText={text => {
@@ -225,7 +224,10 @@ const ContactDetails = ({
               }}
               value={contactDetails.companyAddress}
               placeholder="Enter your company address"
-              style={{height: responsiveHeight(80 / percentToPx)}}
+              style={{
+                height: responsiveHeight(80 / percentToPx),
+                borderRadius: 15,
+              }}
             />
           </View>
           <Upload status={status} cardId={cardId!} />

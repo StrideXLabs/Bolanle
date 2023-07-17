@@ -128,8 +128,9 @@ const ProfileScreen = () => {
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={handleDeleteAccount}
-        className="flex flex-row justify-center items-center border-[1px] border-accent rounded-lg"
+        className="flex flex-row justify-center items-center border-[1px] border-accent"
         style={{
+          borderRadius: 30,
           paddingVertical: responsiveHeight(10 / percentToPx),
         }}>
         {deleting ? (

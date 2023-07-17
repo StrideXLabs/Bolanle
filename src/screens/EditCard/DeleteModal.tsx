@@ -132,8 +132,9 @@ const DeleteCardModal = ({
           />
           <Pressable onPress={onClose}>
             <View
-              className="border-[1px] border-accent rounded-lg"
+              className="border-[1px] border-accent"
               style={{
+                borderRadius: 30,
                 width: responsiveWidth(30),
                 paddingVertical: responsiveHeight(8.5 / percentToPx),
               }}>

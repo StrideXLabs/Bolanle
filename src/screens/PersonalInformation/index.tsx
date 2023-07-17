@@ -156,72 +156,57 @@ const PersonalInformation = ({
             <View
               style={{
                 marginTop: responsiveHeight(20 / percentToPx),
-                marginBottom: responsiveHeight(22 / percentToPx),
+                marginBottom: responsiveHeight(25 / percentToPx),
               }}>
               <HeaderWithText
                 heading="PERSONAL INFORMATION"
                 subtitle="Please add your personal details to get started."
               />
             </View>
-            <View className="flex">
-              <View
-                className="flex"
-                style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
-                <TextField
-                  label="Full Name"
-                  onChangeText={text => {
-                    setPersonalInformation({
-                      ...personalInformation,
-                      name: text,
-                    });
-                  }}
-                  value={personalInformation.name}
-                  placeholder="Enter your full name"
-                />
-              </View>
-              <View
-                className="flex"
-                style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
-                <TextField
-                  label="Designation"
-                  onChangeText={text => {
-                    setPersonalInformation({
-                      ...personalInformation,
-                      designation: text,
-                    });
-                  }}
-                  value={personalInformation.designation}
-                  placeholder="Enter your designation"
-                />
-              </View>
-              <View
-                className="flex"
-                style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
-                <TextField
-                  label="Department"
-                  onChangeText={text => {
-                    setPersonalInformation({
-                      ...personalInformation,
-                      department: text,
-                    });
-                  }}
-                  value={personalInformation.department}
-                  placeholder="Enter your department"
-                />
-              </View>
-              <View>
-                <TextField
-                  label="Company"
-                  onChangeText={text => {
-                    setPersonalInformation({
-                      ...personalInformation,
-                      companyName: text,
-                    });
-                  }}
-                  value={personalInformation.companyName}
-                  placeholder="Enter your company name"
-                />
-              </View>
+            <View>
+              <TextField
+                onChangeText={text => {
+                  setPersonalInformation({
+                    ...personalInformation,
+                    name: text,
+                  });
+                }}
+                value={personalInformation.name}
+                placeholder="Enter your full name"
+                style={{marginBottom: responsiveHeight(20 / percentToPx)}}
+              />
+              <TextField
+                onChangeText={text => {
+                  setPersonalInformation({
+                    ...personalInformation,
+                    designation: text,
+                  });
+                }}
+                value={personalInformation.designation}
+                placeholder="Enter your designation"
+                style={{marginBottom: responsiveHeight(20 / percentToPx)}}
+              />
+              <TextField
+                onChangeText={text => {
+                  setPersonalInformation({
+                    ...personalInformation,
+                    department: text,
+                  });
+                }}
+                value={personalInformation.department}
+                placeholder="Enter your department"
+                style={{marginBottom: responsiveHeight(20 / percentToPx)}}
+              />
+              <TextField
+                onChangeText={text => {
+                  setPersonalInformation({
+                    ...personalInformation,
+                    companyName: text,
+                  });
+                }}
+                value={personalInformation.companyName}
+                placeholder="Enter your company name"
+              />
             </View>
             <View
               style={{marginTop: responsiveHeight(78 / percentToPx)}}

@@ -9,7 +9,7 @@ import textStyles from '../../../constants/fonts';
 
 interface TextFieldProps extends TextInputProps {
   value: string;
-  label: string;
+  label?: string;
   className?: string;
   onChangeText: (text: string) => void;
 }
@@ -26,17 +26,19 @@ const TextField: React.FC<TextFieldProps> = ({
 
   return (
     <View>
-      <Text
-        style={[
-          {
-            fontSize: responsiveFontSize(16 / percentToPx),
-            marginBottom: responsiveHeight(8 / percentToPx),
-          },
-          isFocused ? textStyles.robotoBold : textStyles.robotoRegular,
-        ]}
-        className="text-off-white-1">
-        {label}
-      </Text>
+      {label && (
+        <Text
+          style={[
+            {
+              fontSize: responsiveFontSize(16 / percentToPx),
+              marginBottom: responsiveHeight(8 / percentToPx),
+            },
+            isFocused ? textStyles.robotoBold : textStyles.robotoRegular,
+          ]}
+          className="text-off-white-1">
+          {label}
+        </Text>
+      )}
       <TextInput
         focusable
         value={value}
@@ -56,7 +58,7 @@ const TextField: React.FC<TextFieldProps> = ({
             color: 'white',
             paddingLeft: responsiveHeight(1.7),
             height: responsiveHeight(40 / percentToPx),
-            borderRadius: responsiveHeight(8 / percentToPx),
+            borderRadius: responsiveHeight(20 / percentToPx),
           },
           style,
         ]}

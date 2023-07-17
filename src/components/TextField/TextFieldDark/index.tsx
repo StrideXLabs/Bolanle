@@ -8,8 +8,8 @@ import {percentToPx} from '../../../constants';
 import textStyles from '../../../constants/fonts';
 
 interface TextFieldProps extends TextInputProps {
-  label: string;
   value: string;
+  label?: string;
   className?: string;
   onChangeText: (text: string) => void;
 }
@@ -57,7 +57,7 @@ const TextField: React.FC<TextFieldProps> = ({
           {
             paddingHorizontal: responsiveHeight(1.7),
             height: responsiveHeight(40 / percentToPx),
-            borderRadius: responsiveHeight(8 / percentToPx),
+            borderRadius: responsiveHeight(20 / percentToPx),
           },
           style,
         ]}

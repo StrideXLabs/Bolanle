@@ -1,13 +1,15 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import decodeJWT from 'jwt-decode';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, StatusBar, View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 
 import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
+import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../../components/Button';
 import HeaderStepCount from '../../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../../components/Header/HeaderWithText';
+import Layout from '../../../components/Layout';
 import TextField from '../../../components/TextField/TextFieldDark';
 import {
   AuthStateKey,
@@ -28,8 +30,6 @@ import {AppStackParams} from '../../../navigation/AppNavigation';
 import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import authService from '../../../services/auth.service';
 import cardService from '../../../services/card.service';
-import Layout from '../../../components/Layout';
-import {Image as PickerImage} from 'react-native-image-crop-picker';
 
 export type RegisterScreenProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -174,7 +174,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
         </View>
         <View>
           <TextField
-            label="Email"
             value={credentials.email}
             keyboardType="email-address"
             placeholder="john@gmail.com"
@@ -182,7 +181,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
           />
           <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
             <TextField
-              label="Password"
               value={credentials.password}
               onChangeText={password =>
                 setCredentials(state => ({...state, password}))

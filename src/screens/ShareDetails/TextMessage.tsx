@@ -67,15 +67,14 @@ const TextMessage = ({onSave, company, fullName}: TextMessageProps) => {
           placeholder="WhatsApp number"
           autoFocus={inputRef.current!}
           focusable={inputRef.current!}
-          onChangeText={c =>
-            setDetails(state => ({...state, contact: c}))
-          }></TextField>
+          onChangeText={c => setDetails(state => ({...state, contact: c}))}
+        />
         {data.flag && (
           <View
             className="absolute"
             style={{
+              left: 8,
               bottom: 2,
-              left: 5,
               height: responsiveHeight(5.5),
               justifyContent: 'center',
               alignItems: 'center',
@@ -96,14 +95,6 @@ const TextMessage = ({onSave, company, fullName}: TextMessageProps) => {
             </Pressable>
           </View>
         )}
-        {/* <View className="absolute" style={{bottom: 5, right: 5}}>
-          <Image
-            resizeMode="contain"
-            className="h-[30px] w-[30px]"
-            style={{tintColor: accentColor}}
-            source={contactIcon as ImageSourcePropType}
-          />
-        </View> */}
       </View>
       <TextField
         multiline

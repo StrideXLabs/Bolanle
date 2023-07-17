@@ -2,7 +2,7 @@
 <resources>
     <!-- Base application theme. -->
     <color name="primary_dark">#000000</color>
-    <color name="status_bar_color">#F1592A</color>
+    <color name="status_bar_color">#134B57</color>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
