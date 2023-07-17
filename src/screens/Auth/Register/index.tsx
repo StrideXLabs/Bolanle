@@ -24,6 +24,7 @@ import {
   initialContactDetails,
   initialPersonalInformation,
 } from '../../../hooks/useBusinessCard/constants';
+import {useRegisterUser} from '../../../hooks/useRegisterUser';
 import {setDataToAsyncStorage} from '../../../lib/storage';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
@@ -59,16 +60,13 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
   const [creatingBusinessCard, setCreatingBusinessCard] = useState(false);
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [credentials, setCredentials] = useState<ICredentials>({
-    email: '',
-    password: '',
-  });
+  const {email, password, setEmail, setPassword} = useRegisterUser();
 
   const handleCreateAccount = async () => {
     try {
       setCreatingAccount(true);
       const response = await authService.authenticate(
-        credentials,
+        {email, password},
         'REGISTRATION',
       );
 
@@ -120,16 +118,17 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
       setCreatingBusinessCard(false);
       if (!res.success) Toast.error({primaryText: res.message});
 
-      setStep(0);
-      setSocialItems([]);
-      setSocialLinks([]);
-      setContactDetails(initialContactDetails);
-      setPersonalInformation(initialPersonalInformation);
-      setAuthState({authed: true, token, user});
+      await Promise.all([
+        setStep(0),
+        setSocialItems([]),
+        setSocialLinks([]),
+        setContactDetails(initialContactDetails),
+        setPersonalInformation(initialPersonalInformation),
+      ]);
 
       navigation.popToTop();
-      navigation.replace('AppBottomNav');
-      return;
+      navigation.replace('EmailVerificationScreen', {isVerified: false});
+      // setAuthState({authed: true, token, user});
     } catch (error) {
       Toast.error({
         primaryText: 'Something went wrong.',
@@ -174,26 +173,24 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
         </View>
         <View>
           <TextField
-            value={credentials.email}
+            value={email}
             keyboardType="email-address"
             placeholder="john@gmail.com"
-            onChangeText={email => setCredentials(state => ({...state, email}))}
+            onChangeText={email => setEmail(email)}
           />
           <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
             <TextField
-              value={credentials.password}
-              onChangeText={password =>
-                setCredentials(state => ({...state, password}))
-              }
-              placeholder="Password"
+              value={password}
               className="relative"
+              placeholder="Password"
               secureTextEntry={secureTextEntry}
+              onChangeText={password => setPassword(password)}
             />
             <View
               className="absolute"
               style={{
-                top: 40,
-                right: responsiveHeight(6 / percentToPx),
+                top: 12,
+                right: responsiveHeight(8 / percentToPx),
               }}>
               {secureTextEntry ? (
                 <EyeIcon

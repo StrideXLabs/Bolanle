@@ -4,12 +4,12 @@ import {ActivityIndicator, View} from 'react-native';
 
 /* -------- SCREENS -------- */
 import {accentColor} from '../constants';
-import {ISocial} from '../constants/socials';
 import useAuthState from '../hooks/useAuthState';
 import ForgotPasswordScreen from '../screens/Auth/ForgotPassword';
 import LoginScreen from '../screens/Auth/Login';
 import RegisterScreen from '../screens/Auth/Register';
 import ContactDetails from '../screens/ContactDetails';
+import EmailVerificationScreen from '../screens/EmailVerification';
 import PersonalInformation from '../screens/PersonalInformation';
 import SocialLinksScreen from '../screens/SocialLinks';
 import OtherSocialScreen from '../screens/SocialLinks/OtherSocials';
@@ -22,6 +22,7 @@ export type AuthStackParams = {
   WelcomeScreen: undefined;
   RegisterScreen: undefined;
   ForgotPasswordScreen: undefined;
+  EmailVerificationScreen: {isVerified: boolean};
 } & EditScreenParams;
 
 const AuthStack = createNativeStackNavigator<AuthStackParams>();
@@ -72,6 +73,11 @@ const AuthNavigation = () => {
           name="OtherSocialsScreen"
           component={OtherSocialScreen}
           options={{animation: 'none'}}
+        />
+        <AuthStack.Screen
+          options={{animation: 'none'}}
+          name="EmailVerificationScreen"
+          component={EmailVerificationScreen}
         />
       </AuthStack.Navigator>
     </>

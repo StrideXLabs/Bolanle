@@ -98,8 +98,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       <View className="justify-center items-center h-full">
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
         <View
-          className="bg-accent rounded-lg"
+          className="bg-accent"
           style={{
+            borderRadius: 20,
             width: responsiveWidth(85),
             padding: responsiveHeight(25 / percentToPx),
             paddingLeft: responsiveHeight(35 / percentToPx),
