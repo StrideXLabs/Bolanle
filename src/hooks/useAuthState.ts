@@ -30,8 +30,8 @@ export default function useAuthState() {
       setAuthState({
         authed: true,
         redirectToLogin,
-        user: data.user,
-        token: data.token,
+        token: data.token || response.data?.token || '',
+        user: {...data.user!, name: response.data?.name || ''},
       });
       setLoading(false);
     } catch (error) {
@@ -43,7 +43,7 @@ export default function useAuthState() {
   const handleRefreshUserData = async () => {
     const data = await getDataFromAsyncStorage<IAuthState>(AuthStateKey);
 
-    if (!data || !data.authed) {
+    if (!data || !data.authed || !data.token) {
       await handleLogout();
       setLoading(false);
       return;
