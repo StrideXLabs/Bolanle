@@ -98,7 +98,7 @@ const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}
-                className="absolute bg-[#FFD9D9] rounded-md"
+                className="absolute bg-[#134b5833] rounded-[4px]"
                 onPress={e => {
                   e.stopPropagation();
                   setContactDetails({...contactDetails, companyLogo: null});
@@ -162,7 +162,7 @@ const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}
-                className="absolute bg-[#FFD9D9] rounded-md"
+                className="absolute bg-[#134b5833] rounded-[4px]"
                 onPress={e => {
                   e.stopPropagation();
                   setContactDetails({...contactDetails, profilePicture: null});

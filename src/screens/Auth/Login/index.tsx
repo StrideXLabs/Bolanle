@@ -1,6 +1,6 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import decodeJWT from 'jwt-decode';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ImageBackground,
   ImageSourcePropType,
@@ -23,6 +23,7 @@ import {AuthStateKey, TokenKey, percentToPx} from '../../../constants';
 import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
 import {IAuthState, IUser} from '../../../hooks/useAuth/interface';
+import {useCredentials} from '../../../hooks/useCredentials';
 import {setDataToAsyncStorage} from '../../../lib/storage';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
@@ -43,22 +44,25 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   const {authed, setAuthState} = useAuth();
   const [loading, setLoading] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [credentials, setCredentials] = useState<ICredentials>({
-    email: '',
-    password: '',
-  });
+  const {email, password, setEmail, setPassword} = useCredentials();
 
   const handleLogin = async () => {
     try {
       setLoading(true);
-      const response = await authService.authenticate(credentials, 'LOGIN');
+      const response = await authService.login({email, password});
 
       if (!response.success) {
         setLoading(false);
         return Toast.error({primaryText: response.message});
       }
 
-      const token = response.data ?? '';
+      if (!response.data?.isVerified && !response.data?.token) {
+        return navigation.navigate('EmailVerificationScreen', {
+          verificationToken: '',
+        });
+      }
+
+      const token = response.data?.token ?? '';
       const decodedUser = decodeJWT(token) as {[key: string]: string | number};
       const user = {
         id: decodedUser._id,
@@ -90,6 +94,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
     return null;
   }
 
+  useEffect(() => {
+    return () => {
+      setEmail('');
+      setPassword('');
+    };
+  }, []);
+
   return (
     <ImageBackground
       resizeMode="cover"
@@ -98,8 +109,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       <View className="justify-center items-center h-full">
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
         <View
-          className="bg-accent rounded-lg"
+          className="bg-accent"
           style={{
+            borderRadius: 20,
             width: responsiveWidth(85),
             padding: responsiveHeight(25 / percentToPx),
             paddingLeft: responsiveHeight(35 / percentToPx),
@@ -114,26 +126,19 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           </Text>
           <View style={{marginTop: responsiveHeight(36 / percentToPx)}}>
             <TextField
+              value={email}
               keyboardType="email-address"
-              value={credentials.email}
-              onChangeText={email =>
-                setCredentials(state => ({
-                  ...state,
-                  email,
-                }))
-              }
               placeholder="john@gmail.com"
+              onChangeText={email => setEmail(email)}
             />
           </View>
           <View style={{marginTop: responsiveHeight(22 / percentToPx)}}>
             <TextField
-              value={credentials.password}
-              onChangeText={password =>
-                setCredentials(state => ({...state, password}))
-              }
+              value={password}
+              className="relative"
               placeholder="Password"
               secureTextEntry={secureTextEntry}
-              className="relative"
+              onChangeText={password => setPassword(password)}
             />
             <View
               className="absolute"

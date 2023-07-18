@@ -24,6 +24,7 @@ import {
   initialContactDetails,
   initialPersonalInformation,
 } from '../../../hooks/useBusinessCard/constants';
+import {useCredentials} from '../../../hooks/useCredentials';
 import {setDataToAsyncStorage} from '../../../lib/storage';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
@@ -42,7 +43,7 @@ export interface ICredentials {
 }
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
-  const {setAuthState, authed} = useAuth();
+  const authed = useAuth(state => state.authed);
   const {
     step,
     setStep,
@@ -59,38 +60,20 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
   const [creatingBusinessCard, setCreatingBusinessCard] = useState(false);
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [credentials, setCredentials] = useState<ICredentials>({
-    email: '',
-    password: '',
-  });
+  const {email, password, setEmail, setPassword} = useCredentials();
 
   const handleCreateAccount = async () => {
     try {
       setCreatingAccount(true);
-      const response = await authService.authenticate(
-        credentials,
-        'REGISTRATION',
-      );
+      const response = await authService.register({email, password});
 
       if (!response.success) {
         setCreatingAccount(false);
         return Toast.error({primaryText: response.message});
       }
 
-      const token = response.data ?? '';
-      const decodedUser = decodeJWT(token) as {[key: string]: string | number};
-      const user = {
-        id: decodedUser._id,
-        email: decodedUser.email,
-        expires: decodedUser.exp,
-      } as IUser;
-
+      const token = response.data?.token ?? '';
       await setDataToAsyncStorage(TokenKey, token);
-      await setDataToAsyncStorage<IAuthState>(AuthStateKey, {
-        user,
-        token,
-        authed: true,
-      });
 
       setCreatingAccount(false);
       Toast.success({primaryText: 'Account created successfully.'});
@@ -120,16 +103,18 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
       setCreatingBusinessCard(false);
       if (!res.success) Toast.error({primaryText: res.message});
 
-      setStep(0);
-      setSocialItems([]);
-      setSocialLinks([]);
-      setContactDetails(initialContactDetails);
-      setPersonalInformation(initialPersonalInformation);
-      setAuthState({authed: true, token, user});
+      await Promise.all([
+        setStep(0),
+        setSocialItems([]),
+        setSocialLinks([]),
+        setContactDetails(initialContactDetails),
+        setPersonalInformation(initialPersonalInformation),
+      ]);
 
       navigation.popToTop();
-      navigation.replace('AppBottomNav');
-      return;
+      navigation.replace('EmailVerificationScreen', {
+        verificationToken: response.data?.verificationToken || '',
+      });
     } catch (error) {
       Toast.error({
         primaryText: 'Something went wrong.',
@@ -174,26 +159,24 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
         </View>
         <View>
           <TextField
-            value={credentials.email}
+            value={email}
             keyboardType="email-address"
             placeholder="john@gmail.com"
-            onChangeText={email => setCredentials(state => ({...state, email}))}
+            onChangeText={email => setEmail(email)}
           />
           <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
             <TextField
-              value={credentials.password}
-              onChangeText={password =>
-                setCredentials(state => ({...state, password}))
-              }
-              placeholder="Password"
+              value={password}
               className="relative"
+              placeholder="Password"
               secureTextEntry={secureTextEntry}
+              onChangeText={password => setPassword(password)}
             />
             <View
               className="absolute"
               style={{
-                top: 40,
-                right: responsiveHeight(6 / percentToPx),
+                top: 12,
+                right: responsiveHeight(8 / percentToPx),
               }}>
               {secureTextEntry ? (
                 <EyeIcon
