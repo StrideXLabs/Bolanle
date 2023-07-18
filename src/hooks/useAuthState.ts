@@ -12,8 +12,6 @@ export default function useAuthState() {
   const setAuthState = useAuth(state => state.setAuthState);
   const redirectToLogin = useAuth(state => state.redirectToLogin);
 
-  console.log({authed});
-
   const handleLogout = async () => {
     await flushStorage();
     setAuthState({...initialAuthState, redirectToLogin});
@@ -50,7 +48,6 @@ export default function useAuthState() {
       setLoading(false);
       return;
     }
-    console.log('data', data);
 
     await handleRefreshToken(data);
   };
