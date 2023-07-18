@@ -82,7 +82,7 @@ const ProfileScreen = () => {
               <Text
                 style={textStyles.robotoRegular}
                 className="text-dark-blue ml-4">
-                John Doe
+                {user?.name || 'NA'}
               </Text>
             </View>
             <View className="h-[1px] w-full bg-off-white-2 mt-3" />
@@ -102,7 +102,7 @@ const ProfileScreen = () => {
               <Text
                 style={textStyles.robotoRegular}
                 className="text-dark-blue ml-3">
-                {user?.email}
+                {user?.email || ''}
               </Text>
             </View>
             <View className="h-[1px] w-full bg-off-white-2 mt-3" />

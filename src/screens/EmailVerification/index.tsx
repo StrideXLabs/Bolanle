@@ -1,9 +1,11 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import decodeJWT from 'jwt-decode';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
   ImageSourcePropType,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -20,10 +22,16 @@ import emailLarge from '../../assets/images/email-large.png';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
 import Layout from '../../components/Layout';
-import {accentColor, percentToPx} from '../../constants';
+import {AuthStateKey, accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
+import {useAuth} from '../../hooks/useAuth';
+import {IAuthState, IUser} from '../../hooks/useAuth/interface';
+import {useCredentials} from '../../hooks/useCredentials';
+import {setDataToAsyncStorage} from '../../lib/storage';
+import Toast from '../../lib/toast';
 import {AuthStackParams} from '../../navigation/AuthNavigation';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
+import authService from '../../services/auth.service';
 
 export type EmailVerificationScreenProps = NativeStackScreenProps<
   AuthStackParams & BottomTabNavigatorParams,
@@ -33,25 +41,116 @@ export type EmailVerificationScreenProps = NativeStackScreenProps<
 const EmailVerificationScreen = ({
   navigation,
   route: {
-    params: {isVerified},
+    params: {verificationToken},
   },
 }: EmailVerificationScreenProps) => {
+  const [resending, setResending] = useState(false);
+  const {email, setEmail, setPassword} = useCredentials();
+  const setAuthState = useAuth(state => state.setAuthState);
   const [authenticating, setAuthenticating] = useState(false);
-  const [isEmailVerified, setIsEmailVerified] = useState(isVerified ?? false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+
+  const tokenRef = useRef<string | null>(null);
+  const authTimerRef = useRef<number | null>(null);
+  const resendTimerRef = useRef<number | null>(0);
+  const verifyTimerRef = useRef<number | null>(null);
+  const verificationTokenRef = useRef<string | null>(verificationToken || null);
+
+  const handleResend = async () => {
+    try {
+      setResending(true);
+      const response = await authService.resendVerificationMail(
+        verificationTokenRef.current || '',
+        email,
+      );
+
+      if (!response.success) {
+        setResending(false);
+        return Toast.error({primaryText: response.message});
+      }
+
+      setResending(false);
+      Toast.success({primaryText: 'Verification mail sent.'});
+      verificationTokenRef.current = response.data?.verificationToken || '';
+      resendTimerRef.current = setTimeout(handleVerification, 300);
+    } catch (error) {
+      setResending(false);
+      Toast.error({primaryText: 'Something went wrong.'});
+    }
+  };
+
+  const handleVerification = async () => {
+    try {
+      const response = await authService.verify(
+        verificationTokenRef.current || '',
+      );
+
+      if (!response.success) return;
+
+      tokenRef.current = response.data?.token || '';
+      verifyTimerRef.current = setTimeout(handleSignIn, 300);
+      setIsEmailVerified(true);
+    } catch (error) {
+      Toast.error({primaryText: 'Something went wrong.'});
+    }
+  };
 
   const handleSignIn = async () => {
     setAuthenticating(true);
+    const token = tokenRef.current || '';
+    const decodedUser = decodeJWT(token) as {[key: string]: string | number};
+    const user = {
+      id: decodedUser._id,
+      email: decodedUser.email,
+      expires: decodedUser.exp,
+    } as IUser;
+
+    await setDataToAsyncStorage<IAuthState>(AuthStateKey, {
+      user,
+      token,
+      authed: true,
+    });
+
+    setEmail('');
+    setPassword('');
+
+    authTimerRef.current = setTimeout(() => {
+      setAuthenticating(false);
+      setAuthState({authed: true, token, user});
+    }, 500);
   };
 
   useEffect(() => {
-    if (!isEmailVerified) return;
+    if (isEmailVerified) return;
 
-    const id = setTimeout(() => {
-      handleSignIn();
-    }, 300);
+    const id =
+      !isEmailVerified && !resending && verificationTokenRef.current
+        ? setInterval(handleVerification, 500)
+        : null;
 
-    return () => clearTimeout(id);
+    return () => {
+      id && clearInterval(id);
+    };
   }, [isEmailVerified]);
+
+  useEffect(() => {
+    if (isEmailVerified) return;
+
+    if (
+      email &&
+      !resending &&
+      !isEmailVerified &&
+      !verificationTokenRef.current
+    )
+      handleResend();
+  }, [isEmailVerified]);
+
+  useEffect(() => {
+    return () => {
+      authTimerRef.current && clearTimeout(authTimerRef.current);
+      verifyTimerRef.current && clearTimeout(verifyTimerRef.current);
+    };
+  }, []);
 
   return (
     <Layout>
@@ -130,33 +229,40 @@ const EmailVerificationScreen = ({
                 <Text style={{marginRight: responsiveHeight(3 / percentToPx)}}>
                   Haven't received the email yet?
                 </Text>
-                <Text
-                  style={[
-                    textStyles.robotoBold,
-                    {fontSize: responsiveFontSize(12 / percentToPx)},
-                  ]}>
-                  Resend Email
-                </Text>
+                <Pressable onPress={handleResend}>
+                  <Text
+                    style={[
+                      textStyles.robotoBold,
+                      {fontSize: responsiveFontSize(12 / percentToPx)},
+                    ]}>
+                    Resend Email
+                  </Text>
+                </Pressable>
               </View>
             )}
           </View>
         </View>
       </ScrollView>
-      {authenticating && (
-        <View className="absolute h-full w-full" style={styles.modalBackGround}>
-          <View style={styles.modalContainer}>
-            <ActivityIndicator color={accentColor} size="large" />
-            <Text
-              style={[
-                textStyles.robotoMedium,
-                {marginTop: responsiveHeight(12 / percentToPx)},
-              ]}
-              className="text-center">
-              Completing your Sign In Process...
-            </Text>
+      {authenticating ||
+        (resending && (
+          <View
+            className="absolute h-full w-full"
+            style={styles.modalBackGround}>
+            <View style={styles.modalContainer}>
+              <ActivityIndicator color={accentColor} size="large" />
+              <Text
+                style={[
+                  textStyles.robotoMedium,
+                  {marginTop: responsiveHeight(12 / percentToPx)},
+                ]}
+                className="text-center">
+                {authenticating
+                  ? 'Completing your Sign In Process...'
+                  : 'Resending email...'}
+              </Text>
+            </View>
           </View>
-        </View>
-      )}
+        ))}
     </Layout>
   );
 };

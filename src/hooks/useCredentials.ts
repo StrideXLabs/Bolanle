@@ -1,20 +1,20 @@
 import {create} from 'zustand';
 import {immer} from 'zustand/middleware/immer';
 
-export interface IRegisterUserState {
+export interface ICredentialsState {
   email: string;
   password: string;
 }
 
-export interface IRegisterUserStateActions {
+export interface ICredentialsStateActions {
   setEmail: (email: string) => void;
   setPassword: (password: string) => void;
 }
 
-export const useRegisterUser = create<
-  IRegisterUserState & IRegisterUserStateActions
+export const useCredentials = create<
+  ICredentialsState & ICredentialsStateActions
 >()(
-  immer<IRegisterUserState & IRegisterUserStateActions>(set => ({
+  immer<ICredentialsState & ICredentialsStateActions>(set => ({
     email: '',
     password: '',
     setEmail: email => {

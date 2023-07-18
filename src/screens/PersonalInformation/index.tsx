@@ -22,6 +22,7 @@ import {
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import dashboardService from '../../services/dashboard.service';
+import {useCredentials} from '../../hooks/useCredentials';
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams,
@@ -34,6 +35,7 @@ const PersonalInformation = ({
 }: PersonalInformationProps) => {
   const {status, cardId} = params;
   const [updating, setUpdating] = useState(false);
+  const {setEmail, setPassword} = useCredentials();
   const {
     step,
     setStep,
@@ -124,6 +126,8 @@ const PersonalInformation = ({
         (async function () {
           await Promise.all([
             setStep(0),
+            setEmail(''),
+            setPassword(''),
             setSocialLinks([]),
             setSocialItems([]),
             setFromDashBoard(false),

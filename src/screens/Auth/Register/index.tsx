@@ -24,7 +24,7 @@ import {
   initialContactDetails,
   initialPersonalInformation,
 } from '../../../hooks/useBusinessCard/constants';
-import {useRegisterUser} from '../../../hooks/useRegisterUser';
+import {useCredentials} from '../../../hooks/useCredentials';
 import {setDataToAsyncStorage} from '../../../lib/storage';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
@@ -43,7 +43,7 @@ export interface ICredentials {
 }
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
-  const {setAuthState, authed} = useAuth();
+  const authed = useAuth(state => state.authed);
   const {
     step,
     setStep,
@@ -60,35 +60,20 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
   const [creatingBusinessCard, setCreatingBusinessCard] = useState(false);
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const {email, password, setEmail, setPassword} = useRegisterUser();
+  const {email, password, setEmail, setPassword} = useCredentials();
 
   const handleCreateAccount = async () => {
     try {
       setCreatingAccount(true);
-      const response = await authService.authenticate(
-        {email, password},
-        'REGISTRATION',
-      );
+      const response = await authService.register({email, password});
 
       if (!response.success) {
         setCreatingAccount(false);
         return Toast.error({primaryText: response.message});
       }
 
-      const token = response.data ?? '';
-      const decodedUser = decodeJWT(token) as {[key: string]: string | number};
-      const user = {
-        id: decodedUser._id,
-        email: decodedUser.email,
-        expires: decodedUser.exp,
-      } as IUser;
-
+      const token = response.data?.token ?? '';
       await setDataToAsyncStorage(TokenKey, token);
-      await setDataToAsyncStorage<IAuthState>(AuthStateKey, {
-        user,
-        token,
-        authed: true,
-      });
 
       setCreatingAccount(false);
       Toast.success({primaryText: 'Account created successfully.'});
@@ -127,8 +112,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
       ]);
 
       navigation.popToTop();
-      navigation.replace('EmailVerificationScreen', {isVerified: false});
-      // setAuthState({authed: true, token, user});
+      navigation.replace('EmailVerificationScreen', {
+        verificationToken: response.data?.verificationToken || '',
+      });
     } catch (error) {
       Toast.error({
         primaryText: 'Something went wrong.',

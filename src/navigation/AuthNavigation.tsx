@@ -22,7 +22,7 @@ export type AuthStackParams = {
   WelcomeScreen: undefined;
   RegisterScreen: undefined;
   ForgotPasswordScreen: undefined;
-  EmailVerificationScreen: {isVerified: boolean};
+  EmailVerificationScreen: {verificationToken?: string};
 } & EditScreenParams;
 
 const AuthStack = createNativeStackNavigator<AuthStackParams>();

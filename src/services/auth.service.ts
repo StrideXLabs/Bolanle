@@ -9,16 +9,27 @@ export interface ICredentialsData {
   password: string;
 }
 
-export interface IAuthedResponse {
+export interface ISignupResponse {
   token: string;
   message: string;
+  verificationToken: string;
 }
 
+export interface ISigninResponse {
+  token?: string;
+  message: string;
+  isVerified?: boolean;
+}
+
+export interface IVerificationResponse
+  extends Omit<ISignupResponse, 'verificationToken'> {}
+export interface IResendVerificationResponse
+  extends Omit<ISignupResponse, 'token'> {}
+
 class AuthService {
-  async authenticate(
+  async register(
     data: ICredentialsData,
-    type: 'LOGIN' | 'REGISTRATION',
-  ): Promise<IDefaultAPIResponse<string>> {
+  ): Promise<IDefaultAPIResponse<ISignupResponse>> {
     try {
       const {email, password} = data;
 
@@ -36,18 +47,15 @@ class AuthService {
           message: 'Password must be 5 characters long.',
         };
 
-      const response = await fetcher<ICredentialsData, IAuthedResponse>(
-        `/user${type === 'REGISTRATION' ? '/signup' : '/login'}`,
+      const response = await fetcher<ICredentialsData, ISignupResponse>(
+        `/user/signup`,
         {body: {email, password}, method: 'POST'},
       );
 
       return {
         success: true,
-        data: response.token,
-        message:
-          type === 'REGISTRATION'
-            ? 'Account created successfully.'
-            : 'Logged in.',
+        data: response,
+        message: 'Account created successfully.',
       };
     } catch (error) {
       return {
@@ -55,9 +63,48 @@ class AuthService {
         success: false,
         message: isHttpError(error)
           ? error.message
-          : type === 'REGISTRATION'
-          ? 'Error while creating account. Please try again.'
-          : 'Error while login. Please try again.',
+          : 'Error while creating account. Please try again.',
+      };
+    }
+  }
+
+  async login(
+    data: ICredentialsData,
+  ): Promise<IDefaultAPIResponse<ISigninResponse>> {
+    try {
+      const {email, password} = data;
+
+      if (!emailRegex.test(email))
+        return {
+          data: null,
+          success: false,
+          message: 'Provide a valid email address.',
+        };
+
+      if (!password || password.length < 5)
+        return {
+          data: null,
+          success: false,
+          message: 'Password must be 5 characters long.',
+        };
+
+      const response = await fetcher<ICredentialsData, ISigninResponse>(
+        `/user/login`,
+        {body: {email, password}, method: 'POST'},
+      );
+
+      return {
+        success: true,
+        data: response,
+        message: response.message,
+      };
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: isHttpError(error)
+          ? error.message
+          : 'Error while creating account. Please try again.',
       };
     }
   }
@@ -112,6 +159,58 @@ class AuthService {
       );
 
       return {success: true, data: null, message: response.message};
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: (error as HttpError).message,
+      };
+    }
+  }
+
+  async verify(
+    verificationToken: string,
+  ): Promise<IDefaultAPIResponse<IVerificationResponse>> {
+    try {
+      const response = await fetcher<
+        {verificationToken: string},
+        IVerificationResponse
+      >('/user/verify', {
+        method: 'POST',
+        body: {verificationToken},
+      });
+
+      return {success: true, data: response, message: response.message};
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: (error as HttpError).message,
+      };
+    }
+  }
+
+  async resendVerificationMail(
+    verificationToken?: string,
+    email?: string,
+  ): Promise<IDefaultAPIResponse<IResendVerificationResponse>> {
+    try {
+      if (email && !emailRegex.test(email))
+        return {
+          data: null,
+          success: false,
+          message: 'Provide a valid email address.',
+        };
+
+      const response = await fetcher<
+        {email?: string; verificationToken?: string},
+        IResendVerificationResponse
+      >('/user/verify/resend', {
+        method: 'POST',
+        body: verificationToken ? {verificationToken} : {email},
+      });
+
+      return {success: true, data: response, message: response.message};
     } catch (error) {
       return {
         data: null,

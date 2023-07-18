@@ -9,6 +9,7 @@ import {
 
 import logo from '../../assets/images/logo.png';
 import Button from '../../components/Button';
+import Layout from '../../components/Layout';
 import {percentToPx} from '../../constants';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {AuthStackParams} from '../../navigation/AuthNavigation';
@@ -20,7 +21,7 @@ export type WelcomeScreenProps = NativeStackScreenProps<
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
   return (
-    <View className="h-full bg-white">
+    <Layout>
       <View className="flex justify-center items-center" style={{flex: 1}}>
         <Image
           source={logo as ImageSourcePropType}
@@ -65,7 +66,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
           </View>
         </View>
       </View>
-    </View>
+    </Layout>
   );
 };
 
