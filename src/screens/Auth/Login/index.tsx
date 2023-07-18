@@ -66,6 +66,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       const decodedUser = decodeJWT(token) as {[key: string]: string | number};
       const user = {
         id: decodedUser._id,
+        name: decodedUser.name,
         email: decodedUser.email,
         expires: decodedUser.exp,
       } as IUser;
