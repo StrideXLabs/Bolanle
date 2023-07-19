@@ -136,7 +136,7 @@ const EditCardScreen = ({
         return Toast.error({primaryText: response.message});
 
       Toast.success({primaryText: 'Information updated.'});
-      navigation.setParams({editable: true, card: response.data!});
+      setCardData(response.data!);
     } catch (error) {
       setDeletingSocial(false);
       Toast.error({primaryText: (error as HttpError).message});
