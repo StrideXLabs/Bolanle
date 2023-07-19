@@ -50,7 +50,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
 
   const filteredContacts = search.trim()
     ? contacts.filter(c =>
-        c.personalInfo?.name
+        ((c as any).contact as IContact).personalInfo?.name
           ?.toLowerCase()
           ?.includes(search.trim().toLowerCase()),
       )
@@ -235,11 +235,11 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
             }}>
             <FlatList
               numColumns={1}
-              refreshing={loading}
-              onRefresh={fetchContactData}
               horizontal={false}
+              refreshing={loading}
               data={filteredContacts}
               style={{width: '100%'}}
+              onRefresh={fetchContactData}
               keyExtractor={item => item._id}
               showsVerticalScrollIndicator={false}
               renderItem={({item}) => (

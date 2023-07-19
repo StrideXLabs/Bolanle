@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Image,
   ImageSourcePropType,
+  Linking,
   Pressable,
   Text,
   TouchableOpacity,
@@ -18,6 +19,8 @@ import {
   responsiveHeight,
 } from 'react-native-responsive-dimensions';
 import {percentToPx} from '../../constants';
+import Clipboard from '@react-native-clipboard/clipboard';
+import Toast from '../../lib/toast';
 
 type Props = {
   editable: boolean;
@@ -76,14 +79,28 @@ const SocialLinks = ({
                     ] as ImageSourcePropType
                   }
                 />
-                <Text
-                  style={[
-                    textStyles.robotoMedium,
-                    {fontSize: responsiveFontSize(13 / percentToPx)},
-                  ]}
-                  className="text-dark-blue ml-2">
-                  {social.title}
-                </Text>
+                <TouchableOpacity
+                  onPress={async () => {
+                    const canOpen = await Linking.canOpenURL(social.url);
+
+                    if (canOpen) await Linking.openURL(social.url);
+                    else {
+                      Clipboard.setString(social.url);
+                      Toast.success({
+                        position: 'bottom',
+                        primaryText: 'Copied Link.',
+                      });
+                    }
+                  }}>
+                  <Text
+                    style={[
+                      textStyles.robotoMedium,
+                      {fontSize: responsiveFontSize(13 / percentToPx)},
+                    ]}
+                    className="text-dark-blue ml-2">
+                    {social.title}
+                  </Text>
+                </TouchableOpacity>
               </View>
               {editable && (
                 <Pressable

@@ -36,10 +36,7 @@ const ContactCard = ({contact, onPress}: IContactCardProps) => {
             resizeMode="center"
             className="h-[60px] w-[60px] rounded-full"
             source={{
-              uri:
-                BASE_URL +
-                `/${rest._id}/${contactDetails?.profileImage}` +
-                `?time=${Date.now()}`,
+              uri: BASE_URL + `/${rest._id}/${contactDetails?.profileImage}`,
               cache: 'reload',
             }}
           />

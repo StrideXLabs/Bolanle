@@ -107,7 +107,7 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
             {contactDetails.websiteUrl}
           </Text>
         </View>
-        <View className="flex flex-row flex-wrap items-center gap-2 mb-[12px] break-before-auto">
+        <View className="flex flex-row items-center gap-2 mb-[12px]">
           <View className="flex justify-center items-center bg-accent rounded-full w-[30px] h-[30px] p-2">
             <Image
               resizeMode="center"
@@ -118,7 +118,10 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
           <Text
             style={[
               textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
+              {
+                fontSize: responsiveFontSize(13 / percentToPx),
+                paddingRight: responsiveHeight(2),
+              },
             ]}
             className="text-dark-blue">
             {contactDetails.companyAddress}
