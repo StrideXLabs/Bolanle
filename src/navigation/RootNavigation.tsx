@@ -19,6 +19,7 @@ const RootNavigation = () => {
   const idRef = useRef<any>(null);
 
   useEffect(() => {
+    SplashScreen.hide();
     return () => clearTimeout(idRef.current);
   }, []);
 
