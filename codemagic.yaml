@@ -16,9 +16,8 @@ workflows:
         APP_STORE_APPLE_ID: business@bolanlemedia.com
       node: latest
     scripts:
-      - name: Install packages
-        script: 
-          - npm install
+      - name: Install npm packages
+        script: npm install
       - name: Set Info.plist values
         script: | 
           PLIST=$CM_BUILD_DIR/$XCODE_SCHEME/Info.plist
