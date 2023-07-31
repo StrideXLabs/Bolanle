@@ -36,9 +36,6 @@ workflows:
       - name: Set up code signing settings on Xcode project
         script: |
           xcode-project use-profiles --project ios/*.xcodeproj
-      - name : Move react-native-xcode.sh to node_modules/react-native/scripts
-        script: |
-          mv -f $CM_BUILD_DIR/react-native-xcode.sh $CM_BUILD_DIR/node_modules/react-native/scripts/react-native-xcode.sh
       - name: Build ipa for distribution
         script: | 
           xcode-project build-ipa \
