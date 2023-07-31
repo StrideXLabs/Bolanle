@@ -7,8 +7,10 @@ workflows:
       app_store_connect: Codemagic API key
     environment:
       ios_signing:
-        provisioning_profiles: app store 2
-        certificates : Distribution Bolanle
+        provisioning_profiles: 
+          - app store 2
+        certificates : 
+          - Distribution Bolanle
       vars:
         BUNDLE_ID: "com.bolanlemedia.Bolanle"
         XCODE_WORKSPACE: "Bolanle.xcworkspace" # <-- Put the name of your Xcode workspace here
