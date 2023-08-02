@@ -33,7 +33,7 @@ const ContactCard = ({contact, onPress}: IContactCardProps) => {
       <View className="flex flex-row justify-between items-center">
         <View className="flex flex-row gap-2 items-center">
           <Image
-            resizeMode="center"
+            resizeMode="stretch"
             className="h-[60px] w-[60px] rounded-full"
             source={{
               uri: BASE_URL + `/${rest._id}/${contactDetails?.profileImage}`,
@@ -62,7 +62,7 @@ const ContactCard = ({contact, onPress}: IContactCardProps) => {
           onPress={() => onPress({contactDetails, personalInfo, ...rest})}
           style={{padding: responsiveHeight(1)}}>
           <Image
-            resizeMode="center"
+            resizeMode="contain"
             className="h-[20px] w-[20px]"
             source={menuIcon as ImageSourcePropType}
           />

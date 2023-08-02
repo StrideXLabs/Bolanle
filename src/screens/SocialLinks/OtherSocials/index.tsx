@@ -74,6 +74,7 @@ const OtherSocialsScreen = ({
             value={social.url}
             label="Link/Username"
             placeholder="Link/Username"
+            autoCapitalize='none'
             onChangeText={url => setSocial(state => ({...state, url}))}
           />
           <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>

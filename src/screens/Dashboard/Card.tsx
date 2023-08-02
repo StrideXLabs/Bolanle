@@ -19,7 +19,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
       className="px-5 py-5 w-full border-[1px] border-[#E3E3E3]">
       <View className="w-full flex justify-center items-center mb-6">
         <Image
-          resizeMode="center"
+          resizeMode="contain"
           className="h-[94px] w-[94px] rounded-md"
           source={{
             uri: BASE_URL + `/${card._id}/${contactDetails?.companyLogo}`,
@@ -29,7 +29,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
       </View>
       <View className="flex flex-row gap-2 items-center">
         <Image
-          resizeMode="center"
+          resizeMode="stretch"
           className="h-[60px] w-[60px] rounded-full"
           source={{
             uri:

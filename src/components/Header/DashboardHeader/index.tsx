@@ -66,10 +66,10 @@ const DashboardHeader = ({ options }: DashboardHeaderProps) => {
             onPress={options.onAddNewBtnPress}
             className="flex flex-row items-center">
             <Image
-              resizeMode="center"
+              resizeMode="contain"
               style={{
                 width: responsiveWidth(7),
-                height: responsiveHeight(7),
+                aspectRatio:1
               }}
               source={addNewIcon as ImageSourcePropType}
             />

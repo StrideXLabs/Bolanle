@@ -36,7 +36,7 @@ const Header = ({
         className="w-full flex justify-center items-center"
         style={{marginBottom: responsiveHeight(24 / percentToPx)}}>
         <Image
-          resizeMode="center"
+          resizeMode="contain"
           style={{width: 94, height: 94}}
           className="rounded-md"
           source={{
@@ -63,8 +63,8 @@ const Header = ({
       )}
       <View className="flex flex-row gap-2">
         <Image
-          resizeMode="center"
-          style={{width: 60, height: 62}}
+          resizeMode="stretch"
+          style={{aspectRatio:1, height: 62}}
           className="rounded-full"
           source={{
             uri:

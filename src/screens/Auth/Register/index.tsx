@@ -176,7 +176,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
             <View
               className="absolute"
               style={{
-                top: 12,
+                height:"100%",
+                justifyContent : "center",
+                alignItems:"center",
                 right: responsiveHeight(8 / percentToPx),
               }}>
               {secureTextEntry ? (

@@ -190,11 +190,11 @@ const EmailVerificationScreen = ({
               marginTop: responsiveHeight(120 / percentToPx),
             }}>
             <Image
-              resizeMode="center"
+              resizeMode="contain"
               source={emailLarge as ImageSourcePropType}
               style={{
-                width: responsiveWidth(230 / percentToPx),
                 height: responsiveHeight(80 / percentToPx),
+                aspectRatio:1
               }}
             />
             <View
