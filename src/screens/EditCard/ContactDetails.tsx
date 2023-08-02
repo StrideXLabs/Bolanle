@@ -59,7 +59,7 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
         <View className="flex flex-row items-center gap-2 mb-[12px]">
           <View className="flex justify-center items-center bg-accent rounded-full w-[30px] h-[30px] p-2">
             <Image
-              resizeMode="center"
+              resizeMode="contain"
               className="w-full h-full"
               source={email as ImageSourcePropType}
             />
@@ -76,7 +76,7 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
         <View className="flex flex-row items-center gap-2 mb-[12px]">
           <View className="flex justify-center items-center bg-accent rounded-full w-[30px] h-[30px] p-2">
             <Image
-              resizeMode="center"
+              resizeMode="contain"
               className="w-full h-full"
               source={phone as ImageSourcePropType}
             />
@@ -93,7 +93,7 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
         <View className="flex flex-row flex-wrap items-center gap-2 mb-[12px]">
           <View className="flex justify-center items-center bg-accent rounded-full w-[30px] h-[30px] p-2">
             <Image
-              resizeMode="cover"
+              resizeMode="contain"
               className="w-full h-full mr-[1.5px]"
               source={web as ImageSourcePropType}
             />
@@ -110,7 +110,7 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
         <View className="flex flex-row items-center gap-2 mb-[12px]">
           <View className="flex justify-center items-center bg-accent rounded-full w-[30px] h-[30px] p-2">
             <Image
-              resizeMode="center"
+              resizeMode="contain"
               className="w-full h-full"
               source={location as ImageSourcePropType}
             />

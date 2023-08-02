@@ -138,11 +138,11 @@ const ProfileScreen = () => {
         ) : (
           <>
             <Image
-              resizeMode="center"
+              resizeMode="contain"
               source={deleteIcon as ImageSourcePropType}
               style={{
                 width: responsiveWidth(24 / percentToPx),
-                height: responsiveHeight(16 / percentToPx),
+                aspectRatio:1,
                 marginRight: responsiveHeight(10 / percentToPx),
               }}
             />
