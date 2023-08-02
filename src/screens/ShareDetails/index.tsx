@@ -42,7 +42,14 @@ const ShareCardDetailsScreen = ({navigation, route}: ShareCardScreenProps) => {
       }body=${details.comment}\n\n${BASE_URL}/card/${card._id}`;
 
       const isSuccess = await Linking.openURL(url);
-
+      if (isSuccess){
+        navigation.navigate('ShareCardScreen', {
+          company,
+          type: "WITH_DATA",
+          card,
+          fullName
+        })
+      }
       if (!isSuccess)
         Toast.error({primaryText: 'Error sending whatsapp message.'});
     } catch (error) {
@@ -60,6 +67,15 @@ const ShareCardDetailsScreen = ({navigation, route}: ShareCardScreenProps) => {
       const url = `mailto:${details.contact}?subject=Business Card Sharing&body=${details.comment}\n\n${BASE_URL}/card/${card._id}`;
 
       const isSuccess = await Linking.openURL(url);
+
+      if (isSuccess){
+        navigation.navigate('ShareCardScreen', {
+          company,
+          type: "WITH_DATA",
+          card,
+          fullName
+        })
+      }
 
       if (!isSuccess)
         Toast.error({primaryText: 'Error sending whatsapp message.'});
@@ -83,6 +99,15 @@ const ShareCardDetailsScreen = ({navigation, route}: ShareCardScreenProps) => {
         details.contact;
 
       const isSuccess = await Linking.openURL(url);
+
+      if (isSuccess){
+        navigation.navigate('ShareCardScreen', {
+          company,
+          type: "WITH_DATA",
+          card,
+          fullName
+        })
+      }
 
       if (!isSuccess)
         Toast.error({primaryText: 'Error sending whatsapp message.'});

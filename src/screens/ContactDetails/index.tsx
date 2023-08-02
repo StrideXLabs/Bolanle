@@ -188,6 +188,7 @@ const ContactDetails = ({
                   email: text,
                 });
               }}
+              autoCapitalize='none'
               value={contactDetails.email}
               placeholder="Enter your email address"
               style={{marginBottom: responsiveHeight(10 / percentToPx)}}
@@ -206,6 +207,7 @@ const ContactDetails = ({
             />
             <TextField
               keyboardType="url"
+              autoCapitalize='none'
               onChangeText={text => {
                 setContactDetails({
                   ...contactDetails,

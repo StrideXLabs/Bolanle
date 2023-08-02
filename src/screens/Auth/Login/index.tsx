@@ -129,7 +129,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
             <TextField
               value={email}
               keyboardType="email-address"
-              placeholder="john@gmail.com"
+              placeholder="Email Address"
+              autoCapitalize='none'
               onChangeText={email => setEmail(email)}
             />
           </View>

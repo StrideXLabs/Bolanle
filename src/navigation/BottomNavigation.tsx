@@ -9,6 +9,7 @@ import {accentColor} from '../constants';
 import {useOpenModalState} from '../hooks/useOpenModal';
 import ContactsScreen from '../screens/Contacts';
 import ProfileScreen from '../screens/Profile';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 export type BottomTabNavigatorParams = {
   ProfileScreen: undefined;
@@ -25,7 +26,7 @@ const BottomNavigation = () => {
     <BottomTabNavigator.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {minHeight: 66, display: open ? 'none' : 'flex'},
+        tabBarStyle: {minHeight: responsiveHeight(11), display: open ? 'none' : 'flex'},
         tabBarLabelStyle: {
           fontSize: 13,
           marginBottom: 12,

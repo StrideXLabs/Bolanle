@@ -39,8 +39,9 @@ const EmailOrWhatsAppCard = ({
           label={type === 'EMAIL_CARD' ? 'Contact email' : 'Whatsapp number'}
           style={{paddingLeft: 50}}
           keyboardType="email-address"
+          autoCapitalize='none'
           placeholder={
-            type === 'EMAIL_CARD' ? 'johndoe@gmail.com' : '(203) 555-0123'
+            type === 'EMAIL_CARD' ? 'Email address' : '(203) 555-0123'
           }
           onChangeText={c => setDetails(state => ({...state, contact: c}))}
         />

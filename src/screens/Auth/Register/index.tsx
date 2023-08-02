@@ -161,7 +161,8 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
           <TextField
             value={email}
             keyboardType="email-address"
-            placeholder="john@gmail.com"
+            placeholder="Email address"
+            autoCapitalize='none'
             onChangeText={email => setEmail(email)}
           />
           <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
