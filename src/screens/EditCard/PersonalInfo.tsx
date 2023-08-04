@@ -11,9 +11,9 @@ import {
   responsiveHeight,
 } from 'react-native-responsive-dimensions';
 import editIcon from '../../assets/images/edit.png';
-import {percentToPx} from '../../constants';
+import { percentToPx } from '../../constants';
 import textStyles from '../../constants/fonts';
-import {ICardData} from '../../services/dashboard.service';
+import { ICardData } from '../../services/dashboard.service';
 
 type Props = {
   editable: boolean;
@@ -21,7 +21,7 @@ type Props = {
   onEditPress: (info: ICardData['personalInfo']) => void;
 };
 
-const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
+const PersonalInfo = ({ personalInfo, onEditPress, editable }: Props) => {
   return (
     <>
       <View
@@ -33,7 +33,7 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
         <Text
           style={[
             textStyles.robotoBold,
-            {fontSize: responsiveFontSize(18 / percentToPx)},
+            { fontSize: responsiveFontSize(18 / percentToPx) },
           ]}
           className="text-accent">
           Personal Information
@@ -54,11 +54,11 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
       <View className="flex">
         <View
           className="flex flex-row gap-2"
-          style={{marginBottom: responsiveHeight(8 / percentToPx)}}>
+          style={{ marginBottom: responsiveHeight(8 / percentToPx) }}>
           <Text
             style={[
               textStyles.robotoBold,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
+              { fontSize: responsiveFontSize(13 / percentToPx) },
             ]}
             className="text-dark-blue font-bold">
             Name
@@ -66,7 +66,7 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
           <Text
             style={[
               textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
+              { fontSize: responsiveFontSize(13 / percentToPx) },
             ]}
             className="text-dark-blue">
             {personalInfo.name}
@@ -74,19 +74,19 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
         </View>
         <View
           className="flex flex-row gap-2"
-          style={{marginBottom: responsiveHeight(8 / percentToPx)}}>
+          style={{ marginBottom: responsiveHeight(8 / percentToPx) }}>
           <Text
             style={[
               textStyles.robotoBold,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
+              { fontSize: responsiveFontSize(13 / percentToPx) },
             ]}
             className="text-dark-blue font-bold">
-            Designation
+            Job Title
           </Text>
           <Text
             style={[
               textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
+              { fontSize: responsiveFontSize(13 / percentToPx) },
             ]}
             className="text-dark-blue">
             {personalInfo.designation}
@@ -94,11 +94,11 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
         </View>
         <View
           className="flex flex-row gap-2"
-          style={{marginBottom: responsiveHeight(8 / percentToPx)}}>
+          style={{ marginBottom: responsiveHeight(8 / percentToPx) }}>
           <Text
             style={[
               textStyles.robotoBold,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
+              { fontSize: responsiveFontSize(13 / percentToPx) },
             ]}
             className="text-dark-blue font-bold">
             Department
@@ -106,7 +106,7 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
           <Text
             style={[
               textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
+              { fontSize: responsiveFontSize(13 / percentToPx) },
             ]}
             className="text-dark-blue">
             {personalInfo.department}
@@ -116,7 +116,7 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
           <Text
             style={[
               textStyles.robotoBold,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
+              { fontSize: responsiveFontSize(13 / percentToPx) },
             ]}
             className="text-dark-blue font-bold">
             Company
@@ -124,7 +124,7 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
           <Text
             style={[
               textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
+              { fontSize: responsiveFontSize(13 / percentToPx) },
             ]}
             className="text-dark-blue">
             {personalInfo.companyName}
