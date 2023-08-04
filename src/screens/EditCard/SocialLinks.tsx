@@ -71,7 +71,7 @@ const SocialLinks = ({
               className="w-full  flex flex-row items-center justify-between gap-2 mb-[12px]">
               <View className="flex items-center flex-row">
                 <Image
-                  resizeMode="center"
+                  resizeMode="contain"
                   className="w-[30px] h-[30px]"
                   source={
                     filledIconsMapping[
@@ -107,7 +107,7 @@ const SocialLinks = ({
                   className="w-4 h-4"
                   onPress={() => onDeleteLink(social)}>
                   <Image
-                    resizeMode="center"
+                    resizeMode="contain"
                     className="w-full h-full"
                     source={deleteIcon as ImageSourcePropType}
                   />

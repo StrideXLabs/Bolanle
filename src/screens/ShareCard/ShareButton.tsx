@@ -43,13 +43,13 @@ const ShareButton = ({
       onPress={onPress}
       className="bg-accent flex flex-row items-center">
       <Image
-        resizeMode="center"
+        resizeMode="contain"
         source={startIcon as ImageSourcePropType}
         style={[
           {
             marginRight: responsiveHeight(1.2),
             width: responsiveWidth(33 / percentToPx),
-            height: responsiveHeight(17 / percentToPx),
+            aspectRatio:1
           },
           iconStyles,
         ]}
