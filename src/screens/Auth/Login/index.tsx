@@ -5,6 +5,7 @@ import {
   ImageBackground,
   ImageSourcePropType,
   Keyboard,
+  ScrollView,
   StatusBar,
   Text,
   TouchableOpacity,
@@ -105,11 +106,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   }, []);
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <ImageBackground
-        resizeMode="cover"
-        className="h-full"
-        source={bgImage as ImageSourcePropType}>
+    <ImageBackground
+      resizeMode="cover"
+      className="h-full"
+      source={bgImage as ImageSourcePropType}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps='handled'
+      >
         <View className="justify-center items-center h-full">
           <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
           <View
@@ -133,23 +136,27 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 value={email}
                 keyboardType="email-address"
                 placeholder="Email Address"
+                enablesReturnKeyAutomatically={false}
                 autoCapitalize='none'
                 onChangeText={email => setEmail(email)}
               />
             </View>
-            <View style={{ marginTop: responsiveHeight(22 / percentToPx) }}>
+            <View style={{ marginTop: responsiveHeight(22 / percentToPx), position: "relative" }}>
               <TextField
                 value={password}
                 className="relative"
                 placeholder="Password"
+                enablesReturnKeyAutomatically={false}
                 secureTextEntry={secureTextEntry}
                 onChangeText={password => setPassword(password)}
               />
               <View
                 className="absolute"
                 style={{
-                  top: responsiveHeight(10 / percentToPx),
+                  top: responsiveHeight(8 / percentToPx),
                   right: responsiveHeight(8 / percentToPx),
+                  alignItems: 'center',
+                  justifyContent: "center"
                 }}>
                 {secureTextEntry ? (
                   <EyeIcon
@@ -195,11 +202,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 </Text>
                 <TouchableOpacity
                   activeOpacity={0.6}
-                  onPress={() =>
+                  onPress={() => {
+                    console.log("Clicked")
                     navigation.navigate('PersonalInformationScreen', {
                       cardId: null,
                       status: 'CREATING',
                     })
+                  }
                   }>
                   <Text
                     style={textStyles.robotoBold}
@@ -211,8 +220,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             </View>
           </View>
         </View>
-      </ImageBackground>
-    </TouchableWithoutFeedback >
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
