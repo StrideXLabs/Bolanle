@@ -1,21 +1,21 @@
 import React from 'react';
-import {Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
-import {PlusIcon} from 'react-native-heroicons/outline';
-import {openPicker} from 'react-native-image-crop-picker';
+import { Image, ImageSourcePropType, Pressable, Text, View } from 'react-native';
+import { PlusIcon } from 'react-native-heroicons/outline';
+import { openPicker } from 'react-native-image-crop-picker';
 import {
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import trash from '../../assets/images/trash.png';
-import {BASE_URL, percentToPx} from '../../constants';
+import { BASE_URL, percentToPx } from '../../constants';
 import textStyles from '../../constants/fonts';
-import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
+import { useCreateBusinessCard } from '../../hooks/useBusinessCard';
 import Toast from '../../lib/toast';
-import {ScreenStatus} from '../../navigation/AppNavigation';
+import { ScreenStatus } from '../../navigation/AppNavigation';
 
-const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
-  const {setContactDetails, contactDetails} = useCreateBusinessCard();
+const Upload = ({ status, cardId }: { status: ScreenStatus; cardId: string }) => {
+  const { setContactDetails, contactDetails } = useCreateBusinessCard();
 
   const handleAddImage = async (type: 'Profile' | 'Logo') => {
     try {
@@ -31,23 +31,23 @@ const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
       });
 
       if (type === 'Logo')
-        setContactDetails({...contactDetails, companyLogo: result});
-      else setContactDetails({...contactDetails, profilePicture: result});
+        setContactDetails({ ...contactDetails, companyLogo: result });
+      else setContactDetails({ ...contactDetails, profilePicture: result });
     } catch (error) {
       if ((error as any)?.code === 'E_PICKER_CANCELLED') return;
-      Toast.error({primaryText: 'Error selecting image. Please try again.'});
+      Toast.error({ primaryText: 'Error selecting image. Please try again.' });
     }
   };
 
   return (
     <View
       className="flex flex-row justify-between items-center"
-      style={{marginTop: responsiveHeight(10 / percentToPx)}}>
+      style={{ marginTop: responsiveHeight(10 / percentToPx) }}>
       <View>
         <Text
           style={[
             textStyles.robotoRegular,
-            {fontSize: responsiveFontSize(16 / percentToPx)},
+            { fontSize: responsiveFontSize(16 / percentToPx) },
           ]}
           className="text-dark-blue">
           Company Logo
@@ -75,9 +75,9 @@ const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
                   source={{
                     uri:
                       status === 'EDITING' &&
-                      typeof contactDetails.companyLogo === 'string'
+                        typeof contactDetails.companyLogo === 'string'
                         ? `${BASE_URL}/${cardId}/${contactDetails.companyLogo}` +
-                          `?time=${Date.now()}`
+                        `?time=${Date.now()}`
                         : (contactDetails.companyLogo as any).path,
 
                     cache: 'reload',
@@ -101,10 +101,10 @@ const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
                 className="absolute bg-[#134b5833] rounded-[4px]"
                 onPress={e => {
                   e.stopPropagation();
-                  setContactDetails({...contactDetails, companyLogo: null});
+                  setContactDetails({ ...contactDetails, companyLogo: null });
                 }}>
                 <Image
-                  resizeMode="center"
+                  resizeMode="contain"
                   className="w-full h-full"
                   source={trash as ImageSourcePropType}
                 />
@@ -117,7 +117,7 @@ const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
         <Text
           style={[
             textStyles.robotoRegular,
-            {fontSize: responsiveFontSize(16 / percentToPx)},
+            { fontSize: responsiveFontSize(16 / percentToPx) },
           ]}
           className="text-base text-dark-blue">
           Profile Image
@@ -141,9 +141,9 @@ const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
                 source={{
                   uri:
                     status === 'EDITING' &&
-                    typeof contactDetails.profilePicture === 'string'
+                      typeof contactDetails.profilePicture === 'string'
                       ? `${BASE_URL}/${cardId}/${contactDetails.profilePicture}` +
-                        `?time=${Date.now()}`
+                      `?time=${Date.now()}`
                       : (contactDetails.profilePicture as any).path,
                   cache: 'reload',
                 }}
@@ -165,10 +165,10 @@ const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
                 className="absolute bg-[#134b5833] rounded-[4px]"
                 onPress={e => {
                   e.stopPropagation();
-                  setContactDetails({...contactDetails, profilePicture: null});
+                  setContactDetails({ ...contactDetails, profilePicture: null });
                 }}>
                 <Image
-                  resizeMode="center"
+                  resizeMode="contain"
                   className="w-full h-full"
                   source={trash as ImageSourcePropType}
                 />
