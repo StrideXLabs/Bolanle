@@ -85,6 +85,7 @@ const ShareCardScreen = ({navigation, route}: ShareCardScreenProps) => {
           <View className="flex justify-center items-center">
             <Image
               className="rounded-lg"
+              resizeMode='contain'
               source={{uri: `${BASE_URL}/${card?._id}/${card!.qr}`}}
               style={{width: responsiveWidth(38), height: responsiveHeight(15)}}
             />
