@@ -1,12 +1,12 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Image, ImageSourcePropType} from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Image, ImageSourcePropType, Platform } from 'react-native';
 import DashboardScreen from '../screens/Dashboard';
 
 import contactsIcon from '../assets/images/contacts.png';
 import dashboardIcon from '../assets/images/dashboard.png';
 import profileIcon from '../assets/images/profile.png';
-import {accentColor} from '../constants';
-import {useOpenModalState} from '../hooks/useOpenModal';
+import { accentColor } from '../constants';
+import { useOpenModalState } from '../hooks/useOpenModal';
 import ContactsScreen from '../screens/Contacts';
 import ProfileScreen from '../screens/Profile';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
@@ -26,7 +26,7 @@ const BottomNavigation = () => {
     <BottomTabNavigator.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {minHeight: responsiveHeight(11), display: open ? 'none' : 'flex'},
+        tabBarStyle: { minHeight: Platform.OS == "android" ? responsiveHeight(9) : responsiveHeight(11), display: open ? 'none' : 'flex' },
         tabBarLabelStyle: {
           fontSize: 13,
           marginBottom: 12,
@@ -38,7 +38,7 @@ const BottomNavigation = () => {
         name="DashboardScreen"
         options={{
           title: 'Dashboard',
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <Image
               style={{
                 width: 21.6,
@@ -56,7 +56,7 @@ const BottomNavigation = () => {
         options={{
           title: 'Contacts',
           tabBarLabel: 'Contacts',
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <Image
               resizeMode="contain"
               style={{
@@ -75,7 +75,7 @@ const BottomNavigation = () => {
         name={'ProfileScreen' as any}
         options={{
           title: 'Profile',
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <Image
               style={{
                 width: 21.6,
