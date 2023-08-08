@@ -182,7 +182,7 @@ const EmailVerificationScreen = ({
               subtitle={
                 isEmailVerified
                   ? 'Your email is verified and your are all set to use your account.'
-                  : 'Please verify your email by clicking on the verification link sent on your email address.'
+                  : 'Please verify your email by clicking on the verification link sent on your email address. If you did not recieve it, kindly check Spam/Junk folder'
               }
             />
           </View>

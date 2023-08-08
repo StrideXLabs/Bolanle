@@ -6,20 +6,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {IContact} from '.';
+import { IContact } from '.';
 import menuIcon from '../../assets/images/menu.png';
-import {BASE_URL, percentToPx} from '../../constants';
+import { BASE_URL, percentToPx } from '../../constants';
 import textStyles from '../../constants/fonts';
-import {responsiveHeight} from 'react-native-responsive-dimensions';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 interface IContactCardProps {
   contact: IContact;
   onPress: (contact: IContact) => void;
+  viewContact: (contact: IContact) => void;
 }
 
-const ContactCard = ({contact, onPress}: IContactCardProps) => {
+const ContactCard = ({ contact, viewContact, onPress }: IContactCardProps) => {
   const {
-    contact: {contactDetails, personalInfo, ...rest},
+    contact: { contactDetails, personalInfo, ...rest },
   } = contact as any;
 
   return (
@@ -32,20 +33,24 @@ const ContactCard = ({contact, onPress}: IContactCardProps) => {
       }}>
       <View className="flex flex-row justify-between items-center">
         <View className="flex flex-row gap-2 items-center">
-          <Image
-            resizeMode="stretch"
-            className="h-[60px] w-[60px] rounded-full"
-            source={{
-              uri: BASE_URL + `/${rest._id}/${contactDetails?.profileImage}`,
-              cache: 'reload',
-            }}
-          />
+          <TouchableOpacity onPress={() => viewContact({ contactDetails, personalInfo, ...rest })}>
+            <Image
+              resizeMode="stretch"
+              className="h-[60px] w-[60px] rounded-full"
+              source={{
+                uri: BASE_URL + `/${rest._id}/${contactDetails?.profileImage}`,
+                cache: 'reload',
+              }}
+            />
+          </TouchableOpacity>
           <View className="flex flex-wrap">
-            <Text
-              className="text-[#334155] text-base"
-              style={textStyles.robotoRegular}>
-              {personalInfo?.name}
-            </Text>
+            <TouchableOpacity onPress={() => viewContact({ contactDetails, personalInfo, ...rest })}>
+              <Text
+                className="text-[#334155] text-base"
+                style={textStyles.robotoRegular}>
+                {personalInfo?.name}
+              </Text>
+            </TouchableOpacity>
             <Text
               className="text-[#334155] text-[12px]"
               style={textStyles.robotoRegular}>
@@ -59,8 +64,8 @@ const ContactCard = ({contact, onPress}: IContactCardProps) => {
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => onPress({contactDetails, personalInfo, ...rest})}
-          style={{padding: responsiveHeight(1)}}>
+          onPress={() => onPress({ contactDetails, personalInfo, ...rest })}
+          style={{ padding: responsiveHeight(1) }}>
           <Image
             resizeMode="contain"
             className="h-[20px] w-[20px]"
@@ -68,7 +73,7 @@ const ContactCard = ({contact, onPress}: IContactCardProps) => {
           />
         </TouchableOpacity>
       </View>
-    </View>
+    </View >
   );
 };
 

@@ -69,7 +69,7 @@ const DashboardHeader = ({ options }: DashboardHeaderProps) => {
               resizeMode="contain"
               style={{
                 width: responsiveWidth(7),
-                aspectRatio:1
+                aspectRatio: 1
               }}
               source={addNewIcon as ImageSourcePropType}
             />
@@ -123,7 +123,7 @@ const DashboardHeader = ({ options }: DashboardHeaderProps) => {
                 onPress={options.onShareBtnPress}>
                 <Image
                   resizeMode="contain"
-                  className="w-[22px] h-[14px] mt-1 mr-1"
+                  className="w-[30px] h-[30px] mt-1 mr-1"
                   source={shareIcon as ImageSourcePropType}
                 />
                 <Text

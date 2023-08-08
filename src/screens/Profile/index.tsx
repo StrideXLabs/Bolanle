@@ -1,5 +1,5 @@
-import {HttpError} from 'http-errors';
-import React, {useState} from 'react';
+import { HttpError } from 'http-errors';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking
 } from 'react-native';
 import {
   responsiveHeight,
@@ -16,20 +17,20 @@ import chevronRightIcon from '../../assets/images/chevron-right.png';
 import emailIcon from '../../assets/images/email-dark.png';
 import deleteIcon from '../../assets/images/trash.png';
 import userIcon from '../../assets/images/user.png';
-import {accentColor, percentToPx} from '../../constants';
+import { accentColor, emailRegex, percentToPx } from '../../constants';
 import textStyles from '../../constants/fonts';
-import {initialAuthState, useAuth} from '../../hooks/useAuth';
-import {flushStorage} from '../../lib/storage';
+import { initialAuthState, useAuth } from '../../hooks/useAuth';
+import { flushStorage } from '../../lib/storage';
 import Toast from '../../lib/toast';
 import authService from '../../services/auth.service';
 
 const ProfileScreen = () => {
-  const {user, setAuthState} = useAuth();
+  const { user, setAuthState } = useAuth();
   const [deleting, setDeleting] = useState(false);
 
   const handleLogout = async () => {
     await flushStorage();
-    setAuthState({...initialAuthState, redirectToLogin: true});
+    setAuthState({ ...initialAuthState, redirectToLogin: true });
   };
 
   const handleDeleteAccount = async () => {
@@ -39,16 +40,27 @@ const ProfileScreen = () => {
 
       if (!res.success) {
         setDeleting(false);
-        Toast.error({primaryText: res.message});
+        Toast.error({ primaryText: res.message });
         return;
       }
 
       setDeleting(false);
-      Toast.success({primaryText: res.message});
+      Toast.success({ primaryText: res.message });
       await handleLogout();
     } catch (error) {
       setDeleting(false);
-      Toast.error({primaryText: (error as HttpError).message});
+      Toast.error({ primaryText: (error as HttpError).message });
+    }
+  };
+
+  const handleEmail = async () => {
+    try {
+      const url = `mailto:business@bolanlemedia.com`;
+
+      await Linking.openURL(url);
+
+    } catch (error) {
+      Toast.error({ primaryText: 'Error sending email.' });
     }
   };
 
@@ -67,7 +79,7 @@ const ProfileScreen = () => {
           className="text-dark-blue text-4xl">
           PROFILE
         </Text>
-        <View style={{marginTop: responsiveHeight(66 / percentToPx)}}>
+        <View style={{ marginTop: responsiveHeight(66 / percentToPx) }}>
           <View>
             <Text
               style={textStyles.robotoRegular}
@@ -123,7 +135,24 @@ const ProfileScreen = () => {
               />
             </TouchableOpacity>
           </View>
+          <View className="mt-[10px]">
+            <TouchableOpacity
+              onPress={handleEmail}
+              className="flex flex-row mt-6 items-center justify-between">
+              <Text
+                style={textStyles.robotoRegular}
+                className="text-dark-blue text-base">
+                Help & Support
+              </Text>
+              <Image
+                resizeMode="contain"
+                className="w-[10px] h-[12px]"
+                source={chevronRightIcon as ImageSourcePropType}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
+
       </View>
       <TouchableOpacity
         activeOpacity={0.5}
@@ -142,7 +171,7 @@ const ProfileScreen = () => {
               source={deleteIcon as ImageSourcePropType}
               style={{
                 width: responsiveWidth(24 / percentToPx),
-                aspectRatio:1,
+                aspectRatio: 1,
                 marginRight: responsiveHeight(10 / percentToPx),
               }}
             />

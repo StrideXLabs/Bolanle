@@ -1,6 +1,6 @@
-import {useIsFocused} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useRef, useState} from 'react';
+import { useIsFocused } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -19,14 +19,14 @@ import searchIcon from '../../assets/images/search.png';
 import Button from '../../components/Button';
 import Layout from '../../components/Layout';
 import TextField from '../../components/TextField/TextFieldDark';
-import {accentColor, percentToPx} from '../../constants';
+import { accentColor, percentToPx } from '../../constants';
 import textStyles from '../../constants/fonts';
-import {useOpenModalState} from '../../hooks/useOpenModal';
+import { useOpenModalState } from '../../hooks/useOpenModal';
 import Toast from '../../lib/toast';
-import {AppStackParams} from '../../navigation/AppNavigation';
-import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
+import { AppStackParams } from '../../navigation/AppNavigation';
+import { BottomTabNavigatorParams } from '../../navigation/BottomNavigation';
 import contactsService from '../../services/contacts.service';
-import {ICardData} from '../../services/dashboard.service';
+import { ICardData } from '../../services/dashboard.service';
 import ContactCard from './ContactCard';
 import ModalContent from './ModalContent';
 
@@ -36,13 +36,13 @@ export type ContactsScreenProps = NativeStackScreenProps<
 >;
 
 export interface IContact
-  extends Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'> {}
+  extends Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'> { }
 
-const ContactsScreen = ({navigation}: ContactsScreenProps) => {
+const ContactsScreen = ({ navigation }: ContactsScreenProps) => {
   const isFocused = useIsFocused();
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
-  const {open, setOpen} = useOpenModalState();
+  const { open, setOpen } = useOpenModalState();
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [contacts, setContacts] = useState<IContact[]>([]);
@@ -50,10 +50,10 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
 
   const filteredContacts = search.trim()
     ? contacts.filter(c =>
-        ((c as any).contact as IContact).personalInfo?.name
-          ?.toLowerCase()
-          ?.includes(search.trim().toLowerCase()),
-      )
+      ((c as any).contact as IContact).personalInfo?.name
+        ?.toLowerCase()
+        ?.includes(search.trim().toLowerCase()),
+    )
     : contacts;
 
   const fetchContactData = async () => {
@@ -80,7 +80,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
 
   const handleViewCard = () => {
     if (!selectedContactRef.current)
-      return Toast.error({primaryText: 'Please select a card first.'});
+      return Toast.error({ primaryText: 'Please select a card first.' });
 
     setOpen(false);
     navigation.navigate('EditCardScreen', {
@@ -117,17 +117,17 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
 
       if (!response.success) {
         setDeleting(false);
-        return Toast.error({primaryText: response.message});
+        return Toast.error({ primaryText: response.message });
       }
 
-      Toast.success({primaryText: 'Contact deleted.'});
+      Toast.success({ primaryText: 'Contact deleted.' });
       selectedContactRef.current = null;
       setDeleting(false);
       setOpen(false);
       await fetchContactData();
     } catch (error) {
       setDeleting(false);
-      Toast.error({primaryText: 'Error while deleting contact.'});
+      Toast.error({ primaryText: 'Error while deleting contact.' });
     }
   };
 
@@ -150,12 +150,12 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
           className="text-dark-blue text-4xl">
           Contacts
         </Text>
-        <View style={{marginTop: responsiveHeight(46 / percentToPx)}}>
+        <View style={{ marginTop: responsiveHeight(46 / percentToPx) }}>
           <TextField
             value={search}
             placeholder="Search contacts"
             className="border-dark-blue border-[2px]"
-            style={{paddingLeft: responsiveHeight(5)}}
+            style={{ paddingLeft: responsiveHeight(5) }}
             onChangeText={text => setSearch(text)}
           />
           <Image
@@ -173,19 +173,19 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
         {loading && (
           <View
             className="flex justify-center items-center"
-            style={{height: responsiveHeight(60)}}>
+            style={{ height: responsiveHeight(60) }}>
             <ActivityIndicator size={50} color={accentColor} />
           </View>
         )}
         {!loading && contacts.length === 0 && error && (
           <View
             className="flex justify-center items-center"
-            style={{height: responsiveHeight(70)}}>
+            style={{ height: responsiveHeight(70) }}>
             <Text
               className="text-dark-blue"
               style={[
                 textStyles.robotoBold,
-                {fontSize: responsiveFontSize(18 / percentToPx)},
+                { fontSize: responsiveFontSize(18 / percentToPx) },
               ]}>
               {error}
             </Text>
@@ -202,12 +202,12 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
         {!loading && !error && contacts.length == 0 && (
           <View
             className="flex justify-center items-center"
-            style={{marginTop: responsiveHeight(5)}}>
+            style={{ marginTop: responsiveHeight(5) }}>
             <Text
               className="text-dark-blue"
               style={[
                 textStyles.robotoBold,
-                {fontSize: responsiveFontSize(18 / percentToPx)},
+                { fontSize: responsiveFontSize(18 / percentToPx) },
               ]}>
               No contacts found.
             </Text>
@@ -216,12 +216,12 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
         {!loading && !error && search && filteredContacts.length == 0 && (
           <View
             className="flex justify-center items-center"
-            style={{marginTop: responsiveHeight(5)}}>
+            style={{ marginTop: responsiveHeight(5) }}>
             <Text
               className="text-dark-blue"
               style={[
                 textStyles.robotoBold,
-                {fontSize: responsiveFontSize(18 / percentToPx)},
+                { fontSize: responsiveFontSize(18 / percentToPx) },
               ]}>
               No contacts found.
             </Text>
@@ -238,16 +238,20 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
               horizontal={false}
               refreshing={loading}
               data={filteredContacts}
-              style={{width: '100%'}}
+              style={{ width: '100%' }}
               onRefresh={fetchContactData}
               keyExtractor={item => item._id}
               showsVerticalScrollIndicator={false}
-              renderItem={({item}) => (
+              renderItem={({ item }) => (
                 <ContactCard
                   contact={item}
                   onPress={contact => {
                     selectedContactRef.current = contact;
                     setOpen(true);
+                  }}
+                  viewContact={contact => {
+                    selectedContactRef.current = contact;
+                    handleViewCard()
                   }}
                 />
               )}

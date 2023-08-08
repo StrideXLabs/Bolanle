@@ -7,7 +7,7 @@ import {
   ScrollView,
   View,
 } from 'react-native';
-import { responsiveHeight } from 'react-native-responsive-dimensions';
+import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
@@ -23,11 +23,43 @@ import Toast from '../../lib/toast';
 import { AppStackParams } from '../../navigation/AppNavigation';
 import dashboardService from '../../services/dashboard.service';
 import { useCredentials } from '../../hooks/useCredentials';
+import SelectDropdown from 'react-native-select-dropdown'
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams,
   'PersonalInformationScreen'
 >;
+
+const DEPARTMENTS = [
+  'Executive Management (CEO, President, etc.)',
+  'Sales',
+  'Marketing',
+  'Human Resources (HR)',
+  'Finance',
+  'Information Technology (IT)',
+  'Research & Development (R&D)',
+  'Operations',
+  'Customer Service',
+  'Business Development',
+  'Quality Assurance',
+  'Procurement/Purchasing',
+  'Legal',
+  'Public Relations (PR)',
+  'Product Management',
+  'Project Management',
+  'Logistics/Supply Chain',
+  'Engineering',
+  'Administrative',
+  'Sustainability / Environmental',
+  'Facilities Management',
+  'Risk Management',
+  'Training and Development',
+  'Compliance',
+  'Production',
+  'Design / Creative Services',
+  'Security',
+  'Data Analysis'
+]
 
 const PersonalInformation = ({
   navigation,
@@ -190,7 +222,31 @@ const PersonalInformation = ({
                 placeholder="Enter your Job Title"
                 style={{ marginBottom: responsiveHeight(20 / percentToPx) }}
               />
-              <TextField
+              <SelectDropdown
+                data={DEPARTMENTS}
+                search={true}
+                onSelect={(text, index) => {
+                  setPersonalInformation({
+                    ...personalInformation,
+                    department: text,
+                  });
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  // text represented after item is selected
+                  // if data array is an array of objects then return selectedItem.property to render after item is selected
+                  return selectedItem
+                }}
+                rowTextForSelection={(item, index) => {
+                  // text represented for each item in dropdown
+                  // if data array is an array of objects then return item.property to represent item in dropdown
+                  return item
+                }}
+                buttonStyle={{ marginBottom: responsiveHeight(20 / percentToPx), width: "100%", borderRadius: responsiveHeight(50 / percentToPx) }}
+                buttonTextStyle={{ textAlign: "left", fontSize: responsiveFontSize(15 / percentToPx), }}
+                dropdownStyle={{ borderRadius: 8 }}
+                rowTextStyle={{ textAlign: 'left', fontSize: responsiveFontSize(15 / percentToPx), }}
+              />
+              {/* <TextField
                 onChangeText={text => {
                   setPersonalInformation({
                     ...personalInformation,
@@ -200,7 +256,7 @@ const PersonalInformation = ({
                 value={personalInformation.department}
                 placeholder="Enter your department"
                 style={{ marginBottom: responsiveHeight(20 / percentToPx) }}
-              />
+              /> */}
               <TextField
                 onChangeText={text => {
                   setPersonalInformation({
