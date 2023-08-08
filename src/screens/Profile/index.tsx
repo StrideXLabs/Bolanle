@@ -68,10 +68,10 @@ const ProfileScreen = () => {
     <View
       className="bg-white flex justify-between"
       style={{
-        height: '100%',
-        paddingLeft: responsiveHeight(36 / percentToPx),
-        paddingRight: responsiveHeight(40 / percentToPx),
-        paddingVertical: responsiveHeight(20 / percentToPx),
+        // height: '100%',
+        // paddingLeft: responsiveHeight(36 / percentToPx),
+        // paddingRight: responsiveHeight(40 / percentToPx),
+        // paddingVertical: responsiveHeight(20 / percentToPx),
       }}>
       <View>
         <Text

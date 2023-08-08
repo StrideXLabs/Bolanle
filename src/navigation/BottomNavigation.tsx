@@ -26,7 +26,7 @@ const BottomNavigation = () => {
     <BottomTabNavigator.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { minHeight: Platform.OS == "android" ? responsiveHeight(9) : responsiveHeight(9), display: open ? 'none' : 'flex' },
+        tabBarStyle: { minHeight: Platform.OS == "android" ? responsiveHeight(9) : responsiveHeight(11), display: open ? 'none' : 'flex' },
         tabBarLabelStyle: {
           fontSize: 13,
           marginBottom: 12,
