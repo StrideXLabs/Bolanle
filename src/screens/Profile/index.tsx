@@ -7,7 +7,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Linking
+  Linking,
+  SafeAreaView
 } from 'react-native';
 import {
   responsiveHeight,
@@ -65,13 +66,14 @@ const ProfileScreen = () => {
   };
 
   return (
+    <SafeAreaView>
     <View
       className="bg-white flex justify-between"
       style={{
-        // height: '100%',
-        // paddingLeft: responsiveHeight(36 / percentToPx),
-        // paddingRight: responsiveHeight(40 / percentToPx),
-        // paddingVertical: responsiveHeight(20 / percentToPx),
+        height: '100%',
+        paddingLeft: responsiveHeight(36 / percentToPx),
+        paddingRight: responsiveHeight(40 / percentToPx),
+        paddingVertical: responsiveHeight(20 / percentToPx),
       }}>
       <View>
         <Text
@@ -121,12 +123,12 @@ const ProfileScreen = () => {
           </View>
           <View className="mt-[10px]">
             <TouchableOpacity
-              onPress={handleLogout}
+              onPress={handleEmail}
               className="flex flex-row mt-6 items-center justify-between">
               <Text
                 style={textStyles.robotoRegular}
                 className="text-dark-blue text-base">
-                Logout
+                Help & Support
               </Text>
               <Image
                 resizeMode="contain"
@@ -137,12 +139,12 @@ const ProfileScreen = () => {
           </View>
           <View className="mt-[10px]">
             <TouchableOpacity
-              onPress={handleEmail}
+              onPress={handleLogout}
               className="flex flex-row mt-6 items-center justify-between">
               <Text
                 style={textStyles.robotoRegular}
                 className="text-dark-blue text-base">
-                Help & Support
+                Logout
               </Text>
               <Image
                 resizeMode="contain"
@@ -182,6 +184,7 @@ const ProfileScreen = () => {
         )}
       </TouchableOpacity>
     </View>
+    </SafeAreaView>
   );
 };
 
