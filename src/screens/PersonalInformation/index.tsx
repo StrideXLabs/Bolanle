@@ -225,6 +225,7 @@ const PersonalInformation = ({
               <SelectDropdown
                 data={DEPARTMENTS}
                 search={true}
+                defaultButtonText='Select a Department'
                 onSelect={(text, index) => {
                   setPersonalInformation({
                     ...personalInformation,
