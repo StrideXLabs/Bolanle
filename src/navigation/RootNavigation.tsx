@@ -6,6 +6,7 @@ import {BASE_URL} from '../constants';
 import {Text, View} from 'react-native';
 
 import StaticContainer from '../containers/StaticContainer';
+import GenericCardContainer from '../containers/GenericCardContainer';
 
 const linkings = {
   prefixes: ['hellobolanle://', BASE_URL],
@@ -34,7 +35,10 @@ const RootNavigation = () => {
       }}>
       <AppNavigation />
       {/* <StaticContainer isBack={true} title="title" isHeader={true}>
-        <View className="flex-1 w-full border-2 border-black"></View>
+        <GenericCardContainer>
+          <View className="h-[100px] w-full bg-red-500"></View>
+          <Text>hello</Text>
+        </GenericCardContainer>
       </StaticContainer> */}
     </NavigationContainer>
   );
