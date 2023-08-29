@@ -10,7 +10,12 @@ module.exports = {
         'off-white-2': '#C9C9C9',
         'off-white-3': '#E8E8E8',
         'off-white-4': '#E3E3E3',
+        'primary-blue': '#1C75BC',
+        'secondary-blue': '#E8F1F8',
+        black: '#000000',
+        white: '#FFFFFF',
       },
+
       fontFamily: ['Roboto-Bold', 'Roboto-Medium', 'Roboto-Regular'],
     },
   },

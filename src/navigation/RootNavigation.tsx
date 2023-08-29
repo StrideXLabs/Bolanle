@@ -3,6 +3,9 @@ import React, {useEffect, useRef} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import AppNavigation from './AppNavigation';
 import {BASE_URL} from '../constants';
+import {Text, View} from 'react-native';
+
+import StaticContainer from '../containers/StaticContainer';
 
 const linkings = {
   prefixes: ['hellobolanle://', BASE_URL],
@@ -30,6 +33,9 @@ const RootNavigation = () => {
         idRef.current = setTimeout(() => SplashScreen.hide(), 300);
       }}>
       <AppNavigation />
+      {/* <StaticContainer isBack={true} title="title" isHeader={true}>
+        <View className="flex-1 w-full border-2 border-black"></View>
+      </StaticContainer> */}
     </NavigationContainer>
   );
 };
