@@ -3,7 +3,7 @@ import {Image} from 'react-native-image-crop-picker';
 import {
   IContactDetails,
   IPersonalInformation,
-} from '../hooks/useBusinessCard/interface';
+} from '../hooks/useAccount/interface';
 import fetcher from '../lib/fetcher';
 import {getFileName} from '../lib/getFileName';
 import {IDefaultAPIResponse} from '../types/api-response';

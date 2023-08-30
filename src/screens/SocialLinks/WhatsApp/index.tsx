@@ -11,8 +11,8 @@ import HeaderWithText from '../../../components/Header/HeaderWithText';
 import Layout from '../../../components/Layout';
 import TextField from '../../../components/TextField/TextFieldDark';
 import {percentToPx} from '../../../constants';
-import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
-import {ISocialLink} from '../../../hooks/useBusinessCard/interface';
+import {useCreateBusinessCard} from '../../../hooks/useAccount';
+import {ISocialLink} from '../../../hooks/useAccount/interface';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 

@@ -1,29 +1,32 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { HttpError } from 'http-errors';
-import React, { useEffect, useState } from 'react';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {HttpError} from 'http-errors';
+import React, {useEffect, useState} from 'react';
 import {
   BackHandler,
   KeyboardAvoidingView,
   ScrollView,
   View,
 } from 'react-native';
-import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
 import Layout from '../../components/Layout';
 import TextField from '../../components/TextField/TextFieldDark';
-import { percentToPx } from '../../constants';
-import { useCreateBusinessCard } from '../../hooks/useBusinessCard';
+import {percentToPx} from '../../constants';
+import {useCreateBusinessCard} from '../../hooks/useAccount';
 import {
   initialContactDetails,
   initialPersonalInformation,
-} from '../../hooks/useBusinessCard/constants';
+} from '../../hooks/useAccount/constants';
 import Toast from '../../lib/toast';
-import { AppStackParams } from '../../navigation/AppNavigation';
+import {AppStackParams} from '../../navigation/AppNavigation';
 import dashboardService from '../../services/dashboard.service';
-import { useCredentials } from '../../hooks/useCredentials';
-import SelectDropdown from 'react-native-select-dropdown'
+import {useCredentials} from '../../hooks/useCredentials';
+import SelectDropdown from 'react-native-select-dropdown';
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams,
@@ -58,16 +61,16 @@ const DEPARTMENTS = [
   'Production',
   'Design / Creative Services',
   'Security',
-  'Data Analysis'
-]
+  'Data Analysis',
+];
 
 const PersonalInformation = ({
   navigation,
-  route: { params },
+  route: {params},
 }: PersonalInformationProps) => {
-  const { status, cardId } = params;
+  const {status, cardId} = params;
   const [updating, setUpdating] = useState(false);
-  const { setEmail, setPassword } = useCredentials();
+  const {setEmail, setPassword} = useCredentials();
   const {
     step,
     setStep,
@@ -104,9 +107,9 @@ const PersonalInformation = ({
 
       setUpdating(false);
       if (!response.success)
-        return Toast.error({ primaryText: response.message });
+        return Toast.error({primaryText: response.message});
 
-      Toast.success({ primaryText: 'Information updated.' });
+      Toast.success({primaryText: 'Information updated.'});
       setPersonalInformation(initialPersonalInformation);
       navigation.pop();
       navigation.replace('EditCardScreen', {
@@ -115,7 +118,7 @@ const PersonalInformation = ({
       });
     } catch (error) {
       setUpdating(false);
-      Toast.error({ primaryText: (error as HttpError).message });
+      Toast.error({primaryText: (error as HttpError).message});
     }
   };
 
@@ -149,7 +152,7 @@ const PersonalInformation = ({
     }
 
     setStep(step + 1);
-    navigation.push('ContactDetailsScreen', { status, cardId });
+    navigation.push('ContactDetailsScreen', {status, cardId});
   };
 
   useEffect(() => {
@@ -177,13 +180,13 @@ const PersonalInformation = ({
 
   return (
     <Layout>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ height: '100%' }}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{height: '100%'}}>
         <View
           style={{
             paddingVertical: responsiveHeight(32 / percentToPx),
             paddingHorizontal: responsiveHeight(40 / percentToPx),
           }}>
-          <KeyboardAvoidingView contentContainerStyle={{ height: '100%' }}>
+          <KeyboardAvoidingView contentContainerStyle={{height: '100%'}}>
             <HeaderStepCount
               step={step}
               showDotes={status !== 'EDITING'}
@@ -209,7 +212,7 @@ const PersonalInformation = ({
                 }}
                 value={personalInformation.name}
                 placeholder="Enter your full name"
-                style={{ marginBottom: responsiveHeight(20 / percentToPx) }}
+                style={{marginBottom: responsiveHeight(20 / percentToPx)}}
               />
               <TextField
                 onChangeText={text => {
@@ -220,12 +223,12 @@ const PersonalInformation = ({
                 }}
                 value={personalInformation.designation}
                 placeholder="Enter your Job Title"
-                style={{ marginBottom: responsiveHeight(20 / percentToPx) }}
+                style={{marginBottom: responsiveHeight(20 / percentToPx)}}
               />
               <SelectDropdown
                 data={DEPARTMENTS}
                 search={true}
-                defaultButtonText='Select a Department'
+                defaultButtonText="Select a Department"
                 onSelect={(text, index) => {
                   setPersonalInformation({
                     ...personalInformation,
@@ -235,17 +238,27 @@ const PersonalInformation = ({
                 buttonTextAfterSelection={(selectedItem, index) => {
                   // text represented after item is selected
                   // if data array is an array of objects then return selectedItem.property to render after item is selected
-                  return selectedItem
+                  return selectedItem;
                 }}
                 rowTextForSelection={(item, index) => {
                   // text represented for each item in dropdown
                   // if data array is an array of objects then return item.property to represent item in dropdown
-                  return item
+                  return item;
                 }}
-                buttonStyle={{ marginBottom: responsiveHeight(20 / percentToPx), width: "100%", borderRadius: responsiveHeight(50 / percentToPx) }}
-                buttonTextStyle={{ textAlign: "left", fontSize: responsiveFontSize(15 / percentToPx), }}
-                dropdownStyle={{ borderRadius: 8 }}
-                rowTextStyle={{ textAlign: 'left', fontSize: responsiveFontSize(15 / percentToPx), }}
+                buttonStyle={{
+                  marginBottom: responsiveHeight(20 / percentToPx),
+                  width: '100%',
+                  borderRadius: responsiveHeight(50 / percentToPx),
+                }}
+                buttonTextStyle={{
+                  textAlign: 'left',
+                  fontSize: responsiveFontSize(15 / percentToPx),
+                }}
+                dropdownStyle={{borderRadius: 8}}
+                rowTextStyle={{
+                  textAlign: 'left',
+                  fontSize: responsiveFontSize(15 / percentToPx),
+                }}
               />
               {/* <TextField
                 onChangeText={text => {
@@ -270,7 +283,7 @@ const PersonalInformation = ({
               />
             </View>
             <View
-              style={{ marginTop: responsiveHeight(78 / percentToPx) }}
+              style={{marginTop: responsiveHeight(78 / percentToPx)}}
               className="w-full">
               <Button
                 disabled={updating}

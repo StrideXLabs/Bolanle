@@ -3,10 +3,13 @@ import React, {useEffect, useRef} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import AppNavigation from './AppNavigation';
 import {BASE_URL} from '../constants';
-import {Text, View} from 'react-native';
+// import {Text, View, TextInput, Image, ImageSourcePropType} from 'react-native';
+// import {EyeIcon, EyeOffIcon} from '../constants/icons';
 
-import StaticContainer from '../containers/StaticContainer';
-import GenericCardContainer from '../containers/GenericCardContainer';
+// import StaticContainer from '../containers/StaticContainer';
+// import GenericCardContainer from '../containers/GenericCardContainer';
+// import GenericTextField from '../components/TextField/GenericTextField/GenericTextField';
+import PersonalInformation from '../screens/Auth/Register/PersonalInformation';
 
 const linkings = {
   prefixes: ['hellobolanle://', BASE_URL],
@@ -33,13 +36,8 @@ const RootNavigation = () => {
       onReady={() => {
         idRef.current = setTimeout(() => SplashScreen.hide(), 300);
       }}>
-      <AppNavigation />
-      {/* <StaticContainer isBack={true} title="title" isHeader={true}>
-        <GenericCardContainer>
-          <View className="h-[100px] w-full bg-red-500"></View>
-          <Text>hello</Text>
-        </GenericCardContainer>
-      </StaticContainer> */}
+      {/* <AppNavigation /> */}
+      <PersonalInformation />
     </NavigationContainer>
   );
 };

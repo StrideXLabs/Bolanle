@@ -20,7 +20,7 @@ const StaticContainer: React.FC<StaticContainerProps> = ({
   return isHeader ? (
     <View className={`flex-1 p-4  bg-white items-center`}>
       <GenericHeader isBack={isBack} title={title} />
-      {children}
+      <View className="flex-1 w-full mt-[15px]">{children}</View>
     </View>
   ) : null;
 };

@@ -1,6 +1,6 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { HttpError } from 'http-errors';
-import React, { useEffect, useState } from 'react';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {HttpError} from 'http-errors';
+import React, {useEffect, useState} from 'react';
 import {
   BackHandler,
   FlatList,
@@ -11,7 +11,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { Image as PickerImage } from 'react-native-image-crop-picker';
+import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -23,7 +23,7 @@ import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
 import Layout from '../../components/Layout';
-import { percentToPx } from '../../constants';
+import {percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {
   ISocial,
@@ -32,14 +32,14 @@ import {
   filledIconsMapping,
   unFilledIconsMapping,
 } from '../../constants/socials';
-import { useCreateBusinessCard } from '../../hooks/useBusinessCard';
+import {useCreateBusinessCard} from '../../hooks/useAccount';
 import {
   initialContactDetails,
   initialPersonalInformation,
-} from '../../hooks/useBusinessCard/constants';
+} from '../../hooks/useAccount/constants';
 import Toast from '../../lib/toast';
-import { AppStackParams } from '../../navigation/AppNavigation';
-import { AuthStackParams } from '../../navigation/AuthNavigation';
+import {AppStackParams} from '../../navigation/AppNavigation';
+import {AuthStackParams} from '../../navigation/AuthNavigation';
 import cardService from '../../services/card.service';
 import dashboardService from '../../services/dashboard.service';
 
@@ -52,12 +52,12 @@ const SocialView = ({
   id,
   title,
   onRemoveItem,
-}: ISocial & { onRemoveItem: (id: SocialLinkType) => void }) => {
+}: ISocial & {onRemoveItem: (id: SocialLinkType) => void}) => {
   return (
     <View className="flex flex-row justify-between items-center">
       <View
         className="flex flex-row items-center"
-        style={{ gap: responsiveHeight(10 / percentToPx) }}>
+        style={{gap: responsiveHeight(10 / percentToPx)}}>
         <Image
           resizeMode="contain"
           style={{
@@ -69,7 +69,7 @@ const SocialView = ({
         <Text
           style={[
             textStyles.robotoMedium,
-            { fontSize: responsiveFontSize(14 / percentToPx) },
+            {fontSize: responsiveFontSize(14 / percentToPx)},
           ]}
           className="text-dark-blue">
           {title}
@@ -82,12 +82,15 @@ const SocialView = ({
           height: responsiveHeight(40 / percentToPx),
         }}
         className="flex items-center justify-center rounded-sm">
-        <Image style={{
-          height: responsiveHeight(2),
-          aspectRatio:1,
-          right : 0
-        }}
-          resizeMode="contain" source={trash as ImageSourcePropType} />
+        <Image
+          style={{
+            height: responsiveHeight(2),
+            aspectRatio: 1,
+            right: 0,
+          }}
+          resizeMode="contain"
+          source={trash as ImageSourcePropType}
+        />
       </Pressable>
     </View>
   );
@@ -96,7 +99,7 @@ const SocialView = ({
 const SocialLinksScreen = ({
   navigation,
   route: {
-    params: { status, cardId },
+    params: {status, cardId},
   },
 }: SocialLinksProps) => {
   const {
@@ -124,13 +127,13 @@ const SocialLinksScreen = ({
 
     navigation.navigate(
       item.id === 'whatsapp' ? 'WhatsAppScreen' : 'OtherSocialsScreen',
-      { social: item, cardId, status },
+      {social: item, cardId, status},
     );
   };
 
   const handleNextClick = () => {
     if (socialItems.length === 0)
-      return Toast.error({ primaryText: 'Please add at least one social link.' });
+      return Toast.error({primaryText: 'Please add at least one social link.'});
 
     setStep(step + 1);
     navigation.navigate('RegisterScreen');
@@ -165,7 +168,7 @@ const SocialLinksScreen = ({
         profileImage: contactDetails.profilePicture as PickerImage,
       });
 
-      if (!res.success) Toast.error({ primaryText: res.message });
+      if (!res.success) Toast.error({primaryText: res.message});
 
       setStep(0);
       setSocialItems([]);
@@ -198,14 +201,14 @@ const SocialLinksScreen = ({
 
       setUpdating(true);
       const response = await dashboardService.editCardDetails(cardId, {
-        socialLinks: socialLinks.map(item => ({ ...item, platform: item.id })),
+        socialLinks: socialLinks.map(item => ({...item, platform: item.id})),
       });
 
       setUpdating(false);
       if (!response.success)
-        return Toast.error({ primaryText: response.message });
+        return Toast.error({primaryText: response.message});
 
-      Toast.success({ primaryText: 'Information updated.' });
+      Toast.success({primaryText: 'Information updated.'});
       setSocialItems([]);
       setSocialLinks([]);
       navigation.pop();
@@ -215,7 +218,7 @@ const SocialLinksScreen = ({
       });
     } catch (error) {
       setUpdating(false);
-      Toast.error({ primaryText: (error as HttpError).message });
+      Toast.error({primaryText: (error as HttpError).message});
     }
   };
 
@@ -240,7 +243,7 @@ const SocialLinksScreen = ({
         <ScrollView
           className="h-screen"
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 10 }}>
+          contentContainerStyle={{paddingBottom: 10}}>
           <HeaderStepCount
             step={step}
             showDotes={status !== 'EDITING'}
@@ -273,19 +276,19 @@ const SocialLinksScreen = ({
                 maxHeight: responsiveHeight(140 / percentToPx),
               }}
               keyExtractor={item => item.id}
-              contentContainerStyle={{ gap: responsiveHeight(3 / percentToPx) }}
+              contentContainerStyle={{gap: responsiveHeight(3 / percentToPx)}}
               showsVerticalScrollIndicator={false}
               ListEmptyComponent={() => (
                 <Text
                   className="text-dark-blue text-center"
                   style={[
                     textStyles.robotoBold,
-                    { fontSize: responsiveScreenFontSize(14 / percentToPx) },
+                    {fontSize: responsiveScreenFontSize(14 / percentToPx)},
                   ]}>
                   Please add at least one social link.
                 </Text>
               )}
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <SocialView
                   {...item}
                   onRemoveItem={id => {
@@ -298,13 +301,13 @@ const SocialLinksScreen = ({
           </View>
           <View
             className="w-full h-[1px] bg-accent rounded-sm"
-            style={{ marginVertical: responsiveHeight(10 / percentToPx) }}
+            style={{marginVertical: responsiveHeight(10 / percentToPx)}}
           />
           <FlatList
             numColumns={5}
             horizontal={false}
             data={SocialItemsList}
-            renderItem={({ item }: { item: ISocial }) => {
+            renderItem={({item}: {item: ISocial}) => {
               const exist = socialItems.find(i => i.id === item.id);
               const selected = exist !== null && exist !== undefined;
 
@@ -341,9 +344,9 @@ const SocialLinksScreen = ({
               flexWrap: 'wrap',
               gap: responsiveHeight(15 / percentToPx),
             }}
-            contentContainerStyle={{ gap: 19 }}
+            contentContainerStyle={{gap: 19}}
           />
-          <View style={{ marginTop: responsiveHeight(70 / percentToPx) }}>
+          <View style={{marginTop: responsiveHeight(70 / percentToPx)}}>
             <Button
               disabled={creatingBusinessCard || updating}
               showLoading={creatingBusinessCard || updating}
@@ -351,15 +354,15 @@ const SocialLinksScreen = ({
                 fromDashBoard
                   ? handleCreateNewCard
                   : status === 'EDITING'
-                    ? handleUpdateDetails
-                    : handleNextClick
+                  ? handleUpdateDetails
+                  : handleNextClick
               }
               text={
                 fromDashBoard
                   ? 'Create Card'
                   : status === 'EDITING'
-                    ? 'Save'
-                    : 'Next'
+                  ? 'Save'
+                  : 'Next'
               }
             />
           </View>
