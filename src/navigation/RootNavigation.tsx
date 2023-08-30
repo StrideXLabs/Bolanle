@@ -7,6 +7,7 @@ import {Text, View} from 'react-native';
 
 import StaticContainer from '../containers/StaticContainer';
 import GenericCardContainer from '../containers/GenericCardContainer';
+import DashboardScreen from '../screens/Dashboard/test';
 
 const linkings = {
   prefixes: ['hellobolanle://', BASE_URL],
@@ -33,7 +34,8 @@ const RootNavigation = () => {
       onReady={() => {
         idRef.current = setTimeout(() => SplashScreen.hide(), 300);
       }}>
-      <AppNavigation />
+      {/* <AppNavigation /> */}
+      <DashboardScreen />
       {/* <StaticContainer isBack={true} title="title" isHeader={true}>
         <GenericCardContainer>
           <View className="h-[100px] w-full bg-red-500"></View>

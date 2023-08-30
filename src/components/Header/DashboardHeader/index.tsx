@@ -2,32 +2,27 @@ import React from 'react';
 import {
   Image,
   ImageSourcePropType,
-  Pressable,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-  responsiveWidth,
-} from 'react-native-responsive-dimensions';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 import addNewIcon from '../../../assets/images/add.png';
-import arrowLeft from '../../../assets/images/arrow-left.png';
-import shareIcon from '../../../assets/images/share.png';
-import { percentToPx } from '../../../constants';
-import textStyles from '../../../constants/fonts';
+import {percentToPx} from '../../../constants';
+import {NotificationsIcon, BurgerMenuIcon} from '../../../constants/icons';
+import TextField from '../../TextField/TextFieldDark';
+import {useState} from 'react';
 
 interface IDashboardHeaderAddTypeProps {
-  heading: string;
-  type: 'ADD_NEW_VIEW';
+  // heading: string;
+  // type: 'ADD_NEW_VIEW';
   onAddNewBtnPress: () => void;
 }
 
 interface IDashboardHeaderEditTypeProps {
-  heading: string;
-  subheading: string;
-  type: 'VIEW_OR_EDIT';
+  // heading: string;
+  // subheading: string;
+  // type: 'VIEW_OR_EDIT';
   onBackBtnPress: () => void;
   onShareBtnPress: () => void;
 }
@@ -39,20 +34,65 @@ interface IDashboardHeaderShareTypeProps
 
 export type DashboardHeaderProps = {
   options:
-  | IDashboardHeaderAddTypeProps
-  | IDashboardHeaderEditTypeProps
-  | IDashboardHeaderShareTypeProps;
+    | IDashboardHeaderAddTypeProps
+    | IDashboardHeaderEditTypeProps
+    | IDashboardHeaderShareTypeProps;
 };
 
-const DashboardHeader = ({ options }: DashboardHeaderProps) => {
+const DashboardHeader = ({options}: DashboardHeaderProps) => {
+  const [searchText, setSearchText] = useState('');
+
   return (
     <View
       className="bg-white"
       style={{
         paddingVertical: responsiveHeight(17 / percentToPx),
-        paddingHorizontal: responsiveHeight(30 / percentToPx),
+        paddingHorizontal: responsiveHeight(20 / percentToPx),
       }}>
-      {options.type === 'ADD_NEW_VIEW' && (
+      <View className="flex flex-row items-center justify-between">
+        <View className="flex flex-row gap-2 items-center justify-center">
+          <Image
+            resizeMode="stretch"
+            className="h-11 w-11 rounded-md"
+            // source={{
+            //   uri: BASE_URL + `/${rest._id}/${contactDetails?.profileImage}`,
+            //   cache: 'reload',
+            // }}
+            source={addNewIcon as ImageSourcePropType}
+          />
+          <View className="flex flex-col">
+            <Text className="font-bold text-md tracking-wider">
+              Anne Jackson
+            </Text>
+            <Text className="text-sm">Free Tier</Text>
+          </View>
+        </View>
+        <View className="flex flex-row gap-3">
+          <TouchableOpacity>
+            <Image
+              source={NotificationsIcon as ImageSourcePropType}
+              className={`h-9 w-9`}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image
+              source={BurgerMenuIcon as ImageSourcePropType}
+              className={`h-9 w-9`}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View className="mt-[10%]">
+        <TextField
+          placeholder="Search name, category ..."
+          onChangeText={text => {
+            setSearchText(text);
+          }}
+          value={searchText}
+        />
+      </View>
+      {/* {options.type === 'ADD_NEW_VIEW' && (
         <View className="flex flex-row items-center justify-between">
           <Text
             style={[
@@ -150,7 +190,7 @@ const DashboardHeader = ({ options }: DashboardHeaderProps) => {
             {options.subheading}
           </Text>
         </View>
-      )}
+      )} */}
     </View>
   );
 };
