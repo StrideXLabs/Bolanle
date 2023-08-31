@@ -53,10 +53,10 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
         paddingHorizontal: responsiveHeight(20 / percentToPx),
       }}>
       <View className="flex flex-row items-center justify-between">
-        <View className="flex flex-row gap-2 items-center justify-center">
+        <View className="flex flex-row gap-2 items-center">
           <Image
             resizeMode="contain"
-            className={`h-11 w-11 rounded-md`}
+            className={`h-12 w-12 rounded-md`}
             // source={{
             //   uri: BASE_URL + `/${rest._id}/${contactDetails?.profileImage}`,
             //   cache: 'reload',
@@ -67,10 +67,8 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
             }}
           />
           <View className="flex flex-col">
-            <Text className="font-bold text-md tracking-wider">
-              Anne Jackson
-            </Text>
-            <Text className="text-sm">Free Tier</Text>
+            <Text className="text-md font-3 -mb-1">Anne Jackson</Text>
+            <Text className="text-sm font-0">Free Tier</Text>
           </View>
         </View>
         <View className="flex flex-row gap-3">

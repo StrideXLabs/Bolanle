@@ -52,7 +52,7 @@ const TextField: React.FC<TextFieldProps> = ({
         placeholderTextColor="#808080"
         onBlur={() => setIsFocused(false)}
         onFocus={() => setIsFocused(true)}
-        className={`relative w-full text-dark-blue transition-all ${
+        className={`relative font-1 w-full text-dark-blue transition-all ${
           isFocused
             ? 'border-dark-blue border-[1px]'
             : 'border-off-white-2 border-[1px]'
@@ -62,7 +62,9 @@ const TextField: React.FC<TextFieldProps> = ({
         `}
         style={[
           {
-            paddingHorizontal: responsiveHeight(1.7),
+            paddingHorizontal: responsiveHeight(1),
+            paddingVertical: responsiveHeight(1),
+            fontSize: responsiveFontSize(14 / percentToPx),
             height: responsiveHeight(40 / percentToPx),
             borderRadius: responsiveHeight(20 / percentToPx),
           },
@@ -70,7 +72,7 @@ const TextField: React.FC<TextFieldProps> = ({
         ]}
         {...props}
       />
-      {icon && <View className="absolute left-3 top-3">{icon}</View>}
+      {icon && <View className="absolute left-3 top-[10px]">{icon}</View>}
     </View>
   );
 };

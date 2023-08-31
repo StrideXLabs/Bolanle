@@ -16,7 +16,13 @@ module.exports = {
         white: '#FFFFFF',
       },
 
-      fontFamily: ['Roboto-Bold', 'Roboto-Medium', 'Roboto-Regular'],
+      fontFamily: [
+        'Poppins-Light',
+        'Poppins-Regular',
+        'Poppins-Medium',
+        'Poppins-SemiBold',
+        'Poppins-Bold',
+      ],
     },
   },
   plugins: [],
