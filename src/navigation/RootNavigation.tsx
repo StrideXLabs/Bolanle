@@ -8,6 +8,7 @@ import {Text, View} from 'react-native';
 import StaticContainer from '../containers/StaticContainer';
 import GenericCardContainer from '../containers/GenericCardContainer';
 import DashboardScreen from '../screens/Dashboard/test';
+import ActionSheet from '../screens/ActionSheet';
 
 const linkings = {
   prefixes: ['hellobolanle://', BASE_URL],
@@ -35,7 +36,7 @@ const RootNavigation = () => {
         idRef.current = setTimeout(() => SplashScreen.hide(), 300);
       }}>
       {/* <AppNavigation /> */}
-      <DashboardScreen />
+      <ActionSheet />
       {/* <StaticContainer isBack={true} title="title" isHeader={true}>
         <GenericCardContainer>
           <View className="h-[100px] w-full bg-red-500"></View>
