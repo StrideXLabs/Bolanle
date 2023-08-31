@@ -45,25 +45,21 @@ const Button = ({
       <View
         style={[
           {
-            borderRadius: 50,
+            borderRadius: 14,
 
             borderWidth: showBackgroundColor ? 0 : 1,
-            padding: responsiveHeight(13 / percentToPx),
+            padding: responsiveHeight(10 / percentToPx),
             borderColor: showBackgroundColor ? 'none' : accentColor,
           },
           style,
         ]}
         className={`${
-          showBackgroundColor ? 'bg-accent' : 'bg-slate-50'
+          showBackgroundColor ? 'bg-primary-blue' : 'bg-slate-50'
         } flex justify-center items-center ${className}`}>
         <Text
-          style={[
-            textStyles.robotoBold,
-            {fontSize: responsiveFontSize(15 / percentToPx)},
-            textStyle,
-          ]}
-          className={`font-extrabold ${
-            showBackgroundColor ? 'text-white' : 'text-accent'
+          style={[{fontSize: responsiveFontSize(15 / percentToPx)}, textStyle]}
+          className={`font-3 ${
+            showBackgroundColor ? 'text-white' : 'text-primary-blue'
           }`}>
           {showLoading ? (
             <ActivityIndicator

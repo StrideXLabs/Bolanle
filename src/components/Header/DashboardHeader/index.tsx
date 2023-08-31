@@ -13,7 +13,6 @@ import {
   BurgerMenuIcon,
   SearchIcon,
 } from '../../../constants/icons';
-import TextField from '../../TextField/TextFieldDark';
 import {useState} from 'react';
 
 interface IDashboardHeaderAddTypeProps {
@@ -43,8 +42,6 @@ export type DashboardHeaderProps = {
 };
 
 const DashboardHeader = ({options}: DashboardHeaderProps) => {
-  const [searchText, setSearchText] = useState('');
-
   return (
     <View
       className="bg-white"
@@ -85,24 +82,6 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
             />
           </TouchableOpacity>
         </View>
-      </View>
-
-      <View className="mt-[10%]">
-        <TextField
-          placeholder="Search name, category ..."
-          onChangeText={text => {
-            setSearchText(text);
-          }}
-          value={searchText}
-          gradient={true}
-          icon={
-            <Image
-              source={SearchIcon as ImageSourcePropType}
-              className={`h-5 w-5`}
-              style={{tintColor: '#8a8a8f'}}
-            />
-          }
-        />
       </View>
       {/* {options.type === 'ADD_NEW_VIEW' && (
         <View className="flex flex-row items-center justify-between">
