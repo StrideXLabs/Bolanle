@@ -12,6 +12,8 @@ interface TextFieldProps extends TextInputProps {
   label?: string;
   className?: string;
   onChangeText: (text: string) => void;
+  gradient?: boolean;
+  icon?: JSX.Element;
 }
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -20,6 +22,8 @@ const TextField: React.FC<TextFieldProps> = ({
   onChangeText,
   className = '',
   style = {},
+  gradient,
+  icon,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -45,14 +49,17 @@ const TextField: React.FC<TextFieldProps> = ({
         cursorColor="#334155"
         onChangeText={onChangeText}
         enablesReturnKeyAutomatically
-        placeholderTextColor="#C9C9C9"
+        placeholderTextColor="#808080"
         onBlur={() => setIsFocused(false)}
         onFocus={() => setIsFocused(true)}
-        className={`w-full text-dark-blue transition-all ${
+        className={`relative w-full text-dark-blue transition-all ${
           isFocused
-            ? 'border-dark-blue border-[2px]'
+            ? 'border-dark-blue border-[1px]'
             : 'border-off-white-2 border-[1px]'
-        } ${className}`}
+        } ${className}
+        ${gradient ? 'bg-secondary-blue' : ''}
+        ${icon ? 'pl-10' : ''}
+        `}
         style={[
           {
             paddingHorizontal: responsiveHeight(1.7),
@@ -63,6 +70,7 @@ const TextField: React.FC<TextFieldProps> = ({
         ]}
         {...props}
       />
+      {icon && <View className="absolute left-3 top-3">{icon}</View>}
     </View>
   );
 };

@@ -7,9 +7,12 @@ import {
   View,
 } from 'react-native';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
-import addNewIcon from '../../../assets/images/add.png';
 import {percentToPx} from '../../../constants';
-import {NotificationsIcon, BurgerMenuIcon} from '../../../constants/icons';
+import {
+  NotificationsIcon,
+  BurgerMenuIcon,
+  SearchIcon,
+} from '../../../constants/icons';
 import TextField from '../../TextField/TextFieldDark';
 import {useState} from 'react';
 
@@ -52,13 +55,16 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
       <View className="flex flex-row items-center justify-between">
         <View className="flex flex-row gap-2 items-center justify-center">
           <Image
-            resizeMode="stretch"
-            className="h-11 w-11 rounded-md"
+            resizeMode="contain"
+            className={`h-11 w-11 rounded-md`}
             // source={{
             //   uri: BASE_URL + `/${rest._id}/${contactDetails?.profileImage}`,
             //   cache: 'reload',
             // }}
-            source={addNewIcon as ImageSourcePropType}
+            source={{
+              uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+              cache: 'reload',
+            }}
           />
           <View className="flex flex-col">
             <Text className="font-bold text-md tracking-wider">
@@ -90,6 +96,14 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
             setSearchText(text);
           }}
           value={searchText}
+          gradient={true}
+          icon={
+            <Image
+              source={SearchIcon as ImageSourcePropType}
+              className={`h-5 w-5`}
+              style={{tintColor: '#8a8a8f'}}
+            />
+          }
         />
       </View>
       {/* {options.type === 'ADD_NEW_VIEW' && (
