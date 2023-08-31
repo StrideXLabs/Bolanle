@@ -1,5 +1,4 @@
 import {Image} from 'react-native-image-crop-picker';
-import {ISocial, SocialLinkType} from '../../constants/socials';
 
 // export interface IPersonalInformation {
 //   name: string;

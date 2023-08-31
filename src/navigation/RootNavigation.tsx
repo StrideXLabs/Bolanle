@@ -10,6 +10,8 @@ import {BASE_URL} from '../constants';
 // import GenericCardContainer from '../containers/GenericCardContainer';
 // import GenericTextField from '../components/TextField/GenericTextField/GenericTextField';
 import PersonalInformation from '../screens/Auth/Register/PersonalInformation';
+import AccountInformation from '../screens/Auth/Register/AccountInformation';
+import ExtraInformation from '../screens/Auth/Register/ExtraInformation';
 
 const linkings = {
   prefixes: ['hellobolanle://', BASE_URL],
@@ -38,6 +40,8 @@ const RootNavigation = () => {
       }}>
       {/* <AppNavigation /> */}
       <PersonalInformation />
+      {/* <AccountInformation /> */}
+      {/* <ExtraInformation /> */}
     </NavigationContainer>
   );
 };

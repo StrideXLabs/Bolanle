@@ -12,7 +12,7 @@ export const useAccount = create<ICreateAccountState & ICreateAccountActions>()(
     step: 0,
     setStep: step =>
       set(state => {
-        state.step = step <= 3 ? step : state.step;
+        state.step = step <= 2 ? step : state.step;
       }),
 
     fromDashBoard: false,
