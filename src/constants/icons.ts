@@ -5,10 +5,13 @@ export {default as SearchIcon} from '../assets/images/search.png'
 export {default as ShareIcon} from '../assets/images/ShareIt.png'
 export {default as IntegrationIcon} from '../assets/images/Integration.png'
 export {default as CompanyIcon} from '../assets/images/Company.png'
+export {default as CompanyIconGray} from '../assets/images/CompanyIconGray.png'
 export {default as EmailIcon} from '../assets/images/email-2.png'
 export {default as PhoneIcon} from '../assets/images/local_phone.png'
 export {default as LocationIcon} from '../assets/images/location_on.png'
 export {default as LanguageIcon} from '../assets/images/language.png'
+export {default as QrCodeIcon} from '../assets/images/qrCode.png'
+export {default as AddButtonIcon} from '../assets/images/AddButton.png'
 
 
 

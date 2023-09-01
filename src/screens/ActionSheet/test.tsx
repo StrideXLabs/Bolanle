@@ -1,8 +1,7 @@
-import {Image, View, TouchableOpacity} from 'react-native';
+import {Image, View, Text} from 'react-native';
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import Layout from '../../components/Layout';
-import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
-import EditProfileDetails from './EditProfileDetails';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 const ActionSheet = () => {
   // ref
@@ -37,9 +36,16 @@ const ActionSheet = () => {
             borderRadius: 40,
           }}
           handleIndicatorStyle={{backgroundColor: 'blue'}}>
-          <BottomSheetScrollView>
-            <EditProfileDetails />
-          </BottomSheetScrollView>
+          <View className="w-24 h-28 absolute top-[-50]">
+            <Image
+              resizeMode="contain"
+              className="w-full h-full"
+              source={{
+                uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                cache: 'reload',
+              }}
+            />
+          </View>
         </BottomSheet>
       </View>
     </Layout>

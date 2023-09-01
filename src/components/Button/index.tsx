@@ -48,7 +48,7 @@ const Button = ({
             borderRadius: 14,
 
             borderWidth: showBackgroundColor ? 0 : 1,
-            padding: responsiveHeight(10 / percentToPx),
+            padding: responsiveHeight(9 / percentToPx),
             borderColor: showBackgroundColor ? 'none' : accentColor,
           },
           style,
