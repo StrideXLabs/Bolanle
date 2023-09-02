@@ -22,19 +22,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
 
   return (
     <Layout>
-      <DashboardHeader
-        options={{
-          //   type: 'ADD_NEW_VIEW',
-          //   heading: 'DASHBOARD',
-          onAddNewBtnPress: () => {
-            setFromDashBoard(true);
-            navigation.navigate('PersonalInformationScreen', {
-              cardId: null,
-              status: 'CREATING',
-            });
-          },
-        }}
-      />
+      <DashboardHeader />
       <View
         style={{
           paddingVertical: responsiveHeight(17 / percentToPx),

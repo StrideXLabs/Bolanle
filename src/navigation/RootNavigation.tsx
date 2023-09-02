@@ -1,4 +1,8 @@
-import {LinkingOptions, NavigationContainer} from '@react-navigation/native';
+import {
+  LinkingOptions,
+  NavigationContainer,
+  NavigationProp,
+} from '@react-navigation/native';
 import React, {useEffect, useRef} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import AppNavigation from './AppNavigation';
@@ -9,6 +13,10 @@ import StaticContainer from '../containers/StaticContainer';
 import GenericCardContainer from '../containers/GenericCardContainer';
 import DashboardScreen from '../screens/Dashboard/test';
 import ActionSheet from '../screens/ActionSheet';
+
+type RootNavigationProps = {
+  navigation: NavigationProp<any>;
+};
 
 const linkings = {
   prefixes: ['hellobolanle://', BASE_URL],
@@ -35,8 +43,8 @@ const RootNavigation = () => {
       onReady={() => {
         idRef.current = setTimeout(() => SplashScreen.hide(), 300);
       }}>
-      {/* <AppNavigation /> */}
-      <ActionSheet />
+      <AppNavigation />
+      {/* <ActionSheet /> */}
       {/* <StaticContainer isBack={true} title="title" isHeader={true}>
         <GenericCardContainer>
           <View className="h-[100px] w-full bg-red-500"></View>

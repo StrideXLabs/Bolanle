@@ -13,35 +13,8 @@ import {
   BurgerMenuIcon,
   SearchIcon,
 } from '../../../constants/icons';
-import {useState} from 'react';
 
-interface IDashboardHeaderAddTypeProps {
-  // heading: string;
-  // type: 'ADD_NEW_VIEW';
-  onAddNewBtnPress: () => void;
-}
-
-interface IDashboardHeaderEditTypeProps {
-  // heading: string;
-  // subheading: string;
-  // type: 'VIEW_OR_EDIT';
-  onBackBtnPress: () => void;
-  onShareBtnPress: () => void;
-}
-
-interface IDashboardHeaderShareTypeProps
-  extends Omit<Omit<IDashboardHeaderEditTypeProps, 'onShareBtnPress'>, 'type'> {
-  type: 'SHARE_VIEW';
-}
-
-export type DashboardHeaderProps = {
-  options:
-    | IDashboardHeaderAddTypeProps
-    | IDashboardHeaderEditTypeProps
-    | IDashboardHeaderShareTypeProps;
-};
-
-const DashboardHeader = ({options}: DashboardHeaderProps) => {
+const DashboardHeader = () => {
   return (
     <View
       className="bg-white"

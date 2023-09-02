@@ -12,36 +12,38 @@ const ContactDetails = () => {
   return (
     <>
       <Text className="font-3 text-black text-2xl my-5">Contact Details</Text>
-      <TextField
-        placeholder=""
-        onChangeText={text => setEmail(text)}
-        value={email}
-        bottomBorder
-        label="Email"
-      />
-      <TextField
-        placeholder=""
-        onChangeText={text => setContact(text)}
-        value={contact}
-        bottomBorder
-        label="Contact"
-      />
-      <TextField
-        placeholder=""
-        onChangeText={text => setLink(text)}
-        value={link}
-        bottomBorder
-        label="Link"
-      />
-      <TextField
-        placeholder=""
-        onChangeText={text => setAddress(text)}
-        value={address}
-        bottomBorder
-        label="Address"
-      />
-      <View className="px-2">
-        <Button text="Save Details" callback={() => {}} />
+      <View className="bg-secondary-blue p-4 rounded-3xl">
+        <TextField
+          placeholder=""
+          onChangeText={text => setEmail(text)}
+          value={email}
+          bottomBorder
+          label="Email"
+        />
+        <TextField
+          placeholder=""
+          onChangeText={text => setContact(text)}
+          value={contact}
+          bottomBorder
+          label="Contact"
+        />
+        <TextField
+          placeholder=""
+          onChangeText={text => setLink(text)}
+          value={link}
+          bottomBorder
+          label="Link"
+        />
+        <TextField
+          placeholder=""
+          onChangeText={text => setAddress(text)}
+          value={address}
+          bottomBorder
+          label="Address"
+        />
+        <View className="px-2">
+          <Button text="Save Details" callback={() => {}} />
+        </View>
       </View>
     </>
   );
