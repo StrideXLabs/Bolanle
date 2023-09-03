@@ -12,11 +12,10 @@ export {default as LocationIcon} from '../assets/images/location_on.png'
 export {default as LanguageIcon} from '../assets/images/language.png'
 export {default as QrCodeIcon} from '../assets/images/qrCode.png'
 export {default as AddButtonIcon} from '../assets/images/AddButton.png'
-
+export {default as saveIcon} from '../assets/images/Save.png'
 export {default as googleIcon} from '../assets/images/socials/google.png'
 export {default as facebookIcon} from '../assets/images/socials/facebook.png'
 export {default as appleIcon} from '../assets/images/socials/apple.png'
-
 
 
 
