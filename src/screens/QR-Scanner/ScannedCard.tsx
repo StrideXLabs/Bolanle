@@ -7,7 +7,7 @@ import {AddButtonIcon, ShareIcon, saveIcon} from '../../constants/icons';
 import GenericTextField from '../../components/TextField/GenericTextField/GenericTextField';
 
 const ScannedCard = () => {
-  const colors = ['#134B57', '#1C75BC', '#3B9142', '#F15A29'];
+  const colors = ['#FBBD62', '#134B57', '#1C75BC', '#3B9142', '#F15A29'];
 
   const [addTag, setAddTag] = useState(false);
   const [newTag, setNewTag] = useState('');
