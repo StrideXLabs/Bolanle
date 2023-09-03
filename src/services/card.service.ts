@@ -17,8 +17,8 @@ export interface ICard {
 }
 
 export interface ICreateCardData {
-  companyLogo: Image;
-  profileImage: Image;
+  companyLogo?: Image;
+  profileImage?: Image;
   // socialLinks: ICard[];
   personalInformation: Omit<IPersonalDetails, 'websiteUrl'>;
   contactDetails: {
@@ -63,18 +63,21 @@ class CardService {
         'personalInformation',
         JSON.stringify(data.personalInformation),
       );
-      formData.append('companyLogo', {
-        uri: data.companyLogo.path,
-        type: data.companyLogo.mime,
-        name: data.companyLogo.filename || getFileName(data.companyLogo.path),
-      });
-      formData.append('profileImage', {
-        uri: data.profileImage.path,
-        type: data.profileImage.mime,
-        name: data.profileImage.filename || getFileName(data.profileImage.path),
-      });
-
-      console.log(formData, 'formData');
+      if (data.companyLogo) {
+        formData.append('companyLogo', {
+          uri: data.companyLogo.path,
+          type: data.companyLogo.mime,
+          name: data.companyLogo.filename || getFileName(data.companyLogo.path),
+        });
+      }
+      if (data.profileImage) {
+        formData.append('profileImage', {
+          uri: data.profileImage.path,
+          type: data.profileImage.mime,
+          name:
+            data.profileImage.filename || getFileName(data.profileImage.path),
+        });
+      }
 
       const response = await fetcher<FormData, ICreateCardResponse>(
         '/business-card',

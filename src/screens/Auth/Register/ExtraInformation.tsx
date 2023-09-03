@@ -1,10 +1,5 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import React from 'react';
-// import {
-//   ICreateAccountState,
-//   ICreateAccountActions,
-// } from '../../../hooks/useAccount/interface';
-
 import {useAccount} from '../../../hooks/useAccount';
 import StaticContainer from '../../../containers/StaticContainer';
 import GenericCardContainer from '../../../containers/GenericCardContainer';
@@ -27,7 +22,11 @@ type ExtraInfoProps = NativeStackScreenProps<
 >;
 
 const ExtraInformation: React.FC<ExtraInfoProps> = () => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<{
+    finalize: boolean;
+    skip: boolean;
+  }>({finalize: false, skip: false});
+
   const {
     accountPhotos,
     setAccountPhotos,
@@ -39,16 +38,96 @@ const ExtraInformation: React.FC<ExtraInfoProps> = () => {
     setPersonalDetails,
   } = useAccount();
 
-  const handleSkip = () => {};
-  const handleFinalize = async () => {
-    // if (!accountPhotos.companyLogo || !accountPhotos.profilePicture) {
-    //   Toast.error({
-    //     primaryText: 'Please add a profile picture and company logo.',
-    //   });
-    //   return;
-    // }
+  const handleSkip = async () => {
+    setLoading((prevState: {finalize: boolean; skip: boolean}) => {
+      return {...prevState, skip: true};
+    });
+    try {
+      const {email, password} = accountDetails;
 
-    setIsLoading(true);
+      const {name, phone, websiteUrl} = personalDetails;
+
+      const registerRes = await authService.register({
+        email,
+        password,
+      });
+
+      const {
+        data: registerResData,
+        success: registerSuccess,
+        message: registerMessage,
+      } = registerRes;
+
+      if (!registerSuccess) {
+        Toast.error({primaryText: registerMessage});
+        return;
+      }
+
+      if (!registerResData) {
+        Toast.error({primaryText: 'Something went wrong. Please try again.'});
+        return;
+      }
+
+      const {token} = registerResData;
+
+      await setDataToAsyncStorage(TokenKey, token);
+
+      Toast.success({primaryText: 'Account created successfully.'});
+
+      const cDetails = {
+        email: email,
+        // mobile: contactDetails.mobile,
+        websiteUrl: websiteUrl,
+        // companyAddress: contactDetails.companyAddress,
+      };
+
+      const createCardRes = await cardService.create({
+        personalInformation: {
+          name,
+          phone,
+        },
+        contactDetails: cDetails,
+      });
+
+      const {success: createCardSuccess, message: createCardMessage} =
+        createCardRes;
+
+      if (!createCardSuccess) {
+        Toast.error({primaryText: createCardMessage});
+        return;
+      }
+
+      Toast.success({primaryText: 'Business card created successfully.'});
+
+      await Promise.all([
+        setStep(0),
+        setAccountPhotos({companyLogo: null, profilePicture: null}),
+        setAccountDetails({email: '', password: '', confirmPassword: ''}),
+        setPersonalDetails({name: '', phone: '', websiteUrl: ''}),
+      ]);
+    } catch (err: unknown) {
+      console.error(err);
+      Toast.error({
+        primaryText: 'Something went wrong.',
+        secondaryText: 'Please close and reopen the app.',
+      });
+    } finally {
+      setLoading((prevState: {finalize: boolean; skip: boolean}) => {
+        return {...prevState, skip: false};
+      });
+    }
+  };
+  const handleFinalize = async () => {
+    if (!accountPhotos.companyLogo || !accountPhotos.profilePicture) {
+      Toast.error({
+        primaryText: 'Please add a profile picture and company logo.',
+      });
+      return;
+    }
+
+    setLoading((prevState: {finalize: boolean; skip: boolean}) => {
+      return {...prevState, finalize: true};
+    });
 
     try {
       const {email, password} = accountDetails;
@@ -124,7 +203,9 @@ const ExtraInformation: React.FC<ExtraInfoProps> = () => {
         secondaryText: 'Please close and reopen the app.',
       });
     } finally {
-      setIsLoading(false);
+      setLoading((prevState: {finalize: boolean; skip: boolean}) => {
+        return {...prevState, finalize: false};
+      });
     }
   };
 
@@ -152,6 +233,14 @@ const ExtraInformation: React.FC<ExtraInfoProps> = () => {
     }
   };
 
+  const handleRemoveClick = (name: 'Profile' | 'Logo') => {
+    if (name === 'Profile') {
+      setAccountPhotos({...accountPhotos, profilePicture: null});
+    } else {
+      setAccountPhotos({...accountPhotos, companyLogo: null});
+    }
+  };
+
   const handleBackPress = () => {
     setStep(step - 1);
   };
@@ -174,11 +263,13 @@ const ExtraInformation: React.FC<ExtraInfoProps> = () => {
               label="Profile Photo"
               handleButtonPress={handleAddImage}
               pickedImage={accountPhotos.profilePicture as Image}
+              handleRemoveClick={handleRemoveClick}
             />
             <ImagePicker
               label="Company Logo"
               pickedImage={accountPhotos.companyLogo as Image}
               handleButtonPress={handleAddImage}
+              handleRemoveClick={handleRemoveClick}
             />
           </View>
           <View
@@ -187,9 +278,13 @@ const ExtraInformation: React.FC<ExtraInfoProps> = () => {
             <TouchableOpacity
               className="w-full justify-center items-center py-4"
               onPress={handleSkip}>
-              <Text className="text-center text-black text-lg font-semibold">
-                Skip
-              </Text>
+              {loading.skip ? (
+                <ActivityIndicator color="black" />
+              ) : (
+                <Text className="text-center text-black text-lg font-semibold">
+                  Skip
+                </Text>
+              )}
             </TouchableOpacity>
             <View
               className="w-full"
@@ -197,7 +292,7 @@ const ExtraInformation: React.FC<ExtraInfoProps> = () => {
               <GenericButton
                 handlePress={handleFinalize}
                 title="Finalize"
-                loading={isLoading}
+                loading={loading.finalize}
               />
             </View>
           </View>

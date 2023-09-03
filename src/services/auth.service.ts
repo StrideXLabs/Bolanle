@@ -53,9 +53,6 @@ class AuthService {
         {
           body: {email, password},
           method: 'POST',
-          headers: {
-            'content-Type': 'application/json',
-          },
         },
       );
 
