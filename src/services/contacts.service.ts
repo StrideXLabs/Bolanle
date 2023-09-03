@@ -1,7 +1,7 @@
 import {
   IContactDetails,
   IPersonalInformation,
-} from '../hooks/useBusinessCard/interface';
+} from '../hooks/useAccount/interface';
 import fetcher from '../lib/fetcher';
 import {IDefaultAPIResponse} from '../types/api-response';
 import {ICard} from './card.service';

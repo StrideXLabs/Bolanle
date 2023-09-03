@@ -19,7 +19,7 @@ import DashboardHeader from '../../components/Header/DashboardHeader';
 import Layout from '../../components/Layout';
 import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
-import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
+import {useCreateBusinessCard} from '../../hooks/useAccount';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import dashboardService, {ICardData} from '../../services/dashboard.service';

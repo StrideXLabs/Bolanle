@@ -10,8 +10,8 @@ import Layout from '../../../components/Layout';
 import TextField from '../../../components/TextField/TextFieldDark';
 import {percentToPx} from '../../../constants';
 import {socialMappings} from '../../../constants/socials';
-import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
-import {ISocialLink} from '../../../hooks/useBusinessCard/interface';
+import {useCreateBusinessCard} from '../../../hooks/useAccount';
+import {ISocialLink} from '../../../hooks/useAccount/interface';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 
@@ -74,7 +74,7 @@ const OtherSocialsScreen = ({
             value={social.url}
             label="Link/Username"
             placeholder="Link/Username"
-            autoCapitalize='none'
+            autoCapitalize="none"
             onChangeText={url => setSocial(state => ({...state, url}))}
           />
           <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
