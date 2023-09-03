@@ -59,7 +59,7 @@ const Button = ({
         <Text
           style={[{fontSize: responsiveFontSize(15 / percentToPx)}, textStyle]}
           className={`font-3 ${
-            showBackgroundColor ? 'text-white' : 'text-primary-blue'
+            showBackgroundColor ? 'text-white' : 'text-black'
           }`}>
           {showLoading ? (
             <ActivityIndicator

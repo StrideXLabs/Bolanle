@@ -22,6 +22,8 @@ module.exports = {
         'Poppins-Medium',
         'Poppins-SemiBold',
         'Poppins-Bold',
+        'Montserrat-Regular',
+        'Montserrat-Bold',
       ],
     },
   },
