@@ -45,10 +45,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
                   style={{
                     width: responsiveWidth(18),
                     height: responsiveWidth(18),
-                    marginTop: responsiveHeight(10),
                   }}
                 />
-                <Text className="font-6 text-white text-2xl">
+                <Text className="font-6 text-white text-2xl tracking-wider -m-3">
                   HELLO{'\n'}BOLANLE
                 </Text>
               </View>

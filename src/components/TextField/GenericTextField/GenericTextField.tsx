@@ -31,7 +31,7 @@ const GenericTextField: React.FC<GenericTextFieldProps> = ({
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
         autoCapitalize={autoCapitalize}
-        className="flex-1 px-2"
+        className="flex-1 px-2 font-1"
       />
       {icon && (
         <TouchableOpacity className="absolute right-2" onPress={onIconPress}>

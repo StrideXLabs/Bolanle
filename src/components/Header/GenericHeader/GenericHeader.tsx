@@ -34,9 +34,7 @@ const GenericHeader: React.FC<GenericHeaderProps> = ({isBack, title}) => {
           />
         </TouchableOpacity>
       )}
-      {title && (
-        <Text className={`text-[25px] font-semibold text-black`}>{title}</Text>
-      )}
+      {title && <Text className={`text-2xl font-3 text-black`}>{title}</Text>}
     </View>
   );
 };
