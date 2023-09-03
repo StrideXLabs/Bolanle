@@ -1,8 +1,9 @@
 import {HttpError, isHttpError} from 'http-errors';
 import {Image} from 'react-native-image-crop-picker';
 import {
-  IContactDetails,
-  IPersonalInformation,
+  // IContactDetails,
+  // IPersonalInformation,
+  IPersonalDetails,
 } from '../hooks/useAccount/interface';
 import fetcher from '../lib/fetcher';
 import {getFileName} from '../lib/getFileName';
@@ -18,19 +19,22 @@ export interface ICard {
 export interface ICreateCardData {
   companyLogo: Image;
   profileImage: Image;
-  socialLinks: ICard[];
-  personalInformation: IPersonalInformation;
-  contactDetails: Omit<Omit<IContactDetails, 'profilePicture'>, 'companyLogo'>;
+  // socialLinks: ICard[];
+  personalInformation: Omit<IPersonalDetails, 'websiteUrl'>;
+  contactDetails: {
+    websiteUrl: string;
+  };
 }
 
 export interface ICreateApiCardData {
   formData: any;
   socialLinks: ICard[];
-  contactDetails: Omit<
-    Omit<IContactDetails, 'profilePicture'>,
-    'companyLogo'
-  > & {profileImage: string; companyLogo: string};
-  personalInfo: IPersonalInformation;
+  contactDetails: {
+    profileImage: string;
+    companyLogo: string;
+    websiteUrl: string;
+  };
+  personalInfo: IPersonalDetails;
 }
 
 export interface ICreateCardResponse {
@@ -43,17 +47,17 @@ class CardService {
     data: ICreateCardData,
   ): Promise<IDefaultAPIResponse<ICreateCardResponse>> {
     try {
-      if (data.socialLinks.length === 0) {
-        return {
-          data: null,
-          success: false,
-          message: 'Please add at least one social link.',
-        };
-      }
+      // if (data.socialLinks.length === 0) {
+      //   return {
+      //     data: null,
+      //     success: false,
+      //     message: 'Please add at least one social link.',
+      //   };
+      // }
 
       const formData = new FormData();
 
-      formData.append('socialLinks', JSON.stringify(data.socialLinks));
+      // formData.append('socialLinks', JSON.stringify(data.socialLinks));
       formData.append('contactDetails', JSON.stringify(data.contactDetails));
       formData.append(
         'personalInformation',
@@ -69,6 +73,8 @@ class CardService {
         type: data.profileImage.mime,
         name: data.profileImage.filename || getFileName(data.profileImage.path),
       });
+
+      console.log(formData, 'formData');
 
       const response = await fetcher<FormData, ICreateCardResponse>(
         '/business-card',

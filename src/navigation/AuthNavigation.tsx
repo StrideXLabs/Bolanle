@@ -10,12 +10,14 @@ import LoginScreen from '../screens/Auth/Login';
 import RegisterScreen from '../screens/Auth/Register';
 import ContactDetails from '../screens/ContactDetails';
 import EmailVerificationScreen from '../screens/EmailVerification';
-import PersonalInformation from '../screens/PersonalInformation';
+import PersonalInformation from '../screens/Auth/Register/PersonalInformation';
 import SocialLinksScreen from '../screens/SocialLinks';
 import OtherSocialScreen from '../screens/SocialLinks/OtherSocials';
 import WhatsAppScreen from '../screens/SocialLinks/WhatsApp';
 import WelcomeScreen from '../screens/Welcome';
 import {EditScreenParams} from './AppNavigation';
+import AccountInformation from '../screens/Auth/Register/AccountInformation';
+import ExtraInformation from '../screens/Auth/Register/ExtraInformation';
 
 export type AuthStackParams = {
   LoginScreen: undefined;
@@ -23,19 +25,27 @@ export type AuthStackParams = {
   RegisterScreen: undefined;
   ForgotPasswordScreen: undefined;
   EmailVerificationScreen: {verificationToken?: string};
-} & EditScreenParams;
+} & EditScreenParams &
+  OnboardingStackParams;
+
+export type OnboardingStackParams = {
+  PersonalInfoScreen: undefined;
+  AccountInfoScreen: undefined;
+  ExtraInfoScreen: undefined;
+};
 
 const AuthStack = createNativeStackNavigator<AuthStackParams>();
 
 const AuthNavigation = () => {
   const {loading, redirectToLogin} = useAuthState();
 
-  if (loading)
+  if (loading) {
     return (
       <View className="h-screen w-full flex justify-center items-center bg-off-white-1">
         <ActivityIndicator color={accentColor} size={50} />
       </View>
     );
+  }
 
   return (
     <>
@@ -45,15 +55,26 @@ const AuthNavigation = () => {
         <AuthStack.Screen name="LoginScreen" component={LoginScreen} />
         <AuthStack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <AuthStack.Screen name="RegisterScreen" component={RegisterScreen} />
+
+        <AuthStack.Screen
+          name="AccountInfoScreen"
+          component={AccountInformation}
+        />
+        <AuthStack.Screen
+          name="PersonalInfoScreen"
+          component={PersonalInformation}
+        />
+        <AuthStack.Screen name="ExtraInfoScreen" component={ExtraInformation} />
+
         <AuthStack.Screen
           name="ForgotPasswordScreen"
           component={ForgotPasswordScreen}
         />
-        <AuthStack.Screen
+        {/* <AuthStack.Screen
           name="PersonalInformationScreen"
           component={PersonalInformation}
           options={{animation: 'slide_from_bottom'}}
-        />
+        /> */}
         <AuthStack.Screen
           name="ContactDetailsScreen"
           component={ContactDetails}

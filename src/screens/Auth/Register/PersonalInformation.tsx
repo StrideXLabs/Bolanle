@@ -1,9 +1,9 @@
 import {Text, View} from 'react-native';
 import React from 'react';
-import {
-  ICreateAccountState,
-  ICreateAccountActions,
-} from '../../../hooks/useAccount/interface';
+// import {
+//   ICreateAccountState,
+//   ICreateAccountActions,
+// } from '../../../hooks/useAccount/interface';
 
 import {useAccount} from '../../../hooks/useAccount';
 import StaticContainer from '../../../containers/StaticContainer';
@@ -15,15 +15,22 @@ import {percentToPx} from '../../../constants';
 import Steps from '../../../components/Steps/Steps';
 import Toast from '../../../lib/toast';
 import isValidURL from '../../../lib/isValidUrl';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {OnboardingStackParams} from '../../../navigation/AuthNavigation';
 
-const PersonalInformation = () => {
+export type PersonalInfoProps = NativeStackScreenProps<
+  OnboardingStackParams,
+  'PersonalInfoScreen'
+>;
+
+const PersonalInformation: React.FC<PersonalInfoProps> = ({navigation}) => {
   const {personalDetails, setPersonalDetails, step, setStep} = useAccount();
 
   const validateData = () => {
     if (
       !personalDetails.name ||
       !personalDetails.phone ||
-      !personalDetails.webUrl
+      !personalDetails.websiteUrl
     ) {
       Toast.error({
         primaryText: 'All fields are required.',
@@ -32,7 +39,7 @@ const PersonalInformation = () => {
       return false;
     }
 
-    if (!isValidURL(personalDetails.webUrl)) {
+    if (!isValidURL(personalDetails.websiteUrl)) {
       Toast.error({primaryText: 'Website URL must be valid URL.'});
       return false;
     }
@@ -43,10 +50,19 @@ const PersonalInformation = () => {
   const handleProceed = async () => {
     if (!validateData()) return;
     setStep(step + 1);
+    navigation.navigate('ExtraInfoScreen');
+  };
+
+  const handleBackPress = () => {
+    setStep(step - 1);
   };
 
   return (
-    <StaticContainer isBack={true} isHeader={true} title="Personal Details">
+    <StaticContainer
+      isBack={true}
+      isHeader={true}
+      title="Personal Details"
+      callback={handleBackPress}>
       <View className="w-full flex-1 items-center">
         <GenericCardContainer>
           <View className="w-full">
@@ -92,11 +108,11 @@ const PersonalInformation = () => {
               className="w-full">
               <GenericTextField
                 placeholder="Website Url"
-                value={personalDetails.webUrl}
+                value={personalDetails.websiteUrl}
                 onChangeText={(text: string) =>
                   setPersonalDetails({
                     ...personalDetails,
-                    webUrl: text,
+                    websiteUrl: text,
                   })
                 }
                 autoCapitalize="words"

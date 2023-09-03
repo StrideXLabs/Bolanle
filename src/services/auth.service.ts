@@ -49,7 +49,14 @@ class AuthService {
 
       const response = await fetcher<ICredentialsData, ISignupResponse>(
         `/user/signup`,
-        {body: {email, password}, method: 'POST'},
+
+        {
+          body: {email, password},
+          method: 'POST',
+          headers: {
+            'content-Type': 'application/json',
+          },
+        },
       );
 
       return {

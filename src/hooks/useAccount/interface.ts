@@ -25,7 +25,7 @@ export interface IAccountDetails {
 export interface IPersonalDetails {
   name: string;
   phone: string;
-  webUrl: string;
+  websiteUrl: string;
 }
 
 export interface IAccountPhotos {
@@ -33,11 +33,11 @@ export interface IAccountPhotos {
   companyLogo: Image | string | null;
 }
 
-export interface ISocialLink {
-  url: string;
-  title: string;
-  id: SocialLinkType;
-}
+// export interface ISocialLink {
+//   url: string;
+//   title: string;
+//   id: SocialLinkType;
+// }
 
 export interface ICreateAccountState {
   step: number;

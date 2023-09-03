@@ -1,9 +1,9 @@
 import {Text, View, Image, ImageSourcePropType} from 'react-native';
 import React from 'react';
-import {
-  ICreateAccountState,
-  ICreateAccountActions,
-} from '../../../hooks/useAccount/interface';
+// import {
+//   ICreateAccountState,
+//   ICreateAccountActions,
+// } from '../../../hooks/useAccount/interface';
 
 import {useAccount} from '../../../hooks/useAccount';
 import StaticContainer from '../../../containers/StaticContainer';
@@ -15,8 +15,15 @@ import {percentToPx, emailRegex} from '../../../constants';
 import {EyeIcon, EyeOffIcon} from '../../../constants/icons';
 import Steps from '../../../components/Steps/Steps';
 import Toast from '../../../lib/toast';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {OnboardingStackParams} from '../../../navigation/AuthNavigation';
 
-const AccountInformation = () => {
+export type AccountInfoProps = NativeStackScreenProps<
+  OnboardingStackParams,
+  'AccountInfoScreen'
+>;
+
+const AccountInformation: React.FC<AccountInfoProps> = ({navigation}) => {
   const {accountDetails, setAccountDetails, step, setStep} = useAccount();
   const [hide, setHide] = React.useState<{
     password: boolean;
@@ -54,11 +61,21 @@ const AccountInformation = () => {
 
   const handleNext = async () => {
     if (!validateData()) return;
+
     setStep(step + 1);
+    navigation.navigate('PersonalInfoScreen');
+  };
+
+  const handleBackPress = () => {
+    setStep(step - 1);
   };
 
   return (
-    <StaticContainer isBack={true} isHeader={true} title="Account Details">
+    <StaticContainer
+      isBack={true}
+      isHeader={true}
+      title="Account Details"
+      callback={handleBackPress}>
       <View className="w-full flex-1 items-center">
         <GenericCardContainer>
           <View className="w-full">

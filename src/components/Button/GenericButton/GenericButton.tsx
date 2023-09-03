@@ -3,6 +3,7 @@ import {
   TouchableOpacityProps,
   Text,
   TextProps,
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
 
@@ -31,7 +32,7 @@ const GenericButton: React.FC<GenericButtonProps> = ({
           {title}
         </Text>
       ) : (
-        <Text>Loading.......</Text>
+        <ActivityIndicator size="small" color="#fff" animating={true} />
       )}
     </TouchableOpacity>
   );

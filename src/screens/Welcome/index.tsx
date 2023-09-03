@@ -49,12 +49,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
                 width: responsiveWidth(80),
                 marginBottom: responsiveHeight(20 / percentToPx),
               }}
-              callback={() =>
-                navigation.navigate('PersonalInformationScreen', {
-                  cardId: null,
-                  status: 'CREATING',
-                })
-              }
+              callback={() => navigation.navigate('AccountInfoScreen')}
               text="Create New"
             />
             <Button

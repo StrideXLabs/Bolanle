@@ -27,7 +27,7 @@ export const initialAccountDetails: IAccountDetails = {
 export const initialPersonalDetails: IPersonalDetails = {
   name: '',
   phone: '',
-  webUrl: '',
+  websiteUrl: '',
 };
 
 export const initialAccountPhotos: IAccountPhotos = {

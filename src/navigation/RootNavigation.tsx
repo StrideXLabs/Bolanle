@@ -9,9 +9,9 @@ import {BASE_URL} from '../constants';
 // import StaticContainer from '../containers/StaticContainer';
 // import GenericCardContainer from '../containers/GenericCardContainer';
 // import GenericTextField from '../components/TextField/GenericTextField/GenericTextField';
-import PersonalInformation from '../screens/Auth/Register/PersonalInformation';
-import AccountInformation from '../screens/Auth/Register/AccountInformation';
-import ExtraInformation from '../screens/Auth/Register/ExtraInformation';
+// import PersonalInformation from '../screens/Auth/Register/PersonalInformation';
+// import AccountInformation from '../screens/Auth/Register/AccountInformation';
+// import ExtraInformation from '../screens/Auth/Register/ExtraInformation';
 
 const linkings = {
   prefixes: ['hellobolanle://', BASE_URL],
@@ -38,8 +38,8 @@ const RootNavigation = () => {
       onReady={() => {
         idRef.current = setTimeout(() => SplashScreen.hide(), 300);
       }}>
-      {/* <AppNavigation /> */}
-      <PersonalInformation />
+      <AppNavigation />
+      {/* <PersonalInformation /> */}
       {/* <AccountInformation /> */}
       {/* <ExtraInformation /> */}
     </NavigationContainer>
