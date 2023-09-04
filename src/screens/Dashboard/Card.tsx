@@ -44,25 +44,25 @@ const TestCard = () => {
         paddingVertical: responsiveHeight(8 / percentToPx),
         paddingHorizontal: responsiveHeight(20 / percentToPx),
       }}>
-      <View className="bg-secondary-blue h-full w-full rounded-3xl p-4 space-y-5">
+      <View className="bg-secondary-blue rounded-3xl p-4 space-y-5">
         {/* Card */}
-        <View className="h-[25%] w-full bg-white rounded-3xl flex flex-row space-x-3">
+        <View className="w-full bg-white rounded-3xl flex flex-row space-x-7">
           <View className="flex-1">
             <Image
               resizeMode="contain"
-              className="rounded-2xl h-full"
+              className="rounded-2xl h-44 w-40"
               source={{
                 uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
                 cache: 'reload',
               }}
             />
           </View>
-          <View className="flex-1 justify-center space-y-1">
+          <View className="flex-1 justify-center">
             <View className="flex flex-col mb-4">
-              <Text className="font-4 text-xl text-black">
+              <Text className="font-4 text-xl text-black flex-wrap">
                 Emily{'\n'}Watson
               </Text>
-              <Text className="font-1">Project Manager</Text>
+              <Text className="font-1 flex-wrap">Project Manager</Text>
             </View>
             <View className="flex flex-row gap-1">
               <TouchableOpacity>
@@ -91,7 +91,7 @@ const TestCard = () => {
         </View>
         {/* Contact Details */}
 
-        <View className="h-[28%] w-full rounded-3xl justify-start items-center">
+        <View className="flex w-full rounded-3xl justify-start items-center">
           <View className="flex flex-row flex-wrap gap-3">
             {data.map((item, index) => (
               <View
