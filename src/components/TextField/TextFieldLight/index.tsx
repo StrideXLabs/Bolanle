@@ -55,7 +55,7 @@ const TextField: React.FC<TextFieldProps> = ({
         className={`relative font-1 w-full text-dark-blue transition-all ${
           isFocused
             ? 'border-[#F7F6F0] border-[2px]'
-            : 'border-off-white-4 border-[1px]'
+            : 'border-off-white-1 border-[1px]'
         } ${className}
         ${gradient ? 'bg-secondary-blue' : ''}
         ${icon ? 'pl-10' : ''}
@@ -65,14 +65,14 @@ const TextField: React.FC<TextFieldProps> = ({
             paddingHorizontal: responsiveHeight(1),
             paddingVertical: responsiveHeight(1),
             fontSize: responsiveFontSize(14 / percentToPx),
-            height: responsiveHeight(40 / percentToPx),
+            height: responsiveHeight(42 / percentToPx),
             borderRadius: responsiveHeight(20 / percentToPx),
           },
           style,
         ]}
         {...props}
       />
-      {icon && <View className="absolute left-3 top-[10px]">{icon}</View>}
+      {icon && <View className="absolute left-3 top-[12px]">{icon}</View>}
     </View>
   );
 };
