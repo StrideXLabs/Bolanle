@@ -1,20 +1,33 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Image, ImageSourcePropType, Platform } from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {
+  Image,
+  ImageSourcePropType,
+  Platform,
+  SafeAreaView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import DashboardScreen from '../screens/Dashboard';
 
 import contactsIcon from '../assets/images/contacts.png';
 import dashboardIcon from '../assets/images/dashboard.png';
 import profileIcon from '../assets/images/profile.png';
-import { accentColor } from '../constants';
-import { useOpenModalState } from '../hooks/useOpenModal';
+import geoLocationIcon from '../assets/images/geoLocation.png';
+import {QrCodeIcon} from '../constants/icons';
+import {accentColor} from '../constants';
+import {useOpenModalState} from '../hooks/useOpenModal';
 import ContactsScreen from '../screens/Contacts';
 import ProfileScreen from '../screens/Profile';
-import { responsiveHeight } from 'react-native-responsive-dimensions';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
+import GeoLocation from '../screens/GeoTags';
+import QRScanner from '../screens/QR-Scanner';
 
 export type BottomTabNavigatorParams = {
   ProfileScreen: undefined;
   ContactsScreen: undefined;
   DashboardScreen: undefined;
+  GeoLocationScreen: undefined;
+  QRScannerScreen: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParams>();
@@ -26,11 +39,18 @@ const BottomNavigation = () => {
     <BottomTabNavigator.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { minHeight: Platform.OS == "android" ? responsiveHeight(9) : responsiveHeight(11), display: open ? 'none' : 'flex' },
+        tabBarStyle: {
+          minHeight:
+            Platform.OS == 'android'
+              ? responsiveHeight(9)
+              : responsiveHeight(11),
+          display: open ? 'none' : 'flex',
+          paddingHorizontal: 6,
+        },
         tabBarLabelStyle: {
-          fontSize: 13,
-          marginBottom: 12,
-          fontFamily: 'Roboto-Medium',
+          fontSize: 11,
+          marginBottom: 4,
+          fontFamily: 'Poppins-Medium',
         },
         tabBarActiveTintColor: accentColor,
       }}>
@@ -38,11 +58,12 @@ const BottomNavigation = () => {
         name="DashboardScreen"
         options={{
           title: 'Dashboard',
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({focused}) => (
             <Image
               style={{
-                width: 21.6,
-                height: 21.6,
+                width: 23,
+                height: 23,
+                marginTop: 8,
                 tintColor: focused ? accentColor : '#C9C9C9',
               }}
               source={dashboardIcon as ImageSourcePropType}
@@ -52,17 +73,54 @@ const BottomNavigation = () => {
         component={DashboardScreen}
       />
       <BottomTabNavigator.Screen
+        name="GeoLocationScreen"
+        options={{
+          title: 'Geo Tags',
+          tabBarIcon: ({focused}) => (
+            <Image
+              style={{
+                width: 23,
+                height: 23,
+                marginTop: 8,
+                tintColor: focused ? accentColor : '#C9C9C9',
+              }}
+              source={geoLocationIcon as ImageSourcePropType}
+            />
+          ),
+        }}
+        component={GeoLocation}
+      />
+      <BottomTabNavigator.Screen
+        name="QRScannerScreen"
+        options={{
+          title: '',
+          tabBarIcon: ({focused}) => (
+            <View className="p-4 rounded-full bg-blue-600 absolute -top-8">
+              <Image
+                style={{
+                  width: 32,
+                  height: 32,
+                  tintColor: focused ? 'white' : '#c9c9c9',
+                }}
+                source={QrCodeIcon as ImageSourcePropType}
+              />
+            </View>
+          ),
+        }}
+        component={QRScanner}
+      />
+      <BottomTabNavigator.Screen
         name={'ContactsScreen' as any}
         options={{
           title: 'Contacts',
           tabBarLabel: 'Contacts',
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({focused}) => (
             <Image
               resizeMode="contain"
               style={{
-                width: 24,
-                height: 27,
-                marginTop: 4,
+                width: 23,
+                height: 23,
+                marginTop: 8,
                 tintColor: focused ? accentColor : '#C9C9C9',
               }}
               source={contactsIcon as ImageSourcePropType}
@@ -75,11 +133,12 @@ const BottomNavigation = () => {
         name={'ProfileScreen' as any}
         options={{
           title: 'Profile',
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({focused}) => (
             <Image
               style={{
-                width: 21.6,
-                height: 21.6,
+                width: 23,
+                height: 23,
+                marginTop: 8,
                 tintColor: focused ? accentColor : '#C9C9C9',
               }}
               source={profileIcon as ImageSourcePropType}
