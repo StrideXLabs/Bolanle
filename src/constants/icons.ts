@@ -16,6 +16,7 @@ export {default as saveIcon} from '../assets/images/Save.png'
 export {default as googleIcon} from '../assets/images/socials/google.png'
 export {default as facebookIcon} from '../assets/images/socials/facebook.png'
 export {default as appleIcon} from '../assets/images/socials/apple.png'
+export {default as sendIcon} from '../assets/images/send.png'
 
 
 

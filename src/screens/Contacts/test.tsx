@@ -7,8 +7,20 @@ import TextField from '../../components/TextField/TextFieldLight';
 import {SearchIcon} from '../../constants/icons';
 import StaticContainer from '../../containers/StaticContainer';
 import ContactCard from './testCard';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
+import {AppStackParams} from '../../navigation/AppNavigation';
+import {ICardData} from '../../services/dashboard.service';
 
-const ContactsScreen = () => {
+export type ContactsScreenProps = NativeStackScreenProps<
+  AppStackParams & BottomTabNavigatorParams,
+  'ContactDetailsScreen'
+>;
+
+export interface IContact
+  extends Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'> {}
+
+const ContactsScreen = ({navigation}: ContactsScreenProps) => {
   const [searchText, setSearchText] = React.useState('');
   return (
     <Layout>

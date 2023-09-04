@@ -3,12 +3,17 @@ import React, {useCallback, useState} from 'react';
 import Layout from '../../components/Layout';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import {percentToPx} from '../../constants';
-import {AddButtonIcon, ShareIcon, saveIcon} from '../../constants/icons';
+import {
+  AddButtonIcon,
+  ShareIcon,
+  saveIcon,
+  sendIcon,
+} from '../../constants/icons';
 import GenericTextField from '../../components/TextField/GenericTextField/GenericTextField';
 import StaticContainer from '../../containers/StaticContainer';
 
 const ScannedCard = () => {
-  const colors = ['#FBBD62', '#134B57', '#1C75BC', '#3B9142', '#F15A29'];
+  const colors = ['#F9AAAA', '#FFA500', '#62A82A', '#C0C0C0'];
 
   const [addTag, setAddTag] = useState(false);
   const [newTag, setNewTag] = useState('');
@@ -106,7 +111,7 @@ const ScannedCard = () => {
 
           {addTag && (
             <View
-              className="bg-secondary-blue flex w-full rounded-3xl p-4 space-y-5"
+              className="bg-secondary-blue flex rounded-3xl p-4 space-y-5"
               style={{
                 marginTop: responsiveHeight(20 / percentToPx),
               }}>
@@ -122,7 +127,7 @@ const ScannedCard = () => {
                 </View>
                 <TouchableOpacity onPress={handleTag}>
                   <Image
-                    source={saveIcon as any}
+                    source={sendIcon as any}
                     className={`h-8 w-8`}
                     resizeMode="contain"
                   />

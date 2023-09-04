@@ -16,7 +16,7 @@ import geoLocationIcon from '../assets/images/geoLocation.png';
 import {QrCodeIcon} from '../constants/icons';
 import {accentColor} from '../constants';
 import {useOpenModalState} from '../hooks/useOpenModal';
-import ContactsScreen from '../screens/Contacts';
+import ContactsScreen from '../screens/Contacts/test';
 import ProfileScreen from '../screens/Profile';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import GeoLocation from '../screens/GeoTags';
@@ -136,8 +136,8 @@ const BottomNavigation = () => {
           tabBarIcon: ({focused}) => (
             <Image
               style={{
-                width: 23,
-                height: 23,
+                width: 22,
+                height: 22,
                 marginTop: 8,
                 tintColor: focused ? accentColor : '#C9C9C9',
               }}
