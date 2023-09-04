@@ -45,8 +45,8 @@ const RootNavigation = () => {
       onReady={() => {
         idRef.current = setTimeout(() => SplashScreen.hide(), 300);
       }}>
-      {/* <AppNavigation /> */}
-      <ContactsScreen />
+      <AppNavigation />
+      {/* <ContactsScreen /> */}
       {/* <StaticContainer isBack={true} title="title" isHeader={true}>
         <GenericCardContainer>
           <View className="h-[100px] w-full bg-red-500"></View>

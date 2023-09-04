@@ -1,64 +1,118 @@
+import {View, Image, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {Image, Pressable, Text, View} from 'react-native';
-import {BASE_URL} from '../../constants';
-import textStyles from '../../constants/fonts';
-import {ICardData} from '../../services/dashboard.service';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
+import {percentToPx} from '../../constants';
+import {
+  CompanyIcon,
+  EmailIcon,
+  IntegrationIcon,
+  LanguageIcon,
+  LocationIcon,
+  PhoneIcon,
+  ShareIcon,
+} from '../../constants/icons';
+import Button from '../../components/Button';
 
-interface ICardProps {
-  card: ICardData;
-  onCardPress: (card: ICardData) => void;
-}
-
-const Card = ({card, onCardPress}: ICardProps) => {
-  const {personalInfo, contactDetails} = card;
+const TestCard = () => {
+  const data = [
+    {
+      id: 1,
+      icon: EmailIcon,
+      text: 'Emily@gmail.com',
+    },
+    {
+      id: 2,
+      icon: PhoneIcon,
+      text: '0369-6942069',
+    },
+    {
+      id: 3,
+      icon: LanguageIcon,
+      text: 'Apple.com',
+    },
+    {
+      id: 4,
+      icon: LocationIcon,
+      text: 'United States',
+    },
+  ];
 
   return (
-    <Pressable
-      style={{borderRadius: 25}}
-      onPress={() => onCardPress(card)}
-      className="px-5 py-5 w-full border-[1px] border-[#E3E3E3]">
-      <View className="w-full flex justify-center items-center mb-6">
-        <Image
-          resizeMode="contain"
-          className="h-[94px] w-[94px] rounded-md"
-          source={{
-            uri: BASE_URL + `/${card._id}/${contactDetails?.companyLogo}`,
-            cache: 'reload',
-          }}
-        />
-      </View>
-      <View className="flex flex-row gap-2 items-center">
-        <Image
-          resizeMode="stretch"
-          className="h-[60px] w-[60px] rounded-full"
-          source={{
-            uri:
-              BASE_URL +
-              `/${card._id}/${contactDetails?.profileImage}` +
-              `?time=${Date.now()}`,
-            cache: 'reload',
-          }}
-        />
-        <View>
-          <Text
-            className="text-[#334155] text-base"
-            style={textStyles.robotoRegular}>
-            {personalInfo?.name}
-          </Text>
-          <Text
-            className="text-[#334155] text-[12px]"
-            style={textStyles.robotoRegular}>
-            {personalInfo?.designation}
-          </Text>
-          <Text
-            className="text-[#636769] text-[12px]"
-            style={textStyles.robotoRegular}>
-            {personalInfo?.companyName}
-          </Text>
+    <View
+      className="bg-white"
+      style={{
+        paddingVertical: responsiveHeight(8 / percentToPx),
+        paddingHorizontal: responsiveHeight(20 / percentToPx),
+      }}>
+      <View className="bg-secondary-blue h-full w-full rounded-3xl p-4 space-y-5">
+        {/* Card */}
+        <View className="h-[25%] w-full bg-white rounded-3xl flex flex-row space-x-3">
+          <View className="flex-1">
+            <Image
+              resizeMode="contain"
+              className="rounded-2xl h-full"
+              source={{
+                uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                cache: 'reload',
+              }}
+            />
+          </View>
+          <View className="flex-1 justify-center space-y-1">
+            <View className="flex flex-col mb-4">
+              <Text className="font-4 text-xl text-black">
+                Emily{'\n'}Watson
+              </Text>
+              <Text className="font-1">Project Manager</Text>
+            </View>
+            <View className="flex flex-row gap-1">
+              <TouchableOpacity>
+                <Image
+                  source={ShareIcon as any}
+                  className={`h-8 w-8`}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Image
+                  source={IntegrationIcon as any}
+                  className={`h-8 w-8`}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Image
+                  source={CompanyIcon as any}
+                  className={`h-8 w-8`}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
+        {/* Contact Details */}
+
+        <View className="h-[28%] w-full rounded-3xl justify-start items-center">
+          <View className="flex flex-row flex-wrap gap-3">
+            {data.map((item, index) => (
+              <View
+                className="bg-white rounded-2xl w-[46%] p-3 space-y-4"
+                key={index}>
+                <Image
+                  source={item.icon as any}
+                  className={`h-8 w-8`}
+                  resizeMode="contain"
+                />
+                <Text className="font-1 text-sm">{item.text}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+
+        {/* Button */}
+        <Button text="Edit card details" callback={() => {}} />
       </View>
-    </Pressable>
+    </View>
   );
 };
 
-export default Card;
+export default TestCard;
