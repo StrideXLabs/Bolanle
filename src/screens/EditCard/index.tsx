@@ -12,11 +12,11 @@ import Layout from '../../components/Layout';
 import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {SocialLinkType} from '../../constants/socials';
-import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
+import {useCreateBusinessCard} from '../../hooks/useAccount';
 import {
   initialContactDetails,
   initialPersonalInformation,
-} from '../../hooks/useBusinessCard/constants';
+} from '../../hooks/useAccount/constants';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';

@@ -7,18 +7,19 @@ import React, {useEffect, useRef} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import AppNavigation from './AppNavigation';
 import {BASE_URL} from '../constants';
-import {Text, View} from 'react-native';
+// import {Text, View, TextInput, Image, ImageSourcePropType} from 'react-native';
+// import {EyeIcon, EyeOffIcon} from '../constants/icons';
 
-import StaticContainer from '../containers/StaticContainer';
-import GenericCardContainer from '../containers/GenericCardContainer';
-import DashboardScreen from '../screens/Dashboard/test';
-import ActionSheet from '../screens/ActionSheet';
-import ScannedCard from '../screens/QR-Scanner/ScannedCard';
-import ContactsScreen from '../screens/Contacts/test';
+// import StaticContainer from '../containers/StaticContainer';
+// import GenericCardContainer from '../containers/GenericCardContainer';
+// import DashboardScreen from '../screens/Dashboard/test';
+// import ActionSheet from '../screens/ActionSheet';
+// import ScannedCard from '../screens/QR-Scanner/ScannedCard';
+// import ContactsScreen from '../screens/Contacts/test';
 
-type RootNavigationProps = {
-  navigation: NavigationProp<any>;
-};
+// type RootNavigationProps = {
+//   navigation: NavigationProp<any>;
+// };
 
 const linkings = {
   prefixes: ['hellobolanle://', BASE_URL],
@@ -53,6 +54,9 @@ const RootNavigation = () => {
           <Text>hello</Text>
         </GenericCardContainer>
       </StaticContainer> */}
+      {/* <PersonalInformation /> */}
+      {/* <AccountInformation /> */}
+      {/* <ExtraInformation /> */}
     </NavigationContainer>
   );
 };

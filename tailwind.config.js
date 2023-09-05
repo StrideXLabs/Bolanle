@@ -14,6 +14,7 @@ module.exports = {
         'secondary-blue': '#E8F1F8',
         black: '#000000',
         white: '#FFFFFF',
+        grey: '#494949',
       },
 
       fontFamily: [

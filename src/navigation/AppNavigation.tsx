@@ -71,12 +71,13 @@ const AppStack = createNativeStackNavigator<AppStackParams>();
 const AppNavigation = () => {
   const {loading, authed} = useAuthState();
 
-  if (loading)
+  if (loading) {
     return (
       <View className="h-screen w-full flex justify-center items-center bg-white">
         <ActivityIndicator color={accentColor} size={50} />
       </View>
     );
+  }
 
   return (
     <>
