@@ -13,7 +13,7 @@ import contactsIcon from '../assets/images/contacts.png';
 import dashboardIcon from '../assets/images/dashboard.png';
 import profileIcon from '../assets/images/profile.png';
 import geoLocationIcon from '../assets/images/geoLocation.png';
-import {QrCodeIcon} from '../constants/icons';
+import {QrCodeIcon, scannerIcon} from '../constants/icons';
 import {accentColor} from '../constants';
 import {useOpenModalState} from '../hooks/useOpenModal';
 import ContactsScreen from '../screens/Contacts/test';
@@ -95,14 +95,14 @@ const BottomNavigation = () => {
         options={{
           title: '',
           tabBarIcon: ({focused}) => (
-            <View className="p-4 rounded-full bg-blue-600 absolute -top-8">
+            <View className="p-4 rounded-full absolute -top-12">
               <Image
                 style={{
-                  width: 32,
-                  height: 32,
-                  tintColor: focused ? 'white' : '#c9c9c9',
+                  width: responsiveHeight(9),
+                  height: responsiveHeight(9),
+                  // tintColor: focused ? 'white' : '#c9c9c9',
                 }}
-                source={QrCodeIcon as ImageSourcePropType}
+                source={scannerIcon as ImageSourcePropType}
               />
             </View>
           ),

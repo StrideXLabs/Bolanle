@@ -3,6 +3,7 @@ import React, {useCallback, useMemo, useRef, useState} from 'react';
 import Layout from '../../components/Layout';
 import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import EditProfileDetails from './EditProfileDetails';
+import StaticContainer from '../../containers/StaticContainer';
 
 const ActionSheet = () => {
   // ref
@@ -18,6 +19,7 @@ const ActionSheet = () => {
 
   return (
     <Layout>
+      {/* <StaticContainer isBack isHeader title="Dashboard"> */}
       <View className="flex-1">
         <View className="h-[38%] w-full">
           <Image
@@ -42,6 +44,7 @@ const ActionSheet = () => {
           </BottomSheetScrollView>
         </BottomSheet>
       </View>
+      {/* </StaticContainer> */}
     </Layout>
   );
 };

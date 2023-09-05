@@ -13,7 +13,7 @@ import {
 } from '../../constants/icons';
 import Button from '../../components/Button';
 
-const TestCard = () => {
+const DashboardCard = ({navigation}: {navigation: any}) => {
   const data = [
     {
       id: 1,
@@ -109,10 +109,13 @@ const TestCard = () => {
         </View>
 
         {/* Button */}
-        <Button text="Edit card details" callback={() => {}} />
+        <Button
+          text="Edit card details"
+          callback={() => navigation.navigate('EditCardScreen')}
+        />
       </View>
     </View>
   );
 };
 
-export default TestCard;
+export default DashboardCard;

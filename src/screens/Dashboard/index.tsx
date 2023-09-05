@@ -5,15 +5,16 @@ import DashboardHeader from '../../components/Header/DashboardHeader';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import {AppStackParams} from '../../navigation/AppNavigation';
-import TestCard from './Card';
 import TextField from '../../components/TextField/TextFieldLight';
 import {SearchIcon} from '../../constants/icons';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import {percentToPx} from '../../constants';
+import DashboardCard from './Card';
 
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
-  'DashboardScreen'
+  'DashboardScreen',
+  'ActionSheetScreen'
 >;
 
 const DashboardScreen = ({navigation}: DashboardScreenProps) => {
@@ -44,7 +45,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
           }
         />
       </View>
-      <TestCard />
+      <DashboardCard navigation={navigation} />
     </Layout>
   );
 };

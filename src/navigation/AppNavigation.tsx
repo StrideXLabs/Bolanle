@@ -17,6 +17,7 @@ import WhatsAppScreen from '../screens/SocialLinks/WhatsApp';
 import {ICardData} from '../services/dashboard.service';
 import AuthNavigation from './AuthNavigation';
 import BottomNavigation from './BottomNavigation';
+import ActionSheet from '../screens/ActionSheet';
 
 export type ScreenStatus = 'EDITING' | 'CREATING';
 export type ShareType = '' | 'TEXT_CARD' | 'EMAIL_CARD' | 'WHATSAPP_CARD';
@@ -32,6 +33,10 @@ export type EditScreenParams = {
   };
   OtherSocialsScreen: {
     social: ISocial;
+    status: ScreenStatus;
+    cardId: string | null;
+  };
+  ActionSheetScreen: {
     status: ScreenStatus;
     cardId: string | null;
   };
@@ -118,6 +123,11 @@ const AppNavigation = () => {
             name="AppBottomNav"
             component={BottomNavigation}
             options={{animation: 'simple_push'}}
+          />
+          <AppStack.Screen
+            name="ActionSheetScreen"
+            component={ActionSheet}
+            options={{animation: 'fade_from_bottom'}}
           />
         </AppStack.Navigator>
       ) : (
