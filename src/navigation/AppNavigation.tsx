@@ -8,7 +8,7 @@ import {ISocial} from '../constants/socials';
 import useAuthState from '../hooks/useAuthState';
 import ContactDetails from '../screens/ContactDetails';
 import EditCardScreen from '../screens/EditCard';
-import PersonalInformation from '../screens/PersonalInformation';
+import PersonalInformation from '../screens/Auth/Register/PersonalInformation';
 import ShareCardScreen from '../screens/ShareCard';
 import ShareCardDetailsScreen from '../screens/ShareDetails';
 import SocialLinksScreen from '../screens/SocialLinks';
@@ -87,10 +87,15 @@ const AppNavigation = () => {
           initialRouteName="AppBottomNav"
           screenOptions={{headerShown: false, animation: 'slide_from_right'}}>
           <AppStack.Screen
-            name="PersonalInformationScreen"
+            name="PersonalInfoScreen"
             component={PersonalInformation}
             options={{animation: 'slide_from_bottom'}}
           />
+          {/* <AppStack.Screen
+            name="PersonalInformationScreen"
+            component={PersonalInformation}
+            options={{animation: 'slide_from_bottom'}}
+          /> */}
           <AppStack.Screen
             name="ContactDetailsScreen"
             component={ContactDetails}

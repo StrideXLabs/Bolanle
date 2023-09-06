@@ -8,13 +8,18 @@ import {
 } from 'react-native';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import {percentToPx} from '../../../constants';
-import {
-  NotificationsIcon,
-  BurgerMenuIcon,
-  SearchIcon,
-} from '../../../constants/icons';
+import {NotificationsIcon, BurgerMenuIcon} from '../../../constants/icons';
+import {flushStorage} from '../../../lib/storage';
+import {initialAuthState, useAuth} from '../../../hooks/useAuth';
 
 const DashboardHeader = () => {
+  const {setAuthState} = useAuth();
+
+  const handleLogout = async () => {
+    await flushStorage();
+    setAuthState({...initialAuthState, redirectToLogin: true});
+  };
+
   return (
     <View
       className="bg-white"
@@ -26,7 +31,7 @@ const DashboardHeader = () => {
         <View className="flex flex-row gap-2 items-center">
           <Image
             resizeMode="contain"
-            className={`h-12 w-12 rounded-md`}
+            className={'h-12 w-12 rounded-md'}
             // source={{
             //   uri: BASE_URL + `/${rest._id}/${contactDetails?.profileImage}`,
             //   cache: 'reload',
@@ -48,7 +53,10 @@ const DashboardHeader = () => {
               className={`h-9 w-9`}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              handleLogout();
+            }}>
             <Image
               source={BurgerMenuIcon as ImageSourcePropType}
               className={`h-9 w-9`}

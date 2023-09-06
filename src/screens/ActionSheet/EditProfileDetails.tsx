@@ -73,7 +73,7 @@ const EditProfileDetails = ({navigation}: EditProfileProps) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('PersonalInformationScreen', {
+              navigation.navigate('PersonalInfoScreen', {
                 cardId: null,
                 status: 'CREATING',
               });
