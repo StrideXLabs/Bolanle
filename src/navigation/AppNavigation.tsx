@@ -82,7 +82,7 @@ const AppNavigation = () => {
 
   return (
     <>
-      {authed ? (
+      {!authed ? (
         <AppStack.Navigator
           initialRouteName="AppBottomNav"
           screenOptions={{headerShown: false, animation: 'slide_from_right'}}>

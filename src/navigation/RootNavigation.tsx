@@ -1,13 +1,8 @@
-import {
-  LinkingOptions,
-  NavigationContainer,
-  NavigationProp,
-} from '@react-navigation/native';
+import {LinkingOptions, NavigationContainer} from '@react-navigation/native';
 import React, {useEffect, useRef} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import AppNavigation from './AppNavigation';
 import {BASE_URL} from '../constants';
-import ActionSheet from '../screens/ActionSheet';
 // import {Text, View, TextInput, Image, ImageSourcePropType} from 'react-native';
 // import {EyeIcon, EyeOffIcon} from '../constants/icons';
 
@@ -47,8 +42,7 @@ const RootNavigation = () => {
       onReady={() => {
         idRef.current = setTimeout(() => SplashScreen.hide(), 300);
       }}>
-      {/* <AppNavigation /> */}
-      <ActionSheet />
+      <AppNavigation />
       {/* <StaticContainer isBack={true} title="title" isHeader={true}>
         <GenericCardContainer>
           <View className="h-[100px] w-full bg-red-500"></View>
