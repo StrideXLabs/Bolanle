@@ -1,8 +1,5 @@
 import {HttpError, isHttpError} from 'http-errors';
-import {
-  IContactDetails,
-  IPersonalInformation,
-} from '../hooks/useAccount/interface';
+import {IContactDetails, IPersonalDetails} from '../hooks/useAccount/interface';
 import fetcher from '../lib/fetcher';
 import {IDefaultAPIResponse} from '../types/api-response';
 import {ICard} from './card.service';
@@ -11,7 +8,7 @@ export interface ICardData {
   _id: string;
   userId: string;
   socialLinks: ICard[];
-  personalInfo: IPersonalInformation;
+  personalInfo: IPersonalDetails;
   contactDetails: Omit<
     Omit<IContactDetails, 'profilePicture'>,
     'companyLogo'
@@ -29,7 +26,7 @@ export interface ICardsResponse {
 export type IEditCardData =
   | {socialLinks: ICard[]}
   | {contactDetails: FormData}
-  | {personalInfo: IPersonalInformation};
+  | {personalInfo: IPersonalDetails};
 
 class DashboardService {
   async getAllCards(): Promise<IDefaultAPIResponse<ICardsResponse['data']>> {

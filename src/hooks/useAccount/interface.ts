@@ -1,4 +1,6 @@
 import {Image} from 'react-native-image-crop-picker';
+import {ISocial, SocialLinkType} from '../../constants/socials';
+import {IShareContactDetails} from '../../screens/ShareDetails';
 
 // export interface IPersonalInformation {
 //   name: string;
@@ -7,14 +9,14 @@ import {Image} from 'react-native-image-crop-picker';
 //   designation: string;
 // }
 
-// export interface IContactDetails {
-//   email: string;
-//   mobile: string;
-//   websiteUrl: string;
-//   companyAddress: string;
-//   companyLogo: Image | string | null;
-//   profilePicture: Image | string | null;
-// }
+export interface IContactDetails {
+  email?: string;
+  mobile?: string;
+  websiteUrl?: string;
+  companyAddress?: string;
+  companyLogo?: Image | string | null;
+  profilePicture?: Image | string | null;
+}
 
 export interface IAccountDetails {
   email: string;
@@ -25,7 +27,10 @@ export interface IAccountDetails {
 export interface IPersonalDetails {
   name: string;
   phone: string;
-  websiteUrl: string;
+  websiteUrl?: string;
+  department?: string;
+  companyName?: string;
+  designation?: string;
 }
 
 export interface IAccountPhotos {
@@ -33,18 +38,18 @@ export interface IAccountPhotos {
   companyLogo: Image | string | null;
 }
 
-// export interface ISocialLink {
-//   url: string;
-//   title: string;
-//   id: SocialLinkType;
-// }
+export interface ISocialLink {
+  url: string;
+  title: string;
+  id: SocialLinkType;
+}
 
 export interface ICreateAccountState {
   step: number;
-  // socialItems: ISocial[];
+  socialItems: ISocial[];
   fromDashBoard: boolean;
-  // socialLinks: ISocialLink[];
-  // contactDetails: IContactDetails;
+  socialLinks: ISocialLink[];
+  contactDetails: IContactDetails;
   // personalInformation: IPersonalInformation;
   accountDetails: IAccountDetails;
   personalDetails: IPersonalDetails;
@@ -53,14 +58,14 @@ export interface ICreateAccountState {
 
 export interface ICreateAccountActions {
   setStep: (step: number) => void;
-  // setSocialItem: (item: ISocial) => void;
+  setSocialItem: (item: ISocial) => void;
   setFromDashBoard: (val: boolean) => void;
-  // setSocialItems: (items: ISocial[]) => void;
-  // setSocialLink: (data: ISocialLink) => void;
-  // setSocialLinks: (data: ISocialLink[]) => void;
-  // removeSocialItem: (id: SocialLinkType) => void;
-  // removeSocialLink: (id: SocialLinkType) => void;
-  // setContactDetails: (contactDetails: IContactDetails) => void;
+  setSocialItems: (items: ISocial[]) => void;
+  setSocialLink: (data: ISocialLink) => void;
+  setSocialLinks: (data: ISocialLink[]) => void;
+  removeSocialItem: (id: SocialLinkType) => void;
+  removeSocialLink: (id: SocialLinkType) => void;
+  setContactDetails: (contactDetails: IShareContactDetails) => void;
   // setPersonalInformation: (personalInfo: IPersonalInformation) => void;
   setAccountDetails: (accountDetails: IAccountDetails) => void;
   setPersonalDetails: (personalDetails: IPersonalDetails) => void;

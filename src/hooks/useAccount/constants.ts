@@ -1,13 +1,13 @@
-// import {IContactDetails, IPersonalInformation} from './interface';
+import {IContactDetails} from './interface';
 
-// export const initialContactDetails = {
-//   email: '',
-//   mobile: '',
-//   websiteUrl: '',
-//   companyLogo: null,
-//   companyAddress: '',
-//   profilePicture: null,
-// } as IContactDetails;
+export const initialContactDetails = {
+  email: '',
+  mobile: '',
+  websiteUrl: '',
+  companyLogo: null,
+  companyAddress: '',
+  profilePicture: null,
+} as IContactDetails;
 
 // export const initialPersonalInformation = {
 //   name: '',

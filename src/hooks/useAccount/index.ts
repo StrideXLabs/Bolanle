@@ -3,6 +3,7 @@ import {immer} from 'zustand/middleware/immer';
 import {
   initialAccountDetails,
   initialAccountPhotos,
+  initialContactDetails,
   initialPersonalDetails,
 } from './constants';
 import {ICreateAccountState, ICreateAccountActions} from './interface';
@@ -40,11 +41,11 @@ export const useAccount = create<ICreateAccountState & ICreateAccountActions>()(
         state.accountPhotos = accountPhotos;
       }),
 
-    // contactDetails: initialContactDetails,
-    // setContactDetails: contactDetails =>
-    //   set(state => {
-    //     state.contactDetails = contactDetails;
-    //   }),
+    contactDetails: initialContactDetails,
+    setContactDetails: contactDetails =>
+      set(state => {
+        state.contactDetails = contactDetails;
+      }),
 
     // personalInformation: initialPersonalInformation,
     // setPersonalInformation: personalInfo =>
@@ -53,49 +54,49 @@ export const useAccount = create<ICreateAccountState & ICreateAccountActions>()(
     //   }),
 
     // SOCIAL ITEMS
-    // socialItems: [],
-    // setSocialItem: item => {
-    //   set(state => {
-    //     const exist = state.socialItems.find(i => i.id === item.id);
-    //     if (exist) return;
-    //     state.socialItems = [item].concat(state.socialItems);
-    //   });
-    // },
-    // removeSocialItem: id => {
-    //   set(state => {
-    //     state.socialItems = state.socialItems.filter(i => i.id !== id);
-    //   });
-    // },
-    // setSocialItems: items => {
-    //   set(state => {
-    //     state.socialItems = items;
-    //   });
-    // },
+    socialItems: [],
+    setSocialItem: item => {
+      set(state => {
+        const exist = state.socialItems.find(i => i.id === item.id);
+        if (exist) return;
+        state.socialItems = [item].concat(state.socialItems);
+      });
+    },
+    removeSocialItem: id => {
+      set(state => {
+        state.socialItems = state.socialItems.filter(i => i.id !== id);
+      });
+    },
+    setSocialItems: items => {
+      set(state => {
+        state.socialItems = items;
+      });
+    },
 
-    // // SOCIAL LINKS
-    // socialLinks: [],
-    // setSocialLink: data => {
-    //   set(state => {
-    //     const exist = state.socialLinks.find(item => item.id === data.id);
+    // SOCIAL LINKS
+    socialLinks: [],
+    setSocialLink: data => {
+      set(state => {
+        const exist = state.socialLinks.find(item => item.id === data.id);
 
-    //     if (exist) {
-    //       exist.url = data.url || '';
-    //       exist.title = data.title || '';
-    //       return;
-    //     }
+        if (exist) {
+          exist.url = data.url || '';
+          exist.title = data.title || '';
+          return;
+        }
 
-    //     state.socialLinks.push(data);
-    //   });
-    // },
-    // removeSocialLink: id => {
-    //   set(state => {
-    //     state.socialLinks = state.socialLinks.filter(item => item.id !== id);
-    //   });
-    // },
-    // setSocialLinks: data => {
-    //   set(state => {
-    //     state.socialLinks = data;
-    //   });
-    // },
+        state.socialLinks.push(data);
+      });
+    },
+    removeSocialLink: id => {
+      set(state => {
+        state.socialLinks = state.socialLinks.filter(item => item.id !== id);
+      });
+    },
+    setSocialLinks: data => {
+      set(state => {
+        state.socialLinks = data;
+      });
+    },
   })),
 );

@@ -12,10 +12,10 @@ import Layout from '../../components/Layout';
 import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {SocialLinkType} from '../../constants/socials';
-import {useCreateBusinessCard} from '../../hooks/useAccount';
+import {useAccount} from '../../hooks/useAccount';
 import {
   initialContactDetails,
-  initialPersonalInformation,
+  initialPersonalDetails,
 } from '../../hooks/useAccount/constants';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
@@ -42,8 +42,9 @@ const EditCardScreen = ({
     setSocialItems,
     setSocialLinks,
     setContactDetails,
-    setPersonalInformation,
-  } = useCreateBusinessCard();
+    // setPersonalDetails,
+    setPersonalDetails,
+  } = useAccount();
   const {card, editable, cardId} = params;
 
   const [open, setOpen] = useState(false);
@@ -52,25 +53,25 @@ const EditCardScreen = ({
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(!card);
-  const [
-    {qr, socialLinks, personalInfo, contactDetails, _id, userId},
-    setCardData,
-  ] = useState<Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>>(
-    card || {
-      qr: '',
-      _id: '',
-      userId: '',
-      socialLinks: [],
-      contactDetails: initialContactDetails,
-      personalInfo: initialPersonalInformation,
-    },
-  );
+  const [{qr, socialLinks, personalInfo, contactDetails, _id}, setCardData] =
+    useState<Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>>(
+      card || {
+        qr: '',
+        _id: '',
+        userId: '',
+        socialLinks: [],
+        contactDetails: initialContactDetails,
+        personalInfo: initialPersonalDetails,
+      },
+    );
 
   const handleEditProfileAndLogo = () => {
     setContactDetails({
       ...contactDetails,
       companyLogo: contactDetails.companyLogo,
       profilePicture: contactDetails.profileImage,
+      contact: '',
+      shareType: '',
     });
     navigation.navigate('ContactDetailsScreen', {
       cardId: _id,
@@ -79,7 +80,7 @@ const EditCardScreen = ({
   };
 
   const handleEditPersonalInformation = (info: ICardData['personalInfo']) => {
-    setPersonalInformation(info);
+    setPersonalDetails(info);
     navigation.navigate('PersonalInformationScreen', {
       cardId: _id,
       status: 'EDITING',
@@ -91,6 +92,8 @@ const EditCardScreen = ({
       ...info,
       companyLogo: info.companyLogo,
       profilePicture: info.profileImage,
+      contact: '',
+      shareType: '',
     });
 
     navigation.navigate('ContactDetailsScreen', {
@@ -184,7 +187,7 @@ const EditCardScreen = ({
           userId: '',
           socialLinks: [],
           contactDetails: initialContactDetails,
-          personalInfo: initialPersonalInformation,
+          personalInfo: initialPersonalDetails,
         },
       );
     } catch (error) {
@@ -224,33 +227,33 @@ const EditCardScreen = ({
       {!loading && !error && (
         <>
           <DashboardHeader
-            options={{
-              type: 'VIEW_OR_EDIT',
-              onBackBtnPress: () =>
-                editable
-                  ? navigation.replace('AppBottomNav')
-                  : navigation.canGoBack()
-                  ? navigation.goBack()
-                  : navigation.replace('AppBottomNav'),
-              onShareBtnPress: () =>
-                navigation.push('ShareCardScreen', {
-                  type: 'WITH_DATA',
-                  fullName: personalInfo.name,
-                  company: personalInfo.companyName,
-                  card: {
-                    qr,
-                    _id,
-                    userId,
-                    socialLinks,
-                    personalInfo,
-                    contactDetails,
-                  },
-                }),
-              heading: editable ? 'EDIT CARD' : 'VIEW CARD',
-              subheading: editable
-                ? 'You can edit your card info here.'
-                : 'Viewing card info here.',
-            }}
+          // options={{
+          //   type: 'VIEW_OR_EDIT',
+          //   onBackBtnPress: () =>
+          //     editable
+          //       ? navigation.replace('AppBottomNav')
+          //       : navigation.canGoBack()
+          //       ? navigation.goBack()
+          //       : navigation.replace('AppBottomNav'),
+          //   onShareBtnPress: () =>
+          //     navigation.push('ShareCardScreen', {
+          //       type: 'WITH_DATA',
+          //       fullName: personalInfo.name,
+          //       company: personalInfo.companyName,
+          //       card: {
+          //         qr,
+          //         _id,
+          //         userId,
+          //         socialLinks,
+          //         personalInfo,
+          //         contactDetails,
+          //       },
+          //     }),
+          //   heading: editable ? 'EDIT CARD' : 'VIEW CARD',
+          //   subheading: editable
+          //     ? 'You can edit your card info here.'
+          //     : 'Viewing card info here.',
+          // }}
           />
           {deletingSocial && (
             <View className="absolute z-[1000000] h-screen w-screen bg-[#292c3366] justify-center items-center">
