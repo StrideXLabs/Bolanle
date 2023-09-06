@@ -11,6 +11,8 @@ import {
 } from '../../constants/icons';
 import PersonalDetails from './PersonalDetails';
 import ContactDetails from './ContactDetails';
+import LocationDetails from './LocationDetails';
+import SocialLinks from './SocialLinks';
 
 const EditProfileDetails = () => {
   return (
@@ -77,6 +79,12 @@ const EditProfileDetails = () => {
 
       {/* Contact Details */}
       <ContactDetails />
+
+      {/* Location Details */}
+      <LocationDetails />
+
+      {/* Social Links */}
+      <SocialLinks />
     </View>
   );
 };

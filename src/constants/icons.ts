@@ -23,3 +23,8 @@ export {default as EyeIcon} from '../assets/images/eye.png';
 export {default as EyeOffIcon} from '../assets/images/eye-off.png';
 export {default as Photo} from '../assets/images/photo-skeleton.png';
 export {default as CloseIcon} from '../assets/images/close-icon.png';
+
+export {default as InstaIcon} from '../assets/images/socials/ic_instagram.png';
+export {default as TwitterIcon} from '../assets/images/socials/ic_twitter.png';
+export {default as LinkedIdIcon} from '../assets/images/socials/ic_linkedIn.png';
+export {default as WhatsAppIcon} from '../assets/images/socials/ic_whatsapp.png';

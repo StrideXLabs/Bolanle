@@ -197,6 +197,7 @@ const EmailVerificationScreen = ({
               style={{
                 height: responsiveHeight(80 / percentToPx),
                 aspectRatio: 1,
+                tintColor: accentColor,
               }}
             />
             <View
