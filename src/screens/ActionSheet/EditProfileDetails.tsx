@@ -13,8 +13,15 @@ import PersonalDetails from './PersonalDetails';
 import ContactDetails from './ContactDetails';
 import LocationDetails from './LocationDetails';
 import SocialLinks from './SocialLinks';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {AppStackParams} from '../../navigation/AppNavigation';
 
-const EditProfileDetails = () => {
+type EditProfileProps = NativeStackScreenProps<
+  AppStackParams,
+  'PersonalInfoScreen'
+>;
+
+const EditProfileDetails = ({navigation}: EditProfileProps) => {
   return (
     <View
       style={{
@@ -64,7 +71,13 @@ const EditProfileDetails = () => {
               resizeMode="contain"
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('PersonalInfoScreen', {
+                cardId: null,
+                status: 'CREATING',
+              });
+            }}>
             <Image
               source={AddButtonIcon as any}
               className={`h-8 w-8`}

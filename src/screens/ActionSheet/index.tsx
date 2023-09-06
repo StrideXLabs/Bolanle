@@ -4,8 +4,16 @@ import Layout from '../../components/Layout';
 import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import EditProfileDetails from './EditProfileDetails';
 import StaticContainer from '../../containers/StaticContainer';
+import {AppStackParams} from '../../navigation/AppNavigation';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 
-const ActionSheet = () => {
+type ActionSheetProps = NativeStackScreenProps<
+  BottomTabNavigatorParams & AppStackParams,
+  'ActionSheetScreen'
+>;
+
+const ActionSheet = ({navigation}: ActionSheetProps) => {
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -20,7 +28,7 @@ const ActionSheet = () => {
   return (
     <Layout>
       {/* <StaticContainer isBack isHeader title="Dashboard"> */}
-      <View className="flex-1">
+      <View className="flex-1 bg-red-500">
         <View className="h-[38%] w-full">
           <Image
             resizeMode="cover"
@@ -40,7 +48,7 @@ const ActionSheet = () => {
           }}
           handleIndicatorStyle={{backgroundColor: 'blue'}}>
           <BottomSheetScrollView>
-            <EditProfileDetails />
+            <EditProfileDetails navigation={navigation} />
           </BottomSheetScrollView>
         </BottomSheet>
       </View>

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prettier/prettier */
 import {View, TouchableOpacity, Image, Text} from 'react-native';
 import React from 'react';
 import {
