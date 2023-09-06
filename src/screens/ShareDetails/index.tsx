@@ -17,9 +17,9 @@ export type ShareCardScreenProps = NativeStackScreenProps<
 >;
 
 export interface IShareContactDetails {
-  contact: string;
+  contact?: string;
   comment?: string;
-  shareType: ShareType;
+  shareType?: ShareType;
   companyLogo?: string | Image;
   profilePicture?: string | Image;
   email?: string;
@@ -40,13 +40,16 @@ const ShareCardDetailsScreen = ({navigation, route}: ShareCardScreenProps) => {
 
   const onTextMessage = async (details: IShareContactDetails, code: string) => {
     try {
-      const contact = details.contact.split(' ')?.[1];
+      const contact =
+        (details?.contact && details?.contact.split(' ')?.[1]) || '';
       if (!contact)
         return Toast.error({primaryText: 'Provide a valid mobile number.'});
 
-      const url = `sms:${code}${details.contact.split(' ')[1]}${
-        Platform.OS === 'ios' ? '&' : '?'
-      }body=${details.comment}\n\n${BASE_URL}/card/${card._id}`;
+      const url = `sms:${code}${
+        (details?.contact && details?.contact.split(' ')[1]) || ''
+      }${Platform.OS === 'ios' ? '&' : '?'}body=${
+        details.comment
+      }\n\n${BASE_URL}/card/${card._id}`;
 
       const isSuccess = await Linking.openURL(url);
       if (isSuccess) {
@@ -65,7 +68,7 @@ const ShareCardDetailsScreen = ({navigation, route}: ShareCardScreenProps) => {
   };
 
   const onEmailCard = async (details: IShareContactDetails) => {
-    if (!emailRegex.test(details.contact))
+    if (!emailRegex.test(details.contact || ''))
       return Toast.error({
         primaryText: 'Please provide a valid email address.',
       });

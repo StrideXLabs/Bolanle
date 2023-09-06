@@ -17,10 +17,10 @@ import HeaderWithText from '../../components/Header/HeaderWithText';
 import Layout from '../../components/Layout';
 import TextField from '../../components/TextField/TextFieldDark';
 import {percentToPx} from '../../constants';
-import {useCreateBusinessCard} from '../../hooks/useAccount';
+import {useAccount} from '../../hooks/useAccount';
 import {
   initialContactDetails,
-  initialPersonalInformation,
+  initialPersonalDetails,
 } from '../../hooks/useAccount/constants';
 import Toast from '../../lib/toast';
 import {AppStackParams} from '../../navigation/AppNavigation';
@@ -79,17 +79,17 @@ const PersonalInformation = ({
     setSocialItems,
     setFromDashBoard,
     setContactDetails,
-    personalInformation,
-    setPersonalInformation,
-  } = useCreateBusinessCard();
+    personalDetails,
+    setPersonalDetails,
+  } = useAccount();
 
   const handleUpdateDetails = async () => {
     try {
       if (
-        !personalInformation.name ||
-        !personalInformation.designation ||
-        !personalInformation.department ||
-        !personalInformation.companyName
+        !personalDetails.name ||
+        !personalDetails.designation ||
+        !personalDetails.department ||
+        !personalDetails.companyName
       ) {
         Toast.error({
           position: 'bottom',
@@ -102,7 +102,7 @@ const PersonalInformation = ({
       if (!cardId) return;
       setUpdating(true);
       const response = await dashboardService.editCardDetails(cardId, {
-        personalInfo: personalInformation,
+        personalInfo: personalDetails,
       });
 
       setUpdating(false);
@@ -110,7 +110,7 @@ const PersonalInformation = ({
         return Toast.error({primaryText: response.message});
 
       Toast.success({primaryText: 'Information updated.'});
-      setPersonalInformation(initialPersonalInformation);
+      setPersonalDetails(initialPersonalDetails);
       navigation.pop();
       navigation.replace('EditCardScreen', {
         editable: true,
@@ -128,7 +128,7 @@ const PersonalInformation = ({
       setSocialItems([]),
       setFromDashBoard(false),
       setContactDetails(initialContactDetails),
-      setPersonalInformation(initialPersonalInformation),
+      setPersonalDetails(initialPersonalDetails),
     ]);
     setStep(step === 0 ? 0 : step - 1);
 
@@ -138,10 +138,10 @@ const PersonalInformation = ({
 
   const handleNextClick = () => {
     if (
-      !personalInformation.name ||
-      !personalInformation.designation ||
-      !personalInformation.department ||
-      !personalInformation.companyName
+      !personalDetails.name ||
+      !personalDetails.designation ||
+      !personalDetails.department ||
+      !personalDetails.companyName
     ) {
       Toast.error({
         position: 'bottom',
@@ -167,7 +167,7 @@ const PersonalInformation = ({
             setSocialItems([]),
             setFromDashBoard(false),
             setContactDetails(initialContactDetails),
-            setPersonalInformation(initialPersonalInformation),
+            setPersonalDetails(initialPersonalDetails),
           ]);
         })();
 
@@ -205,23 +205,23 @@ const PersonalInformation = ({
             <View>
               <TextField
                 onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
+                  setPersonalDetails({
+                    ...personalDetails,
                     name: text,
                   });
                 }}
-                value={personalInformation.name}
+                value={personalDetails.name}
                 placeholder="Enter your full name"
                 style={{marginBottom: responsiveHeight(20 / percentToPx)}}
               />
               <TextField
                 onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
+                  setPersonalDetails({
+                    ...personalDetails,
                     designation: text,
                   });
                 }}
-                value={personalInformation.designation}
+                value={personalDetails.designation || ''}
                 placeholder="Enter your Job Title"
                 style={{marginBottom: responsiveHeight(20 / percentToPx)}}
               />
@@ -229,18 +229,18 @@ const PersonalInformation = ({
                 data={DEPARTMENTS}
                 search={true}
                 defaultButtonText="Select a Department"
-                onSelect={(text, index) => {
-                  setPersonalInformation({
-                    ...personalInformation,
+                onSelect={text => {
+                  setPersonalDetails({
+                    ...personalDetails,
                     department: text,
                   });
                 }}
-                buttonTextAfterSelection={(selectedItem, index) => {
+                buttonTextAfterSelection={selectedItem => {
                   // text represented after item is selected
                   // if data array is an array of objects then return selectedItem.property to render after item is selected
                   return selectedItem;
                 }}
-                rowTextForSelection={(item, index) => {
+                rowTextForSelection={item => {
                   // text represented for each item in dropdown
                   // if data array is an array of objects then return item.property to represent item in dropdown
                   return item;
@@ -262,23 +262,23 @@ const PersonalInformation = ({
               />
               {/* <TextField
                 onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
+                  setPersonalDetails({
+                    ...personalDetails,
                     department: text,
                   });
                 }}
-                value={personalInformation.department}
+                value={personalDetails.department}
                 placeholder="Enter your department"
                 style={{ marginBottom: responsiveHeight(20 / percentToPx) }}
               /> */}
               <TextField
                 onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
+                  setPersonalDetails({
+                    ...personalDetails,
                     companyName: text,
                   });
                 }}
-                value={personalInformation.companyName}
+                value={personalDetails.companyName || ''}
                 placeholder="Enter your company name"
               />
             </View>
