@@ -72,7 +72,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
                       width: responsiveWidth(85),
                       marginBottom: responsiveHeight(20 / percentToPx),
                     }}
-                    callback={() => navigation.replace('LoginScreen')}
+                    callback={() => navigation.navigate('LoginScreen')}
                   />
                   <Button
                     style={{

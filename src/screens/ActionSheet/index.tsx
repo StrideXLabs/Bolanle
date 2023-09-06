@@ -28,7 +28,7 @@ const ActionSheet = ({navigation}: ActionSheetProps) => {
   return (
     <Layout>
       {/* <StaticContainer isBack isHeader title="Dashboard"> */}
-      <View className="flex-1 bg-red-500">
+      <View className="flex-1">
         <View className="h-[38%] w-full">
           <Image
             resizeMode="cover"

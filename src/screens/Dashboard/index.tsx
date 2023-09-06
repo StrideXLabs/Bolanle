@@ -1,12 +1,14 @@
-import {View, Image} from 'react-native';
-import React, {useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, {useState, useEffect} from 'react';
+import {View, Image, ScrollView, TouchableOpacity} from 'react-native';
 import Layout from '../../components/Layout';
 import DashboardHeader from '../../components/Header/DashboardHeader';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import TextField from '../../components/TextField/TextFieldLight';
-import {SearchIcon} from '../../constants/icons';
+import {SearchIcon, addCardIcon} from '../../constants/icons';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import {percentToPx} from '../../constants';
 import DashboardCard from './Card';
@@ -45,7 +47,27 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
           }
         />
       </View>
-      <DashboardCard navigation={navigation} />
+      <ScrollView
+        horizontal
+        contentContainerStyle={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}>
+        <DashboardCard navigation={navigation} />
+        <View
+          className="justify-center"
+          style={{
+            marginBottom: responsiveHeight(40 / percentToPx),
+          }}>
+          <TouchableOpacity>
+            <Image
+              source={addCardIcon as any}
+              className={`h-8 w-8`}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </Layout>
   );
 };

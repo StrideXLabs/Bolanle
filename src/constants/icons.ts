@@ -28,3 +28,5 @@ export {default as InstaIcon} from '../assets/images/socials/ic_instagram.png';
 export {default as TwitterIcon} from '../assets/images/socials/ic_twitter.png';
 export {default as LinkedIdIcon} from '../assets/images/socials/ic_linkedIn.png';
 export {default as WhatsAppIcon} from '../assets/images/socials/ic_whatsapp.png';
+
+export {default as addCardIcon} from '../assets/images/add_card.png';

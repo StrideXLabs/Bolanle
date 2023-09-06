@@ -43,10 +43,11 @@ const DashboardCard = ({navigation}: {navigation: any}) => {
       style={{
         paddingVertical: responsiveHeight(8 / percentToPx),
         paddingHorizontal: responsiveHeight(20 / percentToPx),
+        maxWidth: responsiveHeight(365 / percentToPx),
       }}>
       <View className="bg-secondary-blue rounded-3xl p-4 space-y-5">
         {/* Card */}
-        <View className="w-full bg-white rounded-3xl flex flex-row space-x-7">
+        <View className="w-full bg-white rounded-3xl flex flex-row space-x-6">
           <View className="flex-1">
             <Image
               resizeMode="contain"
@@ -111,7 +112,7 @@ const DashboardCard = ({navigation}: {navigation: any}) => {
         {/* Button */}
         <Button
           text="Edit card details"
-          callback={() => navigation.navigate('EditCardScreen')}
+          callback={() => navigation.navigate('ActionSheetScreen')}
         />
       </View>
     </View>

@@ -18,7 +18,7 @@ import {AppStackParams} from '../../navigation/AppNavigation';
 
 type EditProfileProps = NativeStackScreenProps<
   AppStackParams,
-  'PersonalInfoScreen'
+  'PersonalInformationScreen'
 >;
 
 const EditProfileDetails = ({navigation}: EditProfileProps) => {
@@ -73,7 +73,7 @@ const EditProfileDetails = ({navigation}: EditProfileProps) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('PersonalInfoScreen', {
+              navigation.navigate('PersonalInformationScreen', {
                 cardId: null,
                 status: 'CREATING',
               });
