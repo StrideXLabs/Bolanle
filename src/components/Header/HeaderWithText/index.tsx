@@ -13,20 +13,14 @@ const HeaderWithText = ({heading, subtitle}: HeaderWithTextProps) => {
   return (
     <>
       <Text
-        style={[
-          textStyles.bebasNeueBold,
-          {fontSize: responsiveFontSize(32 / percentToPx)},
-        ]}
-        className="text-dark-blue mb-1">
+        style={[{fontSize: responsiveFontSize(32 / percentToPx)}]}
+        className="text-black mb-1 font-3">
         {heading}
       </Text>
-      <View className="w-full h-[2px] bg-dark-blue rounded-sm" />
+      <View className="w-full h-[2px] bg-black rounded-sm" />
       <Text
-        style={[
-          textStyles.robotoRegular,
-          {fontSize: responsiveFontSize(12 / percentToPx)},
-        ]}
-        className="text-dark-blue mt-1">
+        style={[{fontSize: responsiveFontSize(12 / percentToPx)}]}
+        className="text-black mt-1 font-1">
         {subtitle}
       </Text>
     </>

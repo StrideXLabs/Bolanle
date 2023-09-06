@@ -6,7 +6,6 @@ import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
 import {
   responsiveFontSize,
   responsiveHeight,
-  responsiveWidth,
 } from 'react-native-responsive-dimensions';
 
 import Button from '../../../components/Button';
@@ -183,7 +182,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                   activeOpacity={0.6}
                   onPress={() => {
                     console.log('Clicked');
-                    navigation.navigate('PersonalInformationScreen', {
+                    navigation.navigate('PersonalInfoScreen', {
                       cardId: null,
                       status: 'CREATING',
                     });

@@ -26,6 +26,7 @@ export type EditScreenParams = {
   SocialLinksScreen: {status: ScreenStatus; cardId: string | null};
   ContactDetailsScreen: {status: ScreenStatus; cardId: string | null};
   PersonalInformationScreen: {status: ScreenStatus; cardId: string | null};
+  PersonalInfoScreen: {status: ScreenStatus; cardId: string | null};
   WhatsAppScreen: {
     social: ISocial;
     status: ScreenStatus;
@@ -81,7 +82,7 @@ const AppNavigation = () => {
 
   return (
     <>
-      {!authed ? (
+      {authed ? (
         <AppStack.Navigator
           initialRouteName="AppBottomNav"
           screenOptions={{headerShown: false, animation: 'slide_from_right'}}>

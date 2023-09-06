@@ -1,6 +1,6 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import decodeJWT from 'jwt-decode';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -22,15 +22,15 @@ import emailLarge from '../../assets/images/email-large.png';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
 import Layout from '../../components/Layout';
-import { AuthStateKey, accentColor, percentToPx } from '../../constants';
+import {AuthStateKey, accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
-import { useAuth } from '../../hooks/useAuth';
-import { IAuthState, IUser } from '../../hooks/useAuth/interface';
-import { useCredentials } from '../../hooks/useCredentials';
-import { setDataToAsyncStorage } from '../../lib/storage';
+import {useAuth} from '../../hooks/useAuth';
+import {IAuthState, IUser} from '../../hooks/useAuth/interface';
+import {useCredentials} from '../../hooks/useCredentials';
+import {setDataToAsyncStorage} from '../../lib/storage';
 import Toast from '../../lib/toast';
-import { AuthStackParams } from '../../navigation/AuthNavigation';
-import { BottomTabNavigatorParams } from '../../navigation/BottomNavigation';
+import {AuthStackParams} from '../../navigation/AuthNavigation';
+import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import authService from '../../services/auth.service';
 
 export type EmailVerificationScreenProps = NativeStackScreenProps<
@@ -41,11 +41,11 @@ export type EmailVerificationScreenProps = NativeStackScreenProps<
 const EmailVerificationScreen = ({
   navigation,
   route: {
-    params: { verificationToken },
+    params: {verificationToken},
   },
 }: EmailVerificationScreenProps) => {
   const [resending, setResending] = useState(false);
-  const { email, setEmail, setPassword } = useCredentials();
+  const {email, setEmail, setPassword} = useCredentials();
   const setAuthState = useAuth(state => state.setAuthState);
   const [authenticating, setAuthenticating] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -64,20 +64,20 @@ const EmailVerificationScreen = ({
         email,
       );
 
-      console.log({ email, token: verificationTokenRef })
+      console.log({email, token: verificationTokenRef});
 
       if (!response.success) {
         setResending(false);
-        return Toast.error({ primaryText: response.message });
+        return Toast.error({primaryText: response.message});
       }
 
       setResending(false);
-      Toast.success({ primaryText: 'Verification mail sent.' });
+      Toast.success({primaryText: 'Verification mail sent.'});
       verificationTokenRef.current = response.data?.verificationToken || '';
       resendTimerRef.current = setTimeout(handleVerification, 300);
     } catch (error) {
       setResending(false);
-      Toast.error({ primaryText: 'Something went wrong.' });
+      Toast.error({primaryText: 'Something went wrong.'});
     }
   };
 
@@ -93,14 +93,14 @@ const EmailVerificationScreen = ({
       verifyTimerRef.current = setTimeout(handleSignIn, 300);
       setIsEmailVerified(true);
     } catch (error) {
-      Toast.error({ primaryText: 'Something went wrong.' });
+      Toast.error({primaryText: 'Something went wrong.'});
     }
   };
 
   const handleSignIn = async () => {
     setAuthenticating(true);
     const token = tokenRef.current || '';
-    const decodedUser = decodeJWT(token) as { [key: string]: string | number };
+    const decodedUser = decodeJWT(token) as {[key: string]: string | number};
     const user = {
       id: decodedUser._id,
       name: decodedUser.name,
@@ -119,7 +119,7 @@ const EmailVerificationScreen = ({
 
     authTimerRef.current = setTimeout(() => {
       setAuthenticating(false);
-      setAuthState({ authed: true, token, user });
+      setAuthState({authed: true, token, user});
     }, 500);
   };
 
@@ -160,7 +160,7 @@ const EmailVerificationScreen = ({
       <ScrollView
         className="h-screen"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 10 }}>
+        contentContainerStyle={{paddingBottom: 10}}>
         <View
           style={{
             paddingVertical: responsiveHeight(32 / percentToPx),
@@ -196,7 +196,7 @@ const EmailVerificationScreen = ({
               source={emailLarge as ImageSourcePropType}
               style={{
                 height: responsiveHeight(80 / percentToPx),
-                aspectRatio: 1
+                aspectRatio: 1,
               }}
             />
             <View
@@ -213,15 +213,13 @@ const EmailVerificationScreen = ({
                 }
                 style={{
                   width: responsiveWidth(35 / percentToPx),
-                  height: responsiveHeight(40 / percentToPx),
-                  marginRight: responsiveHeight(3 / percentToPx),
+                  height: responsiveHeight(37 / percentToPx),
+                  marginRight: responsiveHeight(8 / percentToPx),
                 }}
               />
               <Text
-                style={[
-                  textStyles.robotoBold,
-                  { fontSize: responsiveFontSize(20 / percentToPx) },
-                ]}>
+                style={[{fontSize: responsiveFontSize(16 / percentToPx)}]}
+                className="font-3">
                 {isEmailVerified
                   ? 'Email verification completed'
                   : 'Waiting for email verification'}
@@ -229,15 +227,15 @@ const EmailVerificationScreen = ({
             </View>
             {!isEmailVerified && (
               <View className="flex flex-row items-center">
-                <Text style={{ marginRight: responsiveHeight(3 / percentToPx) }}>
+                <Text
+                  className="font-0"
+                  style={{marginRight: responsiveHeight(3 / percentToPx)}}>
                   Haven't received the email yet?
                 </Text>
                 <Pressable onPress={handleResend}>
                   <Text
-                    style={[
-                      textStyles.robotoBold,
-                      { fontSize: responsiveFontSize(12 / percentToPx) },
-                    ]}>
+                    style={[{fontSize: responsiveFontSize(12 / percentToPx)}]}
+                    className="font-2">
                     Resend Email
                   </Text>
                 </Pressable>
@@ -256,7 +254,7 @@ const EmailVerificationScreen = ({
               <Text
                 style={[
                   textStyles.robotoMedium,
-                  { marginTop: responsiveHeight(12 / percentToPx) },
+                  {marginTop: responsiveHeight(12 / percentToPx)},
                 ]}
                 className="text-center">
                 {authenticating

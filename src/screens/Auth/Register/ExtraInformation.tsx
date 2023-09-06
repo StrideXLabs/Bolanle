@@ -254,7 +254,7 @@ const ExtraInformation: React.FC<ExtraInfoProps> = () => {
       <View className="w-full flex-1 items-center">
         <GenericCardContainer>
           <View className="w-full">
-            <Text className="text-lg font-semibold text-black">
+            <Text className="text-lg font-3 text-black">
               Step 3: Add pictures to stand out
             </Text>
           </View>
@@ -281,7 +281,7 @@ const ExtraInformation: React.FC<ExtraInfoProps> = () => {
               {loading.skip ? (
                 <ActivityIndicator color="black" />
               ) : (
-                <Text className="text-center text-black text-lg font-semibold">
+                <Text className="text-center text-black text-lg font-3">
                   Skip
                 </Text>
               )}

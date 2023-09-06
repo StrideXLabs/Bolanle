@@ -50,7 +50,7 @@ const PersonalInformation: React.FC<PersonalInfoProps> = ({navigation}) => {
   const handleProceed = async () => {
     if (!validateData()) return;
     setStep(step + 1);
-    navigation.navigate('ExtraInfoScreen');
+    navigation.navigate('AccountInfoScreen');
   };
 
   const handleBackPress = () => {
@@ -66,8 +66,8 @@ const PersonalInformation: React.FC<PersonalInfoProps> = ({navigation}) => {
       <View className="w-full flex-1 items-center">
         <GenericCardContainer>
           <View className="w-full">
-            <Text className="text-lg font-semibold text-black">
-              Step 2: Enter your personal details
+            <Text className="text-lg font-3 text-black">
+              Step 1: Enter your personal details
             </Text>
           </View>
           <View>
