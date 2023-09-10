@@ -32,7 +32,7 @@ const SocialLinks = () => {
 
   return (
     <>
-      <Text className="font-3 text-black text-2xl mt-5">Personal Details</Text>
+      <Text className="font-3 text-black text-2xl mt-5">Social Details</Text>
       <View
         className="flex flex-row justify-around"
         style={{

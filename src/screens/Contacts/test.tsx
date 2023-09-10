@@ -1,4 +1,4 @@
-import {View, Image, Text} from 'react-native';
+import {View, Image} from 'react-native';
 import React from 'react';
 import Layout from '../../components/Layout';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
@@ -11,6 +11,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {ICardData} from '../../services/dashboard.service';
+import Filter from './Filter';
 
 export type ContactsScreenProps = NativeStackScreenProps<
   AppStackParams & BottomTabNavigatorParams,
@@ -46,6 +47,9 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
               />
             }
           />
+
+          {/* Filters */}
+          <Filter />
 
           {/* Cards */}
           <View

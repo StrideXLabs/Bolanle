@@ -16,7 +16,7 @@ import DashboardCard from './Card';
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
   'DashboardScreen',
-  'ActionSheetScreen'
+  'PersonalInfoScreen'
 >;
 
 const DashboardScreen = ({navigation}: DashboardScreenProps) => {
@@ -58,8 +58,15 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
           className="justify-center"
           style={{
             marginBottom: responsiveHeight(40 / percentToPx),
+            marginRight: responsiveHeight(10 / percentToPx),
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('PersonalInfoScreen', {
+                cardId: null,
+                status: 'CREATING',
+              });
+            }}>
             <Image
               source={addCardIcon as any}
               className={`h-8 w-8`}
