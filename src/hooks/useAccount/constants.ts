@@ -1,22 +1,18 @@
-import {IContactDetails} from './interface';
+import {
+  IAccountDetails,
+  IAccountPhotos,
+  IContactDetails,
+  IPersonalDetails,
+} from './interface';
 
-export const initialContactDetails = {
+export const initialContactDetails: IContactDetails = {
   email: '',
   mobile: '',
   websiteUrl: '',
-  companyLogo: null,
+  companyLogo: '',
   companyAddress: '',
-  profilePicture: null,
-} as IContactDetails;
-
-// export const initialPersonalInformation = {
-//   name: '',
-//   department: '',
-//   designation: '',
-//   companyName: '',
-// } as IPersonalInformation;
-
-import {IAccountDetails, IAccountPhotos, IPersonalDetails} from './interface';
+  profilePicture: '',
+};
 
 export const initialAccountDetails: IAccountDetails = {
   email: '',
@@ -28,9 +24,12 @@ export const initialPersonalDetails: IPersonalDetails = {
   name: '',
   phone: '',
   websiteUrl: '',
+  department: '',
+  companyName: '',
+  designation: '',
 };
 
 export const initialAccountPhotos: IAccountPhotos = {
-  profilePicture: null,
-  companyLogo: null,
+  profilePicture: '',
+  companyLogo: '',
 };

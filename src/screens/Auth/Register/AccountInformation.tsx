@@ -1,4 +1,11 @@
-import {Text, View, Image, ImageSourcePropType} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 import React from 'react';
 // import {
 //   ICreateAccountState,
@@ -17,27 +24,36 @@ import Steps from '../../../components/Steps/Steps';
 import Toast from '../../../lib/toast';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {OnboardingStackParams} from '../../../navigation/AuthNavigation';
+import ImagePicker from '../../../components/ImagePicker/ImagePicker';
 
 export type AccountInfoProps = NativeStackScreenProps<
   OnboardingStackParams,
-  'AccountInfoScreen'
+  'AccountInfoScreen',
+  'SocialLinksScreen'
 >;
 
 const AccountInformation: React.FC<AccountInfoProps> = ({navigation}) => {
-  const {accountDetails, setAccountDetails, step, setStep} = useAccount();
-  const [hide, setHide] = React.useState<{
-    password: boolean;
-    confirmPassword: boolean;
-  }>({
-    password: true,
-    confirmPassword: true,
-  });
+  const {contactDetails, setContactDetails, step, setStep} = useAccount();
+  const [loading, setLoading] = React.useState<{
+    finalize: boolean;
+    skip: boolean;
+  }>({finalize: false, skip: false});
+  // const [hide, setHide] = React.useState<{
+  //   password: boolean;
+  //   confirmPassword: boolean;
+  // }>({
+  //   password: true,
+  //   confirmPassword: true,
+  // });
 
   const validateData = () => {
     if (
-      !accountDetails.email ||
-      !accountDetails.password ||
-      !accountDetails.confirmPassword
+      !contactDetails.email ||
+      !contactDetails.mobile ||
+      !contactDetails.websiteUrl ||
+      !contactDetails.companyAddress
+      // !contactDetails.companyLogo ||
+      // !contactDetails.profilePicture
     ) {
       Toast.error({
         primaryText: 'All fields are required.',
@@ -46,15 +62,15 @@ const AccountInformation: React.FC<AccountInfoProps> = ({navigation}) => {
       return false;
     }
 
-    if (!emailRegex.test(accountDetails.email)) {
+    if (!emailRegex.test(contactDetails.email)) {
       Toast.error({primaryText: 'Email must be a valid.'});
       return false;
     }
 
-    if (accountDetails.password !== accountDetails.confirmPassword) {
-      Toast.error({primaryText: 'Password must match.'});
-      return false;
-    }
+    // if (accountDetails.password !== accountDetails.confirmPassword) {
+    //   Toast.error({primaryText: 'Password must match.'});
+    //   return false;
+    // }
 
     return true;
   };
@@ -63,11 +79,18 @@ const AccountInformation: React.FC<AccountInfoProps> = ({navigation}) => {
     if (!validateData()) return;
 
     setStep(step + 1);
-    navigation.navigate('ExtraInfoScreen');
   };
 
   const handleBackPress = () => {
     setStep(step - 1);
+  };
+
+  const handleAddImage = () => {
+    console.log('IMAGE ADDED');
+  };
+
+  const handleRemoveClick = () => {
+    console.log('IMAGE REMOVED');
   };
 
   return (
@@ -76,7 +99,7 @@ const AccountInformation: React.FC<AccountInfoProps> = ({navigation}) => {
       isHeader={true}
       title="Account Details"
       callback={handleBackPress}>
-      <View className="w-full flex-1 items-center">
+      <ScrollView className="w-full flex-1">
         <GenericCardContainer>
           <View className="w-full">
             <Text className="text-lg font-3 text-black">
@@ -89,10 +112,10 @@ const AccountInformation: React.FC<AccountInfoProps> = ({navigation}) => {
               className="w-full">
               <GenericTextField
                 placeholder="Email"
-                value={accountDetails.email}
+                value={contactDetails.email}
                 onChangeText={(text: string) =>
-                  setAccountDetails({
-                    ...accountDetails,
+                  setContactDetails({
+                    ...contactDetails,
                     email: text,
                   })
                 }
@@ -101,6 +124,71 @@ const AccountInformation: React.FC<AccountInfoProps> = ({navigation}) => {
               />
             </View>
             <View
+              style={{marginTop: responsiveHeight(20 / percentToPx)}}
+              className="w-full">
+              <GenericTextField
+                placeholder="Mobile number"
+                value={contactDetails.mobile}
+                onChangeText={(text: string) =>
+                  setContactDetails({
+                    ...contactDetails,
+                    mobile: text,
+                  })
+                }
+                autoCapitalize="words"
+                keyboardType="phone-pad"
+              />
+            </View>
+            <View
+              style={{marginTop: responsiveHeight(20 / percentToPx)}}
+              className="w-full">
+              <GenericTextField
+                placeholder="Company website url"
+                value={contactDetails.websiteUrl}
+                onChangeText={(text: string) =>
+                  setContactDetails({
+                    ...contactDetails,
+                    websiteUrl: text,
+                  })
+                }
+                autoCapitalize="words"
+                keyboardType="default"
+              />
+            </View>
+            <View
+              style={{marginTop: responsiveHeight(20 / percentToPx)}}
+              className="w-full">
+              <GenericTextField
+                placeholder="Company address"
+                value={contactDetails.companyAddress}
+                onChangeText={(text: string) =>
+                  setContactDetails({
+                    ...contactDetails,
+                    companyAddress: text,
+                  })
+                }
+                autoCapitalize="words"
+                keyboardType="default"
+              />
+            </View>
+
+            <View className="items-center">
+              <View className="w-full flex-row justify-around">
+                <ImagePicker
+                  label="Profile Photo"
+                  handleButtonPress={handleAddImage}
+                  // pickedImage={accountPhotos.profilePicture as Image}
+                  handleRemoveClick={handleRemoveClick}
+                />
+                <ImagePicker
+                  label="Company Logo"
+                  // pickedImage={accountPhotos.companyLogo as Image}
+                  handleButtonPress={handleAddImage}
+                  handleRemoveClick={handleRemoveClick}
+                />
+              </View>
+            </View>
+            {/* <View
               style={{marginTop: responsiveHeight(20 / percentToPx)}}
               className="w-full">
               <GenericTextField
@@ -163,11 +251,9 @@ const AccountInformation: React.FC<AccountInfoProps> = ({navigation}) => {
                   setHide({...hide, confirmPassword: !hide.confirmPassword})
                 }
               />
-            </View>
+            </View> */}
           </View>
-          <View
-            className="w-full"
-            style={{marginTop: responsiveHeight(35 / percentToPx)}}>
+          <View className="w-full">
             <GenericButton
               handlePress={handleNext}
               title="Proceed"
@@ -177,7 +263,7 @@ const AccountInformation: React.FC<AccountInfoProps> = ({navigation}) => {
           </View>
         </GenericCardContainer>
         <Steps />
-      </View>
+      </ScrollView>
     </StaticContainer>
   );
 };
