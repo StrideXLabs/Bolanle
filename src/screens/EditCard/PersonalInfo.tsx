@@ -31,20 +31,7 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
         paddingHorizontal: responsiveHeight(20 / percentToPx),
         paddingVertical: responsiveHeight(14 / percentToPx),
       }}>
-      <View className="flex flex-row items-center justify-between">
-        <Text className="font-3 text-black text-2xl">Personal Details</Text>
-        {/* {editable && (
-          <TouchableOpacity
-            className="justify-center items-center"
-            onPress={() => onEditPress(personalInfo)}>
-            <Image
-              resizeMode="contain"
-              className="w-8 h-8"
-              source={PencilIcon as ImageSourcePropType}
-            />
-          </TouchableOpacity>
-        )} */}
-      </View>
+      <Text className="font-2 text-black text-2xl">Personal Details</Text>
 
       <View
         className="bg-secondary-blue p-4 rounded-2xl"
@@ -81,10 +68,12 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
         />
 
         <View className="px-2">
-          <Button
-            text="Edit Details"
-            callback={() => onEditPress(personalInfo)}
-          />
+          {editable && (
+            <Button
+              text="Edit Details"
+              callback={() => onEditPress(personalInfo)}
+            />
+          )}
         </View>
       </View>
     </View>

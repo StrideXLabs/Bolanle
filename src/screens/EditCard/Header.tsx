@@ -33,22 +33,6 @@ const Header = ({
 }: Props) => {
   return (
     <>
-      {/* <View
-        className="w-full flex justify-center items-center"
-        style={{marginBottom: responsiveHeight(24 / percentToPx)}}>
-        <Image
-          resizeMode="contain"
-          style={{width: 94, height: 94}}
-          className="rounded-md"
-          source={{
-            uri:
-              BASE_URL +
-              `/${cardId}/${contactDetails?.companyLogo}` +
-              `?time=${Date.now()}`,
-            cache: 'reload',
-          }}
-        />
-      </View> */}
       <View
         className="flex flex-row justify-between"
         style={{

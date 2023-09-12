@@ -21,6 +21,7 @@ import {
 import {percentToPx} from '../../constants';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from '../../lib/toast';
+import Button from '../../components/Button';
 
 type Props = {
   editable: boolean;
@@ -36,86 +37,80 @@ const SocialLinks = ({
   onDeleteLink,
 }: Props) => {
   return (
-    <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
+    <View
+      style={{
+        paddingHorizontal: responsiveHeight(20 / percentToPx),
+        paddingVertical: responsiveHeight(14 / percentToPx),
+      }}>
+      <Text className="font-2 text-black text-2xl">Social Links</Text>
       <View
-        className="flex flex-row items-center justify-between"
+        className="bg-secondary-blue p-4 rounded-2xl"
         style={{
-          marginBottom: responsiveHeight(12 / percentToPx),
+          marginTop: responsiveHeight(14 / percentToPx),
         }}>
-        <Text
-          style={[
-            textStyles.robotoBold,
-            {fontSize: responsiveFontSize(18 / percentToPx)},
-          ]}
-          className="text-accent">
-          Social Links
-        </Text>
-        {editable && (
-          <TouchableOpacity
-            className="p-1"
-            activeOpacity={0.8}
-            onPress={() => onEditPress(socialLinks)}>
-            <Image
-              resizeMode="contain"
-              className="w-[16.5px] h-[16.5px]"
-              source={editIcon as ImageSourcePropType}
-            />
-          </TouchableOpacity>
-        )}
-      </View>
-      <View className="mt-2">
-        {socialLinks.map(social => {
-          return (
-            <View
-              key={social.platform}
-              className="w-full  flex flex-row items-center justify-between gap-2 mb-[12px]">
-              <View className="flex items-center flex-row">
-                <Image
-                  resizeMode="contain"
-                  className="w-[30px] h-[30px]"
-                  source={
-                    filledIconsMapping[
-                      social.platform as keyof typeof filledIconsMapping
-                    ] as ImageSourcePropType
-                  }
-                />
-                <TouchableOpacity
-                  onPress={async () => {
-                    const canOpen = await Linking.canOpenURL(social.url);
-
-                    if (canOpen) await Linking.openURL(social.url);
-                    else {
-                      Clipboard.setString(social.url);
-                      Toast.success({
-                        position: 'bottom',
-                        primaryText: 'Copied Link.',
-                      });
-                    }
-                  }}>
-                  <Text
-                    style={[
-                      textStyles.robotoMedium,
-                      {fontSize: responsiveFontSize(13 / percentToPx)},
-                    ]}
-                    className="text-dark-blue ml-2">
-                    {social.title}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              {editable && (
-                <Pressable
-                  className="w-4 h-4"
-                  onPress={() => onDeleteLink(social)}>
+        <View className="mt-2">
+          {socialLinks.map(social => {
+            return (
+              <View
+                key={social.platform}
+                className="w-full  flex flex-row items-center justify-between gap-2 mb-[12px]">
+                <View className="flex items-center flex-row">
                   <Image
                     resizeMode="contain"
-                    className="w-full h-full"
-                    source={deleteIcon as ImageSourcePropType}
+                    className="w-[30px] h-[30px]"
+                    source={
+                      filledIconsMapping[
+                        social.platform as keyof typeof filledIconsMapping
+                      ] as ImageSourcePropType
+                    }
                   />
-                </Pressable>
-              )}
-            </View>
-          );
-        })}
+                  <TouchableOpacity
+                    onPress={async () => {
+                      const canOpen = await Linking.canOpenURL(social.url);
+
+                      if (canOpen) await Linking.openURL(social.url);
+                      else {
+                        Clipboard.setString(social.url);
+                        Toast.success({
+                          position: 'bottom',
+                          primaryText: 'Copied Link.',
+                        });
+                      }
+                    }}>
+                    <Text
+                      style={[
+                        textStyles.robotoMedium,
+                        {fontSize: responsiveFontSize(13 / percentToPx)},
+                      ]}
+                      className="text-dark-blue ml-2">
+                      {social.title}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                {editable && (
+                  <Pressable
+                    className="w-4 h-4"
+                    onPress={() => onDeleteLink(social)}>
+                    <Image
+                      resizeMode="contain"
+                      className="w-full h-full"
+                      source={deleteIcon as ImageSourcePropType}
+                    />
+                  </Pressable>
+                )}
+              </View>
+            );
+          })}
+        </View>
+
+        <View className="px-2">
+          {editable && (
+            <Button
+              text="Edit Details"
+              callback={() => onEditPress(socialLinks)}
+            />
+          )}
+        </View>
       </View>
     </View>
   );

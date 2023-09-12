@@ -13,7 +13,6 @@ import {
   responsiveHeight,
 } from 'react-native-responsive-dimensions';
 import {accentColor, percentToPx} from '../../constants';
-import textStyles from '../../constants/fonts';
 
 export interface IButtonProps {
   text: string;
@@ -24,6 +23,7 @@ export interface IButtonProps {
   style?: StyleProp<ViewStyle>;
   showBackgroundColor?: boolean;
   textStyle?: StyleProp<TextStyle>;
+  deleteButton?: boolean;
 }
 
 const Button = ({
@@ -35,6 +35,7 @@ const Button = ({
   disabled = false,
   showLoading = false,
   showBackgroundColor = true,
+  deleteButton = false,
 }: IButtonProps) => {
   return (
     <Pressable
@@ -55,7 +56,9 @@ const Button = ({
         ]}
         className={`${
           showBackgroundColor ? 'bg-primary-blue' : 'bg-slate-50'
-        } flex justify-center items-center ${className}`}>
+        } flex justify-center items-center ${className}
+        ${deleteButton ? 'bg-red-600' : ''}
+        `}>
         <Text
           style={[{fontSize: responsiveFontSize(15 / percentToPx)}, textStyle]}
           className={`font-3 ${

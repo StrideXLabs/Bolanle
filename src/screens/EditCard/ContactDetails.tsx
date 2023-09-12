@@ -18,6 +18,8 @@ import web from '../../assets/images/web.png';
 import {percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
+import TextField from '../../components/TextField/TextFieldDark';
+import Button from '../../components/Button';
 
 type Props = {
   editable: boolean;
@@ -29,103 +31,85 @@ const ContactDetails = ({contactDetails, onEditPress, editable}: Props) => {
   return (
     <>
       <View
-        className="flex flex-row items-center justify-between"
         style={{
-          marginTop: responsiveHeight(17 / percentToPx),
-          marginBottom: responsiveHeight(13 / percentToPx),
+          paddingHorizontal: responsiveHeight(20 / percentToPx),
+          paddingVertical: responsiveHeight(14 / percentToPx),
         }}>
-        <Text
-          style={[
-            textStyles.robotoBold,
-            {fontSize: responsiveFontSize(18 / percentToPx)},
-          ]}
-          className="text-accent">
-          Contact Details
-        </Text>
-        {editable && (
-          <TouchableOpacity
-            activeOpacity={0.8}
-            className="p-1"
-            onPress={() => onEditPress(contactDetails)}>
-            <Image
-              resizeMode="contain"
-              className="w-[16.5px] h-[16.5px]"
-              source={editIcon as ImageSourcePropType}
-            />
-          </TouchableOpacity>
-        )}
-      </View>
-      <View>
-        <View className="flex flex-row items-center gap-2 mb-[12px]">
-          <View className="flex justify-center items-center bg-accent rounded-full w-[30px] h-[30px] p-2">
-            <Image
-              resizeMode="contain"
-              className="w-full h-full"
-              source={email as ImageSourcePropType}
-            />
+        <Text className="font-2 text-black text-2xl">Contact Details</Text>
+        <View
+          className="bg-secondary-blue p-4 rounded-2xl"
+          style={{
+            marginTop: responsiveHeight(14 / percentToPx),
+          }}>
+          <TextField
+            placeholder=""
+            value={contactDetails.email}
+            bottomBorder
+            editable={false}
+            socialIcon={
+              <View className="flex justify-center items-center bg-accent rounded-full w-8 h-8 p-2">
+                <Image
+                  resizeMode="contain"
+                  className="w-full h-full"
+                  source={email as ImageSourcePropType}
+                />
+              </View>
+            }
+          />
+          <TextField
+            placeholder=""
+            value={contactDetails.mobile}
+            bottomBorder
+            editable={false}
+            socialIcon={
+              <View className="flex justify-center items-center bg-accent rounded-full w-8 h-8 p-2">
+                <Image
+                  resizeMode="contain"
+                  className="w-full h-full"
+                  source={phone as ImageSourcePropType}
+                />
+              </View>
+            }
+          />
+          <TextField
+            placeholder=""
+            value={contactDetails.websiteUrl}
+            bottomBorder
+            editable={false}
+            socialIcon={
+              <View className="flex justify-center items-center bg-accent rounded-full w-8 h-8 p-2">
+                <Image
+                  resizeMode="contain"
+                  className="w-full h-full"
+                  source={web as ImageSourcePropType}
+                />
+              </View>
+            }
+          />
+          <TextField
+            placeholder=""
+            value={contactDetails.companyAddress}
+            bottomBorder
+            editable={false}
+            socialIcon={
+              <View className="flex justify-center items-center bg-accent rounded-full w-8 h-8 p-2">
+                <Image
+                  resizeMode="contain"
+                  className="w-full h-full"
+                  source={location as ImageSourcePropType}
+                />
+              </View>
+            }
+          />
+
+          <View className="px-2">
+            {editable && (
+              <Button
+                text="Edit Details"
+                callback={() => onEditPress(contactDetails)}
+              />
+            )}
           </View>
-          <Text
-            style={[
-              textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
-            ]}
-            className="text-dark-blue">
-            {contactDetails.email}
-          </Text>
-        </View>
-        <View className="flex flex-row items-center gap-2 mb-[12px]">
-          <View className="flex justify-center items-center bg-accent rounded-full w-[30px] h-[30px] p-2">
-            <Image
-              resizeMode="contain"
-              className="w-full h-full"
-              source={phone as ImageSourcePropType}
-            />
-          </View>
-          <Text
-            style={[
-              textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
-            ]}
-            className="text-dark-blue">
-            {contactDetails.mobile}
-          </Text>
-        </View>
-        <View className="flex flex-row flex-wrap items-center gap-2 mb-[12px]">
-          <View className="flex justify-center items-center bg-accent rounded-full w-[30px] h-[30px] p-2">
-            <Image
-              resizeMode="contain"
-              className="w-full h-full mr-[1.5px]"
-              source={web as ImageSourcePropType}
-            />
-          </View>
-          <Text
-            style={[
-              textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(13 / percentToPx)},
-            ]}
-            className="text-dark-blue">
-            {contactDetails.websiteUrl}
-          </Text>
-        </View>
-        <View className="flex flex-row items-center gap-2 mb-[12px]">
-          <View className="flex justify-center items-center bg-accent rounded-full w-[30px] h-[30px] p-2">
-            <Image
-              resizeMode="contain"
-              className="w-full h-full"
-              source={location as ImageSourcePropType}
-            />
-          </View>
-          <Text
-            style={[
-              textStyles.robotoRegular,
-              {
-                fontSize: responsiveFontSize(13 / percentToPx),
-                paddingRight: responsiveHeight(2),
-              },
-            ]}
-            className="text-dark-blue">
-            {contactDetails.companyAddress}
-          </Text>
         </View>
       </View>
     </>

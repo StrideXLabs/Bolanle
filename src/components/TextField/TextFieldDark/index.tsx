@@ -16,6 +16,7 @@ interface TextFieldProps extends TextInputProps {
   icon?: JSX.Element;
   bottomBorder?: boolean;
   editable?: boolean;
+  socialIcon?: JSX.Element;
 }
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -28,6 +29,7 @@ const TextField: React.FC<TextFieldProps> = ({
   icon,
   bottomBorder,
   editable,
+  socialIcon,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -76,6 +78,7 @@ const TextField: React.FC<TextFieldProps> = ({
         ${icon ? 'pl-10' : ''}
         ${bottomBorder ? 'border-b-[1px]' : ''}
         ${bottomBorder ? 'mb-6' : ''}
+        ${socialIcon ? 'pl-14' : ''}
         `}
         style={[
           {
@@ -90,6 +93,9 @@ const TextField: React.FC<TextFieldProps> = ({
         {...props}
       />
       {icon && <View className="absolute left-3 top-[10px]">{icon}</View>}
+      {socialIcon && (
+        <View className="absolute left-3 top-1">{socialIcon}</View>
+      )}
     </View>
   );
 };
