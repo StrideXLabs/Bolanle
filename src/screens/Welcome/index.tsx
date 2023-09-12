@@ -19,6 +19,7 @@ import Layout from '../../components/Layout';
 import {percentToPx} from '../../constants';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {AuthStackParams} from '../../navigation/AuthNavigation';
+import {newLogo} from '../../constants/icons';
 
 export type WelcomeScreenProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -40,14 +41,14 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
             <View className="flex justify-end items-start">
               <View className="flex flex-row gap-2 items-center ml-4">
                 <Image
-                  source={logo as ImageSourcePropType}
+                  source={newLogo as ImageSourcePropType}
                   resizeMode="contain"
                   style={{
                     width: responsiveWidth(18),
                     height: responsiveWidth(18),
                   }}
                 />
-                <Text className="font-6 font-bold text-white text-2xl tracking-widest -m-3">
+                <Text className="font-6 font-semibold text-white text-2xl tracking-widest -m-3">
                   HELLO{'\n'}BOLANLE
                 </Text>
               </View>

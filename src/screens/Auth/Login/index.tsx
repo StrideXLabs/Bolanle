@@ -1,28 +1,16 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import decodeJWT from 'jwt-decode';
 import React, {useState, useEffect} from 'react';
-import {
-  ImageBackground,
-  ImageSourcePropType,
-  Keyboard,
-  ScrollView,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
 import {
   responsiveFontSize,
   responsiveHeight,
-  responsiveWidth,
 } from 'react-native-responsive-dimensions';
 
-import bgImage from '../../../assets/images/background.png';
 import Button from '../../../components/Button';
-import TextField from '../../../components/TextField/TextFieldLight';
+import TextField from '../../../components/TextField/GenericTextField/GenericTextField';
 import {AuthStateKey, TokenKey, percentToPx} from '../../../constants';
-import textStyles from '../../../constants/fonts';
 import {useAuth} from '../../../hooks/useAuth';
 import {IAuthState, IUser} from '../../../hooks/useAuth/interface';
 import {useCredentials} from '../../../hooks/useCredentials';
@@ -31,7 +19,9 @@ import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
 import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import authService from '../../../services/auth.service';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import Layout from '../../../components/Layout';
+import StaticContainer from '../../../containers/StaticContainer';
+import {appleIcon, facebookIcon, googleIcon} from '../../../constants/icons';
 
 export type LoginScreenProps = NativeStackScreenProps<
   AuthStackParams & AppStackParams,
@@ -106,41 +96,34 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   }, []);
 
   return (
-    <ImageBackground
-      resizeMode="cover"
-      className="h-full"
-      source={bgImage as ImageSourcePropType}>
-      <ScrollView
-        contentContainerStyle={{flexGrow: 1}}
-        keyboardShouldPersistTaps="handled">
-        <View className="justify-center items-center h-full">
-          <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-          <View
-            className="bg-white"
-            style={{
-              borderRadius: 20,
-              width: responsiveWidth(85),
-              padding: responsiveHeight(25 / percentToPx),
-              paddingLeft: responsiveHeight(35 / percentToPx),
-            }}>
+    <Layout>
+      <StaticContainer isBack isHeader title="Login">
+        {/* <ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          keyboardShouldPersistTaps="handled"> */}
+        <View
+          className="flex justify-start items-center"
+          style={{
+            paddingVertical: responsiveHeight(17 / percentToPx),
+            paddingHorizontal: responsiveHeight(4 / percentToPx),
+          }}>
+          <View className="bg-secondary-blue rounded-3xl p-4">
             <Text
-              style={[
-                textStyles.bebasNeueBold,
-                {fontSize: responsiveFontSize(40 / percentToPx)},
-              ]}
-              className="font-bold text-off-white-1">
-              LOGIN
+              className="font-3 text-center text-black"
+              style={{
+                marginBottom: responsiveHeight(20 / percentToPx),
+                marginTop: responsiveHeight(14 / percentToPx),
+                fontSize: responsiveFontSize(16 / percentToPx),
+              }}>
+              Enter your details to sign in to your account!
             </Text>
-            <View style={{marginTop: responsiveHeight(36 / percentToPx)}}>
-              <TextField
-                value={email}
-                keyboardType="email-address"
-                placeholder="Email Address"
-                enablesReturnKeyAutomatically={false}
-                autoCapitalize="none"
-                onChangeText={email => setEmail(email)}
-              />
-            </View>
+            <TextField
+              value={email}
+              keyboardType="email-address"
+              placeholder="Email Address"
+              autoCapitalize="none"
+              onChangeText={email => setEmail(email)}
+            />
             <View
               style={{
                 marginTop: responsiveHeight(22 / percentToPx),
@@ -148,60 +131,51 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               }}>
               <TextField
                 value={password}
-                className="relative"
                 placeholder="Password"
-                enablesReturnKeyAutomatically={false}
                 secureTextEntry={secureTextEntry}
                 onChangeText={password => setPassword(password)}
               />
               <View
                 className="absolute"
                 style={{
-                  top: responsiveHeight(8 / percentToPx),
-                  right: responsiveHeight(8 / percentToPx),
+                  top: responsiveHeight(10 / percentToPx),
+                  right: responsiveHeight(10 / percentToPx),
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
                 {secureTextEntry ? (
                   <EyeIcon
                     size={25}
-                    color="white"
+                    color="black"
                     onPress={() => setSecureTextEntry(false)}
                   />
                 ) : (
                   <EyeSlashIcon
                     size={25}
-                    color="white"
+                    color="black"
                     onPress={() => setSecureTextEntry(true)}
                   />
                 )}
               </View>
-              <TouchableOpacity
-                activeOpacity={0.6}
-                style={{marginTop: responsiveHeight(12 / percentToPx)}}
-                onPress={() => navigation.push('ForgotPasswordScreen')}>
-                <Text
-                  style={textStyles.robotoMedium}
-                  className="text-right font-bold text-off-white-1">
-                  Forgot password?
-                </Text>
-              </TouchableOpacity>
             </View>
-            <View style={{marginTop: responsiveHeight(36 / percentToPx)}}>
+            <TouchableOpacity
+              style={{marginTop: responsiveHeight(16 / percentToPx)}}
+              onPress={() => navigation.push('ForgotPasswordScreen')}>
+              <Text className="font-3 text-black ml-1">Forgot password?</Text>
+            </TouchableOpacity>
+
+            <View style={{marginTop: responsiveHeight(24 / percentToPx)}}>
               <Button
                 text="Login"
                 disabled={loading}
                 showLoading={loading}
                 callback={handleLogin}
-                showBackgroundColor={false}
-                style={{width: responsiveWidth(69)}}
+                showBackgroundColor={true}
               />
               <View
                 className="flex flex-row justify-center"
-                style={{marginTop: responsiveHeight(12 / percentToPx)}}>
-                <Text
-                  style={textStyles.robotoRegular}
-                  className="text-off-white-1">
+                style={{marginTop: responsiveHeight(14 / percentToPx)}}>
+                <Text className="text-black font-1">
                   Don't have an Account?
                 </Text>
                 <TouchableOpacity
@@ -213,18 +187,62 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                       status: 'CREATING',
                     });
                   }}>
-                  <Text
-                    style={textStyles.robotoBold}
-                    className="ml-1 text-off-white-1 font-extrabold">
-                    Create
-                  </Text>
+                  <Text className="ml-1 text-black font-3">Create One</Text>
                 </TouchableOpacity>
               </View>
             </View>
+
+            <View
+              className="flex justify-center items-center"
+              style={{marginTop: responsiveHeight(14 / percentToPx)}}>
+              <Text className="font-2 text-black">- Or Login with -</Text>
+            </View>
+
+            <View
+              className="flex flex-row justify-between items-center gap-2"
+              style={{marginTop: responsiveHeight(14 / percentToPx)}}>
+              <TouchableOpacity
+                style={{flex: 1}}
+                className="p-3 bg-white rounded-lg">
+                <View className="flex flex-row items-center justify-center space-x-1">
+                  <Image
+                    source={googleIcon as any}
+                    className={`h-4 w-4`}
+                    resizeMode="contain"
+                  />
+                  <Text className="font-1 text-black text-sm">Google</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{flex: 1}}
+                className="p-3 bg-white rounded-lg">
+                <View className="flex flex-row items-center justify-center space-x-1">
+                  <Image
+                    source={appleIcon as any}
+                    className={`h-4 w-4`}
+                    resizeMode="contain"
+                  />
+                  <Text className="font-1 text-black text-sm">Apple</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{flex: 1}}
+                className="p-3 bg-white rounded-lg">
+                <View className="flex flex-row items-center justify-center space-x-1">
+                  <Image
+                    source={facebookIcon as any}
+                    className={`h-4 w-4`}
+                    resizeMode="contain"
+                  />
+                  <Text className="font-1 text-black text-sm">Facebook</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </ScrollView>
-    </ImageBackground>
+        {/* </ScrollView> */}
+      </StaticContainer>
+    </Layout>
   );
 };
 
