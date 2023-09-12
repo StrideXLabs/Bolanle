@@ -45,7 +45,7 @@ const TextField: React.FC<TextFieldProps> = ({
               marginLeft: bottomBorder ? responsiveWidth(20 / percentToPx) : 0,
             },
           ]}
-          className={`text-dark-blue
+          className={`text-black
           ${isFocused ? 'font-4' : 'font-1'}
           `}>
           {label}
@@ -67,7 +67,7 @@ const TextField: React.FC<TextFieldProps> = ({
             ? 'border-b-[1px] border-dark-blue'
             : bottomBorder
             ? 'border-b-[1px] border-gray-400'
-            : 'border-off-white-2 border-[1px]'
+            : ''
         } ${className}
         ${gradient ? 'bg-secondary-blue' : ''}
         ${icon ? 'pl-10' : ''}
