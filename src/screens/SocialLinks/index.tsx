@@ -306,7 +306,7 @@ const SocialLinksScreen = ({
                 }}
               />
               <FlatList
-                numColumns={5}
+                numColumns={6}
                 horizontal={false}
                 data={SocialItemsList}
                 renderItem={({item}: {item: ISocial}) => {
@@ -320,7 +320,7 @@ const SocialLinksScreen = ({
                           resizeMode="contain"
                           style={{
                             height: responsiveHeight(6),
-                            width: responsiveWidth(85 / percentToPx),
+                            width: responsiveWidth(70 / percentToPx),
                           }}
                           source={
                             unFilledIconsMapping[item.id] as ImageSourcePropType
@@ -331,7 +331,7 @@ const SocialLinksScreen = ({
                           resizeMode="contain"
                           style={{
                             height: responsiveHeight(6),
-                            width: responsiveWidth(85 / percentToPx),
+                            width: responsiveWidth(70 / percentToPx),
                           }}
                           source={
                             filledIconsMapping[item.id] as ImageSourcePropType

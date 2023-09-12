@@ -97,7 +97,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
 
   return (
     <Layout>
-      <StaticContainer isBack isHeader title="Login">
+      <StaticContainer isBack isHeader title="Home">
         {/* <ScrollView
           contentContainerStyle={{flexGrow: 1}}
           keyboardShouldPersistTaps="handled"> */}

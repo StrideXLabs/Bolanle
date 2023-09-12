@@ -1,7 +1,7 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import decodeJWT from 'jwt-decode';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator, View, Text} from 'react-native';
 
 import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
 import {Image as PickerImage} from 'react-native-image-crop-picker';
@@ -31,6 +31,8 @@ import {AppStackParams} from '../../../navigation/AppNavigation';
 import {AuthStackParams} from '../../../navigation/AuthNavigation';
 import authService from '../../../services/auth.service';
 import cardService from '../../../services/card.service';
+import StaticContainerReg from '../../../containers/StaticContainerReg';
+import GenericTextField from '../../../components/TextField/GenericTextField/GenericTextField';
 
 export type RegisterScreenProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -143,73 +145,94 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
 
   return (
     <Layout>
-      <View className="px-[40px] py-[53px]">
-        <HeaderStepCount
-          step={step}
-          onBackPress={() => {
-            setStep(step - 1);
-            navigation.canGoBack() && navigation.goBack();
-          }}
-        />
-        <View className="mt-9 mb-[30px]">
-          <HeaderWithText
-            heading="CHOOSE PASSWORD"
-            subtitle="Please choose a password for yourself to create the account."
-          />
-        </View>
-        <View>
-          <TextField
-            value={email}
-            keyboardType="email-address"
-            placeholder="Email address"
-            autoCapitalize='none'
-            onChangeText={email => setEmail(email)}
-          />
-          <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
-            <TextField
-              value={password}
-              className="relative"
-              placeholder="Password"
-              secureTextEntry={secureTextEntry}
-              onChangeText={password => setPassword(password)}
-            />
+      <StaticContainerReg
+        isBack
+        isHeader
+        title="Social links"
+        onBackPress={() => {
+          setStep(step - 1);
+          navigation.canGoBack() && navigation.goBack();
+        }}>
+        <View
+          className="w-full"
+          style={{
+            paddingVertical: responsiveHeight(17 / percentToPx),
+            paddingHorizontal: responsiveHeight(4 / percentToPx),
+          }}>
+          <View className="bg-secondary-blue rounded-3xl p-4">
             <View
-              className="absolute"
+              className="w-full"
               style={{
-                height:"100%",
-                justifyContent : "center",
-                alignItems:"center",
-                right: responsiveHeight(8 / percentToPx),
+                marginTop: responsiveHeight(10 / percentToPx),
+                marginBottom: responsiveHeight(20 / percentToPx),
               }}>
-              {secureTextEntry ? (
-                <EyeIcon
-                  size={25}
-                  color="#C9C9C9"
-                  onPress={() => setSecureTextEntry(false)}
+              <Text className="text-lg font-3 text-black text-center">
+                Step 4: Enter a password
+              </Text>
+            </View>
+            <View>
+              <GenericTextField
+                value={email}
+                keyboardType="email-address"
+                placeholder="Email address"
+                autoCapitalize="none"
+                onChangeText={email => setEmail(email)}
+              />
+              <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
+                <GenericTextField
+                  value={password}
+                  className="relative"
+                  placeholder="Password"
+                  secureTextEntry={secureTextEntry}
+                  onChangeText={password => setPassword(password)}
                 />
-              ) : (
-                <EyeSlashIcon
-                  size={25}
-                  color="#C9C9C9"
-                  onPress={() => setSecureTextEntry(true)}
-                />
-              )}
+                <View
+                  className="absolute"
+                  style={{
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    right: responsiveHeight(8 / percentToPx),
+                  }}>
+                  {secureTextEntry ? (
+                    <EyeIcon
+                      size={25}
+                      color="#1C75BC"
+                      onPress={() => setSecureTextEntry(false)}
+                    />
+                  ) : (
+                    <EyeSlashIcon
+                      size={25}
+                      color="#1C75BC"
+                      onPress={() => setSecureTextEntry(true)}
+                    />
+                  )}
+                </View>
+              </View>
+            </View>
+            <View style={{marginTop: responsiveHeight(20 / percentToPx)}}>
+              <Button
+                text={
+                  creatingBusinessCard
+                    ? 'Creating Your Business Card...'
+                    : 'Create Account'
+                }
+                showLoading={creatingAccount}
+                callback={handleCreateAccount}
+                disabled={creatingAccount || creatingBusinessCard}
+              />
             </View>
           </View>
-        </View>
-        <View style={{marginTop: responsiveHeight(52 / percentToPx)}}>
-          <Button
-            text={
-              creatingBusinessCard
-                ? 'Creating Your Business Card...'
-                : 'Create Account'
-            }
-            showLoading={creatingAccount}
-            callback={handleCreateAccount}
-            disabled={creatingAccount || creatingBusinessCard}
+
+          <HeaderStepCount
+            step={step}
+            onBackPress={() => {
+              setStep(step - 1);
+              navigation.canGoBack() && navigation.goBack();
+            }}
           />
         </View>
-      </View>
+      </StaticContainerReg>
     </Layout>
   );
 };
