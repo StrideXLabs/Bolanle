@@ -10,6 +10,8 @@ type GenericTextFieldProps = {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   icon?: JSX.Element;
   onIconPress?: () => void;
+  multiline?: boolean;
+  textAlignVertical?: 'auto' | 'top' | 'bottom' | 'center';
 };
 
 const GenericTextField: React.FC<GenericTextFieldProps> = ({
@@ -21,6 +23,8 @@ const GenericTextField: React.FC<GenericTextFieldProps> = ({
   autoCapitalize,
   icon,
   onIconPress,
+  multiline,
+  textAlignVertical,
 }) => {
   return (
     <View className="bg-white w-full flex-row justify-center items-center relative  rounded-xl">
@@ -32,6 +36,8 @@ const GenericTextField: React.FC<GenericTextFieldProps> = ({
         keyboardType={keyboardType}
         autoCapitalize={autoCapitalize}
         className="flex-1 px-2 font-1"
+        multiline={multiline}
+        textAlignVertical={textAlignVertical}
       />
       {icon && (
         <TouchableOpacity className="absolute right-2" onPress={onIconPress}>

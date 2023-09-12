@@ -1,7 +1,11 @@
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {ArrowLeftIcon} from 'react-native-heroicons/outline';
-import {responsiveWidth} from 'react-native-responsive-dimensions';
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
+import {percentToPx} from '../../../constants';
 
 const list = new Array(4).fill(0);
 
@@ -12,13 +16,17 @@ const HeaderStepCount = ({
 }: {
   step?: number;
   showDotes?: boolean;
-  onBackPress: () => void;
+  onBackPress?: () => void;
 }) => {
   return (
-    <View className="flex flex-row items-center">
-      <TouchableOpacity activeOpacity={0.6} onPress={onBackPress}>
+    <View
+      className="flex flex-row items-center"
+      style={{
+        marginTop: responsiveHeight(18 / percentToPx),
+      }}>
+      {/* <TouchableOpacity activeOpacity={0.6} onPress={onBackPress}>
         <ArrowLeftIcon size={responsiveWidth(5.5)} color="black" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <View className="flex-grow items-center">
         {showDotes && (
           <View className="flex flex-row gap-2">
