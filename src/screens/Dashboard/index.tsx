@@ -169,7 +169,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
               horizontal={true}
               style={{width: '100%'}}
               keyExtractor={item => item._id}
-              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={true}
               renderItem={({item}) => (
                 <Card card={item} onCardPress={handleCardPress} />
               )}

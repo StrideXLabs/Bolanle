@@ -14,6 +14,7 @@ import {BASE_URL, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
 import editIcon from '../../assets/images/edit.png';
+import {PencilIcon} from '../../constants/icons';
 
 type Props = {
   cardId: string;
@@ -32,7 +33,7 @@ const Header = ({
 }: Props) => {
   return (
     <>
-      <View
+      {/* <View
         className="w-full flex justify-center items-center"
         style={{marginBottom: responsiveHeight(24 / percentToPx)}}>
         <Image
@@ -47,59 +48,57 @@ const Header = ({
             cache: 'reload',
           }}
         />
-      </View>
-      {editable && (
-        <TouchableOpacity
-          className="absolute p-1 -mt-1"
-          style={{right: 0}}
-          activeOpacity={0.8}
-          onPress={() => onEditPress(contactDetails)}>
+      </View> */}
+      <View
+        className="flex flex-row justify-between"
+        style={{
+          paddingHorizontal: responsiveHeight(20 / percentToPx),
+          paddingVertical: responsiveHeight(14 / percentToPx),
+        }}>
+        <View className="flex flex-row gap-2">
           <Image
-            resizeMode="contain"
-            className="w-[16.5px] h-[16.5px]"
-            source={editIcon as ImageSourcePropType}
+            resizeMode="stretch"
+            style={{aspectRatio: 1, height: 70}}
+            className="rounded-lg"
+            source={{
+              uri:
+                BASE_URL +
+                `/${cardId}/${contactDetails?.profileImage}` +
+                `?time=${Date.now()}`,
+              cache: 'reload',
+            }}
           />
-        </TouchableOpacity>
-      )}
-      <View className="flex flex-row gap-2">
-        <Image
-          resizeMode="stretch"
-          style={{aspectRatio:1, height: 62}}
-          className="rounded-full"
-          source={{
-            uri:
-              BASE_URL +
-              `/${cardId}/${contactDetails?.profileImage}` +
-              `?time=${Date.now()}`,
-            cache: 'reload',
-          }}
-        />
-        <View>
-          <Text
-            className="text-[#334155]"
-            style={[
-              textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(16 / percentToPx)},
-            ]}>
-            {personalInfo?.name}
-          </Text>
-          <Text
-            className="text-[#334155]"
-            style={[
-              textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(12 / percentToPx)},
-            ]}>
-            {personalInfo?.designation || 'NA'}
-          </Text>
-          <Text
-            className="text-[#636769]"
-            style={[
-              textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(12 / percentToPx)},
-            ]}>
-            {personalInfo?.companyName || 'NA'}
-          </Text>
+          <View>
+            <Text
+              className="text-[#334155] font-1"
+              style={[{fontSize: responsiveFontSize(15 / percentToPx)}]}>
+              {personalInfo?.name}
+            </Text>
+            <Text
+              className="text-[#334155] font-1"
+              style={[{fontSize: responsiveFontSize(12 / percentToPx)}]}>
+              {personalInfo?.designation || 'NA'}
+            </Text>
+            <Text
+              className="text-[#636769] font-1"
+              style={[{fontSize: responsiveFontSize(12 / percentToPx)}]}>
+              {personalInfo?.companyName || 'NA'}
+            </Text>
+          </View>
         </View>
+
+        {editable && (
+          <TouchableOpacity
+            className="justify-center items-center"
+            activeOpacity={0.8}
+            onPress={() => onEditPress(contactDetails)}>
+            <Image
+              resizeMode="contain"
+              className="w-8 h-8"
+              source={PencilIcon as ImageSourcePropType}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </>
   );

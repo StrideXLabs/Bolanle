@@ -28,8 +28,8 @@ interface IDashboardHeaderAddTypeProps {
 }
 
 interface IDashboardHeaderEditTypeProps {
-  heading: string;
-  subheading: string;
+  heading?: string;
+  subheading?: string;
   type: 'VIEW_OR_EDIT';
   onBackBtnPress: () => void;
   onShareBtnPress: () => void;

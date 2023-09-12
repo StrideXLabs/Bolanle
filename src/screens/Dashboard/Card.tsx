@@ -73,8 +73,6 @@ const Card = ({card, onCardPress}: ICardProps) => {
   const handleWebsitePress = (url: string) => {
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
       url = 'http://' + url;
-    } else if (url.startsWith('https://')) {
-      url = url.replace('https://', 'http://');
     } else {
       Toast.error({primaryText: 'Website not found'});
     }
@@ -87,11 +85,9 @@ const Card = ({card, onCardPress}: ICardProps) => {
       style={{
         paddingVertical: responsiveHeight(8 / percentToPx),
         paddingHorizontal: responsiveHeight(20 / percentToPx),
-        maxWidth: responsiveHeight(365 / percentToPx),
+        maxWidth: responsiveHeight(370 / percentToPx),
       }}>
-      <Pressable
-        className="flex bg-secondary-blue rounded-3xl p-4 space-y-5"
-        onPress={() => onCardPress(card)}>
+      <View className="flex bg-secondary-blue rounded-3xl p-4 space-y-5">
         {/* Card */}
         <View className="w-full bg-white rounded-3xl flex flex-row space-x-6">
           <View className="flex-1">
@@ -179,9 +175,14 @@ const Card = ({card, onCardPress}: ICardProps) => {
           style={{
             paddingTop: responsiveHeight(8 / percentToPx),
           }}>
-          <Button text="Edit card details" callback={() => {}} />
+          <Button
+            text="Edit card details"
+            callback={() => {
+              onCardPress(card);
+            }}
+          />
         </View>
-      </Pressable>
+      </View>
     </View>
   );
 };

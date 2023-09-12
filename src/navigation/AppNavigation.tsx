@@ -107,7 +107,7 @@ const AppNavigation = () => {
           <AppStack.Screen
             name="EditCardScreen"
             component={EditCardScreen}
-            options={{animation: 'slide_from_right'}}
+            options={{animation: 'fade_from_bottom'}}
           />
           <AppStack.Screen name="ShareCardScreen" component={ShareCardScreen} />
           <AppStack.Screen

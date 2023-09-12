@@ -11,10 +11,11 @@ interface TextFieldProps extends TextInputProps {
   value: string;
   label?: string;
   className?: string;
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
   gradient?: boolean;
   icon?: JSX.Element;
   bottomBorder?: boolean;
+  editable?: boolean;
 }
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -26,6 +27,7 @@ const TextField: React.FC<TextFieldProps> = ({
   gradient,
   icon,
   bottomBorder,
+  editable,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -46,7 +48,7 @@ const TextField: React.FC<TextFieldProps> = ({
             },
           ]}
           className={`text-black
-          ${isFocused ? 'font-4' : 'font-1'}
+          ${isFocused ? 'font-4' : 'font-3'}
           `}>
           {label}
         </Text>
@@ -58,6 +60,7 @@ const TextField: React.FC<TextFieldProps> = ({
         onChangeText={onChangeText}
         enablesReturnKeyAutomatically
         placeholderTextColor="#808080"
+        editable={editable}
         onBlur={() => setIsFocused(false)}
         onFocus={() => setIsFocused(true)}
         className={`relative font-1 w-full text-dark-blue transition-all ${
