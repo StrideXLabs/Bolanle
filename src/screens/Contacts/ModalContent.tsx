@@ -39,11 +39,8 @@ const ModalContent = ({
               className="flex justify-center items-center"
               style={{height: responsiveHeight(5.7)}}>
               <Text
-                className="text-center"
-                style={[
-                  textStyles.robotoMedium,
-                  {fontSize: responsiveFontSize(15 / percentToPx)},
-                ]}>
+                className="text-center text-black font-1"
+                style={[{fontSize: responsiveFontSize(15 / percentToPx)}]}>
                 View Card
               </Text>
             </Pressable>
@@ -54,11 +51,8 @@ const ModalContent = ({
               className="flex justify-center items-center"
               style={{height: responsiveHeight(5.7)}}>
               <Text
-                className="text-center"
-                style={[
-                  textStyles.robotoMedium,
-                  {fontSize: responsiveFontSize(15 / percentToPx)},
-                ]}>
+                className="text-center text-black font-1"
+                style={[{fontSize: responsiveFontSize(15 / percentToPx)}]}>
                 Share Card
               </Text>
             </Pressable>
@@ -72,11 +66,8 @@ const ModalContent = ({
                 <ActivityIndicator color={accentColor} />
               ) : (
                 <Text
-                  className="text-center"
-                  style={[
-                    textStyles.robotoMedium,
-                    {fontSize: responsiveFontSize(15 / percentToPx)},
-                  ]}>
+                  className="text-center text-black font-1"
+                  style={[{fontSize: responsiveFontSize(15 / percentToPx)}]}>
                   Delete Contact
                 </Text>
               )}
@@ -91,11 +82,8 @@ const ModalContent = ({
               marginTop: responsiveHeight(10 / percentToPx),
             }}>
             <Text
-              className="text-center"
-              style={[
-                textStyles.robotoBold,
-                {fontSize: responsiveFontSize(15 / percentToPx)},
-              ]}>
+              className="text-center text-black font-2"
+              style={[{fontSize: responsiveFontSize(15 / percentToPx)}]}>
               Cancel
             </Text>
           </Pressable>

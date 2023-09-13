@@ -20,6 +20,7 @@ import textStyles from '../../../constants/fonts';
 import {BurgerMenuIcon} from '../../../constants/icons';
 import {flushStorage} from '../../../lib/storage';
 import {useAuth, initialAuthState} from '../../../hooks/useAuth';
+import userImg from '../../../assets/images/user-db.png';
 
 interface IDashboardHeaderAddTypeProps {
   heading: string;
@@ -68,15 +69,8 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
           <View className="flex flex-row gap-2 items-center">
             <Image
               resizeMode="contain"
-              className={'h-12 w-12 rounded-lg'}
-              // source={{
-              //   uri: BASE_URL + `/${rest._id}/${contactDetails?.profileImage}`,
-              //   cache: 'reload',
-              // }}
-              source={{
-                uri: 'https://media.licdn.com/dms/image/D4D03AQFT1gx5Kz114Q/profile-displayphoto-shrink_800_800/0/1673896146514?e=2147483647&v=beta&t=jKL4POLuziB_uywnheJGV7CtmmlFHi4HJz7PqPqeCgU',
-                cache: 'reload',
-              }}
+              className={'h-11 w-11 rounded-lg'}
+              source={userImg as ImageSourcePropType}
             />
             <View className="flex flex-col">
               <Text className="text-md font-3 -mb-1">Hashaam Khan</Text>
