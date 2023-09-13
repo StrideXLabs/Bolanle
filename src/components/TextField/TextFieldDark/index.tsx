@@ -50,7 +50,7 @@ const TextField: React.FC<TextFieldProps> = ({
             },
           ]}
           className={`text-black
-          ${isFocused ? 'font-4' : 'font-3'}
+          ${isFocused ? 'font-4' : 'font-1'}
           `}>
           {label}
         </Text>
