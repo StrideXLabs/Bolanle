@@ -1,13 +1,5 @@
 import {Image} from 'react-native-image-crop-picker';
 import {ISocial, SocialLinkType} from '../../constants/socials';
-import {IShareContactDetails} from '../../screens/ShareDetails';
-
-// export interface IPersonalInformation {
-//   name: string;
-//   department: string;
-//   companyName: string;
-//   designation: string;
-// }
 
 export interface IContactDetails {
   email?: string;
@@ -18,19 +10,13 @@ export interface IContactDetails {
   profilePicture?: Image | string | null;
 }
 
-export interface IAccountDetails {
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
 export interface IPersonalDetails {
   name: string;
-  phone: string;
+  designation?: string;
+  phone?: string;
   websiteUrl?: string;
   department?: string;
   companyName?: string;
-  designation?: string;
 }
 
 export interface IAccountPhotos {
@@ -44,15 +30,27 @@ export interface ISocialLink {
   id: SocialLinkType;
 }
 
+export interface IAccountDetails {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export interface ICreateAccountState {
   step: number;
   socialItems: ISocial[];
-  fromDashBoard: boolean;
+  fromDashBoard?: boolean;
   socialLinks: ISocialLink[];
   contactDetails: IContactDetails;
-  // personalInformation: IPersonalInformation;
   accountDetails: IAccountDetails;
-  personalDetails: IPersonalDetails;
+  personalDetails: {
+    name: string;
+    phone?: string;
+    websiteUrl?: string;
+    department?: string;
+    companyName?: string;
+    designation?: string;
+  };
   accountPhotos: IAccountPhotos;
 }
 
@@ -65,9 +63,19 @@ export interface ICreateAccountActions {
   setSocialLinks: (data: ISocialLink[]) => void;
   removeSocialItem: (id: SocialLinkType) => void;
   removeSocialLink: (id: SocialLinkType) => void;
-  setContactDetails: (contactDetails: IShareContactDetails) => void;
-  // setPersonalInformation: (personalInfo: IPersonalInformation) => void;
-  setAccountDetails: (accountDetails: IAccountDetails) => void;
-  setPersonalDetails: (personalDetails: IPersonalDetails) => void;
+  setContactDetails: (contactDetails: IContactDetails) => void;
+  setAccountDetails: (accountDetails: {
+    email: string;
+    password: string;
+    confirmPassword: string;
+  }) => void;
+  setPersonalDetails: (personalDetails: {
+    name: string;
+    phone?: string;
+    websiteUrl?: string;
+    department?: string;
+    companyName?: string;
+    designation?: string;
+  }) => void;
   setAccountPhotos: (accountPhotos: IAccountPhotos) => void;
 }

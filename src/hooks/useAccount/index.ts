@@ -6,7 +6,15 @@ import {
   initialContactDetails,
   initialPersonalDetails,
 } from './constants';
-import {ICreateAccountState, ICreateAccountActions} from './interface';
+import {
+  ICreateAccountState,
+  ICreateAccountActions,
+  IPersonalDetails,
+  IAccountPhotos,
+  IContactDetails,
+  ISocialLink,
+} from './interface';
+import {ISocial} from '../../constants/socials';
 
 export const useAccount = create<ICreateAccountState & ICreateAccountActions>()(
   immer<ICreateAccountState & ICreateAccountActions>(set => ({
@@ -30,19 +38,19 @@ export const useAccount = create<ICreateAccountState & ICreateAccountActions>()(
       }),
 
     personalDetails: initialPersonalDetails,
-    setPersonalDetails: personalDetails =>
+    setPersonalDetails: (personalDetails: IPersonalDetails) =>
       set(state => {
         state.personalDetails = personalDetails;
       }),
 
     accountPhotos: initialAccountPhotos,
-    setAccountPhotos: accountPhotos =>
+    setAccountPhotos: (accountPhotos: IAccountPhotos) =>
       set(state => {
         state.accountPhotos = accountPhotos;
       }),
 
-    contactDetails: initialContactDetails,
-    setContactDetails: contactDetails =>
+    contactDetails: initialContactDetails as IContactDetails,
+    setContactDetails: (contactDetails: IContactDetails) =>
       set(state => {
         state.contactDetails = contactDetails;
       }),
@@ -54,8 +62,8 @@ export const useAccount = create<ICreateAccountState & ICreateAccountActions>()(
     //   }),
 
     // SOCIAL ITEMS
-    socialItems: [],
-    setSocialItem: item => {
+    socialItems: [] as ISocial[],
+    setSocialItem: (item: ISocial) => {
       set(state => {
         const exist = state.socialItems.find(i => i.id === item.id);
         if (exist) return;
@@ -67,15 +75,15 @@ export const useAccount = create<ICreateAccountState & ICreateAccountActions>()(
         state.socialItems = state.socialItems.filter(i => i.id !== id);
       });
     },
-    setSocialItems: items => {
+    setSocialItems: (items: ISocial[]) => {
       set(state => {
         state.socialItems = items;
       });
     },
 
     // SOCIAL LINKS
-    socialLinks: [],
-    setSocialLink: data => {
+    socialLinks: [] as ISocialLink[],
+    setSocialLink: (data: ISocialLink) => {
       set(state => {
         const exist = state.socialLinks.find(item => item.id === data.id);
 
@@ -93,7 +101,7 @@ export const useAccount = create<ICreateAccountState & ICreateAccountActions>()(
         state.socialLinks = state.socialLinks.filter(item => item.id !== id);
       });
     },
-    setSocialLinks: data => {
+    setSocialLinks: (data: ISocialLink[]) => {
       set(state => {
         state.socialLinks = data;
       });

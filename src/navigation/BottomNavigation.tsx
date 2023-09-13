@@ -1,19 +1,13 @@
+/*eslint-disable*/
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {
-  Image,
-  ImageSourcePropType,
-  Platform,
-  SafeAreaView,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, ImageSourcePropType, Platform, View} from 'react-native';
 import DashboardScreen from '../screens/Dashboard';
 
 import contactsIcon from '../assets/images/contacts.png';
 import dashboardIcon from '../assets/images/dashboard.png';
 import profileIcon from '../assets/images/profile.png';
 import geoLocationIcon from '../assets/images/geoLocation.png';
-import {QrCodeIcon, scannerIcon} from '../constants/icons';
+import {scannerIcon} from '../constants/icons';
 import {accentColor} from '../constants';
 import {useOpenModalState} from '../hooks/useOpenModal';
 import ContactsScreen from '../screens/Contacts/test';
@@ -94,13 +88,12 @@ const BottomNavigation = () => {
         name="QRScannerScreen"
         options={{
           title: '',
-          tabBarIcon: ({focused}) => (
-            <View className="p-4 rounded-full absolute -top-12">
+          tabBarIcon: () => (
+            <View className="p-4 rounded-full absolute -top-10">
               <Image
                 style={{
                   width: responsiveHeight(9),
                   height: responsiveHeight(9),
-                  // tintColor: focused ? 'white' : '#c9c9c9',
                 }}
                 source={scannerIcon as ImageSourcePropType}
               />

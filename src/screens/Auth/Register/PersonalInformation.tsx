@@ -1,10 +1,5 @@
 import {Text, View} from 'react-native';
 import React from 'react';
-// import {
-//   ICreateAccountState,
-//   ICreateAccountActions,
-// } from '../../../hooks/useAccount/interface';
-
 import {useAccount} from '../../../hooks/useAccount';
 import StaticContainer from '../../../containers/StaticContainer';
 import GenericCardContainer from '../../../containers/GenericCardContainer';
@@ -14,7 +9,6 @@ import {responsiveHeight} from 'react-native-responsive-dimensions';
 import {percentToPx} from '../../../constants';
 import Steps from '../../../components/Steps/Steps';
 import Toast from '../../../lib/toast';
-import isValidURL from '../../../lib/isValidUrl';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {OnboardingStackParams} from '../../../navigation/AuthNavigation';
 
@@ -29,18 +23,14 @@ const PersonalInformation: React.FC<PersonalInfoProps> = ({navigation}) => {
   const validateData = () => {
     if (
       !personalDetails.name ||
-      !personalDetails.phone ||
-      !personalDetails.websiteUrl
+      !personalDetails.designation ||
+      !personalDetails.department ||
+      !personalDetails.companyName
     ) {
       Toast.error({
         primaryText: 'All fields are required.',
         secondaryText: 'Please fill up all the details to continue.',
       });
-      return false;
-    }
-
-    if (!isValidURL(personalDetails.websiteUrl)) {
-      Toast.error({primaryText: 'Website URL must be valid URL.'});
       return false;
     }
 
@@ -91,12 +81,12 @@ const PersonalInformation: React.FC<PersonalInfoProps> = ({navigation}) => {
               style={{marginTop: responsiveHeight(20 / percentToPx)}}
               className="w-full">
               <GenericTextField
-                placeholder="Phone number"
-                value={personalDetails.phone}
+                placeholder="Designation"
+                value={personalDetails.designation}
                 onChangeText={(text: string) =>
                   setPersonalDetails({
                     ...personalDetails,
-                    phone: text,
+                    designation: text,
                   })
                 }
                 autoCapitalize="words"
@@ -107,12 +97,28 @@ const PersonalInformation: React.FC<PersonalInfoProps> = ({navigation}) => {
               style={{marginTop: responsiveHeight(20 / percentToPx)}}
               className="w-full">
               <GenericTextField
-                placeholder="Website Url"
-                value={personalDetails.websiteUrl}
+                placeholder="Department"
+                value={personalDetails.department}
                 onChangeText={(text: string) =>
                   setPersonalDetails({
                     ...personalDetails,
-                    websiteUrl: text,
+                    department: text,
+                  })
+                }
+                autoCapitalize="words"
+                keyboardType="default"
+              />
+            </View>
+            <View
+              style={{marginTop: responsiveHeight(20 / percentToPx)}}
+              className="w-full">
+              <GenericTextField
+                placeholder="Company name"
+                value={personalDetails.companyName}
+                onChangeText={(text: string) =>
+                  setPersonalDetails({
+                    ...personalDetails,
+                    companyName: text,
                   })
                 }
                 autoCapitalize="words"

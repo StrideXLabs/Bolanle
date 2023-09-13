@@ -1,12 +1,12 @@
-import {Image, View, TouchableOpacity} from 'react-native';
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import {Image, View, TouchableOpacity, ImageSourcePropType} from 'react-native';
+import React, {useCallback, useMemo, useRef} from 'react';
 import Layout from '../../components/Layout';
 import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import EditProfileDetails from './EditProfileDetails';
-import StaticContainer from '../../containers/StaticContainer';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
+import {BackIcon, PencilIcon} from '../../constants/icons';
 
 type ActionSheetProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
@@ -25,9 +25,12 @@ const ActionSheet = ({navigation}: ActionSheetProps) => {
     console.log('handleSheetChanges', index);
   }, []);
 
+  const handlePressBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <Layout>
-      {/* <StaticContainer isBack isHeader title="Dashboard"> */}
       <View className="flex-1">
         <View className="h-[38%] w-full">
           <Image
@@ -37,6 +40,18 @@ const ActionSheet = ({navigation}: ActionSheetProps) => {
               uri: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80',
             }}
           />
+          <TouchableOpacity className="absolute top-4 right-4">
+            <Image source={PencilIcon as any} className={`h-[35px] w-[35px]`} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={handlePressBack}
+            className={'h-[35px] w-[35px] absolute top-4 left-4'}>
+            <Image
+              source={BackIcon as ImageSourcePropType}
+              className={'h-[35px] w-[35px] '}
+            />
+          </TouchableOpacity>
         </View>
         <BottomSheet
           ref={bottomSheetRef}

@@ -28,7 +28,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
   handleRemoveClick,
 }) => {
   return (
-    <View className="justify-center items-center bg-white w-[150px] h-[150px] rounded-2xl my-10 relative">
+    <View className="justify-center items-center bg-white w-[150px] h-[150px] rounded-2xl my-6 relative">
       {pickedImage && (
         <TouchableOpacity
           className="absolute -top-2 -right-2 z-10 bg-white rounded-full"
