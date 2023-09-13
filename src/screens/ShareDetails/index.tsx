@@ -133,8 +133,7 @@ const ShareCardDetailsScreen = ({navigation, route}: ShareCardScreenProps) => {
         onBackPress={() => navigation.goBack()}>
         <View
           style={{
-            paddingHorizontal: responsiveHeight(20 / percentToPx),
-            paddingVertical: responsiveHeight(8 / percentToPx),
+            marginTop: responsiveHeight(8 / percentToPx),
           }}
           className="bg-secondary-blue p-4 rounded-2xl w-full">
           {shareType === 'TEXT_CARD' && (
