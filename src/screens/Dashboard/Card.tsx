@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Pressable,
@@ -22,6 +22,12 @@ import {
 } from '../../constants/icons';
 import Button from '../../components/Button';
 import Toast from '../../lib/toast';
+import {
+  initialContactDetails,
+  initialPersonalInformation,
+} from '../../hooks/useBusinessCard/constants';
+import cardService from '../../services/card.service';
+import {useNavigation} from '@react-navigation/native';
 
 interface ICardProps {
   card: ICardData;
@@ -30,6 +36,23 @@ interface ICardProps {
 
 const Card = ({card, onCardPress}: ICardProps) => {
   const {personalInfo, contactDetails} = card;
+
+  const navigation = useNavigation();
+
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(!card);
+  const [{qr, socialLinks, _id, userId}, setCardData] = useState<
+    Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>
+  >(
+    card || {
+      qr: '',
+      _id: '',
+      userId: '',
+      socialLinks: [],
+      contactDetails: initialContactDetails,
+      personalInfo: initialPersonalInformation,
+    },
+  );
 
   const data = [
     {
@@ -79,6 +102,59 @@ const Card = ({card, onCardPress}: ICardProps) => {
     Linking.openURL(url);
   };
 
+  const handleFetchCardData = async () => {
+    try {
+      if (!card._id)
+        return Toast.error({primaryText: 'Please provide a card ID.'});
+
+      setError('');
+      setLoading(true);
+      const response = await cardService.getById(card._id);
+
+      if (!response.success) {
+        setLoading(false);
+        setError(response.message);
+        return;
+      }
+
+      setCardData(
+        response.data! || {
+          qr: '',
+          _id: '',
+          userId: '',
+          socialLinks: [],
+          contactDetails: initialContactDetails,
+          personalInfo: initialPersonalInformation,
+        },
+      );
+    } catch (error) {
+      setError('Error fetching card data.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!card?._id) return;
+    handleFetchCardData();
+  }, []);
+
+  const onShareBtnPress = () => {
+    navigation.push('ShareCardScreen', {
+      type: 'WITH_DATA',
+      fullName: personalInfo.name,
+      company: personalInfo.companyName,
+      card: {
+        qr,
+        _id,
+        userId,
+        socialLinks,
+        personalInfo,
+        contactDetails,
+      },
+    });
+  };
+
   return (
     <View
       className="bg-white"
@@ -113,7 +189,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
               </Text>
             </View>
             <View className="flex flex-row gap-1">
-              <TouchableOpacity>
+              <TouchableOpacity onPress={onShareBtnPress}>
                 <Image
                   source={ShareIcon as any}
                   className={`h-8 w-8`}

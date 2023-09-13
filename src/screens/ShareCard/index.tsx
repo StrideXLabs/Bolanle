@@ -22,6 +22,7 @@ import shareIcon from '../../assets/images/share.png';
 import whatsappIcon from '../../assets/images/whatsapp.png';
 import {getDataFromAsyncStorage} from '../../lib/storage';
 import Toast from '../../lib/toast';
+import StaticContainerReg from '../../containers/StaticContainerReg';
 
 export type ShareCardScreenProps = NativeStackScreenProps<
   AppStackParams,
@@ -63,96 +64,101 @@ const ShareCardScreen = ({navigation, route}: ShareCardScreenProps) => {
 
   return (
     <Layout>
-      <DashboardHeader
+      {/* <DashboardHeader
         options={{
           type: 'SHARE_VIEW',
           heading: 'SHARE CARD',
           onBackBtnPress: () => navigation.pop(),
           subheading: 'You can choose an option to share your card.',
         }}
-      />
-      <View
-        style={{
-          paddingVertical: responsiveHeight(17 / percentToPx),
-          paddingHorizontal: responsiveHeight(30 / percentToPx),
-        }}>
+      /> */}
+      <StaticContainerReg
+        isBack
+        isHeader
+        title=""
+        onBackPress={() => navigation.pop()}>
         <View
           style={{
-            padding: responsiveHeight(20 / percentToPx),
-            paddingBottom: responsiveHeight(25 / percentToPx),
+            paddingHorizontal: responsiveHeight(20 / percentToPx),
+            paddingVertical: responsiveHeight(8 / percentToPx),
           }}
-          className="rounded-md border-[1px] border-[#E3E3E3]">
-          <View className="flex justify-center items-center">
-            <Image
-              className="rounded-lg"
-              resizeMode='contain'
-              source={{uri: `${BASE_URL}/${card?._id}/${card!.qr}`}}
-              style={{width: responsiveWidth(38), height: responsiveHeight(15)}}
-            />
-          </View>
-          <View style={{marginTop: responsiveHeight(50 / percentToPx)}}>
-            <ShareButton
-              text="Copy Link"
-              onPress={() => {
-                Clipboard.setString(`${BASE_URL}/card/${card!._id}`);
-                Toast.success({
-                  primaryText: 'Copied Link.',
-                  position: 'bottom',
-                });
-              }}
-              startIcon={copyIcon}
-              styles={{borderRadius: responsiveHeight(8 / percentToPx)}}
-            />
-            <View style={{marginTop: responsiveHeight(20 / percentToPx)}}>
-              <ShareButton
-                text="Text your card"
-                startIcon={textIcon}
-                onPress={() => handleShareBtnPress('TEXT_CARD')}
-                styles={{
-                  borderTopLeftRadius: responsiveHeight(8 / percentToPx),
-                  borderTopRightRadius: responsiveHeight(8 / percentToPx),
-                }}
-              />
-              <View className="h-[0.3px] bg-white" />
-              <ShareButton
-                startIcon={emailIcon}
-                text="Email your card"
-                onPress={() => handleShareBtnPress('EMAIL_CARD')}
-              />
-              <View className="h-[0.3px] bg-white" />
-              <ShareButton
-                startIcon={whatsappIcon}
-                text="WhatsApp your card"
-                onPress={() => handleShareBtnPress('WHATSAPP_CARD')}
-              />
-              <View className="h-[0.3px] bg-white" />
-              <ShareButton
-                startIcon={galleryIcon}
-                onPress={handleDownload}
-                text="Save to Photos/Gallery"
-              />
-              <View className="h-[0.3px] bg-white" />
-              <ShareButton
-                onPress={() => {
-                  Share.share({
-                    url: '',
-                    message: `Hi, This is ${fullName} from ${company}. Tap this link to get my business card.\n\n${BASE_URL}/card/${
-                      card!._id
-                    }`,
-                  });
-                }}
-                startIcon={shareIcon}
-                text="Share QR Code"
-                iconStyles={{tintColor: 'white'}}
-                styles={{
-                  borderBottomLeftRadius: responsiveHeight(8 / percentToPx),
-                  borderBottomRightRadius: responsiveHeight(8 / percentToPx),
+          className="w-full">
+          <View className="bg-secondary-blue p-4 rounded-2xl">
+            <View className="flex justify-center items-center">
+              <Image
+                className="rounded-lg"
+                resizeMode="contain"
+                source={{uri: `${BASE_URL}/${card?._id}/${card!.qr}`}}
+                style={{
+                  width: responsiveWidth(34),
+                  aspectRatio: 1,
                 }}
               />
             </View>
+            <View style={{marginTop: responsiveHeight(30 / percentToPx)}}>
+              <ShareButton
+                text="Copy Link"
+                onPress={() => {
+                  Clipboard.setString(`${BASE_URL}/card/${card!._id}`);
+                  Toast.success({
+                    primaryText: 'Copied Link.',
+                    position: 'bottom',
+                  });
+                }}
+                startIcon={copyIcon}
+                styles={{borderRadius: responsiveHeight(8 / percentToPx)}}
+              />
+              <View style={{marginTop: responsiveHeight(20 / percentToPx)}}>
+                <ShareButton
+                  text="Text your card"
+                  startIcon={textIcon}
+                  onPress={() => handleShareBtnPress('TEXT_CARD')}
+                  styles={{
+                    borderTopLeftRadius: responsiveHeight(8 / percentToPx),
+                    borderTopRightRadius: responsiveHeight(8 / percentToPx),
+                  }}
+                />
+                <View className="h-[0.3px] bg-white mt-[0.5px]" />
+                <ShareButton
+                  startIcon={emailIcon}
+                  text="Email your card"
+                  onPress={() => handleShareBtnPress('EMAIL_CARD')}
+                />
+                <View className="h-[0.3px] bg-white mt-[0.5px]" />
+                <ShareButton
+                  startIcon={whatsappIcon}
+                  text="WhatsApp your card"
+                  onPress={() => handleShareBtnPress('WHATSAPP_CARD')}
+                />
+                <View className="h-[0.3px] bg-white mt-[0.5px]" />
+                <ShareButton
+                  startIcon={galleryIcon}
+                  onPress={handleDownload}
+                  text="Save to Photos/Gallery"
+                />
+                <View className="h-[0.3px] bg-white" />
+                <ShareButton
+                  onPress={() => {
+                    Share.share({
+                      url: '',
+                      message: `Hi, This is ${fullName} from ${company}. Tap this link to get my business card.\n\n${BASE_URL}/card/${
+                        card!._id
+                      }`,
+                    });
+                  }}
+                  startIcon={shareIcon}
+                  text="Share QR Code"
+                  iconStyles={{tintColor: 'white'}}
+                  styles={{
+                    borderBottomLeftRadius: responsiveHeight(8 / percentToPx),
+                    borderBottomRightRadius: responsiveHeight(8 / percentToPx),
+                  }}
+                />
+              </View>
+            </View>
           </View>
         </View>
-      </View>
+      </StaticContainerReg>
     </Layout>
   );
 };
