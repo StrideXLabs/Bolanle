@@ -26,6 +26,10 @@ interface IDashboardHeaderAddTypeProps {
   heading: string;
   type: 'ADD_NEW_VIEW';
   onAddNewBtnPress: () => void;
+  userDetails?: {
+    name: string;
+    designation: string;
+  };
 }
 
 interface IDashboardHeaderEditTypeProps {
@@ -73,8 +77,12 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
               source={userImg as ImageSourcePropType}
             />
             <View className="flex flex-col">
-              <Text className="text-md font-3 -mb-1">Hashaam Khan</Text>
-              <Text className="text-sm font-0">Developer</Text>
+              <Text className="text-md font-3 -mb-1 text-black">
+                {options.userDetails?.name}
+              </Text>
+              <Text className="text-xs font-1">
+                {options.userDetails?.designation}
+              </Text>
             </View>
           </View>
           <View className="flex flex-row gap-3">

@@ -27,7 +27,8 @@ import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import dashboardService, {ICardData} from '../../services/dashboard.service';
 import Card from './Card';
 import TextField from '../../components/TextField/TextFieldDark';
-import {SearchIcon} from '../../constants/icons';
+import {SearchIcon, addCardIcon} from '../../constants/icons';
+import {useAuth} from '../../hooks/useAuth';
 
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
@@ -41,6 +42,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
   const {setFromDashBoard} = useCreateBusinessCard();
   const [cards, setCards] = useState<ICardData[]>([]);
   const [searchText, setSearchText] = useState('');
+  const {user} = useAuth();
 
   const fetchDashboardData = async () => {
     try {
@@ -80,6 +82,10 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
         options={{
           type: 'ADD_NEW_VIEW',
           heading: 'DASHBOARD',
+          userDetails: {
+            name: user?.name || '',
+            designation: user?.email || '',
+          },
           onAddNewBtnPress: () => {
             setFromDashBoard(true);
             navigation.navigate('PersonalInformationScreen', {
@@ -121,9 +127,24 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
               style={[{fontSize: responsiveFontSize(18 / percentToPx)}]}>
               No business card found.
             </Text>
-            <Text className="font-1 text-center mt-1">
-              Create a new business card by clicking on the plus icon above.
+            <Text
+              className="font-1 text-center mt-1"
+              style={{
+                paddingHorizontal: responsiveHeight(14 / percentToPx),
+              }}>
+              Create a new business card
             </Text>
+            <TouchableOpacity
+              className="self-center mt-2"
+              onPress={() => {
+                setFromDashBoard(true);
+                navigation.navigate('PersonalInformationScreen', {
+                  cardId: null,
+                  status: 'CREATING',
+                });
+              }}>
+              <Image source={addCardIcon as any} className={`h-8 w-8`} />
+            </TouchableOpacity>
           </View>
         )}
 

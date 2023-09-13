@@ -19,7 +19,7 @@ const GenericHeader: React.FC<GenericHeaderProps> = ({isBack, title}) => {
   const navigation = useNavigation();
 
   const handlePressBack = () => {
-    navigation.goBack();
+    navigation.canGoBack() && navigation.goBack();
   };
 
   return (
