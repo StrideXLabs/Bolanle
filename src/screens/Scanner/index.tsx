@@ -12,30 +12,51 @@ import {
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import {accentColor} from '../../constants';
+import contactsService from '../../services/contacts.service';
+import Toast from '../../lib/toast';
 
 const QRScanner = () => {
   const [scanned, setScanned] = useState(false);
-  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const Verfiy = () => {
-    console.log('tryinggggg');
+  const Verfiy = async e => {
+    const id = e.split('/').pop();
+    console.log('id', id);
+    try {
+      setLoading(true);
+      const data = await contactsService.create(id);
+      console.log('data', data);
+
+      if (!data.success) {
+        setLoading(false);
+        Toast.error({primaryText: data.message});
+      }
+
+      if (data.success) {
+        Toast.success({primaryText: data.message});
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      Toast.error({primaryText: 'Something went wrong'});
+    }
   };
 
   const handleScan = e => {
     setScanned(true);
-    console.log(e.data);
+    Verfiy(e.data);
   };
 
   const handlePress = () => {
     setScanned(false);
-    setResult(null);
   };
 
   return (
     <View style={styles.container}>
       {scanned ? (
         <View style={styles.body}>
-          <Text style={styles.heading}>{result}</Text>
           <TouchableOpacity onPress={handlePress} style={styles.btn}>
             <Text style={styles.btnText}>Re-scan</Text>
           </TouchableOpacity>
