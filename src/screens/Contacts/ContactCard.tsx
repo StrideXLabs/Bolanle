@@ -19,13 +19,13 @@ interface IContactCardProps {
 }
 
 const ContactCard = ({contact, viewContact, onPress}: IContactCardProps) => {
-  const {contactDetails, personalInfo, ...rest} = contact || {};
+  const {contact: {contactDetails, personalInfo, ...rest} = {}} = contact || {};
 
   return (
     <View
-      className="w-full border-[1px] border-[#E3E3E3]"
+      className="w-full bg-secondary-blue"
       style={{
-        borderRadius: 25,
+        borderRadius: 20,
         paddingHorizontal: responsiveHeight(10 / percentToPx),
         paddingVertical: responsiveHeight(14 / percentToPx),
       }}>
@@ -49,20 +49,14 @@ const ContactCard = ({contact, viewContact, onPress}: IContactCardProps) => {
               onPress={() =>
                 viewContact({contactDetails, personalInfo, ...rest})
               }>
-              <Text
-                className="text-[#334155] text-base"
-                style={textStyles.robotoRegular}>
+              <Text className="text-black font-2 text-base">
                 {personalInfo?.name}
               </Text>
             </TouchableOpacity>
-            <Text
-              className="text-[#334155] text-[12px]"
-              style={textStyles.robotoRegular}>
+            <Text className="text-black text-[12px] font-1">
               {personalInfo?.designation}
             </Text>
-            <Text
-              className="text-[#636769] text-[12px]"
-              style={textStyles.robotoRegular}>
+            <Text className="text-black text-[12px] font-0">
               {personalInfo?.companyName}
             </Text>
           </View>

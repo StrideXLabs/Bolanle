@@ -49,11 +49,9 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
   const [contacts, setContacts] = useState<IContact[]>([]);
   const selectedContactRef = useRef<IContact | null>(null);
 
-  console.log('contacts', contacts);
-
   const filteredContacts = search.trim()
     ? contacts.filter(c =>
-        ((c as any).contact as IContact).personalInfo?.name
+        ((c as any).contact.contact as IContact).personalInfo?.name
           ?.toLowerCase()
           ?.includes(search.trim().toLowerCase()),
       )
