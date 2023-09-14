@@ -21,6 +21,11 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
+	<key>NSCameraUsageDescription</key>
+	<string>camera opened</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>photo library opened</string>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
