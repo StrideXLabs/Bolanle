@@ -5,7 +5,8 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
-  ImageSourcePropType,
+  ScrollView,
+  TouchableOpacity,
   Text,
   View,
 } from 'react-native';
@@ -51,7 +52,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
 
   const filteredContacts = search.trim()
     ? contacts.filter(c =>
-        ((c as any).contact.contact as IContact).personalInfo?.name
+        ((c as any).contact as IContact).personalInfo?.name
           ?.toLowerCase()
           ?.includes(search.trim().toLowerCase()),
       )
@@ -138,6 +139,20 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
     }
   }, [isFocused]);
 
+  const tags = [
+    'All',
+    'Developer',
+    'Designer',
+    'UI/UX',
+    'Manager',
+    'Frontend',
+    'Backend',
+    'Fullstack',
+    'Freelancer',
+    'Intern',
+    'Employee',
+  ];
+
   return (
     <Layout>
       <View
@@ -146,7 +161,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
           paddingHorizontal: responsiveHeight(24 / percentToPx),
           paddingVertical: responsiveHeight(17 / percentToPx),
         }}>
-        <View style={{marginTop: responsiveHeight(20 / percentToPx)}}>
+        <View style={{marginTop: responsiveHeight(14 / percentToPx)}}>
           {!loading && !error && contacts.length > 0 && (
             <Text className="text-black text-3xl font-2 text-center">
               Contacts
@@ -168,6 +183,21 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
                   />
                 }
               />
+
+              <ScrollView
+                horizontal
+                className="flex flex-row space-x-2 flex-wrap"
+                contentContainerStyle={{
+                  marginTop: responsiveHeight(14 / percentToPx),
+                }}>
+                {tags.map((tag, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    className="bg-emerald-500 rounded-full px-2 py-1">
+                    <Text className="font-0 text-white">{tag}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
             </View>
           )}
         </View>
@@ -223,7 +253,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
           <View
             style={{
               height: responsiveHeight(100),
-              marginTop: responsiveHeight(34 / percentToPx),
+              marginTop: responsiveHeight(24 / percentToPx),
             }}>
             <FlatList
               numColumns={1}
