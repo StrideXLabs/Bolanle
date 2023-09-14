@@ -42,7 +42,22 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
   const {setFromDashBoard} = useCreateBusinessCard();
   const [cards, setCards] = useState<ICardData[]>([]);
   const [searchText, setSearchText] = useState('');
+  const [filteredCards, setFilteredCards] = useState<ICardData[]>([]);
   const {user} = useAuth();
+
+  const filterCards = (text: string) => {
+    const filtered = cards.filter(card => {
+      const companyName = card.personalInfo.companyName.toLowerCase();
+      const name = card.personalInfo.name.toLowerCase();
+      return (
+        companyName.includes(text.toLowerCase()) ||
+        name.includes(text.toLowerCase())
+      );
+    });
+    setFilteredCards(filtered);
+  };
+
+  const hasSearchResults = filteredCards.length > 0;
 
   const fetchDashboardData = async () => {
     try {
@@ -157,6 +172,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
               placeholder="Search name, category ..."
               onChangeText={text => {
                 setSearchText(text);
+                filterCards(text);
               }}
               value={searchText}
               gradient={true}
@@ -185,7 +201,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
                   onRefresh={fetchDashboardData}
                 />
               }
-              data={cards}
+              data={searchText ? filteredCards : cards}
               numColumns={1}
               horizontal={true}
               style={{width: '100%'}}
