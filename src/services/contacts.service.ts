@@ -20,6 +20,7 @@ export interface IContactData {
 }
 
 export interface ICardsResponse {
+  businessCard: IContactData[] | null;
   message: string;
   data: IContactData[];
 }
@@ -57,6 +58,19 @@ class ContactsService {
     try {
       await fetcher(`/contact?cardId=${id}`, {method: 'POST'});
       return {success: true, data: null, message: 'Contact created.'};
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: (error as HttpError).message,
+      };
+    }
+  }
+
+  async checkContact(id: string): Promise<IDefaultAPIResponse<ICardsResponse['data']>> {
+    try {
+      const data = await fetcher<{}, ICardsResponse>(`contact/duplicate?cardId=${id}`);
+      return {success: true, data: data.businessCard, message: data.message};
     } catch (error) {
       return {
         data: null,

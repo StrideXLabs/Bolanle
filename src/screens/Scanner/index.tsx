@@ -18,14 +18,18 @@ import Toast from '../../lib/toast';
 const QRScanner = () => {
   const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [canCreate, setCanCreate] = useState(false);
 
   const Verfiy = async e => {
     const id = e.split('/').pop();
     console.log('id', id);
     try {
       setLoading(true);
-      const data = await contactsService.create(id);
-      console.log('data', data);
+      const data = await contactsService.checkContact(id);
+
+      if (data.success) {
+        setCanCreate(true);
+      }
 
       if (!data.success) {
         setLoading(false);
