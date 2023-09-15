@@ -1,9 +1,11 @@
 import React from 'react';
-import {Text} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 import RootNavigation from './navigation/RootNavigation';
-import StaticContainer from './containers/StaticContainer';
+
+import {enableLatestRenderer} from 'react-native-maps';
+
+enableLatestRenderer();
 
 function App(): JSX.Element {
   return (
