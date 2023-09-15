@@ -153,6 +153,8 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
     'Employee',
   ];
 
+  console.log('contacts', contacts);
+
   return (
     <Layout>
       <View

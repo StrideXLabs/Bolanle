@@ -54,11 +54,16 @@ class ContactsService {
     }
   }
 
-  async create(id: string): Promise<IDefaultAPIResponse<{message: string}>> {
+  async create(id: string, data: any): Promise<IDefaultAPIResponse<{message: string}>> {
+
     try {
-      await fetcher(`/contact?cardId=${id}`, {method: 'POST'});
+      await fetcher(`/contact?cardId=${id}`, {
+        method: 'POST',
+        body: data,
+      });
       return {success: true, data: null, message: 'Contact created.'};
     } catch (error) {
+      console.log("err", error)
       return {
         data: null,
         success: false,
@@ -72,6 +77,7 @@ class ContactsService {
       const data = await fetcher<{}, ICardsResponse>(`contact/duplicate?cardId=${id}`);
       return {success: true, data: data.businessCard, message: data.message};
     } catch (error) {
+      console.log("err2", error)
       return {
         data: null,
         success: false,

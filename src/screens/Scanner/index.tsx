@@ -1,34 +1,44 @@
 'use strict';
-import React, {useEffect, useState, useContext} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Linking} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, ScrollView, KeyboardAvoidingView} from 'react-native';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import {RNCamera} from 'react-native-camera';
 
 import CustomMarker from './CustomMarker';
 import {
   responsiveFontSize,
+  responsiveHeight,
   responsiveScreenHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-import {accentColor} from '../../constants';
+import {accentColor, percentToPx} from '../../constants';
 import contactsService from '../../services/contacts.service';
 import Toast from '../../lib/toast';
+import ScannedCard from './ScannedCard';
+import Layout from '../../components/Layout';
+import Button from '../../components/Button';
 
 const QRScanner = () => {
   const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);
   const [canCreate, setCanCreate] = useState(false);
+  const [cardData, setCardData] = useState({});
+  const [Tag, setTag] = useState([]);
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [cardId, setCardId] = useState('');
 
   const Verfiy = async e => {
     const id = e.split('/').pop();
-    console.log('id', id);
+    setCardId(id);
     try {
       setLoading(true);
-      const data = await contactsService.checkContact(id);
+      const data = await contactsService.checkContact(cardId);
 
       if (data.success) {
+        Toast.success({primaryText: data.message});
+        setCardData(data);
         setCanCreate(true);
+        setLoading(false);
       }
 
       if (!data.success) {
@@ -36,13 +46,9 @@ const QRScanner = () => {
         Toast.error({primaryText: data.message});
       }
 
-      if (data.success) {
-        Toast.success({primaryText: data.message});
-      }
-
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log('niga nae', error);
       setLoading(false);
       Toast.error({primaryText: 'Something went wrong'});
     }
@@ -55,66 +61,104 @@ const QRScanner = () => {
 
   const handlePress = () => {
     setScanned(false);
+    setCanCreate(false);
+  };
+
+  console.log('aTAG', Tag);
+
+  const handleSend = async () => {
+    console.log('bTAG', Tag);
+    try {
+      setBtnLoading(true);
+
+      console.log('xTAG', Tag);
+
+      const data = await contactsService.create(cardId, Tag);
+
+      console.log('DARA', data);
+
+      if (data.success) {
+        Toast.success({primaryText: data.message});
+        setCardData(data);
+        setCanCreate(true);
+        setLoading(false);
+      }
+
+      if (!data.success) {
+        setLoading(false);
+        Toast.error({primaryText: data.message});
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.log('error123', error);
+      setLoading(false);
+      Toast.error({primaryText: 'Something went wrong'});
+    }
   };
 
   return (
-    <View style={styles.container}>
-      {scanned ? (
-        <View style={styles.body}>
-          <TouchableOpacity onPress={handlePress} style={styles.btn}>
-            <Text style={styles.btnText}>Re-scan</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <QRCodeScanner
-          onRead={handleScan}
-          cameraStyle={styles.cameraContainer}
-          reactivate={true}
-          reactivateTimeout={3000}
-          showMarker={true}
-          customMarker={<CustomMarker />}
-        />
-      )}
-    </View>
+    <Layout>
+      <ScrollView
+        contentContainerStyle={{
+          paddingVertical: responsiveHeight(40 / percentToPx),
+          paddingHorizontal: responsiveHeight(14 / percentToPx),
+        }}>
+        <KeyboardAvoidingView>
+          {!loading && canCreate && (
+            <>
+              <Text
+                className="font-3 text-black text-center"
+                style={{
+                  fontSize: responsiveFontSize(3),
+                }}>
+                Scanned Card
+              </Text>
+              <ScannedCard cardData={cardData} Tag={Tag} setTag={setTag} />
+            </>
+          )}
+          {!loading && scanned ? (
+            <View
+              className="w-full flex flex-row items-center justify-between"
+              style={{
+                marginTop: responsiveHeight(14 / percentToPx),
+                marginBottom: responsiveHeight(80 / percentToPx),
+                paddingHorizontal: responsiveWidth(14 / percentToPx),
+              }}>
+              <Button
+                callback={handlePress}
+                text="Re-scan"
+                showBackgroundColor={false}
+                style={{
+                  width: responsiveWidth(42),
+                }}
+              />
+              <Button
+                callback={handleSend}
+                text="Create contact"
+                showBackgroundColor
+                style={{
+                  width: responsiveWidth(42),
+                }}
+                showLoading={btnLoading}
+              />
+            </View>
+          ) : (
+            <QRCodeScanner
+              onRead={handleScan}
+              cameraStyle={{
+                height: responsiveScreenHeight(85),
+              }}
+              reactivate={true}
+              reactivateTimeout={3000}
+              showMarker={true}
+              customMarker={<CustomMarker />}
+            />
+          )}
+        </KeyboardAvoidingView>
+      </ScrollView>
+    </Layout>
   );
 };
 
 export default QRScanner;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cameraContainer: {
-    height: responsiveScreenHeight(85),
-  },
-  body: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  heading: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
-    fontFamily: 'Poppins',
-    marginBottom: 20,
-  },
-  btn: {
-    // width: dimensions.Width * 0.6,
-    // height: dimensions.Height * 0.05,
-    width: responsiveWidth(60),
-    height: responsiveScreenHeight(5),
-    backgroundColor: accentColor,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  btnText: {
-    fontSize: responsiveFontSize(2.5),
-    fontWeight: 'bold',
-    color: 'white',
-  },
-});
