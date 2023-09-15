@@ -38,6 +38,10 @@ import QR from './QR';
 import SocialLinks from './SocialLinks';
 import {BackIcon, PencilIcon} from '../../constants/icons';
 import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import {openPicker} from 'react-native-image-crop-picker';
+import {Image as PickerImage} from 'react-native-image-crop-picker';
+import {IContactDetails} from '../../hooks/useBusinessCard/interface';
+import {getFileName} from '../../lib/getFileName';
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams & BottomTabNavigatorParams,
@@ -223,6 +227,62 @@ const EditCardScreen = ({
     navigation.goBack();
   };
 
+  const uploadVideoHandler = async () => {
+    try {
+      const result = await openPicker({
+        maxFiles: 1,
+        cropping: false,
+        mediaType: 'video',
+        waitAnimationEnd: true,
+        enableRotationGesture: true,
+      });
+
+      const formData = new FormData();
+
+      const tempData = {
+        email: contactDetails.email,
+        mobile: contactDetails.mobile,
+        websiteUrl: contactDetails.websiteUrl,
+        companyAddress: contactDetails.companyAddress,
+      } as IContactDetails;
+
+      formData.append('contactDetails', JSON.stringify(tempData));
+
+      console.log('formdata', formData);
+      console.log('temp data', tempData);
+
+      if (
+        contactDetails.coverVideo &&
+        typeof contactDetails.coverVideo !== 'string'
+      ) {
+        formData.append('coverVideo', {
+          uri: (contactDetails.coverVideo as PickerImage).path,
+          type: (contactDetails.coverVideo as PickerImage).mime,
+          name:
+            (contactDetails.coverVideo as PickerImage).filename ||
+            getFileName((contactDetails.coverVideo as PickerImage).path),
+        });
+      }
+
+      const response = await dashboardService.editCardDetails(
+        _id,
+        {contactDetails: formData},
+        true,
+      );
+
+      console.log('response', response);
+
+      if (!response.success)
+        return Toast.error({primaryText: response.message});
+
+      Toast.success({primaryText: 'Video updated.'});
+      setContactDetails(initialContactDetails);
+    } catch (error) {
+      if ((error as any)?.code === 'E_PICKER_CANCELLED') return;
+      Toast.error({primaryText: 'Error selecting image. Please try again.'});
+    }
+  };
+
   return (
     <Layout viewStyle={{paddingBottom: responsiveHeight(6)}}>
       {loading && (
@@ -285,17 +345,19 @@ const EditCardScreen = ({
                 source={{
                   uri:
                     BASE_URL +
-                    `/${_id}/${contactDetails?.companyLogo}` +
+                    `/${_id}/${contactDetails?.coverVideo}` +
                     `?time=${Date.now()}`,
                   cache: 'reload',
                 }}
               />
-              {/* <TouchableOpacity className="absolute top-4 right-4">
+              <TouchableOpacity
+                className="absolute top-4 right-4"
+                onPress={uploadVideoHandler}>
                 <Image
                   source={PencilIcon as any}
                   className={`h-[35px] w-[35px]`}
                 />
-              </TouchableOpacity> */}
+              </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={handlePressBack}

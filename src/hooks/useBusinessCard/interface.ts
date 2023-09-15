@@ -15,6 +15,7 @@ export interface IContactDetails {
   companyAddress: string;
   companyLogo: Image | string | null;
   profilePicture: Image | string | null;
+  coverVideo: Image | string | null;
 }
 
 export interface ISocialLink {

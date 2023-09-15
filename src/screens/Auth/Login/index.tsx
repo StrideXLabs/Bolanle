@@ -1,7 +1,7 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import decodeJWT from 'jwt-decode';
 import React, {useState, useEffect} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View, Pressable} from 'react-native';
 import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/outline';
 import {
   responsiveFontSize,
@@ -22,6 +22,7 @@ import authService from '../../../services/auth.service';
 import Layout from '../../../components/Layout';
 import StaticContainer from '../../../containers/StaticContainer';
 import {appleIcon, facebookIcon, googleIcon} from '../../../constants/icons';
+import {googleSignIn} from '../../../services/googleAuth.service';
 
 export type LoginScreenProps = NativeStackScreenProps<
   AuthStackParams & AppStackParams,
@@ -195,7 +196,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
             <View
               className="flex justify-center items-center"
               style={{marginTop: responsiveHeight(14 / percentToPx)}}>
-              <Text className="font-2 text-black">- Or Login with -</Text>
+              <Text className="font-2 text-black">- Or login with -</Text>
             </View>
 
             <View
@@ -203,6 +204,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
               style={{marginTop: responsiveHeight(14 / percentToPx)}}>
               <TouchableOpacity
                 style={{flex: 1}}
+                onPress={async () => {
+                  try {
+                    const call = await googleSignIn();
+                    console.log('call', call);
+                  } catch (e) {
+                    console.log('e', e);
+                  }
+                }}
                 className="p-3 bg-white rounded-lg">
                 <View className="flex flex-row items-center justify-center space-x-1">
                   <Image

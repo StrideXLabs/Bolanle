@@ -56,7 +56,10 @@ class DashboardService {
     data: IEditCardData,
     isFormData = false,
   ): Promise<IDefaultAPIResponse<ICardData>> {
+
+    
     try {
+      console.log('data check for video2', data?.contactDetails)
       const response = await fetcher<
         IEditCardData,
         {data: ICardData; message: string}
