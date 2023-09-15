@@ -49,6 +49,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
   const [deleting, setDeleting] = useState(false);
   const [contacts, setContacts] = useState<IContact[]>([]);
   const selectedContactRef = useRef<IContact | null>(null);
+  const [selectedTag, setSelectedTag] = useState('All');
 
   const filteredContacts = search.trim()
     ? contacts.filter(c =>
@@ -112,6 +113,8 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
     try {
       if (!selectedContactRef.current) return;
 
+      console.log('selectedContactRef.current', selectedContactRef.current);
+
       setDeleting(true);
       const response = await contactsService.delete(
         selectedContactRef.current?._id || '',
@@ -143,14 +146,12 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
     'All',
     'Developer',
     'Designer',
-    'UI/UX',
+    'Partnership',
+    'Business',
     'Manager',
-    'Frontend',
-    'Backend',
-    'Fullstack',
-    'Freelancer',
-    'Intern',
-    'Employee',
+    'CEO',
+    'Money',
+    'Investor',
   ];
 
   console.log('contacts', contacts);
@@ -195,8 +196,24 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
                 {tags.map((tag, index) => (
                   <TouchableOpacity
                     key={index}
-                    className="bg-emerald-500 rounded-full px-2 py-1">
-                    <Text className="font-0 text-white">{tag}</Text>
+                    onPress={() => setSelectedTag(tag)}
+                    className={`rounded-full px-2 py-1
+                    ${
+                      selectedTag === tag
+                        ? 'bg-accent'
+                        : 'bg-gray-200 border border-gray-300'
+                    }
+                    `}>
+                    <Text
+                      className={`font-0 
+                    ${
+                      selectedTag === tag
+                        ? 'text-white'
+                        : 'text-gray-500 font-1'
+                    }
+                    `}>
+                      {tag}
+                    </Text>
                   </TouchableOpacity>
                 ))}
               </ScrollView>
@@ -269,12 +286,12 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
               renderItem={({item}) => (
                 <ContactCard
                   contact={item}
-                  onPress={contact => {
-                    selectedContactRef.current = contact;
+                  onPress={item => {
+                    selectedContactRef.current = item;
                     setOpen(true);
                   }}
-                  viewContact={contact => {
-                    selectedContactRef.current = contact;
+                  viewContact={item => {
+                    selectedContactRef.current = item;
                     handleViewCard();
                   }}
                 />
