@@ -231,12 +231,14 @@ export default () => {
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         style={styles.map}
         region={{
-          latitude: focusedContact
-            ? Number.parseFloat(focusedContact.personalInfo.lat)
-            : 37.78825,
-          longitude: focusedContact
-            ? Number.parseFloat(focusedContact.personalInfo.lng)
-            : -122.4324,
+          latitude:
+            focusedContact && focusedContact.personalInfo.lat
+              ? Number.parseFloat(focusedContact.personalInfo.lat)
+              : 37.78825,
+          longitude:
+            focusedContact && focusedContact.personalInfo.lng
+              ? Number.parseFloat(focusedContact.personalInfo.lng)
+              : -122.4324,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
@@ -247,10 +249,14 @@ export default () => {
               <MarkerAnimated
                 key={contact._id}
                 coordinate={{
-                  latitude: Number.parseFloat(contact.contact.personalInfo.lat),
-                  longitude: Number.parseFloat(
-                    contact.contact.personalInfo.lng,
-                  ),
+                  latitude:
+                    contact && contact.contact.personalInfo.lat
+                      ? Number.parseFloat(contact.contact.personalInfo.lat)
+                      : 37.78825,
+                  longitude:
+                    contact && contact.contact.personalInfo.lng
+                      ? Number.parseFloat(contact.contact.personalInfo.lng)
+                      : -122.4324,
                 }}
                 title={contact.contact.personalInfo.name}
                 // description={contact.personalInfo.address}

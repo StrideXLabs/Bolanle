@@ -5,9 +5,6 @@ import AppNavigation from './AppNavigation';
 import {BASE_URL} from '../constants';
 import {Text, View} from 'react-native';
 
-import StaticContainer from '../containers/StaticContainer';
-import GenericCardContainer from '../containers/GenericCardContainer';
-
 const linkings = {
   prefixes: ['hellobolanle://', BASE_URL],
   config: {

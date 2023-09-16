@@ -1,4 +1,4 @@
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import decodeJWT from 'jwt-decode';
 import React, {useState, useEffect} from 'react';
 import {Image, Text, TouchableOpacity, View, Pressable} from 'react-native';
@@ -47,6 +47,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
 
       if (!response.success) {
         setLoading(false);
+        console.log(response);
         return Toast.error({primaryText: response.message});
       }
 
@@ -72,9 +73,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
         authed: true,
       } as IAuthState);
 
+      console.log(response);
       setAuthState({authed: true, token, user});
       navigation.replace('AppBottomNav');
     } catch (error) {
+      console.error(error);
       Toast.error({
         primaryText: 'Something went wrong.',
         secondaryText: 'Please close and reopen the app.',
