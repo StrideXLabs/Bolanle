@@ -51,13 +51,21 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
   const selectedContactRef = useRef<IContact | null>(null);
   const [selectedTag, setSelectedTag] = useState('All');
 
-  const filteredContacts = search.trim()
-    ? contacts.filter(c =>
-        ((c as any).contact as IContact).personalInfo?.name
-          ?.toLowerCase()
-          ?.includes(search.trim().toLowerCase()),
-      )
-    : contacts;
+  const filteredContacts = contacts.filter(c => {
+    const nameMatch =
+      c.contact?.personalInfo?.name
+        ?.toLowerCase()
+        ?.includes(search.toLowerCase()) || search.trim() === '';
+
+    const tagMatch =
+      selectedTag.toLowerCase() === 'all' ||
+      (c.tags &&
+        c.tags.some(
+          tag => tag.name.toLowerCase() === selectedTag.toLowerCase(),
+        ));
+
+    return nameMatch && tagMatch;
+  });
 
   const fetchContactData = async () => {
     try {
@@ -154,7 +162,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
     'Investor',
   ];
 
-  console.log('contacts', contacts);
+  console.log('contactsHEHE', contacts);
 
   return (
     <Layout>
@@ -196,7 +204,10 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
                 {tags.map((tag, index) => (
                   <TouchableOpacity
                     key={index}
-                    onPress={() => setSelectedTag(tag)}
+                    onPress={() => {
+                      setSelectedTag(tag);
+                      setSearch('');
+                    }}
                     className={`rounded-full px-2 py-1
                     ${
                       selectedTag === tag

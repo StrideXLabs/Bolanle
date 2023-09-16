@@ -21,8 +21,6 @@ interface IContactCardProps {
 const ContactCard = ({contact, viewContact, onPress}: IContactCardProps) => {
   const {contact: {contactDetails, personalInfo, ...rest} = {}} = contact || {};
 
-  const tags = ['Manager', 'Developer', 'Designer'];
-
   return (
     <View
       className="w-full bg-secondary-blue"
@@ -75,11 +73,12 @@ const ContactCard = ({contact, viewContact, onPress}: IContactCardProps) => {
       </View>
 
       <View className="flex flex-row space-x-2 mt-[6px] flex-wrap">
-        {rest.tags &&
-          rest.tags.map((tag, index) => (
+        {contact.tags &&
+          contact.tags.map((tag, index) => (
             <TouchableOpacity
               key={index}
-              className={`bg-[${tag.color}] rounded-full px-2 py-1`}>
+              style={{backgroundColor: tag.color}}
+              className="rounded-full px-2 py-1">
               <Text className="font-0 text-white">{tag.name}</Text>
             </TouchableOpacity>
           ))}

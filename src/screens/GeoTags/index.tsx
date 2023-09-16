@@ -11,7 +11,7 @@ import {
 import React, {useEffect, useRef, useState} from 'react';
 import MapView, {PROVIDER_GOOGLE, MarkerAnimated} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import contactsService from '../../services/contacts.service';
-import {BASE_URL} from '../../constants';
+import {BASE_URL, accentColor} from '../../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -113,10 +113,6 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    console.log(focusedContact, 'focusedContact');
-  }, [focusedContact]);
-
-  useEffect(() => {
     if (contacts && contacts.length > 0)
       setFocusedContact(contacts[activeId].contact);
     scrollToCard(activeId);
@@ -148,7 +144,7 @@ export default () => {
           style={{
             ...styles.card,
             width: boxWidth,
-            borderColor: isActive ? 'blue' : 'transparent', // Add a border color for the active card
+            borderColor: isActive ? accentColor : 'transparent', // Add a border color for the active card
           }}>
           <Image
             source={{
