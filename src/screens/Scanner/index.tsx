@@ -1,6 +1,7 @@
 'use strict';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView, KeyboardAvoidingView} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
@@ -26,13 +27,14 @@ const QRScanner = () => {
   const [Tag, setTag] = useState([]);
   const [btnLoading, setBtnLoading] = useState(false);
   const [cardId, setCardId] = useState('');
+  const navigation = useNavigation();
 
   const Verfiy = async e => {
     const id = e.split('/').pop();
     setCardId(id);
     try {
       setLoading(true);
-      const data = await contactsService.checkContact(cardId);
+      const data = await contactsService.checkContact(id);
 
       if (data.success) {
         Toast.success({primaryText: data.message});
@@ -48,7 +50,6 @@ const QRScanner = () => {
 
       setLoading(false);
     } catch (error) {
-      console.log('niga nae', error);
       setLoading(false);
       Toast.error({primaryText: 'Something went wrong'});
     }
@@ -64,24 +65,17 @@ const QRScanner = () => {
     setCanCreate(false);
   };
 
-  console.log('aTAG', Tag);
-
   const handleSend = async () => {
-    console.log('bTAG', Tag);
     try {
       setBtnLoading(true);
 
-      console.log('xTAG', Tag);
-
       const data = await contactsService.create(cardId, Tag);
-
-      console.log('DARA', data);
 
       if (data.success) {
         Toast.success({primaryText: data.message});
-        setCardData(data);
+        // setCardData(data);
         setCanCreate(true);
-        setLoading(false);
+        setBtnLoading(false);
       }
 
       if (!data.success) {
@@ -90,8 +84,9 @@ const QRScanner = () => {
       }
 
       setLoading(false);
+
+      navigation.navigate('AppBottomNav', {screen: 'Contacts'});
     } catch (error) {
-      console.log('error123', error);
       setLoading(false);
       Toast.error({primaryText: 'Something went wrong'});
     }
