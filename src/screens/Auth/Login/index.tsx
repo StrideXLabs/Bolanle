@@ -23,6 +23,7 @@ import Layout from '../../../components/Layout';
 import StaticContainer from '../../../containers/StaticContainer';
 import {appleIcon, facebookIcon, googleIcon} from '../../../constants/icons';
 import {googleSignIn} from '../../../services/googleAuth.service';
+import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 
 export type LoginScreenProps = NativeStackScreenProps<
   AuthStackParams & AppStackParams,
@@ -38,16 +39,29 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   const {authed, setAuthState} = useAuth();
   const [loading, setLoading] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const {email, password, setEmail, setPassword} = useCredentials();
+  const {email, password, setEmail, setPassword, setIsThirdParty} =
+    useCredentials();
+  const {setPersonalInformation, personalInformation} = useCreateBusinessCard();
 
-  const handleLogin = async () => {
+  const handleLogin = async (isThirdParty?: boolean, userEmail?: string) => {
     try {
       setLoading(true);
-      const response = await authService.login({email, password});
+      const response = await authService.login({
+        email: userEmail ? userEmail : email,
+        password,
+        isThirdParty:
+          (typeof isThirdParty === 'boolean' && isThirdParty) || false,
+      });
 
       if (!response.success) {
         setLoading(false);
-        console.log(response);
+        if (response.message === 'Proceed to signup') {
+          setIsThirdParty(true);
+          return navigation.navigate('PersonalInformationScreen', {
+            cardId: null,
+            status: 'CREATING',
+          });
+        }
         return Toast.error({primaryText: response.message});
       }
 
@@ -73,7 +87,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
         authed: true,
       } as IAuthState);
 
-      console.log(response);
       setAuthState({authed: true, token, user});
       navigation.replace('AppBottomNav');
     } catch (error) {
@@ -98,6 +111,16 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       setPassword('');
     };
   }, []);
+
+  const handleGoogleLogin = (call: any) => {
+    console.log(call);
+    setPersonalInformation({
+      ...personalInformation,
+      name: call.user.name,
+    });
+    setEmail(call.user.email);
+    handleLogin(true, call.user.email);
+  };
 
   return (
     <Layout>
@@ -210,7 +233,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                 onPress={async () => {
                   try {
                     const call = await googleSignIn();
-                    console.log('call', call);
+                    handleGoogleLogin(call);
                   } catch (e) {
                     console.log('e', e);
                   }
