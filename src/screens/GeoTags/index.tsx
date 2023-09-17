@@ -228,12 +228,12 @@ export default () => {
         style={styles.map}
         region={{
           latitude:
-            focusedContact && focusedContact.personalInfo.lat
-              ? Number.parseFloat(focusedContact.personalInfo.lat)
+            focusedContact && focusedContact.contactDetails?.lat
+              ? Number.parseFloat(focusedContact.contactDetails?.lat)
               : 37.78825,
           longitude:
-            focusedContact && focusedContact.personalInfo.lng
-              ? Number.parseFloat(focusedContact.personalInfo.lng)
+            focusedContact && focusedContact.contactDetails?.lng
+              ? Number.parseFloat(focusedContact.contactDetails?.lng)
               : -122.4324,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
@@ -246,12 +246,12 @@ export default () => {
                 key={contact._id}
                 coordinate={{
                   latitude:
-                    contact && contact.contact.personalInfo.lat
-                      ? Number.parseFloat(contact.contact.personalInfo.lat)
+                    contact && contact.contact.contactDetails?.lat
+                      ? Number.parseFloat(contact.contact.contactDetails?.lat)
                       : 37.78825,
                   longitude:
-                    contact && contact.contact.personalInfo.lng
-                      ? Number.parseFloat(contact.contact.personalInfo.lng)
+                    contact && contact.contact.contactDetails?.lng
+                      ? Number.parseFloat(contact.contact.contactDetails?.lng)
                       : -122.4324,
                 }}
                 title={contact.contact.personalInfo.name}

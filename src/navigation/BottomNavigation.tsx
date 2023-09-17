@@ -14,12 +14,16 @@ import ProfileScreen from '../screens/Profile';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import GeoTags from '../screens/GeoTags';
 import QRScanner from '../screens/Scanner';
+import {ICardData} from '../services/dashboard.service';
 
 export type BottomTabNavigatorParams = {
   ProfileScreen: undefined;
   ContactsScreen: undefined;
   DashboardScreen: undefined;
-  GeoLocationScreen: undefined;
+  GeoLocationScreen: {
+    businessCard?: ICardData;
+    toggle?: boolean;
+  };
   QRScannerScreen: undefined;
 };
 
@@ -82,6 +86,7 @@ const BottomNavigation = () => {
           ),
         }}
         component={GeoTags}
+        defaultParams={{toggle: false, businessCard: undefined}}
       />
       <BottomTabNavigator.Screen
         name="QRScannerScreen"
