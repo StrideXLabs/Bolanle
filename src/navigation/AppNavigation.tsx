@@ -17,6 +17,8 @@ import WhatsAppScreen from '../screens/SocialLinks/WhatsApp';
 import {ICardData} from '../services/dashboard.service';
 import AuthNavigation from './AuthNavigation';
 import BottomNavigation from './BottomNavigation';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {CustomDrawer} from './CustomDrawer';
 import ExtendedMap from '../screens/ExtendedMap';
 
 export type ScreenStatus = 'EDITING' | 'CREATING';
@@ -66,6 +68,7 @@ export type AppStackParams = {
 } & EditScreenParams;
 
 const AppStack = createNativeStackNavigator<AppStackParams>();
+const Drawer = createDrawerNavigator();
 
 const AppNavigation = () => {
   const {loading, authed} = useAuthState();
@@ -80,59 +83,79 @@ const AppNavigation = () => {
   return (
     <>
       {authed ? (
-        <AppStack.Navigator
-          initialRouteName="AppBottomNav"
-          screenOptions={{headerShown: false, animation: 'slide_from_right'}}>
-          <AppStack.Screen
-            name="PersonalInformationScreen"
-            component={PersonalInformation}
-            options={{animation: 'slide_from_bottom'}}
-          />
-          <AppStack.Screen
-            name="ContactDetailsScreen"
-            component={ContactDetails}
-            options={{animation: 'slide_from_bottom'}}
-          />
-          <AppStack.Screen
-            name="SocialLinksScreen"
-            component={SocialLinksScreen}
-            options={{animation: 'slide_from_bottom'}}
-          />
-          <AppStack.Screen
-            name="WhatsAppScreen"
-            component={WhatsAppScreen}
-            options={{animation: 'none'}}
-          />
-          <AppStack.Screen
-            name="OtherSocialsScreen"
-            component={OtherSocialScreen}
-            options={{animation: 'none'}}
-          />
-          <AppStack.Screen
-            name="EditCardScreen"
-            component={EditCardScreen}
-            options={{animation: 'fade_from_bottom'}}
-          />
-          <AppStack.Screen name="ShareCardScreen" component={ShareCardScreen} />
-          <AppStack.Screen
-            component={ShareCardDetailsScreen}
-            name={'ShareCardDetailsScreen' as any}
-          />
-          <AppStack.Screen
-            name="AppBottomNav"
-            component={BottomNavigation}
-            options={{animation: 'simple_push'}}
-          />
-          <AppStack.Screen
-            name="ExtendedMapScreen"
-            component={ExtendedMap}
-            options={{animation: 'slide_from_bottom'}}
-          />
-        </AppStack.Navigator>
+        <Drawer.Navigator
+          drawerContent={props => <CustomDrawer {...props} />}
+          screenOptions={{
+            headerShown: false,
+            swipeEnabled: false,
+            drawerPosition: 'right',
+            drawerStyle: {
+              width: '60%',
+              borderTopLeftRadius: 30,
+              borderBottomLeftRadius: 30,
+              backgroundColor: '#E8F1F8',
+            },
+          }}>
+          <Drawer.Screen name="AppStack" component={AppStackScreen} />
+        </Drawer.Navigator>
       ) : (
         <AuthNavigation />
       )}
     </>
+  );
+};
+
+const AppStackScreen = () => {
+  return (
+    <AppStack.Navigator
+      initialRouteName="AppBottomNav"
+      screenOptions={{headerShown: false, animation: 'slide_from_right'}}>
+      <AppStack.Screen
+        name="PersonalInformationScreen"
+        component={PersonalInformation}
+        options={{animation: 'slide_from_bottom'}}
+      />
+      <AppStack.Screen
+        name="ContactDetailsScreen"
+        component={ContactDetails}
+        options={{animation: 'slide_from_bottom'}}
+      />
+      <AppStack.Screen
+        name="SocialLinksScreen"
+        component={SocialLinksScreen}
+        options={{animation: 'slide_from_bottom'}}
+      />
+      <AppStack.Screen
+        name="WhatsAppScreen"
+        component={WhatsAppScreen}
+        options={{animation: 'none'}}
+      />
+      <AppStack.Screen
+        name="OtherSocialsScreen"
+        component={OtherSocialScreen}
+        options={{animation: 'none'}}
+      />
+      <AppStack.Screen
+        name="EditCardScreen"
+        component={EditCardScreen}
+        options={{animation: 'fade_from_bottom'}}
+      />
+      <AppStack.Screen name="ShareCardScreen" component={ShareCardScreen} />
+      <AppStack.Screen
+        component={ShareCardDetailsScreen}
+        name={'ShareCardDetailsScreen' as any}
+      />
+      <AppStack.Screen
+        name="AppBottomNav"
+        component={BottomNavigation}
+        options={{animation: 'simple_push'}}
+      />
+      <AppStack.Screen
+        name="ExtendedMapScreen"
+        component={ExtendedMap}
+        options={{animation: 'slide_from_bottom'}}
+      />
+    </AppStack.Navigator>
   );
 };
 

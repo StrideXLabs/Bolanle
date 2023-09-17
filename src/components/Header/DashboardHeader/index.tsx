@@ -21,6 +21,7 @@ import {BurgerMenuIcon} from '../../../constants/icons';
 import {flushStorage} from '../../../lib/storage';
 import {useAuth, initialAuthState} from '../../../hooks/useAuth';
 import userImg from '../../../assets/images/user-db.png';
+import {useNavigation} from '@react-navigation/native';
 
 interface IDashboardHeaderAddTypeProps {
   heading: string;
@@ -60,6 +61,8 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
     setAuthState({...initialAuthState, redirectToLogin: true});
   };
 
+  const navigation = useNavigation();
+
   return (
     <View
       className="bg-white"
@@ -95,7 +98,8 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                handleLogout();
+                // handleLogout();
+                navigation.openDrawer();
               }}>
               <Image
                 source={BurgerMenuIcon as ImageSourcePropType}
