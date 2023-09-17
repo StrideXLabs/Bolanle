@@ -64,6 +64,7 @@ const EditCardScreen = ({
   const [open, setOpen] = useState(false);
   const [deletingCard, setDeletingCard] = useState(false);
   const [deletingSocial, setDeletingSocial] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState<boolean>(false);
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(!card);
@@ -81,13 +82,7 @@ const EditCardScreen = ({
     },
   );
 
-  const [contactInfo, setContactInfo] = useState<IContactDetails>(
-    contactDetails as any,
-  );
-
-  useEffect(() => {
-    console.log(contactInfo, 'contactInfo');
-  }, [contactInfo]);
+  const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
 
   const handleEditProfileAndLogo = () => {
     setContactDetails({
@@ -237,11 +232,13 @@ const EditCardScreen = ({
   };
 
   const uploadVideoHandler = async () => {
+    setIsVideoLoading(true);
+    setIsVideoLoaded(false);
     try {
       const result = await openPicker({
         maxFiles: 1,
         cropping: false,
-        mediaType: 'video',
+        // mediaType: 'video',
         waitAnimationEnd: true,
         enableRotationGesture: true,
       });
@@ -260,11 +257,18 @@ const EditCardScreen = ({
       formData.append('contactDetails', JSON.stringify(tempData));
 
       if (result && typeof result !== 'string') {
+        // if (result.mime === 'mp4')
         formData.append('coverVideo', {
           uri: result.path,
           type: result.mime,
           name: result.filename || getFileName(result.path),
         });
+        // else
+        //   formData.append('companyLogo', {
+        //     uri: result.path,
+        //     type: result.mime,
+        //     name: result.filename || getFileName(result.path),
+        //   });
       }
 
       const response = await dashboardService.editCardDetails(
@@ -278,20 +282,23 @@ const EditCardScreen = ({
       if (!response.success)
         return Toast.error({primaryText: response.message});
 
-      Toast.success({primaryText: 'Video updated.'});
-      setContactDetails(
-        (response.data?.contactDetails as any) ||
-          (initialContactDetails as any),
-      );
+      Toast.success({primaryText: 'Successfully Uploaded.'});
+      setCardData(response.data!);
     } catch (error) {
       if ((error as any)?.code === 'E_PICKER_CANCELLED') return;
       Toast.error({primaryText: 'Error selecting image. Please try again.'});
+    } finally {
+      setIsVideoLoading(false);
     }
   };
 
   useEffect(() => {
     console.log(contactDetails, 'contactDetails');
   }, [contactDetails]);
+
+  useEffect(() => {
+    console.log(isVideoLoading, 'isVideoLoading');
+  }, [isVideoLoading]);
 
   return (
     <Layout viewStyle={{paddingBottom: responsiveHeight(6)}}>
@@ -360,18 +367,45 @@ const EditCardScreen = ({
                   cache: 'reload',
                 }}
               /> */}
-              <Video
-                source={{
-                  uri:
-                    BASE_URL +
-                    `/${_id}/${contactDetails?.coverVideo}?time=${Date.now()}`,
-                }}
-                style={{width: '100%', height: '100%'}}
-                resizeMode="cover"
-                repeat={true}
-                muted={true}
-                controls={false}
-              />
+              {contactDetails?.coverVideo &&
+              contactDetails?.coverVideo.toString().includes('.mp4') ? (
+                <Video
+                  source={{
+                    uri:
+                      BASE_URL +
+                      `/${_id}/${
+                        contactDetails?.coverVideo
+                      }?time=${Date.now()}`,
+                  }}
+                  style={{width: '100%', height: '100%'}}
+                  resizeMode="cover"
+                  repeat={true}
+                  muted={true}
+                  controls={false}
+                  onLoadStart={() => {
+                    if (!isVideoLoaded) setIsVideoLoading(true);
+                    setIsVideoLoaded(true);
+                  }}
+                  onLoad={() => setIsVideoLoading(false)}
+                  onReadyForDisplay={() => setIsVideoLoading(false)}
+                />
+              ) : (
+                <Image
+                  resizeMode="cover"
+                  className="w-full h-full"
+                  source={{
+                    uri:
+                      BASE_URL +
+                      `/${_id}/${
+                        contactDetails?.coverVideo ||
+                        contactDetails?.companyLogo
+                      }` +
+                      `?time=${Date.now()}`,
+                    cache: 'reload',
+                  }}
+                />
+              )}
+
               <TouchableOpacity
                 className="absolute top-4 right-4"
                 onPress={uploadVideoHandler}>
@@ -389,6 +423,23 @@ const EditCardScreen = ({
                   className={'h-[35px] w-[35px] '}
                 />
               </TouchableOpacity>
+
+              {isVideoLoading ? (
+                <View
+                  className="
+                  absolute
+                  top-0
+                  left-0
+                  right-0
+                  bottom-0
+                  flex
+                  justify-center
+                  items-center
+                  bg-[#292c3366]
+                  ">
+                  <ActivityIndicator size={40} color={'#f4f4f4'} />
+                </View>
+              ) : null}
             </View>
             <BottomSheet
               ref={bottomSheetRef}

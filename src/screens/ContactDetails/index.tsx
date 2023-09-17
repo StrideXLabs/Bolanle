@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ImageSourcePropType,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
@@ -46,6 +47,8 @@ const ContactDetails = ({
   const [updating, setUpdating] = useState(false);
   const {step, setStep, contactDetails, setContactDetails, fromDashBoard} =
     useCreateBusinessCard();
+
+  const [isFetchingLocation, setIsFetchingLocation] = useState<boolean>(false);
 
   const validateData = () => {
     if (
@@ -161,12 +164,13 @@ const ContactDetails = ({
   }, [fromDashBoard, status]);
 
   const handleGetLocationClick = () => {
+    setIsFetchingLocation(true);
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 60000,
     })
       .then(location => {
-        console.log(location);
+        setIsFetchingLocation(false);
         setContactDetails({
           ...contactDetails,
           lat: location.latitude.toString(),
@@ -174,6 +178,7 @@ const ContactDetails = ({
         });
       })
       .catch(error => {
+        setIsFetchingLocation(false);
         const {code, message} = error;
         console.warn(code, message);
       });
@@ -266,18 +271,22 @@ const ContactDetails = ({
                     style={{width: 20, height: 20}}
                   />
                 )}
-                <Text className="text-primary-blue ml-2">
-                  {contactDetails.lat && contactDetails.lng
-                    ? 'Live Location Fetched :)'
-                    : 'Add Live Location'}
-                </Text>
+                {isFetchingLocation ? (
+                  <ActivityIndicator size="small" color="#0000ff" />
+                ) : (
+                  <Text className="text-primary-blue ml-2">
+                    {contactDetails.lat && contactDetails.lng
+                      ? 'Live Location Fetched :)'
+                      : 'Add Live Location'}
+                  </Text>
+                )}
               </TouchableOpacity>
             </View>
 
             <Upload status={status} cardId={cardId!} />
             <View style={{marginTop: responsiveHeight(35 / percentToPx)}}>
               <Button
-                disabled={updating}
+                disabled={updating || isFetchingLocation}
                 showLoading={updating}
                 callback={
                   status === 'EDITING' ? handleUpdateDetails : handleNextClick
