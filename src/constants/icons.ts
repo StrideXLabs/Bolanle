@@ -31,6 +31,7 @@ export {default as addCardIcon} from '../assets/images/add_card.png';
 export {default as MenuIcon} from '../assets/images/menu.png';
 export {default as PencilIcon} from '../assets/images/pencil.png';
 export {default as newLogo} from '../assets/images/newLogo.png'
+export {default as newLogoBlack} from '../assets/images/newLogoBlack.png'
 export {default as aboutLogo} from '../assets/images/drawer/about.png'
 export {default as feedbackLogo} from '../assets/images/drawer/feedback.png'
 export {default as guideLogo} from '../assets/images/drawer/guide.png'
@@ -38,3 +39,6 @@ export {default as licenceLogo} from '../assets/images/drawer/licence.png'
 export {default as logoutLogo} from '../assets/images/drawer/logout.png'
 export {default as privacyLogo} from '../assets/images/drawer/privacy.png'
 export {default as ratingsLogo} from '../assets/images/drawer/ratings.png'
+export {default as youtubeLogo} from '../assets/images/drawer/youtube.png'
+export {default as browserLogo} from '../assets/images/drawer/globe.png'
+
