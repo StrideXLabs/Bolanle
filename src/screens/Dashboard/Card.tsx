@@ -73,7 +73,10 @@ const Card = ({card, onCardPress}: ICardProps) => {
     {
       id: 4,
       icon: LocationIcon,
-      text: 'United States',
+      text:
+        contactDetails.companyAddress.length > 20
+          ? contactDetails.companyAddress.substring(0, 20) + '...'
+          : contactDetails.companyAddress,
     },
   ];
 
@@ -100,6 +103,12 @@ const Card = ({card, onCardPress}: ICardProps) => {
       Toast.error({primaryText: 'Website not found'});
     }
     Linking.openURL(url);
+  };
+
+  const handleAddressPress = () => {
+    navigation.navigate('ExtendedMapScreen', {
+      id: _id,
+    });
   };
 
   const handleFetchCardData = async () => {
@@ -230,6 +239,9 @@ const Card = ({card, onCardPress}: ICardProps) => {
                 } else if (item.id === 3) {
                   e.stopPropagation();
                   handleWebsitePress(item.text);
+                } else {
+                  e.stopPropagation();
+                  handleAddressPress();
                 }
               }}>
               <Image

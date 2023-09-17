@@ -17,6 +17,7 @@ import WhatsAppScreen from '../screens/SocialLinks/WhatsApp';
 import {ICardData} from '../services/dashboard.service';
 import AuthNavigation from './AuthNavigation';
 import BottomNavigation from './BottomNavigation';
+import ExtendedMap from '../screens/ExtendedMap';
 
 export type ScreenStatus = 'EDITING' | 'CREATING';
 export type ShareType = '' | 'TEXT_CARD' | 'EMAIL_CARD' | 'WHATSAPP_CARD';
@@ -58,6 +59,9 @@ export type AppStackParams = {
     fullName: string;
     shareType: ShareType;
     card: Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>;
+  };
+  ExtendedMapScreen: {
+    id: string | null;
   };
 } & EditScreenParams;
 
@@ -118,6 +122,11 @@ const AppNavigation = () => {
             name="AppBottomNav"
             component={BottomNavigation}
             options={{animation: 'simple_push'}}
+          />
+          <AppStack.Screen
+            name="ExtendedMapScreen"
+            component={ExtendedMap}
+            options={{animation: 'slide_from_bottom'}}
           />
         </AppStack.Navigator>
       ) : (

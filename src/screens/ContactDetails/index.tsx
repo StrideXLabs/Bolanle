@@ -1,7 +1,15 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HttpError} from 'http-errors';
 import React, {useEffect, useState} from 'react';
-import {BackHandler, ScrollView, View, Text} from 'react-native';
+import {
+  BackHandler,
+  ScrollView,
+  View,
+  Text,
+  TouchableOpacity,
+  ImageSourcePropType,
+  Image,
+} from 'react-native';
 import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
@@ -21,6 +29,8 @@ import dashboardService from '../../services/dashboard.service';
 import Upload from './Upload';
 import StaticContainerReg from '../../containers/StaticContainerReg';
 import GenericTextField from '../../components/TextField/GenericTextField/GenericTextField';
+import {LocationIcon} from '../../constants/icons';
+import GetLocation from 'react-native-get-location';
 
 export type ContactDetailsProps = NativeStackScreenProps<
   AppStackParams,
@@ -79,6 +89,8 @@ const ContactDetails = ({
         mobile: contactDetails.mobile,
         websiteUrl: contactDetails.websiteUrl,
         companyAddress: contactDetails.companyAddress,
+        lat: contactDetails.lat,
+        lng: contactDetails.lng,
       } as IContactDetails;
 
       formData.append('contactDetails', JSON.stringify(tempData));
@@ -148,6 +160,25 @@ const ContactDetails = ({
     return () => BackHandler.removeEventListener('hardwareBackPress', goBack);
   }, [fromDashBoard, status]);
 
+  const handleGetLocationClick = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(location => {
+        console.log(location);
+        setContactDetails({
+          ...contactDetails,
+          lat: location.latitude.toString(),
+          lng: location.longitude.toString(),
+        });
+      })
+      .catch(error => {
+        const {code, message} = error;
+        console.warn(code, message);
+      });
+  };
+
   return (
     <Layout>
       <StaticContainerReg
@@ -195,7 +226,7 @@ const ContactDetails = ({
                 placeholder="Enter your Business Email"
               />
               <GenericTextField
-                keyboardType="number-pad"
+                keyboardType="phone-pad"
                 onChangeText={text => {
                   setContactDetails({
                     ...contactDetails,
@@ -206,7 +237,7 @@ const ContactDetails = ({
                 placeholder="Enter mobile number"
               />
               <GenericTextField
-                keyboardType="url"
+                keyboardType="default"
                 autoCapitalize="none"
                 onChangeText={text => {
                   setContactDetails({
@@ -218,7 +249,7 @@ const ContactDetails = ({
                 placeholder="Enter your company website url"
               />
               <GenericTextField
-                multiline
+                // multiline
                 textAlignVertical="top"
                 onChangeText={text => {
                   setContactDetails({...contactDetails, companyAddress: text});
@@ -226,7 +257,23 @@ const ContactDetails = ({
                 value={contactDetails.companyAddress}
                 placeholder="Enter your company address"
               />
+              <TouchableOpacity
+                className="flex-row w-full justify-center items-center bg-white py-3 rounded-xl"
+                onPress={handleGetLocationClick}>
+                {!contactDetails.lat && !contactDetails.lng && (
+                  <Image
+                    source={LocationIcon as ImageSourcePropType}
+                    style={{width: 20, height: 20}}
+                  />
+                )}
+                <Text className="text-primary-blue ml-2">
+                  {contactDetails.lat && contactDetails.lng
+                    ? 'Live Location Fetched :)'
+                    : 'Add Live Location'}
+                </Text>
+              </TouchableOpacity>
             </View>
+
             <Upload status={status} cardId={cardId!} />
             <View style={{marginTop: responsiveHeight(35 / percentToPx)}}>
               <Button
