@@ -3,11 +3,14 @@
 #import <React/RCTBundleURLProvider.h>
 #import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyCI1-NQHcqBrLUzmuGVP5FWbEraqmtHgE0"];
+
   self.moduleName = @"Bolanle";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
