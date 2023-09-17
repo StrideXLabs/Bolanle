@@ -62,12 +62,17 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
   const [creatingBusinessCard, setCreatingBusinessCard] = useState(false);
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const {email, password, setEmail, setPassword} = useCredentials();
+  const {email, password, setEmail, setPassword, isThirdParty} =
+    useCredentials();
 
   const handleCreateAccount = async () => {
     try {
       setCreatingAccount(true);
-      const response = await authService.register({email, password});
+      const response = await authService.register({
+        email,
+        password,
+        isThirdParty,
+      });
 
       if (!response.success) {
         setCreatingAccount(false);
@@ -151,7 +156,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
       <StaticContainerReg
         isBack
         isHeader
-        title="Social links"
+        title="Register"
         onBackPress={() => {
           setStep(step - 1);
           navigation.canGoBack() && navigation.goBack();
@@ -181,37 +186,38 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
                 autoCapitalize="none"
                 onChangeText={email => setEmail(email)}
               />
-              <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
-                <GenericTextField
-                  value={password}
-                  className="relative"
-                  placeholder="Password"
-                  secureTextEntry={secureTextEntry}
-                  onChangeText={password => setPassword(password)}
-                />
-                <View
-                  className="absolute"
-                  style={{
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    right: responsiveHeight(8 / percentToPx),
-                  }}>
-                  {secureTextEntry ? (
-                    <EyeIcon
-                      size={25}
-                      color="#1C75BC"
-                      onPress={() => setSecureTextEntry(false)}
-                    />
-                  ) : (
-                    <EyeSlashIcon
-                      size={25}
-                      color="#1C75BC"
-                      onPress={() => setSecureTextEntry(true)}
-                    />
-                  )}
+              {!isThirdParty && (
+                <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
+                  <GenericTextField
+                    value={password}
+                    placeholder="Password"
+                    secureTextEntry={secureTextEntry}
+                    onChangeText={password => setPassword(password)}
+                  />
+                  <View
+                    className="absolute"
+                    style={{
+                      height: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      right: responsiveHeight(8 / percentToPx),
+                    }}>
+                    {secureTextEntry ? (
+                      <EyeIcon
+                        size={25}
+                        color="#1C75BC"
+                        onPress={() => setSecureTextEntry(false)}
+                      />
+                    ) : (
+                      <EyeSlashIcon
+                        size={25}
+                        color="#1C75BC"
+                        onPress={() => setSecureTextEntry(true)}
+                      />
+                    )}
+                  </View>
                 </View>
-              </View>
+              )}
             </View>
             <View style={{marginTop: responsiveHeight(20 / percentToPx)}}>
               <Button

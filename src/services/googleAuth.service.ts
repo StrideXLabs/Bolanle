@@ -1,6 +1,9 @@
-import {GoogleSignin, statusCodes} from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import Toast from '../lib/toast';
-  
+
 // GoogleSignin.configure({
 //   scopes: ['email', 'profile'], // what API you want to access on behalf of the user, default is email and profile
 //   webClientId:
@@ -24,33 +27,35 @@ export const googleConfig = {
     '140121067502-ou1bmqmmubn8qju3oq57on6u82os4q66.apps.googleusercontent.com',
   offlineAccess: true,
 };
-  
+
 let res = {};
-  
+
 export const googleSignIn = async () => {
-    try {
+  try {
+    GoogleSignin.configure(googleConfig);
 
-      GoogleSignin.configure(googleConfig)
+    await GoogleSignin.hasPlayServices();
 
-      await GoogleSignin.hasPlayServices();
-  
-      await GoogleSignin.signOut();
-      
-      const userInfo = await GoogleSignin.signIn();
-  
-      Toast.success({primaryText: 'Login Success'});
-      console.log('userInfo', userInfo);
-    } catch (error: any) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        Toast.error({primaryText: 'Login flow Cancelled'});
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        Toast.error({primaryText: 'operation (e.g. sign in) is in progress already'});
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        Toast.error({primaryText: 'play services not available or outdated'});
-      } else {
-        console.log('error2', error)
-        Toast.error({primaryText: 'Something went wrong', secondaryText: error});
-      }
+    await GoogleSignin.signOut();
+
+    const userInfo = await GoogleSignin.signIn();
+
+    Toast.success({primaryText: 'Login Success'});
+
+    return userInfo;
+  } catch (error: any) {
+    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      Toast.error({primaryText: 'Login flow Cancelled'});
+    } else if (error.code === statusCodes.IN_PROGRESS) {
+      Toast.error({
+        primaryText: 'operation (e.g. sign in) is in progress already',
+      });
+    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      Toast.error({primaryText: 'play services not available or outdated'});
+    } else {
+      console.log('error2', error);
+      Toast.error({primaryText: 'Something went wrong', secondaryText: error});
     }
-    return res;
+  }
+  return res;
 };
