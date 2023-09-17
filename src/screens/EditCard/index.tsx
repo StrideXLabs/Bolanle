@@ -42,6 +42,7 @@ import {openPicker} from 'react-native-image-crop-picker';
 import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {IContactDetails} from '../../hooks/useBusinessCard/interface';
 import {getFileName} from '../../lib/getFileName';
+import Video from 'react-native-video';
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams & BottomTabNavigatorParams,
@@ -63,6 +64,8 @@ const EditCardScreen = ({
   const [open, setOpen] = useState(false);
   const [deletingCard, setDeletingCard] = useState(false);
   const [deletingSocial, setDeletingSocial] = useState(false);
+
+  const [video, setVideo] = useState<any>(null);
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(!card);
@@ -237,6 +240,8 @@ const EditCardScreen = ({
         enableRotationGesture: true,
       });
 
+      setVideo(result);
+
       const formData = new FormData();
 
       const tempData = {
@@ -244,23 +249,17 @@ const EditCardScreen = ({
         mobile: contactDetails.mobile,
         websiteUrl: contactDetails.websiteUrl,
         companyAddress: contactDetails.companyAddress,
+        lat: contactDetails.lat,
+        lng: contactDetails.lng,
       } as IContactDetails;
 
       formData.append('contactDetails', JSON.stringify(tempData));
 
-      console.log('formdata', formData);
-      console.log('temp data', tempData);
-
-      if (
-        contactDetails.coverVideo &&
-        typeof contactDetails.coverVideo !== 'string'
-      ) {
+      if (result && typeof result !== 'string') {
         formData.append('coverVideo', {
-          uri: (contactDetails.coverVideo as PickerImage).path,
-          type: (contactDetails.coverVideo as PickerImage).mime,
-          name:
-            (contactDetails.coverVideo as PickerImage).filename ||
-            getFileName((contactDetails.coverVideo as PickerImage).path),
+          uri: result.path,
+          type: result.mime,
+          name: result.filename || getFileName(result.path),
         });
       }
 
@@ -276,7 +275,7 @@ const EditCardScreen = ({
         return Toast.error({primaryText: response.message});
 
       Toast.success({primaryText: 'Video updated.'});
-      setContactDetails(initialContactDetails);
+      setContactDetails(response.data?.contactDetails || initialContactDetails);
     } catch (error) {
       if ((error as any)?.code === 'E_PICKER_CANCELLED') return;
       Toast.error({primaryText: 'Error selecting image. Please try again.'});
@@ -338,8 +337,8 @@ const EditCardScreen = ({
             </View>
           )}
           <View className="flex-1">
-            <View className="h-[40%] w-full">
-              <Image
+            <View className="h-[40%] w-full ">
+              {/* <Image
                 resizeMode="cover"
                 className="w-full h-full"
                 source={{
@@ -349,6 +348,14 @@ const EditCardScreen = ({
                     `?time=${Date.now()}`,
                   cache: 'reload',
                 }}
+              /> */}
+              <Video
+                source={video}
+                style={{width: '100%', height: '100%'}}
+                resizeMode="cover"
+                repeat={true}
+                muted={true}
+                controls={false}
               />
               <TouchableOpacity
                 className="absolute top-4 right-4"
