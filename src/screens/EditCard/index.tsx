@@ -65,8 +65,6 @@ const EditCardScreen = ({
   const [deletingCard, setDeletingCard] = useState(false);
   const [deletingSocial, setDeletingSocial] = useState(false);
 
-  const [video, setVideo] = useState<any>(null);
-
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(!card);
   const [
@@ -82,6 +80,14 @@ const EditCardScreen = ({
       personalInfo: initialPersonalInformation,
     },
   );
+
+  const [contactInfo, setContactInfo] = useState<IContactDetails>(
+    contactDetails as any,
+  );
+
+  useEffect(() => {
+    console.log(contactInfo, 'contactInfo');
+  }, [contactInfo]);
 
   const handleEditProfileAndLogo = () => {
     setContactDetails({
@@ -240,8 +246,6 @@ const EditCardScreen = ({
         enableRotationGesture: true,
       });
 
-      setVideo(result);
-
       const formData = new FormData();
 
       const tempData = {
@@ -275,12 +279,19 @@ const EditCardScreen = ({
         return Toast.error({primaryText: response.message});
 
       Toast.success({primaryText: 'Video updated.'});
-      setContactDetails(response.data?.contactDetails || initialContactDetails);
+      setContactDetails(
+        (response.data?.contactDetails as any) ||
+          (initialContactDetails as any),
+      );
     } catch (error) {
       if ((error as any)?.code === 'E_PICKER_CANCELLED') return;
       Toast.error({primaryText: 'Error selecting image. Please try again.'});
     }
   };
+
+  useEffect(() => {
+    console.log(contactDetails, 'contactDetails');
+  }, [contactDetails]);
 
   return (
     <Layout viewStyle={{paddingBottom: responsiveHeight(6)}}>
@@ -350,7 +361,11 @@ const EditCardScreen = ({
                 }}
               /> */}
               <Video
-                source={video}
+                source={{
+                  uri:
+                    BASE_URL +
+                    `/${_id}/${contactDetails?.coverVideo}?time=${Date.now()}`,
+                }}
                 style={{width: '100%', height: '100%'}}
                 resizeMode="cover"
                 repeat={true}
