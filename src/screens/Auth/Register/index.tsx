@@ -92,6 +92,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
         mobile: contactDetails.mobile,
         websiteUrl: contactDetails.websiteUrl,
         companyAddress: contactDetails.companyAddress,
+        coverVideo: '',
+        lat: contactDetails.lat,
+        lng: contactDetails.lng,
       };
 
       const res = await cardService.create({

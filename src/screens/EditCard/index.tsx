@@ -42,6 +42,7 @@ import {openPicker} from 'react-native-image-crop-picker';
 import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {IContactDetails} from '../../hooks/useBusinessCard/interface';
 import {getFileName} from '../../lib/getFileName';
+import Video from 'react-native-video';
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams & BottomTabNavigatorParams,
@@ -79,6 +80,14 @@ const EditCardScreen = ({
       personalInfo: initialPersonalInformation,
     },
   );
+
+  const [contactInfo, setContactInfo] = useState<IContactDetails>(
+    contactDetails as any,
+  );
+
+  useEffect(() => {
+    console.log(contactInfo, 'contactInfo');
+  }, [contactInfo]);
 
   const handleEditProfileAndLogo = () => {
     setContactDetails({
@@ -244,23 +253,17 @@ const EditCardScreen = ({
         mobile: contactDetails.mobile,
         websiteUrl: contactDetails.websiteUrl,
         companyAddress: contactDetails.companyAddress,
+        lat: contactDetails.lat,
+        lng: contactDetails.lng,
       } as IContactDetails;
 
       formData.append('contactDetails', JSON.stringify(tempData));
 
-      console.log('formdata', formData);
-      console.log('temp data', tempData);
-
-      if (
-        contactDetails.coverVideo &&
-        typeof contactDetails.coverVideo !== 'string'
-      ) {
+      if (result && typeof result !== 'string') {
         formData.append('coverVideo', {
-          uri: (contactDetails.coverVideo as PickerImage).path,
-          type: (contactDetails.coverVideo as PickerImage).mime,
-          name:
-            (contactDetails.coverVideo as PickerImage).filename ||
-            getFileName((contactDetails.coverVideo as PickerImage).path),
+          uri: result.path,
+          type: result.mime,
+          name: result.filename || getFileName(result.path),
         });
       }
 
@@ -276,12 +279,19 @@ const EditCardScreen = ({
         return Toast.error({primaryText: response.message});
 
       Toast.success({primaryText: 'Video updated.'});
-      setContactDetails(initialContactDetails);
+      setContactDetails(
+        (response.data?.contactDetails as any) ||
+          (initialContactDetails as any),
+      );
     } catch (error) {
       if ((error as any)?.code === 'E_PICKER_CANCELLED') return;
       Toast.error({primaryText: 'Error selecting image. Please try again.'});
     }
   };
+
+  useEffect(() => {
+    console.log(contactDetails, 'contactDetails');
+  }, [contactDetails]);
 
   return (
     <Layout viewStyle={{paddingBottom: responsiveHeight(6)}}>
@@ -338,8 +348,8 @@ const EditCardScreen = ({
             </View>
           )}
           <View className="flex-1">
-            <View className="h-[40%] w-full">
-              <Image
+            <View className="h-[40%] w-full ">
+              {/* <Image
                 resizeMode="cover"
                 className="w-full h-full"
                 source={{
@@ -349,6 +359,18 @@ const EditCardScreen = ({
                     `?time=${Date.now()}`,
                   cache: 'reload',
                 }}
+              /> */}
+              <Video
+                source={{
+                  uri:
+                    BASE_URL +
+                    `/${_id}/${contactDetails?.coverVideo}?time=${Date.now()}`,
+                }}
+                style={{width: '100%', height: '100%'}}
+                resizeMode="cover"
+                repeat={true}
+                muted={true}
+                controls={false}
               />
               <TouchableOpacity
                 className="absolute top-4 right-4"
