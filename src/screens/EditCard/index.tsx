@@ -43,6 +43,7 @@ import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {IContactDetails} from '../../hooks/useBusinessCard/interface';
 import {getFileName} from '../../lib/getFileName';
 import Video from 'react-native-video';
+import LocationDetails from './LocationDetails';
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams & BottomTabNavigatorParams,
@@ -469,6 +470,12 @@ const EditCardScreen = ({
                   editable={editable}
                   contactDetails={contactDetails}
                   onEditPress={handleEditContactDetails}
+                />
+                <LocationDetails
+                  editable={editable}
+                  personalInfo={personalInfo}
+                  contactDetails={contactDetails}
+                  onEditPress={handleEditPersonalInformation}
                 />
                 <SocialLinks
                   editable={editable}

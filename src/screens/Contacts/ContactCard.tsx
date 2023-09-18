@@ -56,9 +56,9 @@ const ContactCard = ({contact, viewContact, onPress}: IContactCardProps) => {
             <Text className="text-black text-[12px] font-1">
               {personalInfo?.designation}
             </Text>
-            <Text className="text-black text-[12px] font-0">
+            {/* <Text className="text-black text-[12px] font-0">
               {personalInfo?.companyName}
-            </Text>
+            </Text> */}
           </View>
         </View>
         <TouchableOpacity
@@ -72,17 +72,33 @@ const ContactCard = ({contact, viewContact, onPress}: IContactCardProps) => {
         </TouchableOpacity>
       </View>
 
-      <View className="flex flex-row space-x-2 mt-[6px] flex-wrap">
-        {contact.tags &&
-          contact.tags.map((tag, index) => (
-            <TouchableOpacity
-              key={index}
-              style={{backgroundColor: tag.color}}
-              className="rounded-full px-2 py-1">
-              <Text className="font-0 text-white">{tag.name}</Text>
-            </TouchableOpacity>
-          ))}
+      <View
+        className="flex flex-row flex-wrap"
+        style={{
+          marginLeft: responsiveHeight(64 / percentToPx),
+        }}>
+        <>
+          <Text className="font-0">{personalInfo.companyName}</Text>
+          <View className="border-r-2 border-gray-300 mx-[5px] my-1" />
+          <Text className="font-0">{contactDetails.mobile}</Text>
+          <View className="border-r-2 border-gray-300 mx-[5px] my-1" />
+          <Text className="font-0">{contactDetails.email}</Text>
+        </>
       </View>
+
+      {contact.tags && contact.tags.length > 0 && (
+        <View className="flex flex-row space-x-2 mt-[6px] flex-wrap">
+          {contact.tags &&
+            contact.tags.map((tag, index) => (
+              <TouchableOpacity
+                key={index}
+                style={{backgroundColor: tag.color}}
+                className="rounded-full px-2 py-1">
+                <Text className="font-0 text-white">{tag.name}</Text>
+              </TouchableOpacity>
+            ))}
+        </View>
+      )}
     </View>
   );
 };

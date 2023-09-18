@@ -11,15 +11,6 @@ import {BASE_URL, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
-import {
-  CompanyIcon,
-  EmailIcon,
-  IntegrationIcon,
-  LanguageIcon,
-  LocationIcon,
-  PhoneIcon,
-  ShareIcon,
-} from '../../constants/icons';
 import Button from '../../components/Button';
 import Toast from '../../lib/toast';
 import {
@@ -29,6 +20,14 @@ import {
 import cardService from '../../services/card.service';
 import {useNavigation} from '@react-navigation/native';
 
+//icons
+import ShareIcon from '../../assets/svgs/Share.svg';
+import IntegrationIcon from '../../assets/svgs/Integration.svg';
+import EmailIcon from '../../assets/svgs/email.svg';
+import PhoneIcon from '../../assets/svgs/phone.svg';
+import GlobeIcon from '../../assets/svgs/globe.svg';
+import LocationIcon from '../../assets/svgs/location.svg';
+
 interface ICardProps {
   card: ICardData;
   onCardPress: (card: ICardData) => void;
@@ -36,6 +35,9 @@ interface ICardProps {
 
 const Card = ({card, onCardPress}: ICardProps) => {
   const {personalInfo, contactDetails} = card;
+
+  console.log('card', personalInfo);
+  console.log('card2', contactDetails);
 
   const navigation = useNavigation();
 
@@ -67,7 +69,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
     },
     {
       id: 3,
-      icon: LanguageIcon,
+      icon: GlobeIcon,
       text: `${contactDetails?.websiteUrl}`,
     },
     {
@@ -199,25 +201,10 @@ const Card = ({card, onCardPress}: ICardProps) => {
             </View>
             <View className="flex flex-row gap-1">
               <TouchableOpacity onPress={onShareBtnPress}>
-                <Image
-                  source={ShareIcon as any}
-                  className={`h-8 w-8`}
-                  resizeMode="contain"
-                />
+                <ShareIcon width={32} height={32} />
               </TouchableOpacity>
               <TouchableOpacity>
-                <Image
-                  source={IntegrationIcon as any}
-                  className={`h-8 w-8`}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image
-                  source={CompanyIcon as any}
-                  className={`h-8 w-8`}
-                  resizeMode="contain"
-                />
+                <IntegrationIcon width={32} height={32} />
               </TouchableOpacity>
             </View>
           </View>
@@ -244,11 +231,12 @@ const Card = ({card, onCardPress}: ICardProps) => {
                   handleAddressPress();
                 }
               }}>
-              <Image
-                source={item.icon as any}
-                className={`h-8 w-8`}
-                resizeMode="contain"
-              />
+              {item.icon === EmailIcon && <EmailIcon width={24} height={24} />}
+              {item.icon === PhoneIcon && <PhoneIcon width={24} height={22} />}
+              {item.icon === GlobeIcon && <GlobeIcon width={24} height={24} />}
+              {item.icon === LocationIcon && (
+                <LocationIcon width={24} height={24} />
+              )}
               <View className="p-1">
                 <Text className="font-2 text-sm truncate" numberOfLines={1}>
                   {item.text}

@@ -2,11 +2,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Image, ImageSourcePropType, Platform, View} from 'react-native';
 import DashboardScreen from '../screens/Dashboard';
 
-import contactsIcon from '../assets/images/contacts.png';
-import dashboardIcon from '../assets/images/dashboard.png';
-import profileIcon from '../assets/images/profile.png';
-import geoLocationIcon from '../assets/images/geoLocation.png';
-import {scannerIcon} from '../constants/icons';
 import {accentColor} from '../constants';
 import {useOpenModalState} from '../hooks/useOpenModal';
 import ContactsScreen from '../screens/Contacts';
@@ -15,6 +10,17 @@ import {responsiveHeight} from 'react-native-responsive-dimensions';
 import GeoTags from '../screens/GeoTags';
 import QRScanner from '../screens/Scanner';
 import {ICardData} from '../services/dashboard.service';
+
+//icons
+import DashboardFilled from '../assets/svgs/DashboardFilled.svg';
+import Dashboard from '../assets/svgs/Dashboard.svg';
+import GeoLocationFilled from '../assets/svgs/GeoFilled.svg';
+import GeoLocation from '../assets/svgs/Geo.svg';
+import ProfileFilled from '../assets/svgs/ProfileFilled.svg';
+import Profile from '../assets/svgs/Profile.svg';
+import Scanner from '../assets/svgs/Scanner.svg';
+import ContactsFilled from '../assets/svgs/ContactsFilled.svg';
+import Contacts from '../assets/svgs/Contacts.svg';
 
 export type BottomTabNavigatorParams = {
   ProfileScreen: undefined;
@@ -55,17 +61,12 @@ const BottomNavigation = () => {
         name="DashboardScreen"
         options={{
           title: 'Dashboard',
-          tabBarIcon: ({focused}) => (
-            <Image
-              style={{
-                width: 23,
-                height: 23,
-                marginTop: 8,
-                tintColor: focused ? accentColor : '#C9C9C9',
-              }}
-              source={dashboardIcon as ImageSourcePropType}
-            />
-          ),
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <DashboardFilled width={23} height={23} />
+            ) : (
+              <Dashboard width={23} height={23} />
+            ),
         }}
         component={DashboardScreen}
       />
@@ -73,17 +74,12 @@ const BottomNavigation = () => {
         name="GeoLocationScreen"
         options={{
           title: 'Geo Tags',
-          tabBarIcon: ({focused}) => (
-            <Image
-              style={{
-                width: 23,
-                height: 23,
-                marginTop: 8,
-                tintColor: focused ? accentColor : '#C9C9C9',
-              }}
-              source={geoLocationIcon as ImageSourcePropType}
-            />
-          ),
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <GeoLocationFilled width={23} height={23} />
+            ) : (
+              <GeoLocation width={23} height={23} />
+            ),
         }}
         component={GeoTags}
         defaultParams={{toggle: false, businessCard: undefined}}
@@ -94,13 +90,7 @@ const BottomNavigation = () => {
           title: '',
           tabBarIcon: () => (
             <View className="p-4 rounded-full absolute -top-10">
-              <Image
-                style={{
-                  width: responsiveHeight(9),
-                  height: responsiveHeight(9),
-                }}
-                source={scannerIcon as ImageSourcePropType}
-              />
+              <Scanner width={64} height={64} />
             </View>
           ),
         }}
@@ -111,18 +101,12 @@ const BottomNavigation = () => {
         options={{
           title: 'Contacts',
           tabBarLabel: 'Contacts',
-          tabBarIcon: ({focused}) => (
-            <Image
-              resizeMode="contain"
-              style={{
-                width: 23,
-                height: 23,
-                marginTop: 8,
-                tintColor: focused ? accentColor : '#C9C9C9',
-              }}
-              source={contactsIcon as ImageSourcePropType}
-            />
-          ),
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <ContactsFilled width={23} height={23} />
+            ) : (
+              <Contacts width={23} height={23} />
+            ),
         }}
         component={ContactsScreen as any}
       />
@@ -130,17 +114,12 @@ const BottomNavigation = () => {
         name={'ProfileScreen' as any}
         options={{
           title: 'Profile',
-          tabBarIcon: ({focused}) => (
-            <Image
-              style={{
-                width: 22,
-                height: 22,
-                marginTop: 8,
-                tintColor: focused ? accentColor : '#C9C9C9',
-              }}
-              source={profileIcon as ImageSourcePropType}
-            />
-          ),
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <ProfileFilled width={23} height={23} />
+            ) : (
+              <Profile width={23} height={23} />
+            ),
         }}
         component={ProfileScreen}
       />

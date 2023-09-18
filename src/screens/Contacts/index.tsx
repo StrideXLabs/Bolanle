@@ -174,7 +174,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
         }}>
         <View style={{marginTop: responsiveHeight(14 / percentToPx)}}>
           {!loading && !error && contacts.length > 0 && (
-            <Text className="text-black text-3xl font-2 text-center">
+            <Text className="text-black text-2xl font-2 text-left">
               Contacts
             </Text>
           )}

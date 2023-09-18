@@ -10,28 +10,35 @@ import {
 
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {
-  InstaIcon,
-  TwitterIcon,
-  aboutLogo,
-  browserLogo,
-  facebookIcon,
-  feedbackLogo,
-  guideLogo,
-  licenceLogo,
-  logoutLogo,
-  newLogo,
-  newLogoBlack,
-  privacyLogo,
-  ratingsLogo,
-  youtubeLogo,
-} from '../constants/icons';
-import {
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
+import {useAuth, initialAuthState} from '../hooks/useAuth';
+
+//icons
+import FacebookIcon from '../assets/svgs/facebook.svg';
+import InstaIcon from '../assets/svgs/insta.svg';
+import YoutubeIcon from '../assets/svgs/Youtube.svg';
+import X from '../assets/svgs/X.svg';
+import AboutLogo from '../assets/svgs/About.svg';
+import FeedbackLogo from '../assets/svgs/Feedback.svg';
+import LicenceLogo from '../assets/svgs/licence.svg';
+import PrivacyLogo from '../assets/svgs/privacy.svg';
+import GuideLogo from '../assets/svgs/userGuide.svg';
+import RatingsLogo from '../assets/svgs/ratings.svg';
+import LogoutLogo from '../assets/svgs/signOut.svg';
+import {newLogoBlack} from '../constants/icons';
+import {flushStorage} from '../lib/storage';
 
 export const CustomDrawer = (props: any) => {
+  const {setAuthState} = useAuth();
+
+  const handleLogout = async () => {
+    await flushStorage();
+    setAuthState({...initialAuthState, redirectToLogin: true});
+  };
+
   return (
     <View style={styles.container}>
       <DrawerContentScrollView {...props}>
@@ -48,26 +55,10 @@ export const CustomDrawer = (props: any) => {
             style={{
               marginTop: responsiveHeight(0.03),
             }}>
-            <Image
-              source={browserLogo as any}
-              className={`h-7 w-7`}
-              resizeMode="contain"
-            />
-            <Image
-              source={InstaIcon as any}
-              className={`h-7 w-7`}
-              resizeMode="contain"
-            />
-            <Image
-              source={TwitterIcon as any}
-              className={`h-7 w-7`}
-              resizeMode="contain"
-            />
-            <Image
-              source={youtubeLogo as any}
-              className={`h-7 w-7`}
-              resizeMode="contain"
-            />
+            <FacebookIcon width={26} height={26} />
+            <InstaIcon width={26} height={26} />
+            <X width={26} height={26} />
+            <YoutubeIcon width={26} height={26} />
           </View>
         </View>
 
@@ -81,12 +72,8 @@ export const CustomDrawer = (props: any) => {
               paddingHorizontal: responsiveWidth(1),
             }}
             label={() => (
-              <View className="flex flex-row space-x-2 items-center">
-                <Image
-                  resizeMode="contain"
-                  className={'h-7 w-7 rounded-lg'}
-                  source={aboutLogo as ImageSourcePropType}
-                />
+              <View className="flex flex-row space-x-3 items-center">
+                <AboutLogo width={28} height={28} />
                 <View className="flex flex-col">
                   <Text
                     className="font-2 text-black"
@@ -117,12 +104,8 @@ export const CustomDrawer = (props: any) => {
               paddingHorizontal: responsiveWidth(1),
             }}
             label={() => (
-              <View className="flex flex-row space-x-2 items-center">
-                <Image
-                  resizeMode="contain"
-                  className={'h-7 w-7 rounded-lg'}
-                  source={feedbackLogo as ImageSourcePropType}
-                />
+              <View className="flex flex-row space-x-3 items-center">
+                <FeedbackLogo width={28} height={28} />
                 <View className="flex flex-col">
                   <Text
                     className="font-2 text-black"
@@ -153,12 +136,8 @@ export const CustomDrawer = (props: any) => {
               paddingHorizontal: responsiveWidth(1),
             }}
             label={() => (
-              <View className="flex flex-row space-x-2 items-center">
-                <Image
-                  resizeMode="contain"
-                  className={'h-7 w-7 rounded-lg'}
-                  source={licenceLogo as ImageSourcePropType}
-                />
+              <View className="flex flex-row space-x-3 items-center">
+                <LicenceLogo width={28} height={28} />
                 <View className="flex flex-col">
                   <Text
                     className="font-2 text-black"
@@ -189,12 +168,8 @@ export const CustomDrawer = (props: any) => {
               paddingHorizontal: responsiveWidth(1),
             }}
             label={() => (
-              <View className="flex flex-row space-x-2 items-center">
-                <Image
-                  resizeMode="contain"
-                  className={'h-7 w-7 rounded-lg'}
-                  source={privacyLogo as ImageSourcePropType}
-                />
+              <View className="flex flex-row space-x-3 items-center">
+                <PrivacyLogo width={28} height={28} />
                 <View className="flex flex-col">
                   <Text
                     className="font-2 text-black"
@@ -225,12 +200,8 @@ export const CustomDrawer = (props: any) => {
               paddingHorizontal: responsiveWidth(1),
             }}
             label={() => (
-              <View className="flex flex-row space-x-2 items-center">
-                <Image
-                  resizeMode="contain"
-                  className={'h-7 w-7 rounded-lg'}
-                  source={guideLogo as ImageSourcePropType}
-                />
+              <View className="flex flex-row space-x-3 items-center">
+                <GuideLogo width={28} height={28} />
                 <View className="flex flex-col">
                   <Text
                     className="font-2 text-black"
@@ -261,12 +232,8 @@ export const CustomDrawer = (props: any) => {
               paddingHorizontal: responsiveWidth(1),
             }}
             label={() => (
-              <View className="flex flex-row space-x-2 items-center">
-                <Image
-                  resizeMode="contain"
-                  className={'h-7 w-7 rounded-lg'}
-                  source={ratingsLogo as ImageSourcePropType}
-                />
+              <View className="flex flex-row space-x-3 items-center">
+                <RatingsLogo width={28} height={28} />
                 <View className="flex flex-col">
                   <Text
                     className="font-2 text-black"
@@ -300,12 +267,8 @@ export const CustomDrawer = (props: any) => {
               paddingHorizontal: responsiveWidth(1),
             }}
             label={() => (
-              <View className="flex flex-row space-x-2 items-center">
-                <Image
-                  resizeMode="contain"
-                  className={'h-7 w-7 rounded-lg'}
-                  source={logoutLogo as ImageSourcePropType}
-                />
+              <View className="flex flex-row space-x-3 items-center">
+                <LogoutLogo width={28} height={28} />
                 <View className="flex flex-col">
                   <Text
                     className="font-2 text-black"
@@ -324,10 +287,7 @@ export const CustomDrawer = (props: any) => {
                 </View>
               </View>
             )}
-            onPress={() => {
-              // props.navigation.navigate('Finance');
-              console.log('Feedback');
-            }}
+            onPress={handleLogout}
           />
 
           <View

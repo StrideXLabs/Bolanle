@@ -22,6 +22,9 @@ import {flushStorage} from '../../../lib/storage';
 import {useAuth, initialAuthState} from '../../../hooks/useAuth';
 import userImg from '../../../assets/images/user-db.png';
 import {useNavigation} from '@react-navigation/native';
+import LogoBlack from '../../../assets/svgs/bolanle-black.svg';
+import AddButton from '../../../assets/svgs/Add.svg';
+import Menu from '../../../assets/svgs/Menu.svg';
 
 interface IDashboardHeaderAddTypeProps {
   heading: string;
@@ -74,11 +77,12 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
       {options.type === 'ADD_NEW_VIEW' && (
         <View className="flex flex-row items-center justify-between">
           <View className="flex flex-row gap-2 items-center">
-            <Image
+            {/* <Image
               resizeMode="contain"
               className={'h-11 w-11 rounded-lg'}
               source={userImg as ImageSourcePropType}
-            />
+            /> */}
+            <LogoBlack width={responsiveWidth(50 / percentToPx)} />
             <View className="flex flex-col">
               <Text className="text-md font-3 -mb-1 text-black">
                 {options.userDetails?.name}
@@ -90,21 +94,22 @@ const DashboardHeader = ({options}: DashboardHeaderProps) => {
           </View>
           <View className="flex flex-row gap-3">
             <TouchableOpacity onPress={options.onAddNewBtnPress}>
-              <Image
+              {/* <Image
                 resizeMode="contain"
                 className={`h-9 w-9`}
                 source={addButton as ImageSourcePropType}
-              />
+              /> */}
+              <AddButton width={responsiveWidth(68 / percentToPx)} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                // handleLogout();
                 navigation.openDrawer();
               }}>
-              <Image
+              {/* <Image
                 source={BurgerMenuIcon as ImageSourcePropType}
                 className={`h-9 w-9`}
-              />
+              /> */}
+              <Menu width={responsiveWidth(68 / percentToPx)} />
             </TouchableOpacity>
           </View>
         </View>
