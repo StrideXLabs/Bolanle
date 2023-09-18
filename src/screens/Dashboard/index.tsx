@@ -215,6 +215,12 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
                 gap: responsiveHeight(10 / percentToPx),
               }}
             />
+
+            {/* <View className="">
+              <TouchableOpacity>
+                <Image source={addCardIcon as any} className={`h-8 w-8`} />
+              </TouchableOpacity>
+            </View> */}
           </View>
         )}
       </View>
