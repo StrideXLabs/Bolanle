@@ -99,7 +99,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
   };
 
   const handleWebsitePress = (url: string) => {
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    if (!url.startsWith('http://') || !url.startsWith('https://')) {
       url = 'http://' + url;
     } else {
       Toast.error({primaryText: 'Website not found'});

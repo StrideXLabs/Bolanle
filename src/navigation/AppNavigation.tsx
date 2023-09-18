@@ -20,6 +20,7 @@ import BottomNavigation from './BottomNavigation';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {CustomDrawer} from './CustomDrawer';
 import ExtendedMap from '../screens/ExtendedMap';
+import Feedback from '../screens/Feedback';
 
 export type ScreenStatus = 'EDITING' | 'CREATING';
 export type ShareType = '' | 'TEXT_CARD' | 'EMAIL_CARD' | 'WHATSAPP_CARD';
@@ -65,6 +66,7 @@ export type AppStackParams = {
   ExtendedMapScreen: {
     id: string | null;
   };
+  Feedback: undefined;
 } & EditScreenParams;
 
 const AppStack = createNativeStackNavigator<AppStackParams>();
@@ -153,6 +155,11 @@ const AppStackScreen = () => {
       <AppStack.Screen
         name="ExtendedMapScreen"
         component={ExtendedMap}
+        options={{animation: 'slide_from_bottom'}}
+      />
+      <AppStack.Screen
+        name="Feedback"
+        component={Feedback}
         options={{animation: 'slide_from_bottom'}}
       />
     </AppStack.Navigator>

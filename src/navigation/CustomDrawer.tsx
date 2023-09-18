@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Image,
   ImageSourcePropType,
+  Linking,
+  Pressable,
 } from 'react-native';
 
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
@@ -30,6 +32,8 @@ import RatingsLogo from '../assets/svgs/ratings.svg';
 import LogoutLogo from '../assets/svgs/signOut.svg';
 import {newLogoBlack} from '../constants/icons';
 import {flushStorage} from '../lib/storage';
+import Toast from '../lib/toast';
+import {useNavigation} from '@react-navigation/native';
 
 export const CustomDrawer = (props: any) => {
   const {setAuthState} = useAuth();
@@ -38,6 +42,18 @@ export const CustomDrawer = (props: any) => {
     await flushStorage();
     setAuthState({...initialAuthState, redirectToLogin: true});
   };
+
+  const handlePageRedirect = (url: string) => {
+    if (!url.startsWith('http://') || !url.startsWith('https://')) {
+      url = 'http://' + url;
+    } else {
+      Toast.error({primaryText: 'Website not found'});
+      return;
+    }
+    Linking.openURL(url);
+  };
+
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -55,10 +71,30 @@ export const CustomDrawer = (props: any) => {
             style={{
               marginTop: responsiveHeight(0.03),
             }}>
-            <FacebookIcon width={26} height={26} />
-            <InstaIcon width={26} height={26} />
-            <X width={26} height={26} />
-            <YoutubeIcon width={26} height={26} />
+            <Pressable
+              onPress={() =>
+                Linking.openURL(
+                  'https://web.facebook.com/BolanleMedia?_rdc=1&_rdr',
+                )
+              }>
+              <FacebookIcon width={26} height={26} />
+            </Pressable>
+            <Pressable
+              onPress={() =>
+                Linking.openURL('https://www.instagram.com/bolanlemedia/')
+              }>
+              <InstaIcon width={26} height={26} />
+            </Pressable>
+            <Pressable
+              onPress={() => Linking.openURL('https://twitter.com/bolanleusa')}>
+              <X width={26} height={26} />
+            </Pressable>
+            <Pressable
+              onPress={() =>
+                Linking.openURL('https://www.youtube.com/@BolanleMedia')
+              }>
+              <YoutubeIcon width={26} height={26} />
+            </Pressable>
           </View>
         </View>
 
@@ -92,10 +128,10 @@ export const CustomDrawer = (props: any) => {
                 </View>
               </View>
             )}
-            onPress={() => {
-              // props.navigation.navigate('Settings');
-              console.log('About');
-            }}
+            onPress={handlePageRedirect.bind(
+              this,
+              'https://hellobolanle.com/about/',
+            )}
           />
           <DrawerItem
             style={{
@@ -125,8 +161,7 @@ export const CustomDrawer = (props: any) => {
               </View>
             )}
             onPress={() => {
-              // props.navigation.navigate('Finance');
-              console.log('Feedback');
+              navigation.navigate('Feedback');
             }}
           />
           <DrawerItem
@@ -156,10 +191,10 @@ export const CustomDrawer = (props: any) => {
                 </View>
               </View>
             )}
-            onPress={() => {
-              // props.navigation.navigate('Finance');
-              console.log('Feedback');
-            }}
+            onPress={handlePageRedirect.bind(
+              this,
+              'https://hellobolanle.com/license/',
+            )}
           />
           <DrawerItem
             style={{
@@ -188,10 +223,10 @@ export const CustomDrawer = (props: any) => {
                 </View>
               </View>
             )}
-            onPress={() => {
-              // props.navigation.navigate('Finance');
-              console.log('Feedback');
-            }}
+            onPress={handlePageRedirect.bind(
+              this,
+              'https://hellobolanle.com/privacy-policy/',
+            )}
           />
           <DrawerItem
             style={{

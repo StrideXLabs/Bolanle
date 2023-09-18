@@ -161,7 +161,7 @@ const EmailVerificationScreen = ({
       <StaticContainerReg
         isBack
         isHeader
-        title="Login"
+        title="Confirmation"
         onBackPress={() => {
           navigation.replace('LoginScreen');
         }}>

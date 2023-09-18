@@ -12,6 +12,7 @@ type GenericTextFieldProps = {
   onIconPress?: () => void;
   multiline?: boolean;
   textAlignVertical?: 'auto' | 'top' | 'bottom' | 'center';
+  numberOfLines?: number;
   style?: any;
 };
 
@@ -26,6 +27,7 @@ const GenericTextField: React.FC<GenericTextFieldProps> = ({
   onIconPress,
   multiline,
   textAlignVertical,
+  numberOfLines,
   style,
 }) => {
   return (
@@ -41,6 +43,7 @@ const GenericTextField: React.FC<GenericTextFieldProps> = ({
         multiline={multiline}
         textAlignVertical={textAlignVertical}
         style={style}
+        numberOfLines={numberOfLines}
       />
       {icon && (
         <TouchableOpacity className="absolute right-2" onPress={onIconPress}>
