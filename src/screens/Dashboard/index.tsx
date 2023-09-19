@@ -9,6 +9,7 @@ import {
   View,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {
   responsiveFontSize,
@@ -29,6 +30,7 @@ import Card from './Card';
 import TextField from '../../components/TextField/TextFieldDark';
 import {SearchIcon, addCardIcon} from '../../constants/icons';
 import {useAuth} from '../../hooks/useAuth';
+import AddCard from '../../assets/svgs/AddCard.svg';
 
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
@@ -91,6 +93,14 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
     if (isFocused) fetchDashboardData();
   }, [isFocused]);
 
+  const handleOnAddNewPress = () => {
+    setFromDashBoard(true);
+    navigation.navigate('PersonalInformationScreen', {
+      cardId: null,
+      status: 'CREATING',
+    });
+  };
+
   return (
     <Layout>
       <DashboardHeader
@@ -101,13 +111,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
             name: user?.name || '',
             designation: user?.email || '',
           },
-          onAddNewBtnPress: () => {
-            setFromDashBoard(true);
-            navigation.navigate('PersonalInformationScreen', {
-              cardId: null,
-              status: 'CREATING',
-            });
-          },
+          onAddNewBtnPress: handleOnAddNewPress,
         }}
       />
       <View
@@ -188,7 +192,8 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
         )}
 
         {!loading && !error && cards.length > 0 && (
-          <View
+          <ScrollView
+            horizontal
             style={{
               height: responsiveHeight(100),
               marginTop: responsiveHeight(15 / percentToPx),
@@ -213,15 +218,16 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
               contentContainerStyle={{
                 paddingBottom: responsiveHeight(25),
                 gap: responsiveHeight(10 / percentToPx),
+                borderWidth: 1,
               }}
             />
 
-            {/* <View className="">
-              <TouchableOpacity>
-                <Image source={addCardIcon as any} className={`h-8 w-8`} />
-              </TouchableOpacity>
-            </View> */}
-          </View>
+            <TouchableOpacity
+              className="h-[500px] justify-center items-center mr-5"
+              onPress={handleOnAddNewPress}>
+              <AddCard />
+            </TouchableOpacity>
+          </ScrollView>
         )}
       </View>
     </Layout>
