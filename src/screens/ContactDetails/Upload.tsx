@@ -49,7 +49,7 @@ const Upload = ({status, cardId}: {status: ScreenStatus; cardId: string}) => {
   return (
     <View
       className="flex flex-row justify-between items-center"
-      style={{marginTop: responsiveHeight(24 / percentToPx)}}>
+      style={{marginTop: responsiveHeight(10 / percentToPx)}}>
       <View>
         <Pressable
           onPress={e => {

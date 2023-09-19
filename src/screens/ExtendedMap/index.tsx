@@ -6,18 +6,20 @@ import {
   Animated,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  TouchableOpacity,
+  ImageSourcePropType,
   Image,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
 import MapView, {PROVIDER_GOOGLE, MarkerAnimated} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 //   import contactsService from '../../services/contacts.service';
 import {BASE_URL} from '../../constants';
-import {IContactDetails} from '../../hooks/useBusinessCard/interface';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import cardService from '../../services/card.service';
 import {ICardData} from '../../services/dashboard.service';
+import {BackIcon} from '../../constants/icons';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,6 +32,13 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+
+  back: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 100,
   },
 
   cardContainer: {
@@ -92,6 +101,8 @@ export type ExtendedMapScreen = NativeStackScreenProps<
 const ExtendedMap = () => {
   const route = useRoute<ExtendedMapScreen>();
 
+  const navigation = useNavigation();
+
   const {id} = route.params;
 
   const [contact, setContact] = useState<ICardData | null>(null);
@@ -108,9 +119,21 @@ const ExtendedMap = () => {
   useEffect(() => {
     if (id) getContact();
   }, [id]);
+  const handlePressBack = () => {
+    navigation.canGoBack() && navigation.goBack();
+  };
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        onPress={handlePressBack}
+        className={` h-[35px] w-[35px] justify-center items-center mr-[15px]`}
+        style={styles.back}>
+        <Image
+          source={BackIcon as ImageSourcePropType}
+          className={`h-[35px] w-[35px] `}
+        />
+      </TouchableOpacity>
       <MapView
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         style={styles.map}
@@ -150,7 +173,7 @@ const ExtendedMap = () => {
                 width: 40,
                 height: 40,
                 borderRadius: 40,
-                backgroundColor: 'red',
+                backgroundColor: 'gray',
               }}
             />
           </MarkerAnimated>

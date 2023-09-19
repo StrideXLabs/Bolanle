@@ -32,6 +32,7 @@ import StaticContainerReg from '../../containers/StaticContainerReg';
 import GenericTextField from '../../components/TextField/GenericTextField/GenericTextField';
 import {LocationIcon} from '../../constants/icons';
 import GetLocation from 'react-native-get-location';
+import Check from '../../assets/svgs/Check.svg';
 
 export type ContactDetailsProps = NativeStackScreenProps<
   AppStackParams,
@@ -49,6 +50,7 @@ const ContactDetails = ({
     useCreateBusinessCard();
 
   const [isFetchingLocation, setIsFetchingLocation] = useState<boolean>(false);
+  const [isFetchedLocation, setIsFetchedLocation] = useState<boolean>(false);
 
   const validateData = () => {
     if (
@@ -176,6 +178,7 @@ const ContactDetails = ({
           lat: location.latitude.toString(),
           lng: location.longitude.toString(),
         });
+        setIsFetchedLocation(true);
       })
       .catch(error => {
         setIsFetchingLocation(false);
@@ -183,6 +186,14 @@ const ContactDetails = ({
         console.warn(code, message);
       });
   };
+
+  useEffect(() => {
+    if (isFetchedLocation) {
+      setTimeout(() => {
+        setIsFetchedLocation(false);
+      }, 3000);
+    }
+  }, [isFetchedLocation]);
 
   return (
     <Layout>
@@ -262,10 +273,12 @@ const ContactDetails = ({
                 value={contactDetails.companyAddress}
                 placeholder="Enter your company address"
               />
-              <TouchableOpacity
-                className="flex-row w-full justify-center items-center bg-white py-3 rounded-xl"
+              {/* <TouchableOpacity
+                className={`flex-row w-full justify-center items-center bg-white py-3 rounded-xl ${
+                  isFetchedLocation ? 'border-2 border-[#32CD32]' : ''
+                }`}
                 onPress={handleGetLocationClick}>
-                {!contactDetails.lat && !contactDetails.lng && (
+                {!isFetchedLocation && (
                   <Image
                     source={LocationIcon as ImageSourcePropType}
                     style={{width: 20, height: 20}}
@@ -275,10 +288,37 @@ const ContactDetails = ({
                   <ActivityIndicator size="small" color="#0000ff" />
                 ) : (
                   <Text className="text-primary-blue ml-2">
-                    {contactDetails.lat && contactDetails.lng
+                    {isFetchedLocation
                       ? 'Live Location Fetched :)'
                       : 'Add Live Location'}
                   </Text>
+                )}
+              </TouchableOpacity> */}
+              <TouchableOpacity
+                className={`flex-row w-full justify-center items-center bg-white  py-3 rounded-xl ${
+                  isFetchedLocation ? 'border-2 border-[#32CD32]' : ''
+                } h-12`}
+                onPress={handleGetLocationClick}>
+                {!isFetchedLocation && !isFetchingLocation && (
+                  <Image
+                    source={LocationIcon as ImageSourcePropType}
+                    style={{width: 20, height: 20}}
+                  />
+                )}
+                {isFetchingLocation ? (
+                  <ActivityIndicator size="small" color="#1C75BC" />
+                ) : isFetchedLocation ? (
+                  <>
+                    <Check
+                      width={responsiveHeight(20 / percentToPx)}
+                      height={responsiveHeight(20 / percentToPx)}
+                    />
+                    <Text className="text-[#32CD32] ml-2">
+                      Location fetched
+                    </Text>
+                  </>
+                ) : (
+                  <Text className="text-primary-blue">Add Live Location</Text>
                 )}
               </TouchableOpacity>
             </View>

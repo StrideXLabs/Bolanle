@@ -73,7 +73,6 @@ class AuthService {
     data: ICredentialsData,
   ): Promise<IDefaultAPIResponse<ISigninResponse>> {
     try {
-      console.log(data);
       const {email, password} = data;
 
       const isThirdParty = data.isThirdParty || false;
@@ -103,6 +102,7 @@ class AuthService {
         message: response.message,
       };
     } catch (error) {
+      console.error(error);
       return {
         data: null,
         success: false,

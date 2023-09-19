@@ -157,7 +157,7 @@ export default () => {
               width: 80,
               height: 80,
               borderRadius: 40,
-              backgroundColor: 'red',
+              backgroundColor: 'gray',
             }}
             resizeMode="contain"
           />
@@ -240,7 +240,6 @@ export default () => {
         }}>
         {contacts &&
           contacts.map((contact: any) => {
-            console.log(contact, 'contact');
             return (
               <MarkerAnimated
                 key={contact._id}
@@ -268,7 +267,7 @@ export default () => {
                     width: 40,
                     height: 40,
                     borderRadius: 40,
-                    backgroundColor: 'red',
+                    backgroundColor: 'gray',
                   }}
                 />
               </MarkerAnimated>

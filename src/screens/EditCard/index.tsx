@@ -62,6 +62,10 @@ const EditCardScreen = ({
   } = useCreateBusinessCard();
   const {card, editable, cardId} = params;
 
+  console.log(params);
+
+  console.log(cardId);
+
   const [open, setOpen] = useState(false);
   const [deletingCard, setDeletingCard] = useState(false);
   const [deletingSocial, setDeletingSocial] = useState(false);
@@ -476,6 +480,7 @@ const EditCardScreen = ({
                   personalInfo={personalInfo}
                   contactDetails={contactDetails}
                   onEditPress={handleEditPersonalInformation}
+                  cardId={card._id as string}
                 />
                 <SocialLinks
                   editable={editable}
