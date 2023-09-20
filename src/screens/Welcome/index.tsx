@@ -20,6 +20,7 @@ import {percentToPx} from '../../constants';
 import {AppStackParams} from '../../navigation/AppNavigation';
 import {AuthStackParams} from '../../navigation/AuthNavigation';
 import {newLogo} from '../../constants/icons';
+import LinearGradient from 'react-native-linear-gradient';
 
 export type WelcomeScreenProps = NativeStackScreenProps<
   AppStackParams & AuthStackParams,
@@ -32,11 +33,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
       <ImageBackground
         source={require('../../assets/images/bg.png')}
         style={{flex: 1}}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)',
-          }}>
+        <LinearGradient
+          colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']}
+          style={{flex: 1}}>
           <View className="h-[90%] justify-end">
             <View className="flex justify-end items-start">
               <View className="flex flex-row gap-2 items-center ml-4">
@@ -56,7 +55,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
             <View className="flex justify-start items-center">
               <View style={{marginTop: responsiveHeight(30 / percentToPx)}}>
                 <Text
-                  className="text-start text-white font-3 mb-1"
+                  className="text-start text-white font-2 mb-1"
                   style={{
                     fontSize: responsiveFontSize(22 / percentToPx),
                     lineHeight: responsiveFontSize(30 / percentToPx),
@@ -91,7 +90,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({navigation}) => {
               </View>
             </View>
           </View>
-        </View>
+        </LinearGradient>
       </ImageBackground>
     </Layout>
   );
