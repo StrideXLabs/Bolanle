@@ -151,15 +151,15 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
   }, [isFocused]);
 
   const tags = [
-    'All',
-    'Developer',
-    'Designer',
-    'Partnership',
-    'Business',
-    'Manager',
-    'CEO',
-    'Money',
-    'Investor',
+    {label: 'All', color: 'gray'},
+    {label: 'Developer', color: 'yellow'},
+    {label: 'Designer', color: 'green'},
+    {label: 'Partnership', color: 'purple'},
+    {label: 'Business', color: 'orange'},
+    {label: 'Manager', color: 'red'},
+    {label: 'CEO', color: 'pink'},
+    {label: 'Money', color: 'yellow'},
+    {label: 'Investor', color: 'teal'},
   ];
 
   console.log('contactsHEHE', contacts);
@@ -205,25 +205,33 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
                   <TouchableOpacity
                     key={index}
                     onPress={() => {
-                      setSelectedTag(tag);
+                      setSelectedTag(tag.label);
                       setSearch('');
                     }}
-                    className={`rounded-full px-2 py-1
-                    ${
-                      selectedTag === tag
-                        ? 'bg-accent'
-                        : 'bg-gray-200 border border-gray-300'
-                    }
-                    `}>
+                    style={{
+                      borderRadius: 20,
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      backgroundColor:
+                        selectedTag === tag.label ? accentColor : tag.color,
+                    }}>
                     <Text
-                      className={`font-0 
-                    ${
-                      selectedTag === tag
-                        ? 'text-white'
-                        : 'text-gray-500 font-1'
-                    }
-                    `}>
-                      {tag}
+                      style={{
+                        fontSize: 16,
+                        color:
+                          selectedTag === tag.label
+                            ? 'white'
+                            : tag.color === 'yellow' ||
+                              tag.color === 'white' ||
+                              tag.color === 'orange' ||
+                              tag.color === 'pink' ||
+                              tag.color === 'red'
+                            ? // tag.color === 'purple'
+                              'black'
+                            : 'white',
+                        fontFamily: 'Poppins-Light',
+                      }}>
+                      {tag.label}
                     </Text>
                   </TouchableOpacity>
                 ))}

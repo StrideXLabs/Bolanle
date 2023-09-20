@@ -65,16 +65,17 @@ const styles = StyleSheet.create({
   },
 
   name: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: 'Poppins-Medium',
+    fontSize: 17,
+    fontFamily: 'Poppins-Bold',
     color: '#484848',
-    marginBottom: 10,
+    marginBottom: 2,
   },
   location: {
     fontSize: 14,
     fontFamily: 'Poppins-Regular',
     color: '#484848',
+    flexWrap: 'wrap',
+    width: 180,
   },
 });
 
@@ -165,7 +166,7 @@ export default () => {
           <View>
             <Text style={styles.name}>{item.contact.personalInfo.name}</Text>
             <Text style={styles.location}>
-              {item.contact.personalInfo.address || '-'}
+              {item.contact.contactDetails.companyAddress || '-'}
             </Text>
             <Text>{item.contact.createdAt.split('T')[0] || '-'}</Text>
           </View>

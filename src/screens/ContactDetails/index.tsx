@@ -202,6 +202,8 @@ const ContactDetails = ({
     }
   }, [isFetchedLocation]);
 
+  console.log('lat and lang', contactDetails.lat, contactDetails.lng);
+
   return (
     <Layout>
       <StaticContainerReg
@@ -335,7 +337,6 @@ const ContactDetails = ({
             <View style={{marginTop: responsiveHeight(26 / percentToPx)}}>
               <Button
                 disabled={updating || isFetchingLocation}
-                showLoading={updating}
                 callback={
                   status === 'EDITING' ? handleUpdateDetails : handleSkipClick
                 }
