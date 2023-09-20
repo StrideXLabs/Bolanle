@@ -41,4 +41,5 @@ export {default as privacyLogo} from '../assets/images/drawer/privacy.png'
 export {default as ratingsLogo} from '../assets/images/drawer/ratings.png'
 export {default as youtubeLogo} from '../assets/images/drawer/youtube.png'
 export {default as browserLogo} from '../assets/images/drawer/globe.png'
+export {default as defaultImage} from '../assets/images/DefaultImage.png'
 

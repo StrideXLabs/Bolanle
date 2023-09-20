@@ -27,6 +27,7 @@ import EmailIcon from '../../assets/svgs/email.svg';
 import PhoneIcon from '../../assets/svgs/phone.svg';
 import GlobeIcon from '../../assets/svgs/globe.svg';
 import LocationIcon from '../../assets/svgs/location.svg';
+import {defaultImage} from '../../constants/icons';
 
 interface ICardProps {
   card: ICardData;
@@ -36,13 +37,13 @@ interface ICardProps {
 const Card = ({card, onCardPress}: ICardProps) => {
   const {personalInfo, contactDetails} = card;
 
-  console.log('card', personalInfo);
-  console.log('card2', contactDetails);
+  console.log('card data', card);
 
   const navigation = useNavigation();
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(!card);
+  const [isLoadingImage, setIsLoadingImage] = useState(true);
   const [{qr, socialLinks, _id, userId}, setCardData] = useState<
     Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'>
   >(
@@ -138,6 +139,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
           personalInfo: initialPersonalInformation,
         },
       );
+      setIsLoadingImage(false);
     } catch (error) {
       setError('Error fetching card data.');
     } finally {
@@ -178,17 +180,25 @@ const Card = ({card, onCardPress}: ICardProps) => {
         {/* Card */}
         <View className="w-full bg-white rounded-3xl flex flex-row space-x-6">
           <View className="flex-1">
-            <Image
-              resizeMode="contain"
-              className="rounded-2xl h-44 w-40"
-              source={{
-                uri:
-                  BASE_URL +
-                  `/${card._id}/${contactDetails?.profileImage}` +
-                  `?time=${Date.now()}`,
-                cache: 'reload',
-              }}
-            />
+            {isLoadingImage ? (
+              <Image
+                resizeMode="contain"
+                className="rounded-2xl h-44 w-40"
+                source={defaultImage as any}
+              />
+            ) : (
+              <Image
+                resizeMode="contain"
+                className="rounded-2xl h-44 w-40"
+                source={{
+                  uri:
+                    BASE_URL +
+                    `/${card._id}/${contactDetails?.profileImage}` +
+                    `?time=${Date.now()}`,
+                  cache: 'reload',
+                }}
+              />
+            )}
           </View>
           <View className="flex-1 justify-center">
             <View className="flex flex-col mb-4">
