@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
 import editIcon from '../../assets/images/edit.png';
 import deleteIcon from '../../assets/images/trash.png';
@@ -37,8 +38,8 @@ const SocialLinks = ({
   onDeleteLink,
 }: Props) => {
   return (
-    <View
-      style={{
+    <ScrollView
+      contentContainerStyle={{
         paddingHorizontal: responsiveHeight(20 / percentToPx),
         paddingVertical: responsiveHeight(14 / percentToPx),
       }}>
@@ -112,7 +113,7 @@ const SocialLinks = ({
           )}
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

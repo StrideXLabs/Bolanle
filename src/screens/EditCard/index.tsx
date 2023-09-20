@@ -457,7 +457,10 @@ const EditCardScreen = ({
                 borderColor: '#e5e5e5',
               }}
               handleIndicatorStyle={{backgroundColor: 'blue'}}>
-              <BottomSheetScrollView>
+              <BottomSheetScrollView
+                contentContainerStyle={{
+                  paddingBottom: 10,
+                }}>
                 <Header
                   cardId={_id}
                   editable={editable}

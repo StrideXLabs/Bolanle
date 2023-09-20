@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Image,
-  ImageSourcePropType,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, ImageSourcePropType, Text, ScrollView, View} from 'react-native';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -26,8 +20,8 @@ type Props = {
 
 const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
   return (
-    <View
-      style={{
+    <ScrollView
+      contentContainerStyle={{
         paddingHorizontal: responsiveHeight(20 / percentToPx),
         paddingVertical: responsiveHeight(14 / percentToPx),
       }}>
@@ -76,7 +70,7 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
           )}
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

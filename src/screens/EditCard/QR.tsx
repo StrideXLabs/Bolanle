@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
+import {Image, Text, View, ScrollView} from 'react-native';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -19,8 +19,8 @@ type Props = {
 
 const QR = ({onDeleteCard, qr, editable, cardId}: Props) => {
   return (
-    <View
-      style={{
+    <ScrollView
+      contentContainerStyle={{
         paddingHorizontal: responsiveHeight(20 / percentToPx),
         paddingVertical: responsiveHeight(14 / percentToPx),
       }}>
@@ -42,7 +42,7 @@ const QR = ({onDeleteCard, qr, editable, cardId}: Props) => {
           />
         )}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

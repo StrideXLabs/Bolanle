@@ -3,7 +3,7 @@ import {
   Image,
   ImageSourcePropType,
   Text,
-  TouchableOpacity,
+  ScrollView,
   View,
   ActivityIndicator,
   StyleSheet,
@@ -33,8 +33,8 @@ const LocationDetails = ({
   cardId,
 }: Props) => {
   return (
-    <View
-      style={{
+    <ScrollView
+      contentContainerStyle={{
         paddingHorizontal: responsiveHeight(20 / percentToPx),
         paddingVertical: responsiveHeight(14 / percentToPx),
       }}>
@@ -49,10 +49,10 @@ const LocationDetails = ({
           placeholder=""
           value={contactDetails.companyAddress}
           bottomBorder
-          label="City"
+          label="Address"
           editable={false}
         />
-        <TextField
+        {/* <TextField
           placeholder=""
           value={contactDetails.companyAddress}
           bottomBorder
@@ -65,7 +65,7 @@ const LocationDetails = ({
           bottomBorder
           label="Country"
           editable={false}
-        />
+        /> */}
 
         {/* <Image
           resizeMode="contain"
@@ -127,7 +127,7 @@ const LocationDetails = ({
           {editable && <Button text="Edit Details" callback={() => {}} />}
         </View> */}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
