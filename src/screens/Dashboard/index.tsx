@@ -30,7 +30,7 @@ import Card from './Card';
 import TextField from '../../components/TextField/TextFieldDark';
 import {SearchIcon, addCardIcon} from '../../constants/icons';
 import {useAuth} from '../../hooks/useAuth';
-import AddCard from '../../assets/svgs/AddCard.svg';
+import AddNewCard from '../../assets/svgs/AddNewCard.svg';
 
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
@@ -225,7 +225,7 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
             <TouchableOpacity
               className="h-[500px] justify-center items-center mr-5"
               onPress={handleOnAddNewPress}>
-              <AddCard />
+              <AddNewCard />
             </TouchableOpacity>
           </ScrollView>
         )}

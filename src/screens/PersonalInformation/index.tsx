@@ -94,7 +94,6 @@ const PersonalInformation = ({
       if (
         !personalInformation.name ||
         !personalInformation.designation ||
-        !personalInformation.department ||
         !personalInformation.companyName
       ) {
         Toast.error({
@@ -146,7 +145,6 @@ const PersonalInformation = ({
     if (
       !personalInformation.name ||
       !personalInformation.designation ||
-      !personalInformation.department ||
       !personalInformation.companyName
     ) {
       Toast.error({

@@ -55,15 +55,15 @@ const ContactDetails = ({
   const validateData = () => {
     if (
       !contactDetails.email ||
-      !contactDetails.mobile ||
-      !contactDetails.websiteUrl ||
-      !contactDetails.companyAddress ||
+      // !contactDetails.mobile ||
+      // !contactDetails.websiteUrl ||
+      // !contactDetails.companyAddress ||
       !contactDetails.companyLogo ||
       !contactDetails.profilePicture
     ) {
       Toast.error({
-        primaryText: 'All fields are required.',
-        secondaryText: 'Please fill up all the details to continue.',
+        primaryText: 'Some fields are required.',
+        secondaryText: 'Please fill up those fields to continue.',
       });
       return false;
     }
@@ -73,9 +73,11 @@ const ContactDetails = ({
       return false;
     }
 
-    if (!isValidURL(contactDetails.websiteUrl)) {
-      Toast.error({primaryText: 'Website URL must be valid URL.'});
-      return false;
+    if (contactDetails.websiteUrl) {
+      if (!isValidURL(contactDetails.websiteUrl)) {
+        Toast.error({primaryText: 'Website URL must be valid URL.'});
+        return false;
+      }
     }
 
     return true;
@@ -150,6 +152,11 @@ const ContactDetails = ({
 
   const handleNextClick = () => {
     if (!validateData()) return;
+    setStep(step + 1);
+    navigation.push('SocialLinksScreen', {status, cardId});
+  };
+
+  const handleSkipClick = () => {
     setStep(step + 1);
     navigation.push('SocialLinksScreen', {status, cardId});
   };
@@ -239,7 +246,7 @@ const ContactDetails = ({
                 }}
                 autoCapitalize="none"
                 value={contactDetails.email}
-                placeholder="Enter your Business Email"
+                placeholder="Your Business Email"
               />
               <GenericTextField
                 keyboardType="phone-pad"
@@ -250,7 +257,7 @@ const ContactDetails = ({
                   });
                 }}
                 value={contactDetails.mobile}
-                placeholder="Enter mobile number"
+                placeholder="Your phone number (optional)"
               />
               <GenericTextField
                 keyboardType="default"
@@ -262,7 +269,7 @@ const ContactDetails = ({
                   });
                 }}
                 value={contactDetails.websiteUrl}
-                placeholder="Enter your company website url"
+                placeholder="Your company website url (optional)"
               />
               <GenericTextField
                 // multiline
@@ -271,7 +278,7 @@ const ContactDetails = ({
                   setContactDetails({...contactDetails, companyAddress: text});
                 }}
                 value={contactDetails.companyAddress}
-                placeholder="Enter your company address"
+                placeholder="Your company address (optional)"
               />
               {/* <TouchableOpacity
                 className={`flex-row w-full justify-center items-center bg-white py-3 rounded-xl ${
@@ -324,7 +331,21 @@ const ContactDetails = ({
             </View>
 
             <Upload status={status} cardId={cardId!} />
-            <View style={{marginTop: responsiveHeight(35 / percentToPx)}}>
+
+            <View style={{marginTop: responsiveHeight(26 / percentToPx)}}>
+              <Button
+                disabled={updating || isFetchingLocation}
+                showLoading={updating}
+                callback={
+                  status === 'EDITING' ? handleUpdateDetails : handleSkipClick
+                }
+                text={'Skip'}
+                className="w-full"
+                showBackgroundColor={false}
+              />
+            </View>
+
+            <View style={{marginTop: responsiveHeight(12 / percentToPx)}}>
               <Button
                 disabled={updating || isFetchingLocation}
                 showLoading={updating}

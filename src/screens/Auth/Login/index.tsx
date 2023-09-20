@@ -248,7 +248,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                   <Text className="font-1 text-black text-sm">Google</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={{flex: 1}}
                 className="p-3 bg-white rounded-lg">
                 <View className="flex flex-row items-center justify-center space-x-1">
@@ -271,7 +271,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                   />
                   <Text className="font-1 text-black text-sm">Facebook</Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
         </View>
