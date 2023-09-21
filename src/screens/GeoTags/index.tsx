@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     flex: 1,
-    width: 400,
+    width: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
     position: 'relative',
@@ -69,7 +69,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     color: '#484848',
     marginBottom: 2,
+    // wrap the text in case it's too long
+    flexWrap: 'wrap',
+    width: 180,
   },
+
   location: {
     fontSize: 14,
     fontFamily: 'Poppins-Regular',
@@ -97,6 +101,13 @@ export default () => {
       flatListRef.current.scrollToIndex({index, animated: true});
     }
   };
+
+  useEffect(() => {
+    console.log(activeId);
+    console.log(contacts.length);
+    if (contacts && contacts.length > 0)
+      console.log(contacts.length - 1 === activeId);
+  }, [activeId]);
 
   const getContacts = async () => {
     try {
@@ -187,7 +198,16 @@ export default () => {
           horizontal
           data={contacts}
           style={{height: 250}}
-          contentContainerStyle={{paddingVertical: 16}}
+          contentContainerStyle={{
+            paddingVertical: 16,
+            paddingLeft: activeId === 0 ? halfBoxDistance : 0,
+            paddingRight:
+              contacts &&
+              contacts.length > 0 &&
+              contacts.length - 1 === activeId
+                ? halfBoxDistance
+                : 0,
+          }}
           contentInsetAdjustmentBehavior="never"
           snapToAlignment="center"
           decelerationRate="fast"
