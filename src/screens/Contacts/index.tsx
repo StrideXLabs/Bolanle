@@ -151,15 +151,17 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
   }, [isFocused]);
 
   const tags = [
+    //blue green red yelow orange
     {label: 'All', color: 'gray'},
     {label: 'Developer', color: 'yellow'},
     {label: 'Designer', color: 'green'},
-    {label: 'Partnership', color: 'purple'},
+    {label: 'Partnership', color: accentColor},
     {label: 'Business', color: 'orange'},
     {label: 'Manager', color: 'red'},
-    {label: 'CEO', color: 'pink'},
-    {label: 'Money', color: 'yellow'},
-    {label: 'Investor', color: 'teal'},
+    {label: 'CEO', color: 'yellow'},
+    {label: 'Partner', color: 'green'},
+    {label: 'Investor', color: accentColor},
+    {label: 'Friend', color: 'orange'},
   ];
 
   console.log('contactsHEHE', contacts);
@@ -224,8 +226,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
                             : tag.color === 'yellow' ||
                               tag.color === 'white' ||
                               tag.color === 'orange' ||
-                              tag.color === 'pink' ||
-                              tag.color === 'red'
+                              tag.color === 'pink'
                             ? // tag.color === 'purple'
                               'black'
                             : 'white',
@@ -292,6 +293,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
             style={{
               height: responsiveHeight(100),
               marginTop: responsiveHeight(24 / percentToPx),
+              paddingBottom: responsiveHeight(50 / percentToPx),
             }}>
             <FlatList
               numColumns={1}

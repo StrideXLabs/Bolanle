@@ -10,7 +10,10 @@ import {
 import {BASE_URL, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
 import {ICardData} from '../../services/dashboard.service';
-import {responsiveHeight} from 'react-native-responsive-dimensions';
+import {
+  responsiveHeight,
+  responsiveScreenWidth,
+} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import Toast from '../../lib/toast';
 import {
@@ -174,7 +177,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
       style={{
         paddingVertical: responsiveHeight(8 / percentToPx),
         paddingHorizontal: responsiveHeight(20 / percentToPx),
-        maxWidth: responsiveHeight(370 / percentToPx),
+        maxWidth: responsiveScreenWidth(100),
       }}>
       <View className="flex bg-secondary-blue rounded-3xl p-4 space-y-5">
         {/* Card */}
@@ -262,7 +265,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
             paddingTop: responsiveHeight(8 / percentToPx),
           }}>
           <Button
-            text="Edit card details"
+            text="View card details"
             callback={() => {
               onCardPress(card);
             }}
