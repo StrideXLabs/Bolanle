@@ -40,7 +40,7 @@ export const googleSignIn = async () => {
 
     const userInfo = await GoogleSignin.signIn();
 
-    Toast.success({primaryText: 'Login Success'});
+    // Toast.success({primaryText: 'Login Success'});
 
     return userInfo;
   } catch (error: any) {

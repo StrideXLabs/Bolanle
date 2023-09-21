@@ -182,7 +182,7 @@ export default () => {
           ...styles.cardContainer,
           display: toggle ? 'flex' : 'none',
         }}>
-        <Text style={styles.title}>Contacts</Text>
+        <Text style={styles.title}>Location</Text>
         <FlatList
           horizontal
           data={contacts}
