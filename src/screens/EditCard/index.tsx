@@ -448,7 +448,7 @@ const EditCardScreen = ({
             </View>
             <BottomSheet
               ref={bottomSheetRef}
-              index={1}
+              index={0}
               snapPoints={snapPoints}
               onChange={handleSheetChanges}
               backgroundStyle={{
