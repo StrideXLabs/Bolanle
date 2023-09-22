@@ -177,7 +177,7 @@ const Card = ({card, onCardPress}: ICardProps) => {
       style={{
         paddingVertical: responsiveHeight(8 / percentToPx),
         paddingHorizontal: responsiveHeight(20 / percentToPx),
-        maxWidth: responsiveScreenWidth(100),
+        maxWidth: responsiveHeight(370 / percentToPx),
       }}>
       <View className="flex bg-secondary-blue rounded-3xl p-4 space-y-5">
         {/* Card */}
