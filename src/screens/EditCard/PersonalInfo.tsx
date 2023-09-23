@@ -1,19 +1,16 @@
 import React from 'react';
-import {
-  Image,
-  ImageSourcePropType,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, ImageSourcePropType, Text, ScrollView, View} from 'react-native';
 import {
   responsiveFontSize,
   responsiveHeight,
 } from 'react-native-responsive-dimensions';
 import editIcon from '../../assets/images/edit.png';
-import { percentToPx } from '../../constants';
+import {percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
-import { ICardData } from '../../services/dashboard.service';
+import {ICardData} from '../../services/dashboard.service';
+import {PencilIcon} from '../../constants/icons';
+import TextField from '../../components/TextField/TextFieldDark';
+import Button from '../../components/Button';
 
 type Props = {
   editable: boolean;
@@ -21,117 +18,59 @@ type Props = {
   onEditPress: (info: ICardData['personalInfo']) => void;
 };
 
-const PersonalInfo = ({ personalInfo, onEditPress, editable }: Props) => {
+const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
   return (
-    <>
+    <ScrollView
+      contentContainerStyle={{
+        paddingHorizontal: responsiveHeight(20 / percentToPx),
+        paddingVertical: responsiveHeight(14 / percentToPx),
+      }}>
+      <Text className="font-2 text-black text-2xl">Personal Details</Text>
+
       <View
-        className="flex flex-row items-center justify-between"
+        className="bg-secondary-blue p-4 rounded-2xl"
         style={{
-          marginTop: responsiveHeight(17 / percentToPx),
-          marginBottom: responsiveHeight(13 / percentToPx),
+          marginTop: responsiveHeight(14 / percentToPx),
         }}>
-        <Text
-          style={[
-            textStyles.robotoBold,
-            { fontSize: responsiveFontSize(18 / percentToPx) },
-          ]}
-          className="text-accent">
-          Personal Information
-        </Text>
-        {editable && (
-          <TouchableOpacity
-            className="p-1"
-            activeOpacity={0.8}
-            onPress={() => onEditPress(personalInfo)}>
-            <Image
-              resizeMode="contain"
-              className="w-[16.5px] h-[16.5px]"
-              source={editIcon as ImageSourcePropType}
+        <TextField
+          placeholder=""
+          value={personalInfo.name}
+          bottomBorder
+          label="Name"
+          editable={false}
+        />
+        <TextField
+          placeholder=""
+          value={personalInfo.designation}
+          bottomBorder
+          label="Job Title"
+          editable={false}
+        />
+        <TextField
+          placeholder=""
+          value={personalInfo.department}
+          bottomBorder
+          label="Department"
+          editable={false}
+        />
+        <TextField
+          placeholder=""
+          value={personalInfo.companyName}
+          bottomBorder
+          label="Company"
+          editable={false}
+        />
+
+        <View className="px-2">
+          {editable && (
+            <Button
+              text="Edit Details"
+              callback={() => onEditPress(personalInfo)}
             />
-          </TouchableOpacity>
-        )}
-      </View>
-      <View className="flex">
-        <View
-          className="flex flex-row gap-2"
-          style={{ marginBottom: responsiveHeight(8 / percentToPx) }}>
-          <Text
-            style={[
-              textStyles.robotoBold,
-              { fontSize: responsiveFontSize(13 / percentToPx) },
-            ]}
-            className="text-dark-blue font-bold">
-            Name
-          </Text>
-          <Text
-            style={[
-              textStyles.robotoRegular,
-              { fontSize: responsiveFontSize(13 / percentToPx) },
-            ]}
-            className="text-dark-blue">
-            {personalInfo.name}
-          </Text>
-        </View>
-        <View
-          className="flex flex-row gap-2"
-          style={{ marginBottom: responsiveHeight(8 / percentToPx) }}>
-          <Text
-            style={[
-              textStyles.robotoBold,
-              { fontSize: responsiveFontSize(13 / percentToPx) },
-            ]}
-            className="text-dark-blue font-bold">
-            Job Title
-          </Text>
-          <Text
-            style={[
-              textStyles.robotoRegular,
-              { fontSize: responsiveFontSize(13 / percentToPx) },
-            ]}
-            className="text-dark-blue">
-            {personalInfo.designation}
-          </Text>
-        </View>
-        <View
-          className="flex flex-row gap-2"
-          style={{ marginBottom: responsiveHeight(8 / percentToPx) }}>
-          <Text
-            style={[
-              textStyles.robotoBold,
-              { fontSize: responsiveFontSize(13 / percentToPx) },
-            ]}
-            className="text-dark-blue font-bold">
-            Department
-          </Text>
-          <Text
-            style={[
-              textStyles.robotoRegular,
-              { fontSize: responsiveFontSize(13 / percentToPx) },
-            ]}
-            className="text-dark-blue">
-            {personalInfo.department}
-          </Text>
-        </View>
-        <View className="flex flex-row gap-2 flex-wrap">
-          <Text
-            style={[
-              textStyles.robotoBold,
-              { fontSize: responsiveFontSize(13 / percentToPx) },
-            ]}
-            className="text-dark-blue font-bold">
-            Company
-          </Text>
-          <Text
-            style={[
-              textStyles.robotoRegular,
-              { fontSize: responsiveFontSize(13 / percentToPx) },
-            ]}
-            className="text-dark-blue">
-            {personalInfo.companyName}
-          </Text>
+          )}
         </View>
       </View>
-    </>
+    </ScrollView>
   );
 };
 

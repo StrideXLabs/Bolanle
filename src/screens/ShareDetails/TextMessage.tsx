@@ -7,6 +7,7 @@ import {IShareContactDetails} from '.';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField/TextFieldDark';
 import {percentToPx} from '../../constants';
+import GenericTextField from '../../components/TextField/GenericTextField/GenericTextField';
 
 type TextMessageProps = {
   company: string;
@@ -22,8 +23,8 @@ const TextMessage = ({onSave, company, fullName}: TextMessageProps) => {
     comment: `Hi, This is ${fullName} from ${company}. Tap this link to get my business card.`,
   });
   const [data, setData] = useState<{flag: string; code: string}>({
-    flag: '🇮🇳',
-    code: '+91',
+    flag: '🇺🇸',
+    code: '+1',
   });
   const inputRef = useRef<boolean | null>(true);
 
@@ -56,13 +57,21 @@ const TextMessage = ({onSave, company, fullName}: TextMessageProps) => {
           }}
         />
       )}
-      <View
-        className="relative"
-        style={{marginBottom: responsiveHeight(10 / percentToPx)}}>
+      <View className="relative">
+        <Text
+          className="font-2 text-2xl text-black text-center"
+          style={{marginVertical: responsiveHeight(10 / percentToPx)}}>
+          Text your card
+        </Text>
         <TextField
           label="Contact number"
           value={details.contact}
-          style={{paddingLeft: 75}}
+          style={{
+            paddingLeft: 75,
+            backgroundColor: '#fff',
+            borderRadius: 10,
+            borderWidth: 0,
+          }}
           keyboardType="number-pad"
           placeholder="WhatsApp number"
           autoFocus={inputRef.current!}
@@ -74,7 +83,7 @@ const TextMessage = ({onSave, company, fullName}: TextMessageProps) => {
             className="absolute"
             style={{
               left: 8,
-              bottom: 2,
+              bottom: 3,
               height: responsiveHeight(5.5),
               justifyContent: 'center',
               alignItems: 'center',
@@ -96,18 +105,26 @@ const TextMessage = ({onSave, company, fullName}: TextMessageProps) => {
           </View>
         )}
       </View>
-      <TextField
-        multiline
-        textAlignVertical="top"
-        placeholder="Your message"
-        label="Customize your message"
-        style={{height: responsiveHeight(70 / percentToPx)}}
-        value={details.comment || ''}
-        onChangeText={comment =>
-          setDetails(state => ({...state, comment: comment}))
-        }
-      />
-      <View style={{marginTop: responsiveHeight(52 / percentToPx)}}>
+      <View style={{marginTop: responsiveHeight(14 / percentToPx)}}>
+        <Text
+          className="font-1 text-black"
+          style={{
+            fontSize: responsiveHeight(14 / percentToPx),
+          }}>
+          Customize your message
+        </Text>
+        <GenericTextField
+          multiline
+          textAlignVertical="top"
+          placeholder="Your message"
+          style={{height: responsiveHeight(70 / percentToPx)}}
+          value={details.comment || ''}
+          onChangeText={comment =>
+            setDetails(state => ({...state, comment: comment}))
+          }
+        />
+      </View>
+      <View style={{marginTop: responsiveHeight(20 / percentToPx)}}>
         <Button text="Send" callback={() => onSave(details, data.code)} />
       </View>
     </View>

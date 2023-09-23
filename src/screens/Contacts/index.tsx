@@ -1,11 +1,12 @@
-import { useIsFocused } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useRef, useState } from 'react';
+import {useIsFocused} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
   Image,
-  ImageSourcePropType,
+  ScrollView,
+  TouchableOpacity,
   Text,
   View,
 } from 'react-native';
@@ -19,16 +20,17 @@ import searchIcon from '../../assets/images/search.png';
 import Button from '../../components/Button';
 import Layout from '../../components/Layout';
 import TextField from '../../components/TextField/TextFieldDark';
-import { accentColor, percentToPx } from '../../constants';
+import {accentColor, percentToPx} from '../../constants';
 import textStyles from '../../constants/fonts';
-import { useOpenModalState } from '../../hooks/useOpenModal';
+import {useOpenModalState} from '../../hooks/useOpenModal';
 import Toast from '../../lib/toast';
-import { AppStackParams } from '../../navigation/AppNavigation';
-import { BottomTabNavigatorParams } from '../../navigation/BottomNavigation';
+import {AppStackParams} from '../../navigation/AppNavigation';
+import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import contactsService from '../../services/contacts.service';
-import { ICardData } from '../../services/dashboard.service';
+import {ICardData} from '../../services/dashboard.service';
 import ContactCard from './ContactCard';
 import ModalContent from './ModalContent';
+import {SearchIcon} from '../../constants/icons';
 
 export type ContactsScreenProps = NativeStackScreenProps<
   AppStackParams & BottomTabNavigatorParams,
@@ -36,25 +38,34 @@ export type ContactsScreenProps = NativeStackScreenProps<
 >;
 
 export interface IContact
-  extends Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'> { }
+  extends Omit<Omit<ICardData, 'createdAt'>, 'updatedAt'> {}
 
-const ContactsScreen = ({ navigation }: ContactsScreenProps) => {
+const ContactsScreen = ({navigation}: ContactsScreenProps) => {
   const isFocused = useIsFocused();
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
-  const { open, setOpen } = useOpenModalState();
+  const {open, setOpen} = useOpenModalState();
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [contacts, setContacts] = useState<IContact[]>([]);
   const selectedContactRef = useRef<IContact | null>(null);
+  const [selectedTag, setSelectedTag] = useState('All');
 
-  const filteredContacts = search.trim()
-    ? contacts.filter(c =>
-      ((c as any).contact as IContact).personalInfo?.name
+  const filteredContacts = contacts.filter(c => {
+    const nameMatch =
+      c.contact?.personalInfo?.name
         ?.toLowerCase()
-        ?.includes(search.trim().toLowerCase()),
-    )
-    : contacts;
+        ?.includes(search.toLowerCase()) || search.trim() === '';
+
+    const tagMatch =
+      selectedTag.toLowerCase() === 'all' ||
+      (c.tags &&
+        c.tags.some(
+          tag => tag.name.toLowerCase() === selectedTag.toLowerCase(),
+        ));
+
+    return nameMatch && tagMatch;
+  });
 
   const fetchContactData = async () => {
     try {
@@ -80,7 +91,7 @@ const ContactsScreen = ({ navigation }: ContactsScreenProps) => {
 
   const handleViewCard = () => {
     if (!selectedContactRef.current)
-      return Toast.error({ primaryText: 'Please select a card first.' });
+      return Toast.error({primaryText: 'Please select a card first.'});
 
     setOpen(false);
     navigation.navigate('EditCardScreen', {
@@ -110,6 +121,8 @@ const ContactsScreen = ({ navigation }: ContactsScreenProps) => {
     try {
       if (!selectedContactRef.current) return;
 
+      console.log('selectedContactRef.current', selectedContactRef.current);
+
       setDeleting(true);
       const response = await contactsService.delete(
         selectedContactRef.current?._id || '',
@@ -117,17 +130,17 @@ const ContactsScreen = ({ navigation }: ContactsScreenProps) => {
 
       if (!response.success) {
         setDeleting(false);
-        return Toast.error({ primaryText: response.message });
+        return Toast.error({primaryText: response.message});
       }
 
-      Toast.success({ primaryText: 'Contact deleted.' });
+      Toast.success({primaryText: 'Contact deleted.'});
       selectedContactRef.current = null;
       setDeleting(false);
       setOpen(false);
       await fetchContactData();
     } catch (error) {
       setDeleting(false);
-      Toast.error({ primaryText: 'Error while deleting contact.' });
+      Toast.error({primaryText: 'Error while deleting contact.'});
     }
   };
 
@@ -137,56 +150,110 @@ const ContactsScreen = ({ navigation }: ContactsScreenProps) => {
     }
   }, [isFocused]);
 
+  const tags = [
+    //blue green red yelow orange
+    {label: 'All', color: 'gray'},
+    {label: 'Developer', color: 'yellow'},
+    {label: 'Designer', color: 'green'},
+    {label: 'Partnership', color: accentColor},
+    {label: 'Business', color: 'orange'},
+    {label: 'Manager', color: 'red'},
+    {label: 'CEO', color: 'yellow'},
+    {label: 'Partner', color: 'green'},
+    {label: 'Investor', color: accentColor},
+    {label: 'Friend', color: 'orange'},
+  ];
+
+  console.log('contactsHEHE', contacts);
+
   return (
     <Layout>
       <View
+        className="w-full"
         style={{
-          paddingLeft: responsiveHeight(36 / percentToPx),
-          paddingRight: responsiveHeight(40 / percentToPx),
-          paddingVertical: responsiveHeight(20 / percentToPx),
+          paddingHorizontal: responsiveHeight(24 / percentToPx),
+          paddingVertical: responsiveHeight(17 / percentToPx),
         }}>
-        <Text
-          style={textStyles.bebasNeueBold}
-          className="text-dark-blue text-4xl">
-          Contacts
-        </Text>
-        <View style={{ marginTop: responsiveHeight(46 / percentToPx) }}>
-          <TextField
-            value={search}
-            placeholder="Search contacts"
-            className="border-dark-blue border-[2px]"
-            style={{ paddingLeft: responsiveHeight(5) }}
-            onChangeText={text => setSearch(text)}
-          />
-          <Image
-            className="absolute"
-            resizeMode="contain"
-            source={searchIcon as ImageSourcePropType}
-            style={{
-              top: responsiveHeight(12.7 / percentToPx),
-              left: responsiveHeight(13 / percentToPx),
-              width: responsiveWidth(30.46 / percentToPx),
-              height: responsiveWidth(30.46 / percentToPx),
-            }}
-          />
+        <View style={{marginTop: responsiveHeight(14 / percentToPx)}}>
+          {!loading && !error && contacts.length > 0 && (
+            <Text className="text-black text-2xl font-2 text-left">
+              Contacts
+            </Text>
+          )}
+
+          {!loading && !error && contacts.length > 0 && (
+            <View style={{marginTop: responsiveHeight(20 / percentToPx)}}>
+              <TextField
+                placeholder="Search contact, tag ..."
+                value={search}
+                onChangeText={text => setSearch(text)}
+                gradient={true}
+                icon={
+                  <Image
+                    source={SearchIcon as any}
+                    className={`h-5 w-5`}
+                    style={{tintColor: '#8a8a8f'}}
+                  />
+                }
+              />
+
+              <ScrollView
+                horizontal
+                className="flex flex-row space-x-2 flex-wrap"
+                contentContainerStyle={{
+                  marginTop: responsiveHeight(14 / percentToPx),
+                }}>
+                {tags.map((tag, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => {
+                      setSelectedTag(tag.label);
+                      setSearch('');
+                    }}
+                    style={{
+                      borderRadius: 20,
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      backgroundColor:
+                        selectedTag === tag.label ? accentColor : tag.color,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color:
+                          selectedTag === tag.label
+                            ? 'white'
+                            : tag.color === 'yellow' ||
+                              tag.color === 'white' ||
+                              tag.color === 'orange' ||
+                              tag.color === 'pink'
+                            ? // tag.color === 'purple'
+                              'black'
+                            : 'white',
+                        fontFamily: 'Poppins-Light',
+                      }}>
+                      {tag.label}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          )}
         </View>
         {loading && (
           <View
             className="flex justify-center items-center"
-            style={{ height: responsiveHeight(60) }}>
+            style={{height: responsiveHeight(80)}}>
             <ActivityIndicator size={50} color={accentColor} />
           </View>
         )}
         {!loading && contacts.length === 0 && error && (
           <View
             className="flex justify-center items-center"
-            style={{ height: responsiveHeight(70) }}>
+            style={{height: responsiveHeight(80)}}>
             <Text
-              className="text-dark-blue"
-              style={[
-                textStyles.robotoBold,
-                { fontSize: responsiveFontSize(18 / percentToPx) },
-              ]}>
+              className="text-black font-2"
+              style={[{fontSize: responsiveFontSize(18 / percentToPx)}]}>
               {error}
             </Text>
             <Button
@@ -202,13 +269,10 @@ const ContactsScreen = ({ navigation }: ContactsScreenProps) => {
         {!loading && !error && contacts.length == 0 && (
           <View
             className="flex justify-center items-center"
-            style={{ marginTop: responsiveHeight(5) }}>
+            style={{height: responsiveHeight(80)}}>
             <Text
-              className="text-dark-blue"
-              style={[
-                textStyles.robotoBold,
-                { fontSize: responsiveFontSize(18 / percentToPx) },
-              ]}>
+              className="text-black font-3"
+              style={[{fontSize: responsiveFontSize(18 / percentToPx)}]}>
               No contacts found.
             </Text>
           </View>
@@ -216,13 +280,10 @@ const ContactsScreen = ({ navigation }: ContactsScreenProps) => {
         {!loading && !error && search && filteredContacts.length == 0 && (
           <View
             className="flex justify-center items-center"
-            style={{ marginTop: responsiveHeight(5) }}>
+            style={{marginTop: responsiveHeight(5)}}>
             <Text
-              className="text-dark-blue"
-              style={[
-                textStyles.robotoBold,
-                { fontSize: responsiveFontSize(18 / percentToPx) },
-              ]}>
+              className="text-black font-3"
+              style={[{fontSize: responsiveFontSize(18 / percentToPx)}]}>
               No contacts found.
             </Text>
           </View>
@@ -231,27 +292,28 @@ const ContactsScreen = ({ navigation }: ContactsScreenProps) => {
           <View
             style={{
               height: responsiveHeight(100),
-              marginTop: responsiveHeight(34 / percentToPx),
+              marginTop: responsiveHeight(24 / percentToPx),
+              paddingBottom: responsiveHeight(50 / percentToPx),
             }}>
             <FlatList
               numColumns={1}
               horizontal={false}
               refreshing={loading}
               data={filteredContacts}
-              style={{ width: '100%' }}
+              style={{width: '100%'}}
               onRefresh={fetchContactData}
               keyExtractor={item => item._id}
               showsVerticalScrollIndicator={false}
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <ContactCard
                   contact={item}
-                  onPress={contact => {
-                    selectedContactRef.current = contact;
+                  onPress={item => {
+                    selectedContactRef.current = item;
                     setOpen(true);
                   }}
-                  viewContact={contact => {
-                    selectedContactRef.current = contact;
-                    handleViewCard()
+                  viewContact={item => {
+                    selectedContactRef.current = item;
+                    handleViewCard();
                   }}
                 />
               )}

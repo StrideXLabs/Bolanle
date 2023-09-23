@@ -7,6 +7,8 @@ export const initialContactDetails = {
   companyLogo: null,
   companyAddress: '',
   profilePicture: null,
+  lat: null,
+  lng: null,
 } as IContactDetails;
 
 export const initialPersonalInformation = {

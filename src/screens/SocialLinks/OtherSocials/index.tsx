@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, View, Text} from 'react-native';
 
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 import Button from '../../../components/Button';
@@ -14,6 +14,8 @@ import {useCreateBusinessCard} from '../../../hooks/useBusinessCard';
 import {ISocialLink} from '../../../hooks/useBusinessCard/interface';
 import Toast from '../../../lib/toast';
 import {AppStackParams} from '../../../navigation/AppNavigation';
+import StaticContainerReg from '../../../containers/StaticContainerReg';
+import GenericTextField from '../../../components/TextField/GenericTextField/GenericTextField';
 
 export type SocialLinksProps = NativeStackScreenProps<
   AppStackParams,
@@ -48,50 +50,54 @@ const OtherSocialsScreen = ({
 
   return (
     <Layout>
-      <View
-        style={{
-          paddingVertical: responsiveHeight(32 / percentToPx),
-          paddingHorizontal: responsiveHeight(40 / percentToPx),
+      <StaticContainerReg
+        isBack
+        isHeader
+        title="Add other socials"
+        onBackPress={() => {
+          navigation.navigate('SocialLinksScreen', {cardId, status});
         }}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <HeaderStepCount
-            showDotes={false}
-            onBackPress={() =>
-              navigation.navigate('SocialLinksScreen', {cardId, status})
-            }
-          />
-          <View
-            style={{
-              marginTop: responsiveHeight(20 / percentToPx),
-              marginBottom: responsiveHeight(22 / percentToPx),
-            }}>
-            <HeaderWithText
-              heading={`ADD ${socialMappings[socialItem.id]}`}
-              subtitle="Please fill the following detail."
+        <ScrollView
+          className="h-screen w-full"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingVertical: responsiveHeight(17 / percentToPx),
+            paddingHorizontal: responsiveHeight(4 / percentToPx),
+          }}>
+          <View className="bg-secondary-blue rounded-3xl p-4">
+            <View
+              style={{
+                marginTop: responsiveHeight(12 / percentToPx),
+                marginBottom: responsiveHeight(22 / percentToPx),
+              }}>
+              <View className="w-full">
+                <Text className="text-xl font-3 text-black text-center">
+                  Add {socialMappings[socialItem.id]} account
+                </Text>
+              </View>
+            </View>
+            <GenericTextField
+              value={social.url}
+              placeholder="Link/Username"
+              autoCapitalize="none"
+              onChangeText={url => setSocial(state => ({...state, url}))}
             />
+            <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
+              <GenericTextField
+                value={social.title}
+                placeholder={socialMappings[socialItem.id]}
+                onChangeText={title => setSocial(state => ({...state, title}))}
+              />
+            </View>
+            <View
+              style={{
+                marginTop: responsiveHeight(20 / percentToPx),
+              }}>
+              <Button text="Save" callback={handleSave} />
+            </View>
           </View>
-          <TextField
-            value={social.url}
-            label="Link/Username"
-            placeholder="Link/Username"
-            autoCapitalize='none'
-            onChangeText={url => setSocial(state => ({...state, url}))}
-          />
-          <View style={{marginTop: responsiveHeight(10 / percentToPx)}}>
-            <TextField
-              label="Title"
-              value={social.title}
-              placeholder={socialMappings[socialItem.id]}
-              onChangeText={title => setSocial(state => ({...state, title}))}
-            />
-          </View>
-          <Button
-            text="Save"
-            callback={handleSave}
-            className="mt-[74px] w-full"
-          />
         </ScrollView>
-      </View>
+      </StaticContainerReg>
     </Layout>
   );
 };

@@ -19,7 +19,7 @@ const GenericHeader: React.FC<GenericHeaderProps> = ({isBack, title}) => {
   const navigation = useNavigation();
 
   const handlePressBack = () => {
-    navigation.goBack();
+    navigation.canGoBack() && navigation.goBack();
   };
 
   return (
@@ -35,7 +35,10 @@ const GenericHeader: React.FC<GenericHeaderProps> = ({isBack, title}) => {
         </TouchableOpacity>
       )}
       {title && (
-        <Text className={`text-[25px] font-semibold text-black`}>{title}</Text>
+        <Text
+          className={`text-[25px] font-semibold text-black font-2 mt-[6px]`}>
+          {title}
+        </Text>
       )}
     </View>
   );

@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        accent: '#134B57',
+        accent: '#1C75BC',
         'dark-blue': '#334155',
         'off-white-1': '#F7F6F0',
         'off-white-2': '#C9C9C9',
@@ -14,9 +14,18 @@ module.exports = {
         'secondary-blue': '#E8F1F8',
         black: '#000000',
         white: '#FFFFFF',
+        grey: '#494949',
       },
 
-      fontFamily: ['Roboto-Bold', 'Roboto-Medium', 'Roboto-Regular'],
+      fontFamily: [
+        'Poppins-Light',
+        'Poppins-Regular',
+        'Poppins-Medium',
+        'Poppins-SemiBold',
+        'Poppins-Bold',
+        'Montserrat-Regular',
+        'Montserrat-Bold',
+      ],
     },
   },
   plugins: [],

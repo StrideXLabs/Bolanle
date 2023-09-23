@@ -7,6 +7,7 @@ import {IDefaultAPIResponse} from '../types/api-response';
 export interface ICredentialsData {
   email: string;
   password: string;
+  isThirdParty?: boolean;
 }
 
 export interface ISignupResponse {
@@ -31,7 +32,7 @@ class AuthService {
     data: ICredentialsData,
   ): Promise<IDefaultAPIResponse<ISignupResponse>> {
     try {
-      const {email, password} = data;
+      const {email, password, isThirdParty} = data;
 
       if (!emailRegex.test(email))
         return {
@@ -40,7 +41,7 @@ class AuthService {
           message: 'Provide a valid email address.',
         };
 
-      if (!password || password.length < 5)
+      if ((!password || password.length < 5) && !isThirdParty)
         return {
           data: null,
           success: false,
@@ -49,7 +50,7 @@ class AuthService {
 
       const response = await fetcher<ICredentialsData, ISignupResponse>(
         `/user/signup`,
-        {body: {email, password}, method: 'POST'},
+        {body: {email, password, isThirdParty}, method: 'POST'},
       );
 
       return {
@@ -74,6 +75,8 @@ class AuthService {
     try {
       const {email, password} = data;
 
+      const isThirdParty = data.isThirdParty || false;
+
       if (!emailRegex.test(email))
         return {
           data: null,
@@ -81,7 +84,7 @@ class AuthService {
           message: 'Provide a valid email address.',
         };
 
-      if (!password || password.length < 5)
+      if ((!password || password.length < 5) && !isThirdParty)
         return {
           data: null,
           success: false,
@@ -90,7 +93,7 @@ class AuthService {
 
       const response = await fetcher<ICredentialsData, ISigninResponse>(
         `/user/login`,
-        {body: {email, password}, method: 'POST'},
+        {body: {email, password, isThirdParty}, method: 'POST'},
       );
 
       return {
@@ -99,12 +102,13 @@ class AuthService {
         message: response.message,
       };
     } catch (error) {
+      console.error(error);
       return {
         data: null,
         success: false,
         message: isHttpError(error)
           ? error.message
-          : 'Error while creating account. Please try again.',
+          : 'Error while logging into account. Please try again.',
       };
     }
   }

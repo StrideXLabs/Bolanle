@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
+import {Image, Text, View, ScrollView} from 'react-native';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -19,18 +19,13 @@ type Props = {
 
 const QR = ({onDeleteCard, qr, editable, cardId}: Props) => {
   return (
-    <View style={{paddingBottom: responsiveHeight(5)}}>
-      <View className="flex flex-row items-center justify-between mt-[21px] mb-[10px]">
-        <Text
-          style={[
-            textStyles.robotoBold,
-            {fontSize: responsiveFontSize(18 / percentToPx)},
-          ]}
-          className="text-accent">
-          QR Code
-        </Text>
-      </View>
-      <View className="mt-2 mx-auto flex justify-center items-center">
+    <ScrollView
+      contentContainerStyle={{
+        paddingHorizontal: responsiveHeight(20 / percentToPx),
+        paddingVertical: responsiveHeight(14 / percentToPx),
+      }}>
+      <Text className="font-2 text-black text-2xl">QR Code</Text>
+      <View className="mt-4 mx-auto flex justify-center items-center">
         <Image
           className="w-[130px] h-[130px] rounded-lg"
           source={{uri: `${BASE_URL}/${cardId}/${qr}`}}
@@ -38,13 +33,16 @@ const QR = ({onDeleteCard, qr, editable, cardId}: Props) => {
         {editable && (
           <Button
             text="Delete Card"
-            className="mt-[20px]"
+            className="mt-10"
             callback={onDeleteCard}
-            style={{width: responsiveWidth(60)}}
+            style={{
+              width: responsiveWidth(60),
+            }}
+            deleteButton
           />
         )}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

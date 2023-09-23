@@ -12,21 +12,33 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-import addNewIcon from '../../../assets/images/add.png';
+import addButton from '../../../assets/images/AddButton.png';
 import arrowLeft from '../../../assets/images/arrow-left.png';
 import shareIcon from '../../../assets/images/share.png';
-import { percentToPx } from '../../../constants';
+import {percentToPx} from '../../../constants';
 import textStyles from '../../../constants/fonts';
+import {BurgerMenuIcon} from '../../../constants/icons';
+import {flushStorage} from '../../../lib/storage';
+import {useAuth, initialAuthState} from '../../../hooks/useAuth';
+import userImg from '../../../assets/images/user-db.png';
+import {useNavigation} from '@react-navigation/native';
+import LogoBlack from '../../../assets/svgs/bolanle-black.svg';
+import AddButton from '../../../assets/svgs/Add.svg';
+import Menu from '../../../assets/svgs/Menu.svg';
 
 interface IDashboardHeaderAddTypeProps {
   heading: string;
   type: 'ADD_NEW_VIEW';
   onAddNewBtnPress: () => void;
+  userDetails?: {
+    name: string;
+    designation: string;
+  };
 }
 
 interface IDashboardHeaderEditTypeProps {
-  heading: string;
-  subheading: string;
+  heading?: string;
+  subheading?: string;
   type: 'VIEW_OR_EDIT';
   onBackBtnPress: () => void;
   onShareBtnPress: () => void;
@@ -39,52 +51,67 @@ interface IDashboardHeaderShareTypeProps
 
 export type DashboardHeaderProps = {
   options:
-  | IDashboardHeaderAddTypeProps
-  | IDashboardHeaderEditTypeProps
-  | IDashboardHeaderShareTypeProps;
+    | IDashboardHeaderAddTypeProps
+    | IDashboardHeaderEditTypeProps
+    | IDashboardHeaderShareTypeProps;
 };
 
-const DashboardHeader = ({ options }: DashboardHeaderProps) => {
+const DashboardHeader = ({options}: DashboardHeaderProps) => {
+  const {setAuthState} = useAuth();
+
+  const handleLogout = async () => {
+    await flushStorage();
+    setAuthState({...initialAuthState, redirectToLogin: true});
+  };
+
+  const navigation = useNavigation();
+
   return (
     <View
       className="bg-white"
       style={{
-        paddingVertical: responsiveHeight(17 / percentToPx),
-        paddingHorizontal: responsiveHeight(30 / percentToPx),
+        paddingTop: responsiveHeight(24 / percentToPx),
+        paddingBottom: responsiveHeight(10 / percentToPx),
+        paddingHorizontal: responsiveHeight(22 / percentToPx),
       }}>
       {options.type === 'ADD_NEW_VIEW' && (
         <View className="flex flex-row items-center justify-between">
-          <Text
-            style={[
-              textStyles.bebasNeueBold,
-              { fontSize: responsiveFontSize(28 / percentToPx) },
-            ]}
-            className="text-dark-blue">
-            {options.heading}
-          </Text>
-          <TouchableOpacity
-            onPress={options.onAddNewBtnPress}
-            className="flex flex-row items-center">
-            <Image
+          <View className="flex flex-row gap-2 items-center">
+            {/* <Image
               resizeMode="contain"
-              style={{
-                width: responsiveWidth(7),
-                aspectRatio: 1
-              }}
-              source={addNewIcon as ImageSourcePropType}
-            />
-            <Text
-              style={[
-                textStyles.robotoMedium,
-                {
-                  fontSize: responsiveFontSize(16 / percentToPx),
-                  marginLeft: responsiveHeight(10 / percentToPx),
-                },
-              ]}
-              className="text-dark-blue">
-              Add New
-            </Text>
-          </TouchableOpacity>
+              className={'h-11 w-11 rounded-lg'}
+              source={userImg as ImageSourcePropType}
+            /> */}
+            <LogoBlack width={responsiveWidth(50 / percentToPx)} />
+            <View className="flex flex-col">
+              <Text className="text-md font-3 -mb-1 text-black">
+                {options.userDetails?.name}
+              </Text>
+              <Text className="text-xs font-1">
+                {options.userDetails?.designation}
+              </Text>
+            </View>
+          </View>
+          <View className="flex flex-row gap-3">
+            <TouchableOpacity onPress={options.onAddNewBtnPress}>
+              {/* <Image
+                resizeMode="contain"
+                className={`h-9 w-9`}
+                source={addButton as ImageSourcePropType}
+              /> */}
+              <AddButton width={responsiveWidth(68 / percentToPx)} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.openDrawer();
+              }}>
+              {/* <Image
+                source={BurgerMenuIcon as ImageSourcePropType}
+                className={`h-9 w-9`}
+              /> */}
+              <Menu width={responsiveWidth(68 / percentToPx)} />
+            </TouchableOpacity>
+          </View>
         </View>
       )}
       {(options.type === 'VIEW_OR_EDIT' || options.type === 'SHARE_VIEW') && (
@@ -103,13 +130,12 @@ const DashboardHeader = ({ options }: DashboardHeaderProps) => {
               </TouchableOpacity>
               <Text
                 style={[
-                  textStyles.bebasNeueBold,
                   {
                     fontSize: responsiveFontSize(28 / percentToPx),
                     marginTop: responsiveHeight(10 / percentToPx),
                   },
                 ]}
-                className="text-dark-blue">
+                className="text-black font-3">
                 {options.heading}
               </Text>
             </View>
@@ -117,7 +143,8 @@ const DashboardHeader = ({ options }: DashboardHeaderProps) => {
               <Pressable
                 className="flex flex-row"
                 style={{
-                  justifyContent: "center", alignItems: "center",
+                  justifyContent: 'center',
+                  alignItems: 'center',
                   height: responsiveHeight(25 / percentToPx),
                 }}
                 onPress={options.onShareBtnPress}>
@@ -126,27 +153,22 @@ const DashboardHeader = ({ options }: DashboardHeaderProps) => {
                   className="w-[30px] h-[30px] mt-1 mr-1"
                   source={shareIcon as ImageSourcePropType}
                 />
-                <Text
-                  style={textStyles.robotoMedium}
-                  className="text-dark-blue text-base">
-                  Share
-                </Text>
+                <Text className="text-black text-base font-2">Share</Text>
               </Pressable>
             )}
           </View>
           <View
-            className="w-full h-[2px] bg-dark-blue rounded-sm"
-            style={{ marginTop: responsiveHeight(10 / percentToPx) }}
+            className="w-full h-[2px] bg-accent rounded-sm"
+            style={{marginTop: responsiveHeight(10 / percentToPx)}}
           />
           <Text
             style={[
-              textStyles.robotoRegular,
               {
                 marginTop: responsiveHeight(4 / percentToPx),
                 fontSize: responsiveFontSize(13 / percentToPx),
               },
             ]}
-            className="text-dark-blue">
+            className="text-black font-1">
             {options.subheading}
           </Text>
         </View>

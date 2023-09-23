@@ -47,6 +47,7 @@ export default async function fetcher<
 
     return response;
   } catch (error) {
+    console.error(error);
     if (
       isAxiosError(error) &&
       (error.response?.status === 401 || error.response?.status === 401)

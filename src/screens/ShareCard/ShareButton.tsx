@@ -49,18 +49,14 @@ const ShareButton = ({
           {
             marginRight: responsiveHeight(1.2),
             width: responsiveWidth(33 / percentToPx),
-            aspectRatio:1
+            aspectRatio: 1,
           },
           iconStyles,
         ]}
       />
       <Text
-        style={[
-          textStyles.robotoMedium,
-          textStyle,
-          {fontSize: responsiveFontSize(16 / percentToPx)},
-        ]}
-        className="text-white">
+        style={[textStyle, {fontSize: responsiveFontSize(15 / percentToPx)}]}
+        className="text-white font-2">
         {text}
       </Text>
     </Pressable>

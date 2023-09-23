@@ -1,29 +1,38 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { HttpError } from 'http-errors';
-import React, { useEffect, useState } from 'react';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {HttpError} from 'http-errors';
+import React, {useEffect, useState} from 'react';
 import {
   BackHandler,
   KeyboardAvoidingView,
   ScrollView,
+  Text,
   View,
 } from 'react-native';
-import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+} from 'react-native-responsive-dimensions';
 import Button from '../../components/Button';
 import HeaderStepCount from '../../components/Header/HeaderStepCount';
 import HeaderWithText from '../../components/Header/HeaderWithText';
 import Layout from '../../components/Layout';
 import TextField from '../../components/TextField/TextFieldDark';
-import { percentToPx } from '../../constants';
-import { useCreateBusinessCard } from '../../hooks/useBusinessCard';
+import {percentToPx} from '../../constants';
+import {useCreateBusinessCard} from '../../hooks/useBusinessCard';
 import {
   initialContactDetails,
   initialPersonalInformation,
 } from '../../hooks/useBusinessCard/constants';
 import Toast from '../../lib/toast';
-import { AppStackParams } from '../../navigation/AppNavigation';
+import {AppStackParams} from '../../navigation/AppNavigation';
 import dashboardService from '../../services/dashboard.service';
-import { useCredentials } from '../../hooks/useCredentials';
-import SelectDropdown from 'react-native-select-dropdown'
+import {useCredentials} from '../../hooks/useCredentials';
+import SelectDropdown from 'react-native-select-dropdown';
+import StaticContainer from '../../containers/StaticContainer';
+import GenericTextField from '../../components/TextField/GenericTextField/GenericTextField';
+import {ChevronDownIcon, ChevronUpIcon} from 'react-native-heroicons/outline';
+import RegistrationHeader from '../../components/Header/GenericHeader/RegistrationHeader';
+import StaticContainerReg from '../../containers/StaticContainerReg';
 
 export type PersonalInformationProps = NativeStackScreenProps<
   AppStackParams,
@@ -58,16 +67,16 @@ const DEPARTMENTS = [
   'Production',
   'Design / Creative Services',
   'Security',
-  'Data Analysis'
-]
+  'Data Analysis',
+];
 
 const PersonalInformation = ({
   navigation,
-  route: { params },
+  route: {params},
 }: PersonalInformationProps) => {
-  const { status, cardId } = params;
+  const {status, cardId} = params;
   const [updating, setUpdating] = useState(false);
-  const { setEmail, setPassword } = useCredentials();
+  const {setEmail, setPassword} = useCredentials();
   const {
     step,
     setStep,
@@ -85,7 +94,6 @@ const PersonalInformation = ({
       if (
         !personalInformation.name ||
         !personalInformation.designation ||
-        !personalInformation.department ||
         !personalInformation.companyName
       ) {
         Toast.error({
@@ -104,9 +112,9 @@ const PersonalInformation = ({
 
       setUpdating(false);
       if (!response.success)
-        return Toast.error({ primaryText: response.message });
+        return Toast.error({primaryText: response.message});
 
-      Toast.success({ primaryText: 'Information updated.' });
+      Toast.success({primaryText: 'Information updated.'});
       setPersonalInformation(initialPersonalInformation);
       navigation.pop();
       navigation.replace('EditCardScreen', {
@@ -115,7 +123,7 @@ const PersonalInformation = ({
       });
     } catch (error) {
       setUpdating(false);
-      Toast.error({ primaryText: (error as HttpError).message });
+      Toast.error({primaryText: (error as HttpError).message});
     }
   };
 
@@ -137,11 +145,10 @@ const PersonalInformation = ({
     if (
       !personalInformation.name ||
       !personalInformation.designation ||
-      !personalInformation.department ||
       !personalInformation.companyName
     ) {
       Toast.error({
-        position: 'bottom',
+        position: 'top',
         primaryText: 'All fields are required.',
         secondaryText: 'Please fill up all the details to continue.',
       });
@@ -149,7 +156,7 @@ const PersonalInformation = ({
     }
 
     setStep(step + 1);
-    navigation.push('ContactDetailsScreen', { status, cardId });
+    navigation.push('ContactDetailsScreen', {status, cardId});
   };
 
   useEffect(() => {
@@ -177,113 +184,153 @@ const PersonalInformation = ({
 
   return (
     <Layout>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ height: '100%' }}>
+      <StaticContainerReg
+        isBack
+        isHeader
+        title="Personal Information"
+        onBackPress={handleBackPress}>
         <View
+          className="w-full"
           style={{
-            paddingVertical: responsiveHeight(32 / percentToPx),
-            paddingHorizontal: responsiveHeight(40 / percentToPx),
+            paddingVertical: responsiveHeight(17 / percentToPx),
+            paddingHorizontal: responsiveHeight(4 / percentToPx),
           }}>
-          <KeyboardAvoidingView contentContainerStyle={{ height: '100%' }}>
-            <HeaderStepCount
-              step={step}
-              showDotes={status !== 'EDITING'}
-              onBackPress={handleBackPress}
-            />
-            <View
-              style={{
-                marginTop: responsiveHeight(20 / percentToPx),
-                marginBottom: responsiveHeight(25 / percentToPx),
-              }}>
-              <HeaderWithText
-                heading="PERSONAL INFORMATION"
-                subtitle="Please add your personal details to get started."
-              />
-            </View>
-            <View>
-              <TextField
-                onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
-                    name: text,
-                  });
-                }}
-                value={personalInformation.name}
-                placeholder="Enter your full name"
-                style={{ marginBottom: responsiveHeight(20 / percentToPx) }}
-              />
-              <TextField
-                onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
-                    designation: text,
-                  });
-                }}
-                value={personalInformation.designation}
-                placeholder="Enter your Job Title"
-                style={{ marginBottom: responsiveHeight(20 / percentToPx) }}
-              />
-              <SelectDropdown
-                data={DEPARTMENTS}
-                search={true}
-                defaultButtonText='Select a Department'
-                onSelect={(text, index) => {
-                  setPersonalInformation({
-                    ...personalInformation,
-                    department: text,
-                  });
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  // text represented after item is selected
-                  // if data array is an array of objects then return selectedItem.property to render after item is selected
-                  return selectedItem
-                }}
-                rowTextForSelection={(item, index) => {
-                  // text represented for each item in dropdown
-                  // if data array is an array of objects then return item.property to represent item in dropdown
-                  return item
-                }}
-                buttonStyle={{ marginBottom: responsiveHeight(20 / percentToPx), width: "100%", borderRadius: responsiveHeight(50 / percentToPx) }}
-                buttonTextStyle={{ textAlign: "left", fontSize: responsiveFontSize(15 / percentToPx), }}
-                dropdownStyle={{ borderRadius: 8 }}
-                rowTextStyle={{ textAlign: 'left', fontSize: responsiveFontSize(15 / percentToPx), }}
-              />
-              {/* <TextField
-                onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
-                    department: text,
-                  });
-                }}
-                value={personalInformation.department}
-                placeholder="Enter your department"
-                style={{ marginBottom: responsiveHeight(20 / percentToPx) }}
-              /> */}
-              <TextField
-                onChangeText={text => {
-                  setPersonalInformation({
-                    ...personalInformation,
-                    companyName: text,
-                  });
-                }}
-                value={personalInformation.companyName}
-                placeholder="Enter your company name"
-              />
-            </View>
-            <View
-              style={{ marginTop: responsiveHeight(78 / percentToPx) }}
-              className="w-full">
-              <Button
-                disabled={updating}
-                showLoading={updating}
-                text={status === 'EDITING' ? 'Save' : 'Next'}
-                callback={
-                  status === 'EDITING' ? handleUpdateDetails : handleNextClick
-                }
-              />
-            </View>
-          </KeyboardAvoidingView>
+          <View className="bg-secondary-blue rounded-3xl p-4">
+            <KeyboardAvoidingView contentContainerStyle={{height: '100%'}}>
+              <View
+                style={{
+                  marginTop: responsiveHeight(20 / percentToPx),
+                  marginBottom: responsiveHeight(25 / percentToPx),
+                }}>
+                <View className="w-full">
+                  <Text className="text-lg font-3 text-black">
+                    Step 1: Enter your personal details
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  marginBottom: responsiveHeight(12 / percentToPx),
+                }}>
+                <View>
+                  <GenericTextField
+                    onChangeText={text => {
+                      setPersonalInformation({
+                        ...personalInformation,
+                        name: text,
+                      });
+                    }}
+                    value={personalInformation.name}
+                    placeholder="Enter your full name"
+                  />
+                </View>
+
+                <View style={{marginTop: responsiveHeight(20 / percentToPx)}}>
+                  <GenericTextField
+                    onChangeText={text => {
+                      setPersonalInformation({
+                        ...personalInformation,
+                        designation: text,
+                      });
+                    }}
+                    value={personalInformation.designation}
+                    placeholder="Enter your Job Title"
+                  />
+                </View>
+
+                <View style={{marginTop: responsiveHeight(20 / percentToPx)}}>
+                  <SelectDropdown
+                    data={DEPARTMENTS}
+                    search={true}
+                    defaultButtonText="Select a Department"
+                    onSelect={(text, index) => {
+                      setPersonalInformation({
+                        ...personalInformation,
+                        department: text,
+                      });
+                    }}
+                    renderDropdownIcon={isOpened => {
+                      return isOpened ? (
+                        <ChevronUpIcon
+                          color={'#9c9c9c'}
+                          size={20}
+                          style={{
+                            marginRight: 6,
+                          }}
+                        />
+                      ) : (
+                        <ChevronDownIcon
+                          color={'#9c9c9c'}
+                          size={20}
+                          style={{
+                            marginRight: 6,
+                          }}
+                        />
+                      );
+                    }}
+                    dropdownIconPosition={'right'}
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                      // text represented after item is selected
+                      // if data array is an array of objects then return selectedItem.property to render after item is selected
+                      return selectedItem;
+                    }}
+                    rowTextForSelection={(item, index) => {
+                      // text represented for each item in dropdown
+                      // if data array is an array of objects then return item.property to represent item in dropdown
+                      return item;
+                    }}
+                    buttonStyle={{
+                      width: '100%',
+                      borderRadius: responsiveHeight(12 / percentToPx),
+                      backgroundColor: '#fff',
+                    }}
+                    buttonTextStyle={{
+                      textAlign: 'left',
+                      fontSize: responsiveFontSize(14 / percentToPx),
+                      fontFamily: 'Poppins-Regular',
+                      color: '#7D7D7D',
+                    }}
+                    dropdownStyle={{borderRadius: 8}}
+                    rowTextStyle={{
+                      textAlign: 'left',
+                      fontSize: responsiveFontSize(15 / percentToPx),
+                    }}
+                  />
+                </View>
+
+                <View style={{marginTop: responsiveHeight(20 / percentToPx)}}>
+                  <GenericTextField
+                    onChangeText={text => {
+                      setPersonalInformation({
+                        ...personalInformation,
+                        companyName: text,
+                      });
+                    }}
+                    value={personalInformation.companyName}
+                    placeholder="Enter your company name"
+                  />
+                </View>
+              </View>
+
+              <View
+                className="w-full"
+                style={{marginTop: responsiveHeight(20 / percentToPx)}}>
+                <Button
+                  disabled={updating}
+                  showLoading={updating}
+                  text={status === 'EDITING' ? 'Save' : 'Next'}
+                  callback={
+                    status === 'EDITING' ? handleUpdateDetails : handleNextClick
+                  }
+                />
+              </View>
+            </KeyboardAvoidingView>
+          </View>
+
+          <HeaderStepCount step={step} showDotes={status !== 'EDITING'} />
         </View>
-      </ScrollView>
+        {/* </ScrollView> */}
+      </StaticContainerReg>
     </Layout>
   );
 };

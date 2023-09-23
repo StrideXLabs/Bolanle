@@ -92,17 +92,14 @@ const DeleteCardModal = ({
       <ModalPopup visible={visible} onClose={onClose}>
         <View className="flex flex-row justify-between items-center">
           <Text
-            className="text-dark-blue"
-            style={[
-              textStyles.robotoRegular,
-              {fontSize: responsiveFontSize(20 / percentToPx)},
-            ]}>
+            className="text-black font-1"
+            style={[{fontSize: responsiveFontSize(20 / percentToPx)}]}>
             Delete Card
           </Text>
           <TouchableOpacity>
             <Image
               source={closeIcon as ImageSourcePropType}
-              className="h-[12px] w-[12px]"
+              className="h-3 w-3"
             />
           </TouchableOpacity>
         </View>
@@ -111,11 +108,8 @@ const DeleteCardModal = ({
           style={{backgroundColor: '#D9D9D9'}}
         />
         <Text
-          className="text-dark-blue"
-          style={[
-            textStyles.robotoRegular,
-            {fontSize: responsiveFontSize(16 / percentToPx)},
-          ]}>
+          className="text-black font-1 text-center flex-wrap"
+          style={[{fontSize: responsiveFontSize(16 / percentToPx)}]}>
           Do you really wish to continue?
         </Text>
         <View className="flex flex-row items-center justify-center mt-3">
@@ -134,16 +128,13 @@ const DeleteCardModal = ({
             <View
               className="border-[1px] border-accent"
               style={{
-                borderRadius: 30,
+                borderRadius: 10,
                 width: responsiveWidth(30),
                 paddingVertical: responsiveHeight(8.5 / percentToPx),
               }}>
               <Text
-                className="text-accent text-center"
-                style={
-                  (textStyles.robotoMedium,
-                  {fontSize: responsiveFontSize(16 / percentToPx)})
-                }>
+                className="text-accent text-center font-1"
+                style={{fontSize: responsiveFontSize(16 / percentToPx)}}>
                 Cancel
               </Text>
             </View>
@@ -165,7 +156,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
     elevation: 20,
     backgroundColor: 'white',
-    width: responsiveWidth(70),
+    width: responsiveWidth(80),
     borderRadius: responsiveHeight(1),
     paddingVertical: responsiveHeight(13 / percentToPx),
     paddingHorizontal: responsiveHeight(15 / percentToPx),

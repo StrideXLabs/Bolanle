@@ -7,6 +7,9 @@ import {
   RefreshControl,
   Text,
   View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {
   responsiveFontSize,
@@ -24,6 +27,10 @@ import {AppStackParams} from '../../navigation/AppNavigation';
 import {BottomTabNavigatorParams} from '../../navigation/BottomNavigation';
 import dashboardService, {ICardData} from '../../services/dashboard.service';
 import Card from './Card';
+import TextField from '../../components/TextField/TextFieldDark';
+import {SearchIcon, addCardIcon} from '../../constants/icons';
+import {useAuth} from '../../hooks/useAuth';
+import AddNewCard from '../../assets/svgs/AddNewCard.svg';
 
 type DashboardScreenProps = NativeStackScreenProps<
   BottomTabNavigatorParams & AppStackParams,
@@ -36,6 +43,23 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
   const [loading, setLoading] = useState(false);
   const {setFromDashBoard} = useCreateBusinessCard();
   const [cards, setCards] = useState<ICardData[]>([]);
+  const [searchText, setSearchText] = useState('');
+  const [filteredCards, setFilteredCards] = useState<ICardData[]>([]);
+  const {user} = useAuth();
+
+  const filterCards = (text: string) => {
+    const filtered = cards.filter(card => {
+      const companyName = card.personalInfo.companyName.toLowerCase();
+      const name = card.personalInfo.name.toLowerCase();
+      return (
+        companyName.includes(text.toLowerCase()) ||
+        name.includes(text.toLowerCase())
+      );
+    });
+    setFilteredCards(filtered);
+  };
+
+  const hasSearchResults = filteredCards.length > 0;
 
   const fetchDashboardData = async () => {
     try {
@@ -69,91 +93,143 @@ const DashboardScreen = ({navigation}: DashboardScreenProps) => {
     if (isFocused) fetchDashboardData();
   }, [isFocused]);
 
+  const handleOnAddNewPress = () => {
+    setFromDashBoard(true);
+    navigation.navigate('PersonalInformationScreen', {
+      cardId: null,
+      status: 'CREATING',
+    });
+  };
+
   return (
     <Layout>
       <DashboardHeader
         options={{
           type: 'ADD_NEW_VIEW',
           heading: 'DASHBOARD',
-          onAddNewBtnPress: () => {
-            setFromDashBoard(true);
-            navigation.navigate('PersonalInformationScreen', {
-              cardId: null,
-              status: 'CREATING',
-            });
+          userDetails: {
+            name: user?.name || '',
+            designation: user?.email || '',
           },
+          onAddNewBtnPress: handleOnAddNewPress,
         }}
       />
-      {loading && (
-        <View
-          className="flex justify-center items-center"
-          style={{height: responsiveScreenHeight(75)}}>
-          <ActivityIndicator size={50} color={accentColor} />
-        </View>
-      )}
-      {!loading && cards.length === 0 && error && (
-        <View
-          className="flex justify-center items-center"
-          style={{height: responsiveScreenHeight(75)}}>
-          <Text
-            className="text-dark-blue text-lg"
-            style={textStyles.robotoBold}>
-            {error}
-          </Text>
-          <Button
-            text="RETRY"
-            callback={fetchDashboardData}
-            className="mt-3"
-            style={{width: responsiveWidth(60)}}
-          />
-        </View>
-      )}
-      {!loading && !error && cards.length == 0 && (
-        <View
-          className="flex justify-center items-center"
-          style={{marginTop: responsiveHeight(10)}}>
-          <Text
-            className="text-dark-blue"
-            style={[
-              textStyles.robotoBold,
-              {fontSize: responsiveFontSize(18 / percentToPx)},
-            ]}>
-            No business card found.
-          </Text>
-        </View>
-      )}
+      <View
+        style={{
+          paddingVertical: responsiveHeight(17 / percentToPx),
+          // paddingHorizontal: responsiveHeight(20 / percentToPx),
+        }}>
+        {loading && (
+          <View
+            className="flex justify-center items-center"
+            style={{height: responsiveScreenHeight(75)}}>
+            <ActivityIndicator size={50} color={accentColor} />
+          </View>
+        )}
+        {!loading && cards.length === 0 && error && (
+          <View
+            className="flex justify-center items-center"
+            style={{height: responsiveScreenHeight(75)}}>
+            <Text className="text-black font-3 text-lg">{error}</Text>
+            <Button
+              text="RETRY"
+              callback={fetchDashboardData}
+              className="mt-3"
+              style={{width: responsiveWidth(60)}}
+            />
+          </View>
+        )}
+        {!loading && !error && cards.length == 0 && (
+          <View className="h-[90%] justify-center">
+            <Text
+              className="text-black font-3 text-lg text-center"
+              style={[{fontSize: responsiveFontSize(18 / percentToPx)}]}>
+              No business card found.
+            </Text>
+            <Text
+              className="font-1 text-center mt-1"
+              style={{
+                paddingHorizontal: responsiveHeight(14 / percentToPx),
+              }}>
+              Create a new business card
+            </Text>
+            <TouchableOpacity
+              className="self-center mt-2"
+              onPress={() => {
+                setFromDashBoard(true);
+                navigation.navigate('PersonalInformationScreen', {
+                  cardId: null,
+                  status: 'CREATING',
+                });
+              }}>
+              <Image source={addCardIcon as any} className={`h-8 w-8`} />
+            </TouchableOpacity>
+          </View>
+        )}
 
-      {!loading && !error && cards.length > 0 && (
-        <View
-          style={{
-            height: responsiveHeight(100),
-            marginTop: responsiveHeight(15 / percentToPx),
-            paddingHorizontal: responsiveHeight(30 / percentToPx),
-          }}>
-          <FlatList
-            refreshControl={
-              <RefreshControl
-                refreshing={loading}
-                colors={[accentColor]}
-                onRefresh={fetchDashboardData}
-              />
-            }
-            data={cards}
-            numColumns={1}
-            horizontal={false}
-            style={{width: '100%'}}
-            keyExtractor={item => item._id}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <Card card={item} onCardPress={handleCardPress} />
-            )}
-            contentContainerStyle={{
-              paddingBottom: responsiveHeight(25),
-              gap: responsiveHeight(10 / percentToPx),
-            }}
-          />
-        </View>
-      )}
+        {!loading && !error && cards.length > 0 && (
+          <View
+            style={{
+              paddingHorizontal: responsiveHeight(20 / percentToPx),
+            }}>
+            <TextField
+              placeholder="Search name, category ..."
+              onChangeText={text => {
+                setSearchText(text);
+                filterCards(text);
+              }}
+              value={searchText}
+              gradient={true}
+              icon={
+                <Image
+                  source={SearchIcon as any}
+                  className={`h-5 w-5`}
+                  style={{tintColor: '#8a8a8f'}}
+                />
+              }
+            />
+          </View>
+        )}
+
+        {!loading && !error && cards.length > 0 && (
+          <ScrollView
+            horizontal
+            style={{
+              height: responsiveHeight(100),
+              marginTop: responsiveHeight(15 / percentToPx),
+            }}>
+            <FlatList
+              refreshControl={
+                <RefreshControl
+                  refreshing={loading}
+                  colors={[accentColor]}
+                  onRefresh={fetchDashboardData}
+                />
+              }
+              data={searchText ? filteredCards : cards}
+              numColumns={1}
+              horizontal={true}
+              style={{width: '100%'}}
+              keyExtractor={item => item._id}
+              showsHorizontalScrollIndicator={true}
+              renderItem={({item}) => (
+                <Card card={item} onCardPress={handleCardPress} />
+              )}
+              contentContainerStyle={{
+                paddingBottom: responsiveHeight(25),
+                gap: responsiveHeight(10 / percentToPx),
+                borderWidth: 1,
+              }}
+            />
+
+            <TouchableOpacity
+              className="h-[500px] justify-center items-center mr-5"
+              onPress={handleOnAddNewPress}>
+              <AddNewCard />
+            </TouchableOpacity>
+          </ScrollView>
+        )}
+      </View>
     </Layout>
   );
 };
