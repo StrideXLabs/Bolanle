@@ -121,8 +121,6 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
     try {
       if (!selectedContactRef.current) return;
 
-      console.log('selectedContactRef.current', selectedContactRef.current);
-
       setDeleting(true);
       const response = await contactsService.delete(
         selectedContactRef.current?._id || '',
@@ -164,8 +162,6 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
     {label: 'Friend', color: 'orange'},
   ];
 
-  console.log('contactsHEHE', contacts);
-
   return (
     <Layout>
       <View
@@ -200,6 +196,7 @@ const ContactsScreen = ({navigation}: ContactsScreenProps) => {
               <ScrollView
                 horizontal
                 className="flex flex-row space-x-2 flex-wrap"
+                showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{
                   marginTop: responsiveHeight(14 / percentToPx),
                 }}>

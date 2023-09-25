@@ -11,7 +11,11 @@ import {
 import React, {useEffect, useRef, useState} from 'react';
 import MapView, {PROVIDER_GOOGLE, MarkerAnimated} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import contactsService from '../../services/contacts.service';
-import {BASE_URL, accentColor} from '../../constants';
+import {BASE_URL, accentColor, percentToPx} from '../../constants';
+import {
+  responsiveScreenWidth,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 
 const styles = StyleSheet.create({
   container: {
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     color: '#484848',
     flexWrap: 'wrap',
-    width: 180,
+    width: responsiveScreenWidth(310 / percentToPx),
   },
 });
 
@@ -101,13 +105,6 @@ export default () => {
       flatListRef.current.scrollToIndex({index, animated: true});
     }
   };
-
-  useEffect(() => {
-    console.log(activeId);
-    console.log(contacts.length);
-    if (contacts && contacts.length > 0)
-      console.log(contacts.length - 1 === activeId);
-  }, [activeId]);
 
   const getContacts = async () => {
     try {

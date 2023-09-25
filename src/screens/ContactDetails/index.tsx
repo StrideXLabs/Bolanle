@@ -202,8 +202,6 @@ const ContactDetails = ({
     }
   }, [isFetchedLocation]);
 
-  console.log('lat and lang', contactDetails.lat, contactDetails.lng);
-
   return (
     <Layout>
       <StaticContainerReg

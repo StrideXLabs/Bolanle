@@ -65,8 +65,6 @@ const EmailVerificationScreen = ({
         email,
       );
 
-      console.log({email, token: verificationTokenRef});
-
       if (!response.success) {
         setResending(false);
         return Toast.error({primaryText: response.message});

@@ -33,8 +33,8 @@ const LocationDetails = ({
   cardId,
 }: Props) => {
   return (
-    <ScrollView
-      contentContainerStyle={{
+    <View
+      style={{
         paddingHorizontal: responsiveHeight(20 / percentToPx),
         paddingVertical: responsiveHeight(14 / percentToPx),
       }}>
@@ -127,7 +127,7 @@ const LocationDetails = ({
           {editable && <Button text="Edit Details" callback={() => {}} />}
         </View> */}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

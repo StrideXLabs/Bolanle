@@ -53,7 +53,6 @@ export const googleSignIn = async () => {
     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
       Toast.error({primaryText: 'play services not available or outdated'});
     } else {
-      console.log('error2', error);
       Toast.error({primaryText: 'Something went wrong', secondaryText: error});
     }
   }

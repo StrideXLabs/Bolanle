@@ -65,8 +65,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
   const {email, password, setEmail, setPassword, isThirdParty} =
     useCredentials();
 
-  console.log('IS THIRD', isThirdParty);
-
   const handleCreateAccount = async () => {
     try {
       setCreatingAccount(true);

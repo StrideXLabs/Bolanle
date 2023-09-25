@@ -36,8 +36,6 @@ const Feedback = () => {
 
       const response = await feedbackService.createFeedback(email, feedback);
 
-      console.log('res', response);
-
       if (!response.success) {
         setLoading(false);
         return Toast.error({primaryText: response.message});

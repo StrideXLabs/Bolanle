@@ -38,8 +38,8 @@ const SocialLinks = ({
   onDeleteLink,
 }: Props) => {
   return (
-    <ScrollView
-      contentContainerStyle={{
+    <View
+      style={{
         paddingHorizontal: responsiveHeight(20 / percentToPx),
         paddingVertical: responsiveHeight(14 / percentToPx),
       }}>
@@ -113,7 +113,7 @@ const SocialLinks = ({
           )}
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

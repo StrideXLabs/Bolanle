@@ -19,8 +19,8 @@ type Props = {
 
 const QR = ({onDeleteCard, qr, editable, cardId}: Props) => {
   return (
-    <ScrollView
-      contentContainerStyle={{
+    <View
+      style={{
         paddingHorizontal: responsiveHeight(20 / percentToPx),
         paddingVertical: responsiveHeight(14 / percentToPx),
       }}>
@@ -42,7 +42,7 @@ const QR = ({onDeleteCard, qr, editable, cardId}: Props) => {
           />
         )}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

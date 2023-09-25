@@ -62,10 +62,6 @@ const EditCardScreen = ({
   } = useCreateBusinessCard();
   const {card, editable, cardId} = params;
 
-  console.log(params);
-
-  console.log(cardId);
-
   const [open, setOpen] = useState(false);
   const [deletingCard, setDeletingCard] = useState(false);
   const [deletingSocial, setDeletingSocial] = useState(false);
@@ -225,7 +221,7 @@ const EditCardScreen = ({
   const bottomSheetRef = React.useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = React.useMemo(() => ['70%', '100%'], []);
+  const snapPoints = React.useMemo(() => ['80%', '100%'], []);
 
   // callbacks
   const handleSheetChanges = React.useCallback((index: number) => {
@@ -282,8 +278,6 @@ const EditCardScreen = ({
         true,
       );
 
-      console.log('response', response);
-
       if (!response.success)
         return Toast.error({primaryText: response.message});
 
@@ -297,16 +291,8 @@ const EditCardScreen = ({
     }
   };
 
-  useEffect(() => {
-    console.log(contactDetails, 'contactDetails');
-  }, [contactDetails]);
-
-  useEffect(() => {
-    console.log(isVideoLoading, 'isVideoLoading');
-  }, [isVideoLoading]);
-
   return (
-    <Layout viewStyle={{paddingBottom: responsiveHeight(6)}}>
+    <Layout>
       {loading && (
         <View className="h-screen flex justify-center items-center">
           <ActivityIndicator size={40} color={accentColor} />
@@ -456,7 +442,7 @@ const EditCardScreen = ({
                 borderWidth: 1,
                 borderColor: '#e5e5e5',
               }}
-              handleIndicatorStyle={{backgroundColor: 'blue'}}>
+              handleIndicatorStyle={{backgroundColor: accentColor}}>
               <BottomSheetScrollView
                 contentContainerStyle={{
                   paddingBottom: 10,
