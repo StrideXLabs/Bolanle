@@ -119,8 +119,6 @@ const SocialLinksScreen = ({
   const [updating, setUpdating] = useState(false);
   const [creatingBusinessCard, setCreatingBusinessCard] = useState(false);
 
-  console.log(contactDetails, 'contact details hehe');
-
   const handleSelectSocialItem = (item: ISocial) => {
     const exist = socialItems.find(i => i.id === item.id);
     if (exist) return;
@@ -162,9 +160,6 @@ const SocialLinksScreen = ({
         lng: contactDetails.lng,
         coverVideo: null,
       };
-
-      console.log(cDetails, 'cDetails');
-      console.log(contactDetails, 'contactDetails');
 
       const res = await cardService.create({
         personalInformation,

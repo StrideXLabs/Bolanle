@@ -63,7 +63,6 @@ class ContactsService {
       });
       return {success: true, data: null, message: 'Contact created.'};
     } catch (error) {
-      console.log("err", error)
       return {
         data: null,
         success: false,
@@ -77,7 +76,6 @@ class ContactsService {
       const data = await fetcher<{}, ICardsResponse>(`contact/duplicate?cardId=${id}`);
       return {success: true, data: data.businessCard, message: data.message};
     } catch (error) {
-      console.log("err2", error)
       return {
         data: null,
         success: false,

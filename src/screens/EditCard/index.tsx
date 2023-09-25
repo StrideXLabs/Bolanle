@@ -62,10 +62,6 @@ const EditCardScreen = ({
   } = useCreateBusinessCard();
   const {card, editable, cardId} = params;
 
-  console.log(params);
-
-  console.log(cardId);
-
   const [open, setOpen] = useState(false);
   const [deletingCard, setDeletingCard] = useState(false);
   const [deletingSocial, setDeletingSocial] = useState(false);
@@ -225,7 +221,7 @@ const EditCardScreen = ({
   const bottomSheetRef = React.useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = React.useMemo(() => ['70%', '100%'], []);
+  const snapPoints = React.useMemo(() => ['80%', '100%'], []);
 
   // callbacks
   const handleSheetChanges = React.useCallback((index: number) => {
@@ -282,8 +278,6 @@ const EditCardScreen = ({
         true,
       );
 
-      console.log('response', response);
-
       if (!response.success)
         return Toast.error({primaryText: response.message});
 
@@ -296,14 +290,6 @@ const EditCardScreen = ({
       setIsVideoLoading(false);
     }
   };
-
-  useEffect(() => {
-    console.log(contactDetails, 'contactDetails');
-  }, [contactDetails]);
-
-  useEffect(() => {
-    console.log(isVideoLoading, 'isVideoLoading');
-  }, [isVideoLoading]);
 
   return (
     <Layout viewStyle={{paddingBottom: responsiveHeight(6)}}>
@@ -460,7 +446,18 @@ const EditCardScreen = ({
               <BottomSheetScrollView
                 contentContainerStyle={{
                   paddingBottom: 10,
-                }}>
+                }}
+                focusHook={React.useCallback(() => {
+                  //Create a ref for the BottomSheetScrollView
+                  const bottomSheetScrollViewRef =
+                    React.useRef<ScrollView | null>(null);
+
+                  //Focus on the ScrollView
+                  bottomSheetScrollViewRef.current?.focus();
+
+                  //Return the ref to the BottomSheet
+                  return bottomSheetScrollViewRef;
+                }, [])}>
                 <Header
                   cardId={_id}
                   editable={editable}

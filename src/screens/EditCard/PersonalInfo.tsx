@@ -20,8 +20,8 @@ type Props = {
 
 const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
   return (
-    <ScrollView
-      contentContainerStyle={{
+    <View
+      style={{
         paddingHorizontal: responsiveHeight(20 / percentToPx),
         paddingVertical: responsiveHeight(14 / percentToPx),
       }}>
@@ -70,7 +70,7 @@ const PersonalInfo = ({personalInfo, onEditPress, editable}: Props) => {
           )}
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

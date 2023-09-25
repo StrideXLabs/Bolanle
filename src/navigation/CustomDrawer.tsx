@@ -59,7 +59,7 @@ export const CustomDrawer = (props: any) => {
     <View style={styles.container}>
       <DrawerContentScrollView {...props}>
         <View>
-          <View className="flex items-center space-y-1 -mt-3">
+          <View className="flex items-center space-y-1 mt-1">
             <Text className="font-2 text-xl text-black">Settings</Text>
             <Text className="font-0 text-xs text-black">
               Manage your app preferences
@@ -353,6 +353,6 @@ export const CustomDrawer = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: responsiveHeight(5),
+    paddingVertical: responsiveHeight(2),
   },
 });

@@ -40,8 +40,6 @@ interface ICardProps {
 const Card = ({card, onCardPress}: ICardProps) => {
   const {personalInfo, contactDetails} = card;
 
-  console.log('card data', card);
-
   const navigation = useNavigation();
 
   const [error, setError] = useState('');
@@ -64,17 +62,17 @@ const Card = ({card, onCardPress}: ICardProps) => {
     {
       id: 1,
       icon: EmailIcon,
-      text: `${contactDetails?.email}`,
+      text: `${contactDetails?.email || 'no email'}`,
     },
     {
       id: 2,
       icon: PhoneIcon,
-      text: `${contactDetails?.mobile}`,
+      text: `${contactDetails?.mobile || 'no phone'}`,
     },
     {
       id: 3,
       icon: GlobeIcon,
-      text: `${contactDetails?.websiteUrl}`,
+      text: `${contactDetails?.websiteUrl || 'no website'}`,
     },
     {
       id: 4,

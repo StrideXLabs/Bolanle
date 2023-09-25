@@ -113,7 +113,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   }, []);
 
   const handleGoogleLogin = (call: any) => {
-    console.log(call);
     setPersonalInformation({
       ...personalInformation,
       name: call.user.name,
@@ -208,7 +207,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                 <TouchableOpacity
                   activeOpacity={0.6}
                   onPress={() => {
-                    console.log('Clicked');
                     navigation.navigate('PersonalInformationScreen', {
                       cardId: null,
                       status: 'CREATING',
