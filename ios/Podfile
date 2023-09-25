@@ -35,8 +35,7 @@ target 'Bolanle' do
 
   # `pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'`
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-  +  `pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'`
-  end
+  `pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'`
 
   # Flags change depending on the env values.
   flags = get_default_flags()
