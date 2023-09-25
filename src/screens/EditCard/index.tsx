@@ -292,7 +292,7 @@ const EditCardScreen = ({
   };
 
   return (
-    <Layout viewStyle={{paddingBottom: responsiveHeight(6)}}>
+    <Layout>
       {loading && (
         <View className="h-screen flex justify-center items-center">
           <ActivityIndicator size={40} color={accentColor} />
@@ -442,22 +442,11 @@ const EditCardScreen = ({
                 borderWidth: 1,
                 borderColor: '#e5e5e5',
               }}
-              handleIndicatorStyle={{backgroundColor: 'blue'}}>
+              handleIndicatorStyle={{backgroundColor: accentColor}}>
               <BottomSheetScrollView
                 contentContainerStyle={{
                   paddingBottom: 10,
-                }}
-                focusHook={React.useCallback(() => {
-                  //Create a ref for the BottomSheetScrollView
-                  const bottomSheetScrollViewRef =
-                    React.useRef<ScrollView | null>(null);
-
-                  //Focus on the ScrollView
-                  bottomSheetScrollViewRef.current?.focus();
-
-                  //Return the ref to the BottomSheet
-                  return bottomSheetScrollViewRef;
-                }, [])}>
+                }}>
                 <Header
                   cardId={_id}
                   editable={editable}
