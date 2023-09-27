@@ -42,7 +42,7 @@ import {openPicker} from 'react-native-image-crop-picker';
 import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {IContactDetails} from '../../hooks/useBusinessCard/interface';
 import {getFileName} from '../../lib/getFileName';
-import Video from 'react-native-video';
+// import Video from 'react-native-video';
 import LocationDetails from './LocationDetails';
 
 export type PersonalInformationProps = NativeStackScreenProps<
@@ -360,25 +360,39 @@ const EditCardScreen = ({
               /> */}
               {contactDetails?.coverVideo &&
               contactDetails?.coverVideo.toString().includes('.mp4') ? (
-                <Video
+                // <Video
+                //   source={{
+                //     uri:
+                //       BASE_URL +
+                //       `/${_id}/${
+                //         contactDetails?.coverVideo
+                //       }?time=${Date.now()}`,
+                //   }}
+                //   style={{width: '100%', height: '100%'}}
+                //   resizeMode="cover"
+                //   repeat={true}
+                //   muted={true}
+                //   controls={false}
+                //   onLoadStart={() => {
+                //     if (!isVideoLoaded) setIsVideoLoading(true);
+                //     setIsVideoLoaded(true);
+                //   }}
+                //   onLoad={() => setIsVideoLoading(false)}
+                //   onReadyForDisplay={() => setIsVideoLoading(false)}
+                // />
+                <Image
+                  resizeMode="cover"
+                  className="w-full h-full"
                   source={{
                     uri:
                       BASE_URL +
                       `/${_id}/${
-                        contactDetails?.coverVideo
-                      }?time=${Date.now()}`,
+                        contactDetails?.coverVideo ||
+                        contactDetails?.companyLogo
+                      }` +
+                      `?time=${Date.now()}`,
+                    cache: 'reload',
                   }}
-                  style={{width: '100%', height: '100%'}}
-                  resizeMode="cover"
-                  repeat={true}
-                  muted={true}
-                  controls={false}
-                  onLoadStart={() => {
-                    if (!isVideoLoaded) setIsVideoLoading(true);
-                    setIsVideoLoaded(true);
-                  }}
-                  onLoad={() => setIsVideoLoading(false)}
-                  onReadyForDisplay={() => setIsVideoLoading(false)}
                 />
               ) : (
                 <Image
